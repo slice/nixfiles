@@ -2,6 +2,9 @@
 
 let
   textEditor = "nvim"; # pretty good if you ask me
+
+  # fenix for rust toolchain
+  fenix = import (fetchTarball "https://github.com/nix-community/fenix/archive/f112dc90b9a55621ad0bb751e9793a032d040dba.tar.gz") { };
 in
 {
   imports = [
@@ -16,10 +19,37 @@ in
     username = "slice";
     homeDirectory = "/Users/slice";
 
-    packages = with pkgs; [ httpie ];
+    packages = with pkgs; [
+      neovim
+      neovim-remote
+
+      fenix.default.toolchain
+      nodejs
+      python39
+      pkgs.python39Packages.ipython
+
+      ffmpeg
+      sox
+      imagemagick
+      yt-dlp
+
+      croc
+      graphviz
+      jq
+      ripgrep
+      rlwrap
+      curl
+      tree
+      aria
+      p7zip
+      smartmontools
+      httpie
+    ];
 
     sessionVariables = {
       EDITOR = textEditor;
+      # use macOS's ssh so we can get keychain integration
+      GIT_SSH = "/usr/bin/ssh";
     };
   };
 

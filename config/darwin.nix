@@ -11,28 +11,8 @@
     home = "/Users/slice";
   };
 
-  # Packages installed within system profile:
-  environment.systemPackages = with pkgs; [
-    # blissful text editing
-    neovim
-    neovim-remote
-
-    # multimedia
-    ffmpeg
-    sox
-    imagemagick
-    yt-dlp
-
-    # utilities
-    croc
-    graphviz
-    jq
-    ripgrep
-    rlwrap
-    curl
-    tree
-    aria
-  ];
+  # system packages; we use home-manager instead
+  environment.systemPackages = [];
 
   # Use a custom configuration.nix location:
   # $ darwin-rebuild switch -I darwin-config=$HOME/.config/nixpkgs/darwin/configuration.nix

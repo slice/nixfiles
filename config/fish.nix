@@ -179,6 +179,10 @@ in
           (set_color normal)
       '';
 
+      unquarantine = ''
+        xattr -dr com.apple.quarantine $argv
+      '';
+
       fish_right_prompt = ''
         # set this so we can compare the value pre-command_duration (which modifies
         # it)
