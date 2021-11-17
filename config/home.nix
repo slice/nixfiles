@@ -23,10 +23,16 @@ in
       neovim
       neovim-remote
 
-      fenix.default.toolchain
-      nodejs
+      fenix.stable.toolchain
+      fenix.rust-analyzer
+      nodejs-slim
+      pkgs.nodePackages.npm
+      pkgs.nodePackages.prettier
       python39
       pkgs.python39Packages.ipython
+      jdk11
+      scala
+      ammonite
 
       ffmpeg
       sox
