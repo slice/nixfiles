@@ -17,9 +17,9 @@ in
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  home = {
+  home = rec {
     username = "slice";
-    homeDirectory = "/Users/slice";
+    homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
 
     packages = with pkgs; [
       # text editors
