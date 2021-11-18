@@ -13,7 +13,7 @@
     home = "/Users/slice";
   };
 
-  home-manager.users.slice = import ../home/home.nix;
+  home-manager.users.slice = (import ../home/home.nix) {};
 
   # Most package should be specified with home-manager instead.
   environment.systemPackages = [];

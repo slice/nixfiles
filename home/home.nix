@@ -1,3 +1,5 @@
+{ server ? false }:
+
 { config, pkgs, ... }:
 
 let
@@ -6,6 +8,49 @@ let
   darwinSessionVariables = pkgs.lib.optionalAttrs isDarwin {
     # when using git, use the system ssh so we can get keychain integration
     GIT_SSH = "/usr/bin/ssh";
+  };
+
+  packagesets = with pkgs; rec {
+    # packages that i need on every machine
+    base = [
+      # \(^_^)/
+      neovim neovim-remote
+
+      # grab bag of useful programs
+      yt-dlp croc jq ripgrep rlwrap curl aria p7zip httpie htop
+    ];
+
+    # language runtimes, compilers, etc.
+    languages = [
+      nodejs-slim
+      python39
+      jdk11
+      scala
+      ammonite
+    ];
+
+    # tools to help with programming
+    tooling = [
+      nixfmt
+      nodePackages.npm
+      nodePackages.prettier
+      python39Packages.ipython
+    ];
+
+    # video/audio
+    multimedia = [
+      ffmpeg
+      sox
+      imagemagick
+    ];
+
+    # miscellaneous utilities
+    utilities = [
+      graphviz
+      smartmontools
+    ];
+
+    everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
   };
 in
 {
@@ -21,43 +66,7 @@ in
     username = "slice";
     homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
 
-    packages = with pkgs; [
-      # text editors
-      neovim
-      neovim-remote
-
-      # languages
-      nodejs-slim
-      python39
-      jdk11
-      scala
-      ammonite
-
-      # language tools
-      nixfmt
-      pkgs.nodePackages.npm
-      pkgs.nodePackages.prettier
-      pkgs.python39Packages.ipython
-
-      # multimedia
-      ffmpeg
-      sox
-      imagemagick
-      yt-dlp
-
-      # utilities
-      croc
-      graphviz
-      jq
-      ripgrep
-      rlwrap
-      curl
-      aria
-      p7zip
-      smartmontools
-      httpie
-      htop
-    ];
+    packages = if server then packagesets.base else packagesets.everything;
 
     sessionVariables = {
       EDITOR = textEditor;
