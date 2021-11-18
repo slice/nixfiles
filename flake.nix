@@ -42,7 +42,7 @@
         ];
       });
     in {
-      homeManagerConfigurations.slice = import ../home/home.nix;
+      homeManagerConfigurations.slice = import ./home/home.nix;
 
       darwinConfigurations.dewey = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
