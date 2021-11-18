@@ -20,36 +20,43 @@ in
     homeDirectory = "/Users/slice";
 
     packages = with pkgs; [
+      # text editors
       neovim
       neovim-remote
 
+      # languages
       fenix.stable.toolchain
-      fenix.rust-analyzer
       nodejs-slim
-      pkgs.nodePackages.npm
-      pkgs.nodePackages.prettier
       python39
-      pkgs.python39Packages.ipython
       jdk11
       scala
       ammonite
 
+      # language tools
+      fenix.rust-analyzer
+      nixfmt
+      pkgs.nodePackages.npm
+      pkgs.nodePackages.prettier
+      pkgs.python39Packages.ipython
+
+      # multimedia
       ffmpeg
       sox
       imagemagick
       yt-dlp
 
+      # utilities
       croc
       graphviz
       jq
       ripgrep
       rlwrap
       curl
-      tree
       aria
       p7zip
       smartmontools
       httpie
+      htop
     ];
 
     sessionVariables = {
