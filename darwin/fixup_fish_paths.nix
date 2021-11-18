@@ -1,4 +1,4 @@
-# Fix some Nix paths not being early enough in $PATH.
+# Fix some Nix paths not being early enough in $PATH in system run commands.
 # From: https://github.com/LnL7/nix-darwin/issues/122#issuecomment-829046310
 
 { config, lib, ... }:

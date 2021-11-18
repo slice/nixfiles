@@ -2,9 +2,11 @@
 
 let
   textEditor = "nvim"; # pretty good if you ask me
-
-  # fenix for rust toolchain
-  fenix = import (fetchTarball "https://github.com/nix-community/fenix/archive/f112dc90b9a55621ad0bb751e9793a032d040dba.tar.gz") { };
+  isDarwin = pkgs.stdenv.isDarwin;
+  darwinSessionVariables = pkgs.lib.optionalAttrs isDarwin {
+    # when using git, use the system ssh so we can get keychain integration
+    GIT_SSH = "/usr/bin/ssh";
+  };
 in
 {
   imports = [
@@ -25,7 +27,6 @@ in
       neovim-remote
 
       # languages
-      fenix.stable.toolchain
       nodejs-slim
       python39
       jdk11
@@ -33,7 +34,6 @@ in
       ammonite
 
       # language tools
-      fenix.rust-analyzer
       nixfmt
       pkgs.nodePackages.npm
       pkgs.nodePackages.prettier
@@ -61,9 +61,7 @@ in
 
     sessionVariables = {
       EDITOR = textEditor;
-      # use macOS's ssh so we can get keychain integration
-      GIT_SSH = "/usr/bin/ssh";
-    };
+    } // darwinSessionVariables;
   };
 
   # This value determines the Home Manager release that your
