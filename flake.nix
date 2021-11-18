@@ -20,40 +20,38 @@
     };
   };
 
-  outputs = { self, darwin, nixpkgs, home-manager, fenix }: {
-    darwinConfigurations.dewey = darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      modules = [
-        # nix-darwin
-        ./darwin/darwin.nix
+  outputs = { self, darwin, nixpkgs, home-manager, fenix }:
+    let
+      nixModule = ({ pkgs, ... }: {
+        nix.extraOptions = "experimental-features = nix-command flakes";
+        nix.package = pkgs.nix;
+        nix.registry.nixpkgs.flake = nixpkgs;
+      });
 
-        # home-manager
-        home-manager.darwinModule
+      fenixModule = ({ pkgs, ... }: {
+        nixpkgs.overlays = [ fenix.overlay ];
+        environment.systemPackages = [
+          (pkgs.fenix.complete.withComponents [
+            "cargo"
+            "clippy"
+            "rust-src"
+            "rustc"
+            "rustfmt"
+          ])
+          pkgs.rust-analyzer
+        ];
+      });
+    in {
+      darwinConfigurations.dewey = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [
+          ./darwin/darwin.nix
+          home-manager.darwinModule
+          nixModule
+          fenixModule
+        ];
 
-        # nix
-        ({ pkgs, ... }: {
-          nix.extraOptions = "experimental-features = nix-command flakes";
-          nix.package = pkgs.nix;
-          nix.registry.nixpkgs.flake = nixpkgs;
-        })
-
-        # fenix
-        ({ pkgs, ... }: {
-          nixpkgs.overlays = [ fenix.overlay ];
-          environment.systemPackages = [
-            (pkgs.fenix.complete.withComponents [
-              "cargo"
-              "clippy"
-              "rust-src"
-              "rustc"
-              "rustfmt"
-            ])
-            pkgs.rust-analyzer
-          ];
-        })
-      ];
-
-      inputs = { pkgs = nixpkgs; };
+        inputs = { pkgs = nixpkgs; };
+      };
     };
-  };
 }
