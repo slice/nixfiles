@@ -57,7 +57,7 @@ in
 {
   imports = [
     ./fish.nix
-    ./neovim.nix
+    ./neovim
     ./git.nix
   ];
 

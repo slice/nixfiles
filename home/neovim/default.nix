@@ -40,7 +40,7 @@ in {
     viAlias = true;
     vimAlias = true;
 
-    extraConfig = lua (builtins.readFile ./neovim.lua);
+    extraConfig = lua (builtins.readFile ./init.lua);
 
     plugins = with pkgs.vimPlugins; [
       vim-dirvish           # a better built-in directory browser
