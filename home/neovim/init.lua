@@ -265,6 +265,8 @@ aug('colorschemes', {
   'ColorScheme landscape'
     .. ' highlight NormalFloat guifg=#dddddd guibg=#222222'
     .. ' | highlight Comment guifg=#999999 gui=italic',
+  'ColorScheme zenburn'
+    .. ' highlight! link TelescopeMatching IncSearch',
   -- 'ColorScheme dogrun'
   --   .. ' highlight IndentBlanklineIndent1 guibg=#303345'
   --   .. ' | highlight IndentBlanklineIndent2 guibg=#303345'
