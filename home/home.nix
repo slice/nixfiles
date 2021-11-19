@@ -14,7 +14,8 @@ let
     # packages that i need on every machine
     base = [
       # \(^_^)/
-      neovim neovim-remote
+      # neovim (managed by home-manager)
+      neovim-remote
 
       # grab bag of useful programs
       yt-dlp croc jq ripgrep rlwrap curl aria p7zip httpie htop
@@ -56,6 +57,7 @@ in
 {
   imports = [
     ./fish.nix
+    ./neovim.nix
     ./git.nix
   ];
 
