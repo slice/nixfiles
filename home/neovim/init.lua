@@ -18,7 +18,7 @@ local g = vim.g
 -- }}}
 
 function greet()
-  cmd [[echo "(>^_^>) ♥ ♥ ♥ (<^_^<)"]]
+  cmd [[echo "\_o> ♥ ♥ ♥ <o_/"]]
 end
 
 cmd [[command! Greet :lua greet()<CR>]]
