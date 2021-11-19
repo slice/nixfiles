@@ -30,6 +30,8 @@ let
       version = rev;
       src = pkgs.fetchgit { inherit url rev sha256; };
     };
+
+  lua = code: "lua << EOF\n${code}\nEOF";
 in {
   programs.neovim = {
     enable = true;
@@ -38,11 +40,7 @@ in {
     viAlias = true;
     vimAlias = true;
 
-    extraConfig = ''
-      lua << EOF
-      ${builtins.readFile ./neovim.lua}
-      EOF
-    '';
+    extraConfig = lua (builtins.readFile ./neovim.lua);
 
     plugins = with pkgs.vimPlugins; [
       vim-dirvish           # a better built-in directory browser
@@ -60,7 +58,14 @@ in {
       vim-abolish           # better abbrevs, variant searching, and other stuff
 
       vim-sayonara          # close buffers more intuitively
-      indent-blankline-nvim # indentation guides
+      {
+        plugin = indent-blankline-nvim; # indentation guides
+        config = lua ''
+          require("indent_blankline").setup {
+            buftype_exclude = {"terminal", "help"}
+          }
+        '';
+      }
       vim-rooter            # cd to the project root
 
       (plug {
@@ -105,11 +110,105 @@ in {
       vim-javascript
       vim-jsx-pretty
 
-      nvim-colorizer-lua
-      plenary-nvim
-      telescope-nvim
-      nvim-cmp
-      cmp-nvim-lua
+      # lua
+      {
+        plugin = nvim-lspconfig;
+        config = lua ''
+          local nvim_lsp = require 'lspconfig'
+
+          vim.cmd [[highlight! link LspDiagnosticsDefaultError Error]]
+          vim.cmd [[highlight! link LspDiagnosticsDefaultWarning Number]]
+
+          vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+            vim.lsp.diagnostic.on_publish_diagnostics, {
+              -- make warnings and errors appear over hints
+              severity_sort = true
+            }
+          )
+
+          local function on_attach(client)
+            setup_lsp_buf()
+            if vim.api.nvim_buf_get_option(0, 'filetype') == 'rust' then
+              vim.cmd([[autocmd BufEnter,BufWritePost <buffer> ]] ..
+                [[:lua require('lsp_extensions.inlay_hints').request ]] ..
+                [[{ prefix = ' :: ', enabled = {'ChainingHint', 'TypeHint', 'ParameterHint'}}]])
+            end
+          end
+
+          nvim_lsp.rust_analyzer.setup {
+            on_attach = on_attach,
+            settings = {
+              ['rust-analyzer'] = {
+                assist = {
+                  importMergeBehavior = 'last',
+                  importPrefix = 'by_self'
+                },
+                cargo = {
+                  loadOutDirsFromCheck = true
+                },
+                procMacro = {
+                  enable = true
+                }
+              }
+            }
+          }
+        '';
+      }
+      {
+        plugin = plug {
+          url = "https://github.com/slice/nvim-popterm.lua";
+          rev = "5bfa1213bb2eec11037faf8c43cfd79857b09d24";
+          sha256 = "sha256-dhB60e9NQwtfjJJoP0974gs/mWxFw4WpaKRbJBA6ycw=";
+        };
+        config = lua ''
+          local popterm = require('popterm')
+          popterm.config.window_height = 0.8
+          vim.cmd [[highlight! link PopTermLabel WildMenu]]
+        '';
+      }
+      {
+        plugin = nvim-colorizer-lua;
+        config = lua ''
+          vim.opt.termguicolors = true
+          require('colorizer').setup()
+        '';
+      }
+      {
+        plugin = telescope-nvim;
+        config = lua ''
+          local actions = require('telescope.actions')
+          local telescope = require('telescope')
+
+          telescope.setup {
+            defaults = {
+              prompt_prefix = '? ',
+              winblend = 10,
+              -- don't go into normal mode, just close
+              mappings = { i = { ["<esc>"] = actions.close } }
+            }
+          }
+
+          -- telescope.load_extension('trampoline')
+        '';
+      }
+
+      # completion
+      {
+        plugin = nvim-cmp;
+        config = lua ''
+          local cmp = require('cmp')
+          cmp.setup {
+            -- completion = {
+            --   completeopt = 'menu,menuone,noinsert'
+            -- },
+            sources = {
+              { name = 'buffer' },
+              { name = 'nvim_lsp' }
+            }
+          }
+          vim.cmd [[highlight! link CmpItemKindDefault SpecialKey]]
+        '';
+      }
       cmp-buffer
       cmp-nvim-lsp
     ];
