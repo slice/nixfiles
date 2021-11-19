@@ -56,6 +56,7 @@ in {
       vim-rhubarb    # github support for fugitive
       vim-repeat     # . more stuff
       vim-abolish    # better abbrevs, variant searching, and other stuff
+      vim-cool       # :nohlsearch automatically
 
       vim-sayonara   # close buffers more intuitively
       {              # indentation guides
@@ -67,6 +68,7 @@ in {
         '';
       }
       vim-rooter     # cd to the project root
+      neoformat      # for formatting stuff without lsp
 
       (plug {        # open file manager or terminal
         url = "https://github.com/justinmk/vim-gtfo";
