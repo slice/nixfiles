@@ -113,6 +113,7 @@ in {
       vim-jsx-pretty
 
       # lua
+      lsp_extensions-nvim
       {
         plugin = nvim-lspconfig;
         config = lua ''
