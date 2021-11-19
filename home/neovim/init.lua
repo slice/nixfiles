@@ -174,25 +174,6 @@ map('n', '<leader>lla', '<cmd>Telescope lsp_code_actions<CR>')
 map('n', '<leader>ve', "bufname('%') == '' ? '<cmd>edit $MYVIMRC<CR>' : '<cmd>vsplit $MYVIMRC<CR>'", {expr = true})
 map('n', '<leader>vs', '<cmd>luafile $MYVIMRC<CR>')
 
--- packer; formerly plug
-map('n', '<leader>pi', '<cmd>PackerInstall<CR>')
-map('n', '<leader>pu', '<cmd>PackerUpdate<CR>')
-map('n', '<leader>ps', '<cmd>PackerSync<CR>')
-map('n', '<leader>pc', '<cmd>PackerCompile<CR>')
-
--- compe
--- function _G.compe()
---   if vim.fn.pumvisible() == 1 then
---     -- if the popup menu is already visible, pass the key through
---     return vim.api.nvim_replace_termcodes("<c-n>", true, true, true)
---   else
---     -- invoke compe
---     return vim.fn['compe#complete']()
---   end
--- end
-
--- map('i', '<c-n>', 'v:lua.compe()', {expr=true})
-
 -- neoformat
 map('n', '<leader>nf', '<cmd>Neoformat<CR>')
 
@@ -200,10 +181,6 @@ map('n', '<leader>nf', '<cmd>Neoformat<CR>')
 -- NOTE: need noremap=false because of <Plug>
 map('x', 'ga', '<Plug>(EasyAlign)', {noremap = false})
 map('n', 'ga', '<Plug>(EasyAlign)', {noremap = false})
-
--- use <leader>l to hide highlights from searching
--- TODO: find a good plugin to do this automatically?
-map('n', '<leader>m', '<cmd>nohlsearch<CR>')
 
 -- Q enters ex mode by default, so let's bind it to gq instead
 -- (as suggested by :h gq)
