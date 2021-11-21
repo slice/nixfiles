@@ -18,7 +18,7 @@ let
       neovim-remote
 
       # grab bag of useful programs
-      yt-dlp croc jq ripgrep rlwrap curl aria p7zip httpie htop
+      yt-dlp croc jq ripgrep rlwrap curl aria p7zip httpie htop tree file
     ];
 
     # language runtimes, compilers, etc.
