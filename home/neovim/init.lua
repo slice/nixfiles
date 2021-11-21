@@ -92,7 +92,7 @@ g.moonflyItalics = true
 
 -- }}}
 
-cmd('colorscheme zenburn')
+cmd('colorscheme bubblegum-256-dark')
 
 -- maps {{{
 
@@ -243,6 +243,8 @@ aug('colorschemes', {
     .. ' highlight NormalFloat guifg=#dddddd guibg=#222222'
     .. ' | highlight Comment guifg=#999999 gui=italic',
   'ColorScheme zenburn'
+    .. ' highlight! link TelescopeMatching IncSearch',
+  'ColorScheme bubblegum-256-dark'
     .. ' highlight! link TelescopeMatching IncSearch',
   -- 'ColorScheme dogrun'
   --   .. ' highlight IndentBlanklineIndent1 guibg=#303345'
