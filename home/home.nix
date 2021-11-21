@@ -13,8 +13,8 @@ let
   packagesets = with pkgs; rec {
     # packages that i need on every machine
     base = [
-      # \(^_^)/
-      # neovim (managed by home-manager)
+      # \(^_^)/ neovim
+      # ... (neovim pkg is managed by h-m) ...
       neovim-remote
 
       # grab bag of useful programs
