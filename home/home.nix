@@ -20,6 +20,9 @@ let
       # grab bag of useful programs
       yt-dlp croc jq ripgrep rlwrap curl aria p7zip httpie htop tree file wget
       fd tmux
+
+      # nix tooling
+      nixfmt nix-diff
     ];
 
     # language runtimes, compilers, etc.
@@ -33,7 +36,6 @@ let
 
     # tools to help with programming
     tooling = [
-      nixfmt
       nodePackages.npm
       nodePackages.prettier
       python39Packages.ipython
