@@ -23,9 +23,11 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = { self, darwin, nixpkgs, home-manager, fenix } @ inputs:
+  outputs = { self, darwin, nixpkgs, home-manager, fenix, ... } @ inputs:
     {
       homeManagerConfigurations.skip = import ./home/home.nix;
       darwinConfigurations.dewey = (import ./hosts/dewey.nix) inputs;

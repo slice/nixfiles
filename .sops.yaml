@@ -1,0 +1,9 @@
+keys:
+  - &skip age1mqgwplv4vt8f38mn027myk9flxw5jqr2c0en89mqya4nswgcud0qg0p60k
+  - &mallard age1gw42xw4d5d5htg3zxe0xmy9cgzuuwk6qyytkdg0hlrm06zwp99pqfx2c9u
+creation_rules:
+  - path_regex: secrets.yaml
+    key_groups:
+      - age:
+        - *skip
+        - *mallard

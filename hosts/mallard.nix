@@ -1,10 +1,19 @@
 # LENOVO G50-80
 
-{ self, bloodbath, nixpkgs, home-manager, ... }:
+{ self, bloodbath, nixpkgs, home-manager, sops-nix, ... }:
 
 let
   config = ({ config, pkgs, modulesPath, ... }: {
     networking.hostName = "mallard";
+    networking.wireless = {
+      enable = true;
+      networks = {
+        "HOME-87FD-5".pskRaw = "@HOME_PSK@";
+        "LisaNet".pskRaw = "@LISANET_PSK@";
+      };
+      environmentFile = config.sops.secrets.networks-environment-file.path;
+      interfaces = [ "wlp3s0" ];
+    };
     networking.firewall = {
       enable = true;
       allowedTCPPorts = [ 80 ];
@@ -42,9 +51,10 @@ let
     hardware.opengl = {
       enable = true;
       extraPackages = with pkgs; [
-        vaapiIntel # i3-4030U, HD Graphics 4400
-                   # Intell(R) Haswell Mobile
-                   # i965
+        # gpu: i3-4030U, HD Graphics 4400
+        # Intel(R) Haswell Mobile
+        vaapiIntel
+        # i965
         vaapiVdpau
         libvdpau-va-gl
       ];
@@ -54,7 +64,7 @@ let
     sound.enable = false;
     hardware.pulseaudio.enable = false;
 
-    user.groups.dev = {};
+    users.groups.dev = { };
     users.mutableUsers = false;
     users.users.jellyfin.extraGroups = [ "render" ];
     users.users = {
@@ -63,6 +73,7 @@ let
         extraGroups = [ "dev" "wheel" ];
         isNormalUser = true;
         shell = pkgs.fish;
+        passwordFile = config.sops.secrets.mallard-users-slice-password.path;
         openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKPUkgksy3a+jCBPKPUoldnJtOtOUZ7cAeB4/3cEUPs"
         ];
@@ -124,45 +135,68 @@ let
     };
 
     system.stateVersion = "21.05";
+
+    services.bloodbath = {
+      enable = true;
+      timer = "*:0/3"; # every 3 minutes
+      configFile = config.sops.secrets.bloodbath-config.path;
+    };
+    systemd.services.bloodbath.serviceConfig.SupplementaryGroups =
+      [ config.users.groups.keys.name ];
+
+    sops = {
+      defaultSopsFile = ../secrets.yaml;
+
+      secrets = {
+        mallard-users-slice-password = {
+          neededForUsers = true;
+        };
+        networks-environment-file = { };
+        bloodbath-config = {
+          mode = "0440";
+          group = config.users.groups.keys.name;
+        };
+      };
+    };
   });
 
   hardwareConfig = ({ config, lib, pkgs, modulesPath, ... }: {
     imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-    boot.initrd.availableKernelModules = [
-      "xhci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" "rtsx_usb_sdmmc"
-    ];
+    boot.initrd.availableKernelModules =
+      [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" "rtsx_usb_sdmmc" ];
     boot.initrd.kernelModules = [ ];
     boot.kernelModules = [ "kvm-intel" ];
     boot.extraModulePackages = [ ];
 
-    fileSystems."/" =
-      { device = "/dev/disk/by-uuid/301d45d6-b998-409a-84c0-88b0d4894232";
-        fsType = "ext4";
-      };
+    fileSystems."/" = {
+      device = "/dev/disk/by-uuid/301d45d6-b998-409a-84c0-88b0d4894232";
+      fsType = "ext4";
+    };
 
-    fileSystems."/boot" =
-      { device = "/dev/disk/by-uuid/A300-D5B5";
-        fsType = "vfat";
-      };
+    fileSystems."/boot" = {
+      device = "/dev/disk/by-uuid/A300-D5B5";
+      fsType = "vfat";
+    };
 
     swapDevices =
-      [ { device = "/dev/disk/by-uuid/d4302950-e71a-4ab6-9210-3f581c7a8aa7"; }
-      ];
+      [{ device = "/dev/disk/by-uuid/d4302950-e71a-4ab6-9210-3f581c7a8aa7"; }];
   });
-in
-nixpkgs.lib.nixosSystem {
+in nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
   modules = [
     bloodbath.nixosModule
-    (import ../modules/nix.nix) { inherit nixpkgs; }
-    home-manager.nixosModules.home-manager {
+    ((import ../modules/nix.nix) { inherit nixpkgs; })
+    home-manager.nixosModules.home-manager
+    {
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
         users.slice = self.homeManagerConfigurations.skip { server = true; };
       };
     }
-    hardwareConfig config
+    sops-nix.nixosModules.sops
+    hardwareConfig
+    config
   ];
 }
