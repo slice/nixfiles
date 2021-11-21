@@ -1,4 +1,4 @@
-{ server ? false }:
+{ username ? "slice", server ? false }:
 
 { config, pkgs, ... }:
 
@@ -54,6 +54,8 @@ let
 
     everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
   };
+
+  homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
 in
 {
   imports = [
@@ -65,15 +67,13 @@ in
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  home = rec {
-    username = "slice";
-    homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
+  home = {
+    inherit username;
+    homeDirectory = pkgs.lib.mkForce homeDirectory;
 
     packages = if server then packagesets.base else packagesets.everything;
 
-    sessionVariables = {
-      EDITOR = textEditor;
-    } // darwinSessionVariables;
+    sessionVariables = { EDITOR = textEditor; } // darwinSessionVariables;
   };
 
   # This value determines the Home Manager release that your

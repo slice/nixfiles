@@ -1,5 +1,27 @@
 {
   "nodes": {
+    "bloodbath": {
+      "inputs": {
+        "fenix": "fenix",
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1637491155,
+        "narHash": "sha256-Qwx054iv30obi0tvPGkhZZTSqts1V0QYtgbvpwuS0FU=",
+        "owner": "slice",
+        "repo": "bloodbath",
+        "rev": "cc7f62be8eb2a16f7c410858cb1b378a52226521",
+        "type": "github"
+      },
+      "original": {
+        "owner": "slice",
+        "repo": "bloodbath",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -24,9 +46,31 @@
     "fenix": {
       "inputs": {
         "nixpkgs": [
+          "bloodbath",
           "nixpkgs"
         ],
         "rust-analyzer-src": "rust-analyzer-src"
+      },
+      "locked": {
+        "lastModified": 1637043732,
+        "narHash": "sha256-pp54U7DDb93hCy6RoWo9YYVmXvjU+MUioG+VsphxuGo=",
+        "owner": "nix-community",
+        "repo": "fenix",
+        "rev": "e99df422aa050980ba6f2c1d3cfe80b360d3f406",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "fenix",
+        "type": "github"
+      }
+    },
+    "fenix_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-analyzer-src": "rust-analyzer-src_2"
       },
       "locked": {
         "lastModified": 1637216649,
@@ -39,6 +83,21 @@
       "original": {
         "owner": "nix-community",
         "repo": "fenix",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1637014545,
+        "narHash": "sha256-26IZAc5yzlD9FlDT54io1oqG/bBoyka+FJk5guaX4x4=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "bba5dcc8e0b20ab664967ad83d24d64cb64ec4f4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
         "type": "github"
       }
     },
@@ -78,15 +137,50 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1636228094,
+        "narHash": "sha256-CpOcIwHAn3yS0PeVmUICFrJ+gde2PiZp3XsnDP3LE9w=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "2606cb0fc24e65f489b7d9fdcbf219756e45db35",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
+        "bloodbath": "bloodbath",
         "darwin": "darwin",
-        "fenix": "fenix",
+        "fenix": "fenix_2",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "sops-nix": "sops-nix"
       }
     },
     "rust-analyzer-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1636903618,
+        "narHash": "sha256-pdnQTMRLm9f4pgGZM7ho4A7QbhR+1howDepq0NqifcE=",
+        "owner": "rust-analyzer",
+        "repo": "rust-analyzer",
+        "rev": "73668334f05c3446b04116ccc3156240d2d8ab19",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rust-analyzer",
+        "ref": "nightly",
+        "repo": "rust-analyzer",
+        "type": "github"
+      }
+    },
+    "rust-analyzer-src_2": {
       "flake": false,
       "locked": {
         "lastModified": 1637179881,
@@ -100,6 +194,24 @@
         "owner": "rust-analyzer",
         "ref": "nightly",
         "repo": "rust-analyzer",
+        "type": "github"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1637050424,
+        "narHash": "sha256-8IaY0/Y5g3jJiQzPN0PflKFcFEE1C29DZZ0dF1NIJ6s=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "3c53d012ac77d4bd8428f9c847709e287c897ad9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
         "type": "github"
       }
     }
