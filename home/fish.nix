@@ -49,6 +49,16 @@ in
       gb = "git branch";
       gcl = "git clone";
       grs = "git restore";
+    } // pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
+      sc = "sudo systemctl";
+      scs = "sudo systemctl status";
+      sce = "sudo systemctl enable";
+      scen = "sudo systemctl enable --now";
+      scd = "sudo systemctl disable";
+      scdn = "sudo systemctl disable --now"; # oh no
+      scu = "systemctl --user";
+      jc = "sudo journalctl";
+      jcu = "sudo journalctl -u";
     };
 
     plugins = [
