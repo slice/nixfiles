@@ -17,7 +17,8 @@
 
     extraConfig = {
       commit.verbose = true;
-      format.pretty = "format:%C(yellow)%h%Creset %s %C(bold)(%an, %cr)%C(green)%d%Creset";
+      format.pretty =
+        "format:%C(yellow)%h%Creset %s %C(bold)(%an, %cr)%C(green)%d%Creset";
       push.default = "current";
       core.ignorecase = false;
       color.ui = true;

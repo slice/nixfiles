@@ -27,10 +27,9 @@
     sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = { self, darwin, nixpkgs, home-manager, fenix, ... } @ inputs:
-    {
-      homeManagerConfigurations.skip = import ./home/home.nix;
-      darwinConfigurations.dewey = (import ./hosts/dewey.nix) inputs;
-      nixosConfigurations.mallard = (import ./hosts/mallard.nix) inputs;
-    };
+  outputs = { self, darwin, nixpkgs, home-manager, fenix, ... }@inputs: {
+    homeManagerConfigurations.skip = import ./home/home.nix;
+    darwinConfigurations.dewey = (import ./hosts/dewey.nix) inputs;
+    nixosConfigurations.mallard = (import ./hosts/mallard.nix) inputs;
+  };
 }

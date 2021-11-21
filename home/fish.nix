@@ -1,9 +1,7 @@
 { config, pkgs, ... }:
 
-let
-  textEditor = config.home.sessionVariables.EDITOR;
-in
-{
+let textEditor = config.home.sessionVariables.EDITOR;
+in {
   programs.fish = {
     enable = true;
 
@@ -61,17 +59,15 @@ in
       jcu = "sudo journalctl -u";
     };
 
-    plugins = [
-      {
-        name = "z";
-        src = pkgs.fetchFromGitHub {
-          owner = "jethrokuan";
-          repo = "z";
-          rev = "45a9ff6d0932b0e9835cbeb60b9794ba706eef10";
-          sha256 = "1kjyl4gx26q8175wcizvsm0jwhppd00rixdcr1p7gifw6s308sd5";
-        };
-      }
-    ];
+    plugins = [{
+      name = "z";
+      src = pkgs.fetchFromGitHub {
+        owner = "jethrokuan";
+        repo = "z";
+        rev = "45a9ff6d0932b0e9835cbeb60b9794ba706eef10";
+        sha256 = "1kjyl4gx26q8175wcizvsm0jwhppd00rixdcr1p7gifw6s308sd5";
+      };
+    }];
 
     interactiveShellInit = ''
       if test -n "$maintain_ssh_agent"

@@ -148,9 +148,7 @@ let
       defaultSopsFile = ../secrets.yaml;
 
       secrets = {
-        mallard-users-slice-password = {
-          neededForUsers = true;
-        };
+        mallard-users-slice-password = { neededForUsers = true; };
         networks-environment-file = { };
         bloodbath-config = {
           mode = "0440";

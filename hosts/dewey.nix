@@ -11,7 +11,7 @@ darwin.lib.darwinSystem {
         description = "Skip Rousseau";
       };
 
-      home-manager.users.slice = (import ../home/home.nix) {};
+      home-manager.users.slice = (import ../home/home.nix) { };
       services.nix-daemon.enable = true;
 
       # generate system-wide run commands for shells to setup the nix environment.

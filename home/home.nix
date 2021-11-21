@@ -26,45 +26,25 @@ let
     ];
 
     # language runtimes, compilers, etc.
-    languages = [
-      nodejs-slim
-      python39
-      jdk11
-      scala
-      ammonite
-    ];
+    languages = [ nodejs-slim python39 jdk11 scala ammonite ];
 
     # tools to help with programming
-    tooling = [
-      nodePackages.npm
-      nodePackages.prettier
-      python39Packages.ipython
-    ];
+    tooling =
+      [ nodePackages.npm nodePackages.prettier python39Packages.ipython ];
 
     # video/audio
-    multimedia = [
-      ffmpeg
-      sox
-      imagemagick
-    ];
+    multimedia = [ ffmpeg sox imagemagick ];
 
     # miscellaneous utilities
-    utilities = [
-      graphviz
-      smartmontools
-    ];
+    utilities = [ graphviz smartmontools ];
 
     everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
   };
 
-  homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
-in
-{
-  imports = [
-    ./fish.nix
-    ./neovim
-    ./git.nix
-  ];
+  homeDirectory =
+    if isDarwin then "/Users/${username}" else "/home/${username}";
+in {
+  imports = [ ./fish.nix ./neovim ./git.nix ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
