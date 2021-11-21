@@ -22,6 +22,7 @@ darwin.lib.darwinSystem {
 
       system.stateVersion = 4;
     })
+    (import ../modules/hh3.nix { })
     home-manager.darwinModule
     (import ../modules/nix.nix { inherit nixpkgs; })
     (import ../modules/fenix.nix { inherit fenix; })
