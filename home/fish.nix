@@ -185,10 +185,6 @@ in {
           (set_color normal)
       '';
 
-      unquarantine = ''
-        xattr -dr com.apple.quarantine $argv
-      '';
-
       fish_right_prompt = ''
         # set this so we can compare the value pre-command_duration (which modifies
         # it)
@@ -205,6 +201,23 @@ in {
           # printf '%s%s%s' (set_color -o red) "$face" (set_color normal)
           printf ' %s:(%s' (set_color -o red) (set_color normal)
         end
+      '';
+    } // pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
+      unquarantine = ''
+        xattr -dr com.apple.quarantine $argv
+      '';
+
+      nd-switch = ''
+        set hostname (string split -f1 '.' (hostname))
+        set outlink /tmp/nix-darwin-result
+        set flake_src ~/src/prj/nixfiles
+
+        nix build $flake_src#darwinConfigurations.$hostname.system \
+          --verbose \
+          -o $outlink \
+          $argv
+        and $outlink/sw/bin/darwin-rebuild switch --flake $flake_src
+        and unlink $outlink
       '';
     };
   };
