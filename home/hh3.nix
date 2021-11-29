@@ -26,6 +26,8 @@
                 "805978396974514210" = "805978396974514209";
                 "720021430456156191" = "720021452526714911";
                 "720021441831239730" = "720021452526714911";
+                "881009103818874911" = "881008163879522364";
+                "149998215457013760" = "882132747005624351";
               };
             };
           };
@@ -82,7 +84,7 @@
           "imgtitle" "oldQuote" "3y3" "typingChannel" "unravelMessage"
           "callIdling" "fixmentions" "imageUrls" "noconmsg" "timeInCall"
           "greentext" "panic" "hateno" "channelleak" "activitiesEverywhere"
-          "noJoinMessageWave"
+          "noJoinMessageWave" "messageLinkPreview"
         ];
       };
     };
