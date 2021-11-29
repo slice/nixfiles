@@ -4,7 +4,7 @@
   programs.hh3 = {
     enable = true;
     config = {
-      stable = {
+      canary = {
         enable = true;
 
         # my beloved
