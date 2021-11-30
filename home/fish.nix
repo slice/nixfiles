@@ -209,15 +209,11 @@ in {
 
       nd-switch = ''
         set hostname_sans_local (string split -f1 '.' (hostname))
-        set outlink /tmp/nix-darwin-result
         set flake_src ~/src/prj/nixfiles
 
-        nix build $flake_src#darwinConfigurations.$hostname_sans_local.system \
-          --verbose \
-          -o $outlink \
-          $argv
-        and $outlink/sw/bin/darwin-rebuild switch --flake $flake_src
-        and unlink $outlink
+        nix build $flake_src#darwinConfigurations.$hostname_sans_local.system --verbose $argv
+        and ./result/sw/bin/darwin-rebuild switch --flake $flake_src
+        and unlink result
       '';
     };
   };
