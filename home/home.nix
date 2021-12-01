@@ -44,7 +44,7 @@ let
   homeDirectory =
     if isDarwin then "/Users/${username}" else "/home/${username}";
 in {
-  imports = [ ./fish.nix ./neovim ./git.nix ./hh3.nix ];
+  imports = [ ./fish.nix ./neovim ./git.nix ] ++ (if !server then [ ./hh3.nix ] else []);
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
