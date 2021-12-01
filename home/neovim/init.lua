@@ -92,8 +92,6 @@ g.moonflyItalics = true
 
 -- }}}
 
-cmd('colorscheme bubblegum-256-dark')
-
 -- maps {{{
 
 g.mapleader = ' '
@@ -157,10 +155,10 @@ map('n', '<leader>tv', '<cmd>vsplit +terminal<CR>')
 
 -- telescope
 map('n', '<leader>o', '<cmd>Telescope find_files<CR>')
-map('n', '<leader>i', '<cmd>Telescope oldfiles<CR>')
+map('n', '<leader>i', '<cmd>Telescope frecency<CR>')
 map('n', '<leader>b', '<cmd>Telescope buffers<CR>')
 
-map('n', '<leader>lp', "<cmd>lua require'telescope'.extensions.trampoline.trampoline.project{}<CR>")
+map('n', '<leader>lp', '<cmd>lua require"telescope".extensions.trampoline.trampoline.project{}<CR>')
 map('n', '<leader>lt', '<cmd>Telescope builtin<CR>')
 map('n', '<leader>lg', '<cmd>Telescope live_grep<CR>')
 map('n', '<leader>lb', '<cmd>Telescope file_browser hidden=true<CR>')
@@ -171,8 +169,9 @@ map('n', '<leader>llr', '<cmd>Telescope lsp_references<CR>')
 map('n', '<leader>lla', '<cmd>Telescope lsp_code_actions<CR>')
 
 -- vimrc; https://learnvimscriptthehardway.stevelosh.com/chapters/08.html
-map('n', '<leader>ve', "bufname('%') == '' ? '<cmd>edit $MYVIMRC<CR>' : '<cmd>vsplit $MYVIMRC<CR>'", {expr = true})
-map('n', '<leader>vs', '<cmd>luafile $MYVIMRC<CR>')
+-- map('n', '<leader>ve', "bufname('%') == '' ? '<cmd>edit $MYVIMRC<CR>' : '<cmd>vsplit $MYVIMRC<CR>'", {expr = true})
+-- map('n', '<leader>vs', '<cmd>luafile $MYVIMRC<CR>')
+map('n', '<leader>ve', '<cmd>edit ~/src/prj/nixfiles/home/neovim<CR>')
 
 -- neoformat
 map('n', '<leader>nf', '<cmd>Neoformat<CR>')
@@ -216,6 +215,8 @@ end
 map('v', 'fp', ":'<,'>diffput<CR>")
 map('v', 'fo', ":'<,'>diffget<CR>")
 
+-- }}}
+
 -- autocmds {{{
 
 -- from: https://github.com/wbthomason/dotfiles/blob/5117f6d76c64baa661368e85a25ca463ff858a05/neovim/.config/nvim/lua/config/utils.lua
@@ -237,7 +238,9 @@ aug('colorschemes', {
     .. ' highlight Todo gui=bold'
     .. ' | highlight Folded gui=reverse'
     .. ' | highlight! link MatchParen LineNr'
-    .. ' | highlight! IndentBlanklineChar guifg=#3d3d3d',
+    .. ' | highlight! IndentBlanklineChar guifg=#3d3d3d'
+    .. ' | highlight! link DiagnosticError Error'
+    .. ' | highlight! link DiagnosticWarn Constant',
   -- style floating windows legible for popterms; make comments italic
   'ColorScheme landscape'
     .. ' highlight NormalFloat guifg=#dddddd guibg=#222222'
@@ -260,6 +263,11 @@ aug('colorschemes', {
 aug('metals', {
   'FileType scala,sbt lua require("metals").initialize_or_attach(metals_config)'
     .. '; setup_lsp_buf()'
+})
+
+aug('hacks', {
+  -- <c-x> opens splits in telescope, so we need this to be unmapped
+  'VimEnter * silent! iunmap <c-x><c-a>'
 })
 
 aug('completion', {
@@ -358,9 +366,4 @@ endfunc
 
 -- }}}
 
--- highlights {{{
-
--- cmd [[highlight! link Sneak IncSearch]]
--- cmd [[highlight! link SneakLabel IncSearch]]
-
--- }}}
+cmd('colorscheme bubblegum-256-dark')

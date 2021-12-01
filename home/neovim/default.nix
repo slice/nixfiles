@@ -123,8 +123,14 @@ in {
       vim-javascript
       vim-jsx-pretty
 
-      # lua
+      # automatically close brackets and other things
+      lexima-vim
+
+      # various extensions (utilities and callbacks) for lsp. provides inlay
+      # hints, which we use!
       lsp_extensions-nvim
+
+      # language server protocol (lsp) configurations
       {
         plugin = nvim-lspconfig;
         config = lua ''
@@ -149,6 +155,10 @@ in {
             end
           end
 
+          nvim_lsp.tsserver.setup {
+            on_attach = on_attach
+          }
+
           nvim_lsp.rust_analyzer.setup {
             on_attach = on_attach,
             settings = {
@@ -168,6 +178,9 @@ in {
           }
         '';
       }
+
+      # quickly pop open terminals (forked from norcalli, tweaked for my own
+      # purposes)
       {
         plugin = plug {
           url = "https://github.com/slice/nvim-popterm.lua";
@@ -180,6 +193,8 @@ in {
           vim.cmd [[highlight! link PopTermLabel WildMenu]]
         '';
       }
+
+      # a really really really really fast colorizer
       {
         plugin = nvim-colorizer-lua;
         config = lua ''
@@ -187,6 +202,8 @@ in {
           require('colorizer').setup()
         '';
       }
+
+      # find, filter, preview, pick; extensible fuzzy finder over lists.
       {
         plugin = telescope-nvim;
         config = lua ''
@@ -202,9 +219,24 @@ in {
             }
           }
 
-          -- telescope.load_extension('trampoline')
+          telescope.load_extension('fzf')
+          telescope.load_extension('frecency')
+          telescope.load_extension('trampoline')
         '';
       }
+
+      # faster sorting written in C
+      telescope-fzf-native-nvim
+
+      # frecency (recency + frequency) based navigation
+      telescope-frecency-nvim
+
+      # my bespoke project navigator <3
+      (plug {
+        url = "https://github.com/slice/telescope-trampoline.nvim";
+        rev = "225f7259afd33d3e5f35e78581c9e80fa3515640";
+        sha256 = "sha256-R9uMZ3shADhlT68+DcqMpKHifE8MepphoPd3lMTBiGg=";
+      })
 
       # completion
       {
@@ -223,6 +255,8 @@ in {
           vim.cmd [[highlight! link CmpItemKindDefault SpecialKey]]
         '';
       }
+
+      # completion sources for nvim-cmp
       cmp-buffer
       cmp-nvim-lsp
     ];
