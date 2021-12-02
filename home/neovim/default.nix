@@ -207,15 +207,15 @@ in {
       {
         plugin = telescope-nvim;
         config = lua ''
-          local actions = require('telescope.actions')
           local telescope = require('telescope')
 
           telescope.setup {
             defaults = {
               prompt_prefix = '? ',
               winblend = 10,
+              color_devicons = false,
               -- don't go into normal mode, just close
-              mappings = { i = { ["<esc>"] = actions.close } }
+              mappings = { i = { ["<esc>"] = 'close' } }
             }
           }
 
