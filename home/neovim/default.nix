@@ -124,7 +124,13 @@ in {
       vim-jsx-pretty
 
       # automatically close brackets and other things
-      lexima-vim
+      {
+        plugin = lexima-vim;
+        config = lua ''
+          -- don't bind <esc>, which messes with telescope prompts
+          vim.g.lexima_map_escape = ""
+        '';
+      }
 
       # various extensions (utilities and callbacks) for lsp. provides inlay
       # hints, which we use!
