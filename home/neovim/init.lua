@@ -155,7 +155,7 @@ map('n', '<leader>tv', '<cmd>vsplit +terminal<CR>')
 
 -- telescope
 map('n', '<leader>o', '<cmd>Telescope find_files<CR>')
-map('n', '<leader>i', '<cmd>Telescope frecency<CR>')
+map('n', '<leader>i', '<cmd>Telescope oldfiles<CR>')
 map('n', '<leader>b', '<cmd>Telescope buffers<CR>')
 
 map('n', '<leader>lp', '<cmd>lua require"telescope".extensions.trampoline.trampoline.project{}<CR>')
