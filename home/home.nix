@@ -1,36 +1,51 @@
-{ username ? "slice", server ? false }:
-
-{ config, pkgs, ... }:
+{ config, pkgs, specialArgs, ... }:
 
 let
+  server = specialArgs.server;
+
   textEditor = "nvim"; # pretty good if you ask me
-  isDarwin = pkgs.stdenv.isDarwin;
-  darwinSessionVariables = pkgs.lib.optionalAttrs isDarwin {
-    # when using git, use the system ssh so we can get keychain integration
-    GIT_SSH = "/usr/bin/ssh";
-  };
 
   packagesets = with pkgs; rec {
     # packages that i need on every machine
     base = [
-      # \(^_^)/ neovim
-      # ... (neovim pkg is managed by h-m) ...
-      neovim-remote
-
       # grab bag of useful programs
-      yt-dlp croc jq ripgrep rlwrap curl aria p7zip httpie htop tree file wget
-      fd tmux
-
-      # nix tooling
-      nixfmt nix-diff
+      yt-dlp
+      croc
+      jq
+      ripgrep
+      rlwrap
+      curl
+      aria
+      p7zip
+      httpie
+      htop
+      tree
+      file
+      wget
+      fd
+      tmux
     ];
 
     # language runtimes, compilers, etc.
-    languages = [ nodejs-slim python39 jdk11 scala ammonite ];
+    languages = [
+      nodejs-slim
+      python39
+      # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
+      #   cabal-install lens wreq aeson lens-aeson bytestring text tagsoup
+      #   http-client time haskell-language-server
+      # ]))
+    ];
 
     # tools to help with programming
-    tooling =
-      [ nodePackages.npm nodePackages.prettier python39Packages.ipython ];
+    tooling = [
+      nodePackages.npm
+      nodePackages.prettier
+      python39Packages.ipython
+      shellcheck
+      stylua
+      nixfmt
+      nix-diff
+    ];
 
     # video/audio
     multimedia = [ ffmpeg sox imagemagick ];
@@ -40,22 +55,22 @@ let
 
     everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
   };
-
-  homeDirectory =
-    if isDarwin then "/Users/${username}" else "/home/${username}";
 in {
-  imports = [ ./fish.nix ./neovim ./git.nix ] ++ (if !server then [ ./hh3.nix ] else []);
+  imports = [ ./neovim ./fish.nix ./git.nix ]
+    ++ (if !server then [ ./hh3.nix ] else [ ]);
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
   home = {
-    inherit username;
-    homeDirectory = pkgs.lib.mkForce homeDirectory;
-
     packages = if server then packagesets.base else packagesets.everything;
 
-    sessionVariables = { EDITOR = textEditor; } // darwinSessionVariables;
+    sessionVariables = {
+      EDITOR = textEditor;
+    } // (pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
+      # when using git, use the system ssh so we can get keychain integration
+      GIT_SSH = "/usr/bin/ssh";
+    });
   };
 
   # This value determines the Home Manager release that your

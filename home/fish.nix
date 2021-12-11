@@ -215,6 +215,10 @@ in {
         and ./result/sw/bin/darwin-rebuild switch --flake $flake_src
         and unlink result
       '';
+
+      hm-switch = ''
+        home-manager switch --flake ~/src/prj/nixfiles
+      '';
     };
   };
 }

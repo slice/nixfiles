@@ -28,8 +28,20 @@
   };
 
   outputs = { self, darwin, nixpkgs, home-manager, fenix, ... }@inputs: {
-    homeManagerConfigurations.skip = import ./home/home.nix;
+    packages = {
+      aarch64-darwin.homeConfigurations.slice =
+        home-manager.lib.homeManagerConfiguration {
+          system = "aarch64-darwin";
+          username = "slice";
+          homeDirectory = "/Users/slice";
+          configuration.imports = [ ./home/home.nix ];
+          extraModules = [ ./modules/hh3.nix ];
+          extraSpecialArgs = { server = false; };
+          # needed to avoid a conflict; see https://github.com/nix-community/home-manager/issues/2073
+          stateVersion = "21.05";
+        };
+    };
+
     darwinConfigurations.dewey = (import ./hosts/dewey.nix) inputs;
-    nixosConfigurations.mallard = (import ./hosts/mallard.nix) inputs;
   };
 }
