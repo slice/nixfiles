@@ -14,17 +14,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    bloodbath = {
-      url = "github:slice/bloodbath";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     fenix = {
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs = { self, darwin, nixpkgs, home-manager, fenix, ... }@inputs: {
