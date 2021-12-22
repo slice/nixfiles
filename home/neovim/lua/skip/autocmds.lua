@@ -23,7 +23,8 @@ aug('colorschemes', {
     .. ' | highlight! link Sneak DiffChange'
     .. ' | highlight! link DiagnosticError Special'
     .. ' | highlight! link DiagnosticWarn Number'
-    .. ' | highlight! link DiagnosticHint Keyword',
+    .. ' | highlight! link DiagnosticHint Keyword'
+    .. ' | highlight! Comment gui=italic',
   -- style floating windows legible for popterms; make comments italic
   'ColorScheme landscape' .. ' highlight NormalFloat guifg=#dddddd guibg=#222222' .. ' | highlight Comment guifg=#999999 gui=italic',
   'ColorScheme zenburn' .. ' highlight! link TelescopeMatching IncSearch',

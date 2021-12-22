@@ -28,7 +28,7 @@ let
 
     # language runtimes, compilers, etc.
     languages = [
-      nodejs-slim
+      nodejs-slim-16_x
       python39
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
       #   cabal-install lens wreq aeson lens-aeson bytestring text tagsoup
