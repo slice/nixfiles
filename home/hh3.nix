@@ -46,24 +46,14 @@
           css = {
             enabled = true;
             options.cssPath = pkgs.writeText "discord.css" ''
-              /* ::placeholder, */
-              /* body, */
-              /* button, */
-              /* input, */
-              /* select, */
-              /* textarea { */
-              /*   font-family: lato !important; */
-              /* } */
-
               code,
               [class^="markup-"] code,
-              [class^="codeBlockText-"],
-              [class^="codeLine"],
               [class^="after_inlineCode-"],
               [class^="inlineCode-"],
-              [class^="before_inlineCode-"] {
-                font-family: "SF Mono" !important;
-                /* font-family: PragmataPro !important; */
+              [class^="before_inlineCode-"],
+              [class^="codeBlockText-"],
+              [class^="codeLine-"] {
+                font-family: PragmataPro !important;
               }
             '';
           };
@@ -84,7 +74,7 @@
           "imgtitle" "oldQuote" "3y3" "typingChannel" "unravelMessage"
           "callIdling" "fixmentions" "imageUrls" "noconmsg" "timeInCall"
           "greentext" "panic" "hateno" "channelleak" "activitiesEverywhere"
-          "noJoinMessageWave" "messageLinkPreview"
+          "noJoinMessageWave" "messageLinkPreview" "ruby"
         ];
       };
     };
