@@ -39,12 +39,12 @@ in darwin.lib.darwinSystem {
 
       environment.systemPackages = [
         home-manager.packages.aarch64-darwin.home-manager
-        (patchedNixpkgs.haskell.packages.ghc8107.ghcWithPackages
-          (haskellPackages:
-            with haskellPackages; [
-              Cabal_3_6_2_0
-              pretty-simple
-            ]))
+        # (patchedNixpkgs.haskell.packages.ghc8107.ghcWithPackages
+        #   (haskellPackages:
+        #     with haskellPackages; [
+        #       Cabal_3_6_2_0
+        #       pretty-simple
+        # ]))
       ];
 
       # generate system-wide run commands for shells to setup the nix environment.
