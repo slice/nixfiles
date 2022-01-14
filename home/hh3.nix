@@ -74,7 +74,7 @@
           "imgtitle" "oldQuote" "3y3" "typingChannel" "unravelMessage"
           "callIdling" "fixmentions" "imageUrls" "noconmsg" "timeInCall"
           "greentext" "panic" "hateno" "channelleak" "activitiesEverywhere"
-          "noJoinMessageWave" "messageLinkPreview" "ruby"
+          "noJoinMessageWave" "messageLinkPreview" "ruby" "tardid"
         ];
       };
     };
