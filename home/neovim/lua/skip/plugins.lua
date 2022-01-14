@@ -117,6 +117,13 @@ require('packer').startup(function()
   })
 
   use({
+    'lewis6991/spellsitter.nvim',
+    config = function()
+      require('spellsitter').setup()
+    end,
+  })
+
+  use({
     'romgrk/nvim-treesitter-context',
     config = function()
       require('treesitter-context').setup({
