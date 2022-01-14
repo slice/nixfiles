@@ -41,7 +41,7 @@ lspconfig.rust_analyzer.setup({
   },
 })
 
-nls.config({
+nls.setup({
   sources = {
     nls.builtins.formatting.prettier,
     nls.builtins.formatting.nixfmt,
@@ -49,9 +49,6 @@ nls.config({
     nls.builtins.formatting.stylua,
     nls.builtins.diagnostics.stylelint,
   },
-})
-
-lspconfig['null-ls'].setup({
   capabilities = lsp.capabilities,
   on_attach = lsp.on_shared_attach,
 })
