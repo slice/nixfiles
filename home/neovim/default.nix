@@ -15,8 +15,8 @@ in {
       src = pkgs.fetchFromGitHub {
         owner = "neovim";
         repo = "neovim";
-        rev = "v${version}";
-        sha256 = "sha256-mVVZiDjAsAs4PgC8lHf0Ro1uKJ4OKonoPtF59eUd888=";
+        rev = "8f27c4a0417c001fa2dedb6346673da501ea78e5";
+        sha256 = "sha256-dYu02npRmmG/JkIABwrHi2l7RFeAZMs5ZQK1NAEG838=";
       };
     });
 
