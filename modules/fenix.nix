@@ -4,14 +4,12 @@
 
 {
   nixpkgs.overlays = [ fenix.overlay ];
-  environment.systemPackages = [
-    (pkgs.fenix.complete.withComponents [
-      "cargo"
-      "clippy"
-      "rust-src"
-      "rustc"
-      "rustfmt"
-    ])
-    pkgs.rust-analyzer-nightly
+  environment.systemPackages = with pkgs.fenix.stable; [
+    cargo
+    clippy
+    rustc
+    rust-src
+    rustfmt
+    pkgs.rust-analyzer
   ];
 }
