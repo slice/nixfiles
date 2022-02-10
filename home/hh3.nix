@@ -15,7 +15,9 @@
             enabled = true;
             options = {
               pinned = [
-                "896923292013834260" "896562285596778547" "723796426827759647"
+                "896923292013834260"
+                "896562285596778547"
+                "723796426827759647"
               ];
             };
           };
@@ -46,6 +48,9 @@
           css = {
             enabled = true;
             options.cssPath = pkgs.writeText "discord.css" ''
+              :root {
+                --font-code: PragmataPro !important;
+              }
               code,
               [class^="markup-"] code,
               [class^="after_inlineCode-"],
@@ -68,13 +73,41 @@
         };
 
         enabledExts = [
-          "whoReacted" "inspect" "sentrynerf" "pseudoscience" "noVoice"
-          "noAgeGate" "upload" "loadingScreen" "createEmoji" "copyAvatarUrl"
-          "downmark" "experiments" "localStorage" "preserveToken" "postnet"
-          "imgtitle" "oldQuote" "3y3" "typingChannel" "unravelMessage"
-          "callIdling" "fixmentions" "imageUrls" "noconmsg" "timeInCall"
-          "greentext" "panic" "hateno" "channelleak" "activitiesEverywhere"
-          "noJoinMessageWave" "messageLinkPreview" "ruby" "tardid"
+          "whoReacted"
+          "inspect"
+          "sentrynerf"
+          "pseudoscience"
+          "noVoice"
+          "noAgeGate"
+          "upload"
+          "loadingScreen"
+          "createEmoji"
+          "copyAvatarUrl"
+          "downmark"
+          "experiments"
+          "localStorage"
+          "preserveToken"
+          "postnet"
+          "imgtitle"
+          "oldQuote"
+          "3y3"
+          "typingChannel"
+          "unravelMessage"
+          "callIdling"
+          "fixmentions"
+          "imageUrls"
+          "noconmsg"
+          "timeInCall"
+          "greentext"
+          "panic"
+          "hateno"
+          "channelleak"
+          "activitiesEverywhere"
+          "noJoinMessageWave"
+          "messageLinkPreview"
+          "ruby"
+          "tardid"
+          "typingAvatars"
         ];
       };
     };
