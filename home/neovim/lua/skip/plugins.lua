@@ -178,6 +178,14 @@ require('packer').startup(function()
     requires = { { 'nvim-lua/lsp_extensions.nvim' } },
   })
 
+  -- lsp progress ui
+  use({
+    'j-hui/fidget.nvim',
+    config = function()
+      require('fidget').setup({})
+    end,
+  })
+
   -- use neovim itself as a language server in order to inject diagnostics,
   -- code actions, and other lsp-related goodies for languages that do not
   -- have a language server.
