@@ -27,6 +27,10 @@ require('packer').startup(function()
   -- stylua: ignore end
 
   use({
+    'echasnovski/mini.nvim',
+  })
+
+  use({
     'cohama/lexima.vim',
     config = function()
       -- don't bind <ESC>, which messes with telescope

@@ -16,4 +16,4 @@ require('skip.completion')
 require('skip.mappings')
 require('skip.autocmds')
 
-vim.cmd([[colorscheme bubblegum2]])
+vim.cmd([[colorscheme minischeme]])
