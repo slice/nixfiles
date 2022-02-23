@@ -80,9 +80,6 @@ map('v', 'Q', 'gq', { noremap = false })
 -- replace :bdelete with sayonara
 map('c', 'bd', 'Sayonara!')
 
--- quick access to telescope
-map('c', 'Ts', 'Telescope')
-
 local command_aliases = {
   -- sometimes i hold down shift for too long ;_;
   W = 'w',
@@ -101,3 +98,7 @@ end
 -- (can't use d because it means delete already)
 map('v', 'fp', ":'<,'>diffput<CR>")
 map('v', 'fo', ":'<,'>diffget<CR>")
+
+-- vsnip
+map('i', '<C-h>', "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-h>'", { noremap = false, expr = true })
+map('i', '<C-l>', "vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'", { noremap = false, expr = true })

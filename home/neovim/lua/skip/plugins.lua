@@ -38,17 +38,6 @@ require('packer').startup(function()
     end,
   })
 
-  -- show indentation guides, much like other text editors
-  -- use({
-  --   'lukas-reineke/indent-blankline.nvim',
-  --   config = function()
-  --     require('indent_blankline').setup({
-  --       -- char = "│",
-  --       buftype_exclude = { 'terminal', 'help' },
-  --     })
-  --   end,
-  -- })
-
   use({
     'slice/nvim-popterm.lua',
     config = function()
@@ -127,19 +116,19 @@ require('packer').startup(function()
     end,
   })
 
-  use({
-    'romgrk/nvim-treesitter-context',
-    config = function()
-      require('treesitter-context').setup({
-        enable = true,
-        throttle = true,
-        max_lines = 5,
-        patterns = {
-          default = { 'class', 'function', 'method' },
-        },
-      })
-    end,
-  })
+  -- use({
+  --   'romgrk/nvim-treesitter-context',
+  --   config = function()
+  --     require('treesitter-context').setup({
+  --       enable = true,
+  --       throttle = true,
+  --       max_lines = 5,
+  --       patterns = {
+  --         default = { 'class', 'function', 'method' },
+  --       },
+  --     })
+  --   end,
+  -- })
 
   -- }}}
 
@@ -152,14 +141,35 @@ require('packer').startup(function()
     config = function()
       local telescope = require('telescope')
 
+      vim.cmd([[highlight! link TelescopeNormal Pmenu]])
+
+      -- a custom, compact layout strategy
+      local layout_strategies = require('telescope.pickers.layout_strategies')
+      layout_strategies.compact = function(picker, cols, lines, layout_config)
+        local layout = layout_strategies.vertical(picker, cols, lines, layout_config)
+
+        -- make the prompt flush with the status line
+        layout.prompt.line = lines + 1
+        -- make the results flush with the prompt
+        layout.results.line = lines + 3
+
+        return layout
+      end
+
       telescope.setup({
         defaults = {
           winblend = 10,
           color_devicons = false,
+          border = false,
+          preview = false,
+          layout_config = { width = 0.5 },
+          layout_strategy = 'compact',
           -- immediately close the prompt when pressing <ESC> in insert mode
           mappings = { i = { ['<esc>'] = 'close' } },
         },
       })
+
+      telescope.load_extension('fzf')
     end,
   })
 

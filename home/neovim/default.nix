@@ -29,6 +29,7 @@ in {
     plugins = [ pkgs.vimPlugins.packer-nvim ];
   };
 
+  home.file.".config/nvim/colors".source = ./colors;
   home.file.".config/nvim/lua".source = ./lua;
 
   home.packages = [ pkgs.neovim-remote ];

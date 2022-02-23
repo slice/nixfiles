@@ -5,6 +5,7 @@ opt.completeopt = { 'menu', 'menuone', 'noselect' }
 opt.guicursor:append({ 'a:blinkwait1000', 'a:blinkon1000', 'a:blinkoff1000' })
 opt.ignorecase = true
 opt.inccommand = 'nosplit'
+opt.pumheight = 20
 opt.list = true
 opt.listchars = { tab = '> ', trail = '·', nbsp = '+' }
 opt.modeline = true
@@ -18,12 +19,11 @@ opt.wrap = false
 opt.number = true
 opt.relativenumber = true
 opt.splitright = true
-opt.scrolloff = 5
 opt.sidescrolloff = 10
 -- don't give the intro message and file editing messages
 opt.shortmess:append('I'):remove('F')
 opt.smartcase = true
-opt.statusline = [[%f %r%m%=%l/%L,%c (%P)]]
+opt.statusline = [[%l/%L %f%H %r%m%=%y (%P)]]
 opt.shada = [['1000]] -- remember 1,000 oldfiles
 opt.undodir = vim.fn.stdpath('data') .. '/undo'
 opt.undofile = true

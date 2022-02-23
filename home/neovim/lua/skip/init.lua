@@ -1,5 +1,5 @@
 -- skip's neovim >= 0.6 config
--- <o_/ *quack quack*
+-- <o_/ <o_/ *quack quack*
 
 function greet()
   vim.cmd([[echo "\_o> ♥ ♥ ♥ <o_/"]])
@@ -16,4 +16,4 @@ require('skip.completion')
 require('skip.mappings')
 require('skip.autocmds')
 
-vim.cmd([[colorscheme minischeme]])
+vim.cmd([[colorscheme mini16]])

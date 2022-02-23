@@ -17,7 +17,7 @@ cmp.setup({
   },
   sources = {
     { name = 'nvim_lua' },
-    { name = 'buffer', keyword_length = 4 },
+    { name = 'buffer', keyword_length = 2 },
     { name = 'vsnip' },
     { name = 'nvim_lsp' },
     { name = 'path' },
@@ -27,7 +27,7 @@ cmp.setup({
     ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
     ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
     -- ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping.confirm(),
+    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
     -- ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
   },
   experimental = {
