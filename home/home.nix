@@ -24,6 +24,9 @@ let
       wget
       fd
       tmux
+      # i edit nix files regularly on all of my machines, and having formatting
+      # everywhere is nice
+      nixfmt
     ];
 
     # language runtimes, compilers, etc.
@@ -43,7 +46,6 @@ let
       python39Packages.ipython
       shellcheck
       stylua
-      nixfmt
       nix-diff
     ];
 
