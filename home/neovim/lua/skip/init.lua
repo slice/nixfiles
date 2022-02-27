@@ -8,6 +8,10 @@ end
 vim.cmd([[command! Greet :lua greet()<CR>]])
 greet()
 
+_G.P = function(object)
+  print(vim.inspect(object))
+end
+
 require('skip.options')
 require('skip.plugin_options')
 require('skip.plugins')
