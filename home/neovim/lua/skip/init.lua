@@ -20,4 +20,4 @@ require('skip.completion')
 require('skip.mappings')
 require('skip.autocmds')
 
-vim.cmd([[colorscheme mini16]])
+vim.cmd([[colorscheme minischeme]])
