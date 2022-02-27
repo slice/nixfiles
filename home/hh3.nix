@@ -56,8 +56,8 @@
               [class^="after_inlineCode-"],
               [class^="inlineCode-"],
               [class^="before_inlineCode-"],
-              [class^="codeBlockText-"],
-              [class^="codeLine-"] {
+              [class^="codeBlockText-"] [class^="codeLine-"],
+              .codeBlockText-311wOq, .codeLine-3a3dbd {
                 font-family: PragmataPro !important;
               }
             '';
