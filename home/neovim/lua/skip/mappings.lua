@@ -52,6 +52,7 @@ map('n', '<leader>i', '<cmd>Telescope oldfiles<CR>')
 map('n', '<leader>b', '<cmd>Telescope buffers<CR>')
 
 map('n', '<leader>lp', '<cmd>lua require"telescope".extensions.trampoline.trampoline.project{}<CR>')
+map('n', '<leader>lh', '<cmd>Telescope help_tags<CR>')
 map('n', '<leader>lt', '<cmd>Telescope builtin<CR>')
 map('n', '<leader>lg', '<cmd>Telescope live_grep<CR>')
 map('n', '<leader>lb', '<cmd>Telescope file_browser hidden=true<CR>')
