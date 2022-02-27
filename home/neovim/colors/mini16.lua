@@ -1,8 +1,6 @@
 local b16 = require('mini.base16')
--- local palette = b16.mini_palette('#0d0d0d', '#cccccc', 77.559)
 
 require('mini.base16').setup({
-  -- palette = palette,
   palette = {
     base00 = '#000000',
     base01 = '#242422',
