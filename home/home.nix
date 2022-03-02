@@ -40,14 +40,8 @@ let
     ];
 
     # tools to help with programming
-    tooling = [
-      nodePackages.npm
-      nodePackages.prettier
-      python39Packages.ipython
-      shellcheck
-      stylua
-      nix-diff
-    ];
+    tooling =
+      [ nodePackages.npm nodePackages.prettier shellcheck stylua nix-diff ];
 
     # video/audio
     multimedia = [ ffmpeg sox imagemagick ];
