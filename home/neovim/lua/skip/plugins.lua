@@ -62,6 +62,7 @@ require('packer').startup(function()
     'bluz71/vim-moonfly-colors',
     'bluz71/vim-nightfly-guicolors',
     'itchyny/landscape.vim',
+    'savq/melange',
   }
 
   for _, colorscheme in ipairs(colorschemes) do
@@ -92,6 +93,7 @@ require('packer').startup(function()
           'json',
           'lua',
           'css',
+          'haskell',
           'nix',
           'python',
           'rust',
@@ -141,7 +143,7 @@ require('packer').startup(function()
     config = function()
       local telescope = require('telescope')
 
-      vim.cmd([[highlight! link TelescopeNormal Pmenu]])
+      vim.cmd([[highlight! link TelescopeNormal NormalFloat]])
 
       -- a custom, compact layout strategy
       local layout_strategies = require('telescope.pickers.layout_strategies')

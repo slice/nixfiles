@@ -11,8 +11,12 @@ function M.setup_lsp_buf(client, bufnr)
     vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 2000)]])
   end
 
-  vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-  vim.api.nvim_buf_set_option(0, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
+  if client.resolved_capabilities.code_lens then
+    vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]])
+  end
+
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
 
   map_buf('n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>')
   map_buf('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')

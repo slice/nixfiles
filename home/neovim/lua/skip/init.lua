@@ -12,6 +12,11 @@ _G.P = function(object)
   print(vim.inspect(object))
 end
 
+if vim.o.shell:find('bash%-interactive') then
+  -- If we're running inside of nix-shell, force $SHELL to be fish.
+  vim.o.shell = '/run/current-system/sw/bin/fish'
+end
+
 require('skip.options')
 require('skip.plugin_options')
 require('skip.plugins')
@@ -20,4 +25,4 @@ require('skip.completion')
 require('skip.mappings')
 require('skip.autocmds')
 
-vim.cmd([[colorscheme minischeme]])
+vim.cmd([[colorscheme melange]])

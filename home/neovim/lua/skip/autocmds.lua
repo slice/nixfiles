@@ -11,27 +11,43 @@ local function aug(group, cmds)
   vim.cmd('augroup END')
 end
 
--- personal colorscheme tweaks
-aug('colorschemes', {
-  'ColorScheme bubblegum2'
-    .. ' highlight! link MatchParen LineNr'
-    .. ' | highlight! link TelescopeMatching IncSearch'
-    .. ' | highlight! link TelescopeSelection Pmenu'
-    .. ' | highlight! IndentBlanklineChar guifg=#3d3d3d'
-    .. ' | highlight! Delimiter guifg=#b2b2b2'
-    .. ' | highlight! ColorColumn guibg=#2b2b2b'
-    .. ' | highlight! link Sneak DiffChange'
-    .. ' | highlight! link DiagnosticError Special'
-    .. ' | highlight! link DiagnosticWarn Number'
-    .. ' | highlight! link DiagnosticHint Keyword'
-    .. ' | highlight! Comment gui=italic',
-  -- style floating windows legible for popterms; make comments italic
-  'ColorScheme landscape' .. ' highlight NormalFloat guifg=#dddddd guibg=#222222' .. ' | highlight Comment guifg=#999999 gui=italic',
-  'ColorScheme zenburn' .. ' highlight! link TelescopeMatching IncSearch',
-  -- 'ColorScheme dogrun'
-  --   .. ' highlight IndentBlanklineIndent1 guibg=#303345'
-  --   .. ' | highlight IndentBlanklineIndent2 guibg=#303345'
-})
+local tweaks = {
+  bubblegum2 = {
+    'link MatchParen LineNr',
+    'link TelescopeMatching IncSearch',
+    'link TelescopeSelection Pmenu',
+    'IndentBlanklineChar guifg=#3d3d3d',
+    'Delimiter guifg=#b2b2b2',
+    'ColorColumn guibg=#2b2b2b',
+    'link Sneak DiffChange',
+    'link DiagnosticError Special',
+    'link DiagnosticWarn Number',
+    'link DiagnosticHint Keyword',
+    'Comment gui=italic',
+  },
+  zenburn = {
+    'link TelescopeMatching ErrorMsg',
+    'link DiagnosticWarn Repeat',
+    'link DiagnosticError Error',
+    'link DiagnosticInfo Number',
+  },
+  melange = {
+    'LineNr guifg=#70645b',
+    'link LspCodeLens Folded',
+  },
+  seoul256 = {
+    'link LspCodeLens SpecialKey',
+  },
+}
+
+vim.cmd([[augroup skip_colorscheme_tweaks]])
+vim.cmd([[autocmd!]])
+for colorscheme, tweaks in pairs(tweaks) do
+  for _, tweak in ipairs(tweaks) do
+    vim.cmd('autocmd ColorScheme ' .. colorscheme .. ' highlight! ' .. tweak)
+  end
+end
+vim.cmd([[augroup END]])
 
 -- metals_config = require("metals").bare_config
 -- metals_config.settings = {

@@ -63,7 +63,7 @@
             '';
           };
           whoJoined = {
-            enabled = true;
+            enabled = false;
             options.username = true;
           };
           hiddenTyping = {
@@ -108,6 +108,7 @@
           "ruby"
           "tardid"
           "typingAvatars"
+          "inviteToNowhere"
         ];
       };
     };
