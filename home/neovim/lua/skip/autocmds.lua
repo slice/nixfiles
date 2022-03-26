@@ -24,6 +24,8 @@ local tweaks = {
     'link DiagnosticWarn Number',
     'link DiagnosticHint Keyword',
     'Comment gui=italic',
+    'link LspCodeLens StatusLineNC',
+    'link TelescopeSelection Search',
   },
   zenburn = {
     'link TelescopeMatching ErrorMsg',
@@ -37,6 +39,10 @@ local tweaks = {
   },
   seoul256 = {
     'link LspCodeLens SpecialKey',
+    'link DiagnosticError Error',
+    'link DiagnosticWarn Question',
+    'link DiagnosticHint Float',
+    'link DiagnosticInfo Conditional',
   },
 }
 

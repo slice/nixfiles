@@ -49,7 +49,7 @@
             enabled = true;
             options.cssPath = pkgs.writeText "discord.css" ''
               :root {
-                --font-code: PragmataPro !important;
+                --font-code: "Iosevka Skippy" !important;
               }
               code,
               [class^="markup-"] code,
@@ -58,7 +58,7 @@
               [class^="before_inlineCode-"],
               [class^="codeBlockText-"] [class^="codeLine-"],
               .codeBlockText-311wOq, .codeLine-3a3dbd {
-                font-family: PragmataPro !important;
+                font-family: "Iosevka Skippy" !important;
               }
             '';
           };

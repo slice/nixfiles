@@ -77,6 +77,13 @@ require('packer').startup(function()
   use('fatih/vim-go')
   use('neovimhaskell/haskell-vim')
 
+  -- use({
+  --   'isti115/agda.nvim',
+  --   config = function()
+  --     vim.g.nvim_agda_settings = { agda = '/opt/homebrew/bin/agda' }
+  --   end,
+  -- })
+
   -- }}}
 
   -- treesitter {{{
@@ -93,7 +100,6 @@ require('packer').startup(function()
           'json',
           'lua',
           'css',
-          'haskell',
           'nix',
           'python',
           'rust',
@@ -191,12 +197,12 @@ require('packer').startup(function()
   })
 
   -- lsp progress ui
-  use({
-    'j-hui/fidget.nvim',
-    config = function()
-      require('fidget').setup({})
-    end,
-  })
+  -- use({
+  --   'j-hui/fidget.nvim',
+  --   config = function()
+  --     require('fidget').setup({})
+  --   end,
+  -- })
 
   -- use neovim itself as a language server in order to inject diagnostics,
   -- code actions, and other lsp-related goodies for languages that do not
