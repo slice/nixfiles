@@ -70,6 +70,10 @@
             enabled = true;
             options.whenInvisible = true;
           };
+          typingChannel = {
+            enabled = true;
+            options.ignoreSelf = true;
+          };
         };
 
         enabledExts = [
@@ -91,7 +95,6 @@
           "imgtitle"
           "oldQuote"
           "3y3"
-          "typingChannel"
           "unravelMessage"
           "callIdling"
           "fixmentions"
