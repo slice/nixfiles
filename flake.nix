@@ -22,39 +22,34 @@
 
   outputs = { self, darwin, nixpkgs, home-manager, fenix, ... }@inputs:
     (let
-      hmConfig = {
+      baseHomeConfig = {
         configuration.imports = [ ./home/home.nix ];
         extraModules = [ ./modules/hh3.nix ];
       };
+
+      hm = { system, username ? "slice", homeDirectory ? "/home/slice"
+        , server ? false }:
+        home-manager.lib.homeManagerConfiguration (baseHomeConfig // {
+          inherit username system homeDirectory;
+          extraSpecialArgs = { inherit server; };
+          stateVersion = "21.05";
+        });
     in {
       packages = {
-        x86_64-linux.homeConfigurations.slice =
-          home-manager.lib.homeManagerConfiguration (hmConfig // {
-            system = "x86_64-linux";
-            username = "slice";
-            homeDirectory = "/home/slice";
-            extraSpecialArgs = { server = true; };
-            # needed to avoid a conflict; see https://github.com/nix-community/home-manager/issues/2073
-            stateVersion = "21.05";
-          });
-        aarch64-linux.homeConfigurations.slice =
-          home-manager.lib.homeManagerConfiguration (hmConfig // {
-            system = "aarch64-linux";
-            username = "slice";
-            homeDirectory = "/home/slice";
-            extraSpecialArgs = { server = true; };
-            # ditto
-            stateVersion = "21.05";
-          });
-        aarch64-darwin.homeConfigurations.slice =
-          home-manager.lib.homeManagerConfiguration (hmConfig // {
-            system = "aarch64-darwin";
-            username = "slice";
-            homeDirectory = "/Users/slice";
-            extraSpecialArgs = { server = false; };
-            # ditto
-            stateVersion = "21.05";
-          });
+        x86_64-linux.homeConfigurations.slice = hm {
+          system = "x86_64-linux";
+          server = true;
+        };
+
+        aarch64-linux.homeConfigurations.slice = hm {
+          system = "aarch64-linux";
+          server = true;
+        };
+
+        aarch64-darwin.homeConfigurations.slice = hm {
+          system = "aarch64-darwin";
+          server = false;
+        };
       };
 
       darwinConfigurations.dewey = (import ./hosts/dewey.nix) inputs;
