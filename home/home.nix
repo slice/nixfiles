@@ -12,6 +12,7 @@ let
       yt-dlp
       croc
       jq
+      jo
       ripgrep
       rlwrap
       curl

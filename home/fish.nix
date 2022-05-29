@@ -111,6 +111,10 @@ in {
       set fish_pager_color_description blue
       set fish_pager_color_progress normal --background=brblack
       # fish_pager_color_secondary
+
+      # don't let the inherited environment clobber our preferred EDITOR,
+      # because that's annoying as hell
+      set --erase --global EDITOR; true
     '';
 
     functions = {

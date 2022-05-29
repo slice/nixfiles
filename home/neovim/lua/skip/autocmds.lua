@@ -1,16 +1,3 @@
--- from: https://github.com/wbthomason/dotfiles/blob/5117f6d76c64baa661368e85a25ca463ff858a05/neovim/.config/nvim/lua/config/utils.lua
-local function aug(group, cmds)
-  if type(cmds) == 'string' then
-    cmds = { cmds }
-  end
-  vim.cmd('augroup ' .. group)
-  vim.cmd('autocmd!') -- clear existing group
-  for _, c in ipairs(cmds) do
-    vim.cmd('autocmd ' .. c)
-  end
-  vim.cmd('augroup END')
-end
-
 local tweaks = {
   bubblegum2 = {
     'link MatchParen LineNr',
@@ -43,46 +30,47 @@ local tweaks = {
     'link DiagnosticWarn Question',
     'link DiagnosticHint Float',
     'link DiagnosticInfo Conditional',
+    'CmpItemKindDefault guifg=#a97070',
   },
 }
 
-vim.cmd([[augroup skip_colorscheme_tweaks]])
-vim.cmd([[autocmd!]])
+local colorscheme_tweaks_group = vim.api.nvim_create_augroup('skip_colorscheme_tweaks', {})
 for colorscheme, tweaks in pairs(tweaks) do
   for _, tweak in ipairs(tweaks) do
-    vim.cmd('autocmd ColorScheme ' .. colorscheme .. ' highlight! ' .. tweak)
+    vim.api.nvim_create_autocmd(
+      'ColorScheme',
+      { group = colorscheme_tweaks_group, pattern = colorscheme, command = 'highlight! ' .. tweak }
+    )
   end
 end
-vim.cmd([[augroup END]])
 
--- metals_config = require("metals").bare_config
--- metals_config.settings = {
---   showImplicitArguments = true,
---   showInferredType = true
--- }
+-- from: https://github.com/wbthomason/dotfiles/blob/5117f6d76c64baa661368e85a25ca463ff858a05/neovim/.config/nvim/lua/config/utils.lua
+local function autocommands(group_name, commands)
+  if type(commands) == 'string' then
+    commands = { commands }
+  end
 
--- aug('metals', {
---   'FileType scala,sbt lua require("metals").initialize_or_attach(metals_config)'
---     .. '; setup_lsp_buf()'
--- })
+  local group_id = vim.api.nvim_create_augroup(group_name, {})
 
-aug('hacks', {
+  for _, command in ipairs(commands) do
+    command[2].group = group_id
+    vim.api.nvim_create_autocmd(unpack(command))
+  end
+end
+
+autocommands('skip_hacks', {
   -- <C-x> opens splits in telescope, so we need this to be unmapped
-  'VimEnter * silent! iunmap <c-x><c-a>',
+  { 'VimEnter', { pattern = '*', command = 'silent! iunmap <c-x><c-a>' } },
 })
 
-aug('completion', {
-  -- "BufEnter * lua require'completion'.on_attach()"
-  -- 'CompleteDone * if pumvisible() == 0 | pclose | endif'
-})
-
-aug('filetypes', {
+autocommands('skip_filetypes', {
   -- enable spellchecking in git commits, reformat paragraphs as you type
-  'FileType gitcommit setlocal spell formatoptions=tan | normal ] ',
+  { 'FileType', { pattern = 'gitcommit', command = 'setlocal spell formatoptions=tan | normal ] ' } },
 })
 
--- highlight when yanking (built-in)
-aug('yank', 'TextYankPost * silent! lua vim.highlight.on_yank()')
+autocommands('skip_yanking', {
+  { 'TextYankPost', { pattern = '*', command = 'silent! lua vim.highlight.on_yank()' } },
+})
 
 local lang_indent_settings = {
   go = { width = 4, with = 'tabs' },
@@ -91,7 +79,7 @@ local lang_indent_settings = {
   cabal = { width = 4, with = 'spaces' },
 }
 
-local language_settings_autocmds = {}
+local indentation_tweaks_group = vim.api.nvim_create_augroup('skip_indentation_tweaks', {})
 for extension, settings in pairs(lang_indent_settings) do
   local width = settings['width']
 
@@ -100,23 +88,18 @@ for extension, settings in pairs(lang_indent_settings) do
     expandtab = 'noexpandtab'
   end
 
-  local autocmd = string.format(
-    'FileType %s setlocal tabstop=%d softtabstop=%d shiftwidth=%d %s',
-    extension,
-    width,
-    width,
-    width,
-    expandtab
-  )
-  table.insert(language_settings_autocmds, autocmd)
+  vim.api.nvim_create_autocmd('FileType', {
+    group = indentation_tweaks_group,
+    pattern = extension,
+    command = string.format('setlocal tabstop=%d softtabstop=%d shiftwidth=%d %s', width, width, width, expandtab),
+  })
 end
-
-vim.list_extend(language_settings_autocmds, {
-  'BufNewFile,BufReadPre *.sc,*.sbt setfiletype scala',
-  -- 'BufNewFile,BufReadPre,BufReadPost *.ts,*.tsx setfiletype typescriptreact',
-})
-
-aug('language_settings', language_settings_autocmds)
+vim.api.nvim_create_autocmd(
+  { 'BufNewFile', 'BufReadPre' },
+  { group = indentation_tweaks_group, pattern = '*.sc,*.sbt', command = 'setfiletype scala' }
+)
 
 -- hide line numbers in terminals
-aug('terminal_numbers', 'TermOpen * setlocal nonumber norelativenumber')
+autocommands('skip_terminal_numbers', {
+  { 'TermOpen', { pattern = '*', command = 'setlocal nonumber norelativenumber' } },
+})
