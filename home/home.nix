@@ -18,7 +18,6 @@ let
       curl
       aria
       p7zip
-      httpie
       htop
       tree
       file
