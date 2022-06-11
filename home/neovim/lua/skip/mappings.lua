@@ -58,7 +58,7 @@ map('n', '<leader>lg', '<cmd>Telescope live_grep<CR>')
 map('n', '<leader>lb', '<cmd>Telescope file_browser hidden=true<CR>')
 map('n', '<leader>lc', '<cmd>Telescope colorscheme<CR>')
 map('n', '<leader>lls', '<cmd>Telescope lsp_workspace_symbols<CR>')
-map('n', '<leader>lld', '<cmd>Telescope lsp_workspace_diagnostics<CR>')
+map('n', '<leader>lld', '<cmd>Telescope diagnostics<CR>')
 map('n', '<leader>llr', '<cmd>Telescope lsp_references<CR>')
 map('n', '<leader>lla', '<cmd>Telescope lsp_code_actions<CR>')
 

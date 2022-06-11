@@ -39,7 +39,8 @@ require('packer').startup(function()
   })
 
   use({
-    'slice/nvim-popterm.lua',
+    -- 'slice/nvim-popterm.lua',
+    '~/src/prj/nvim-popterm.lua',
     config = function()
       local popterm = require('popterm')
       popterm.config.window_height = 0.8
@@ -197,12 +198,12 @@ require('packer').startup(function()
   })
 
   -- lsp progress ui
-  -- use({
-  --   'j-hui/fidget.nvim',
-  --   config = function()
-  --     require('fidget').setup({})
-  --   end,
-  -- })
+  use({
+    'j-hui/fidget.nvim',
+    config = function()
+      require('fidget').setup({})
+    end,
+  })
 
   -- use neovim itself as a language server in order to inject diagnostics,
   -- code actions, and other lsp-related goodies for languages that do not

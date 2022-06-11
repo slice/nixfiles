@@ -17,6 +17,11 @@ lspconfig.tsserver.setup({
   end,
 })
 
+lspconfig.pyright.setup({
+  capabilities = lsp.capabilities,
+  on_attach = lsp.on_shared_attach,
+})
+
 lspconfig.hls.setup({
   capabilities = lsp.capabilities,
   on_attach = lsp.on_shared_attach,

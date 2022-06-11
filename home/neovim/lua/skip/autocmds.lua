@@ -31,6 +31,7 @@ local tweaks = {
     'link DiagnosticHint Float',
     'link DiagnosticInfo Conditional',
     'CmpItemKindDefault guifg=#a97070',
+    'WinSeparator guifg=#656565 guibg=#333233',
   },
 }
 
