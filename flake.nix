@@ -51,6 +51,7 @@
         aarch64-darwin.homeConfigurations.slice = hm {
           system = "aarch64-darwin";
           server = false;
+          homeDirectory = "/Users/slice";
         };
       };
 
