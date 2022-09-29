@@ -22,18 +22,20 @@
 
   outputs = { self, darwin, nixpkgs, home-manager, fenix, ... }@inputs:
     (let
-      baseHomeConfig = {
-        configuration.imports = [ ./home/home.nix ];
-        extraModules = [ ./modules/hh3.nix ];
-      };
-
-      hm = { system, username ? "slice", homeDirectory ? "/home/slice"
-        , server ? false }:
-        home-manager.lib.homeManagerConfiguration (baseHomeConfig // {
-          inherit username system homeDirectory;
+      hm = { system, server ? false, username ? "slice"
+        , homeDirectory ? "/home/slice" }:
+        home-manager.lib.homeManagerConfiguration {
+          modules = [
+            ./home/home.nix
+            ./modules/hh3.nix
+            ({ ... }: {
+              home.username = username;
+              home.homeDirectory = homeDirectory;
+            })
+          ];
+          pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = { inherit server; };
-          stateVersion = "21.05";
-        });
+        };
     in {
       packages = {
         x86_64-linux.homeConfigurations.slice = hm {

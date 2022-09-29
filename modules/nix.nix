@@ -7,7 +7,7 @@
     experimental-features = nix-command flakes
   '';
 
-  nix.package = pkgs.nixFlakes;
+  nix.package = pkgs.nixVersions.stable;
 
   # register the `nixpkgs` flake to refer to the nixpkgs this flake is using
   # across the entire system. e.g., `nix shell nixpkgs#hello` would use the
