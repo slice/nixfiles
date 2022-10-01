@@ -32,7 +32,7 @@ local tweaks = {
     'link DiagnosticInfo Conditional',
     'CmpItemKindDefault guifg=#a97070',
     'WinSeparator guifg=#656565 guibg=#333233',
-    'SpellBad guifg=#730b00 gui=underline',
+    'SpellBad guifg=#d9d9d9 guibg=#730b00 gui=underline',
   },
 }
 

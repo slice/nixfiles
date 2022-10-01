@@ -23,7 +23,7 @@ opt.relativenumber = true
 opt.splitright = true
 opt.sidescrolloff = 10
 -- don't give the intro message and file editing messages
-opt.shortmess:append('I'):remove('F')
+opt.shortmess:append('I')
 opt.smartcase = true
 opt.statusline = [[%c,%l/%L %f%H %r%m%=%y (%P)]]
 opt.shada = [['1000]] -- remember 1,000 oldfiles

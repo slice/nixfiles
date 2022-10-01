@@ -9,16 +9,23 @@ let
 in {
   programs.neovim = {
     enable = true;
-    package = pkgs.neovim-unwrapped.overrideAttrs (prev: rec {
-      version = "0.7.2";
+    package = (pkgs.neovim-unwrapped.overrideAttrs (final: prev: rec {
+      version = "0.8";
 
       src = pkgs.fetchFromGitHub {
         owner = "neovim";
         repo = "neovim";
-        rev = "e8ee6733926db83ef216497a1d660a173184ff39";
-        sha256 = "sha256-eKKQNM02Vhy+3yL2QV+0FSEpcniEa5Aq6hkAUIgLo1k=";
+        rev = "d367ed9b23d481998d297d812f54b950e5511c24";
+        sha256 = "sha256-mVeVjkP8JpTi2aW59ZuzQPi5YvEySVAtxko7xxAx/es=";
       };
-    });
+    })).override {
+      libvterm-neovim = (pkgs.libvterm-neovim.overrideAttrs (final: prev: rec {
+        src = pkgs.fetchurl {
+          url = "https://www.leonerd.org.uk/code/libvterm/libvterm-0.3.tar.gz";
+          sha256 = "sha256-YesNZijFK98CkA39RGiqhqGnElIourimcyiYGIdIM1g=";
+        };
+      }));
+    };
 
     extraConfig = "lua require('skip')";
 

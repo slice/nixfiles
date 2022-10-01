@@ -7,11 +7,11 @@ end
 -- setup a buffer with an lsp server attached with the proper mappings and
 -- options
 function M.setup_lsp_buf(client, bufnr)
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.documentFormattingProvider then
     vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 2000)]])
   end
 
-  if client.resolved_capabilities.code_lens then
+  if client.server_capabilities.codeLensProvider then
     vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]])
   end
 
