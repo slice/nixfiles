@@ -46,6 +46,10 @@ map('n', '<leader>te', '<cmd>tabnew +terminal<CR>')
 map('n', '<leader>ts', '<cmd>below split +terminal<CR>')
 map('n', '<leader>tv', '<cmd>vsplit +terminal<CR>')
 
+-- diagnostics
+map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
+map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
+
 -- telescope
 map('n', '<leader>o', '<cmd>Telescope find_files<CR>')
 map('n', '<leader>i', '<cmd>Telescope oldfiles<CR>')
@@ -55,12 +59,11 @@ map('n', '<leader>lp', '<cmd>lua require"telescope".extensions.trampoline.trampo
 map('n', '<leader>lh', '<cmd>Telescope help_tags<CR>')
 map('n', '<leader>lt', '<cmd>Telescope builtin<CR>')
 map('n', '<leader>lg', '<cmd>Telescope live_grep<CR>')
-map('n', '<leader>lb', '<cmd>Telescope file_browser hidden=true<CR>')
+map('n', '<leader>lb', '<cmd>Telescope file_browser<CR>')
 map('n', '<leader>lc', '<cmd>Telescope colorscheme<CR>')
 map('n', '<leader>lls', '<cmd>Telescope lsp_workspace_symbols<CR>')
 map('n', '<leader>lld', '<cmd>Telescope diagnostics<CR>')
 map('n', '<leader>llr', '<cmd>Telescope lsp_references<CR>')
-map('n', '<leader>lla', '<cmd>Telescope lsp_code_actions<CR>')
 
 -- vimrc; https://learnvimscriptthehardway.stevelosh.com/chapters/08.html
 -- map('n', '<leader>ve', "bufname('%') == '' ? '<cmd>edit $MYVIMRC<CR>' : '<cmd>vsplit $MYVIMRC<CR>'", { expr = true })

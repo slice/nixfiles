@@ -48,6 +48,16 @@ require('packer').startup(function()
     end,
   })
 
+  use({
+    'stevearc/dressing.nvim',
+    config = function()
+      require('dressing').setup({
+        input = { border = 'single' },
+        select = { backend = 'telescope' },
+      })
+    end,
+  })
+
   -- highlight colors in code (really fast)
   use({
     'norcalli/nvim-colorizer.lua',
@@ -162,6 +172,8 @@ require('packer').startup(function()
         defaults = {
           winblend = 10,
           color_devicons = false,
+          prompt_prefix = '? ',
+          selection_caret = '▶ ',
           border = false,
           preview = false,
           layout_config = { width = 0.5 },
@@ -169,14 +181,26 @@ require('packer').startup(function()
           -- immediately close the prompt when pressing <ESC> in insert mode
           mappings = { i = { ['<esc>'] = 'close' } },
         },
+        extensions = {
+          file_browser = {
+            hidden = true,
+            disable_devicons = true,
+          },
+        },
       })
 
-      telescope.load_extension('fzf')
+      -- telescope.load_extension('fzf')
+      telescope.load_extension('file_browser')
     end,
   })
 
+  -- file browser for telescope
+  use({
+    'nvim-telescope/telescope-file-browser.nvim',
+  })
+
   -- fzf sorter for telescope written in c (speed..)
-  use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
+  -- use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
 
   -- my bespoke project navigator
   use('slice/telescope-trampoline.nvim')

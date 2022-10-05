@@ -8,7 +8,7 @@ end
 -- options
 function M.setup_lsp_buf(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
-    vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 2000)]])
+    vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]])
   end
 
   if client.server_capabilities.codeLensProvider then
@@ -22,7 +22,7 @@ function M.setup_lsp_buf(client, bufnr)
   map_buf('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
   map_buf('n', '<leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>')
   map_buf('n', '<leader>lr', '<cmd>lua vim.lsp.buf.rename()<CR>')
-  map_buf('n', '<leader>lf', '<cmd>lua vim.lsp.buf.formatting_sync(nil, 2000)<CR>')
+  map_buf('n', '<leader>lf', '<cmd>lua vim.lsp.buf.format()<CR>')
   vim.cmd(
     [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float(nil, { scope = "line", source = "if_many", focusable = false, focus = false })]]
   )

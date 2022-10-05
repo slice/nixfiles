@@ -32,12 +32,11 @@ lspconfig.rust_analyzer.setup({
   on_attach = lsp.on_shared_attach,
   settings = {
     ['rust-analyzer'] = {
-      assist = {
-        importMergeBehavior = 'last',
-        importPrefix = 'by_self',
-      },
-      cargo = {
-        loadOutDirsFromCheck = true,
+      imports = {
+        granularity = {
+          group = 'module',
+        },
+        prefix = 'crate',
       },
       procMacro = {
         enable = true,
