@@ -20,3 +20,5 @@ g.moonflyItalics = true
 g.rooter_patterns = { '.git' }
 g.rooter_manual_only = true
 g.rooter_cd_cmd = 'tcd'
+
+g.everforest_ui_contrast = 1

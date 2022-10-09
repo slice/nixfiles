@@ -1,47 +1,60 @@
+local function hi(cmd)
+  return 'highlight!' .. cmd
+end
+local function link(cmd)
+  return 'highlight! link ' .. cmd
+end
+
 local tweaks = {
   bubblegum2 = {
-    'link MatchParen LineNr',
-    'link TelescopeMatching IncSearch',
-    'link TelescopeSelection Pmenu',
-    'IndentBlanklineChar guifg=#3d3d3d',
-    'Delimiter guifg=#b2b2b2',
-    'ColorColumn guibg=#2b2b2b',
-    'link Sneak DiffChange',
-    'link DiagnosticError Special',
-    'link DiagnosticWarn Number',
-    'link DiagnosticHint Keyword',
-    'Comment gui=italic',
-    'link LspCodeLens StatusLineNC',
-    'link TelescopeSelection Search',
+    link('MatchParen LineNr'),
+    link('TelescopeMatching IncSearch'),
+    link('TelescopeSelection Pmenu'),
+    hi('IndentBlanklineChar guifg=#3d3d3d'),
+    hi('Delimiter guifg=#b2b2b2'),
+    hi('ColorColumn guibg=#2b2b2b'),
+    link('Sneak DiffChange'),
+    link('DiagnosticError Special'),
+    link('DiagnosticWarn Number'),
+    link('DiagnosticHint Keyword'),
+    hi('Comment gui=italic'),
+    link('LspCodeLens StatusLineNC'),
+    link('TelescopeSelection Search'),
   },
   zenburn = {
-    'link TelescopeMatching ErrorMsg',
-    'link DiagnosticWarn Repeat',
-    'link DiagnosticError Error',
-    'link DiagnosticInfo Number',
+    link('TelescopeMatching ErrorMsg'),
+    link('DiagnosticWarn Repeat'),
+    link('DiagnosticError Error'),
+    link('DiagnosticInfo Number'),
   },
   melange = {
-    'LineNr guifg=#70645b',
-    'link LspCodeLens Folded',
+    hi('LineNr guifg=#70645b'),
+    link('LspCodeLens Folded'),
   },
   seoul256 = {
-    'link LspCodeLens SpecialKey',
-    'link DiagnosticError Error',
-    'link DiagnosticWarn Question',
-    'link DiagnosticHint Float',
-    'link DiagnosticInfo Conditional',
-    'CmpItemKindDefault guifg=#a97070',
-    'WinSeparator guifg=#656565 guibg=#333233',
-    'SpellBad guifg=#d9d9d9 guibg=#730b00 gui=underline',
+    link('LspCodeLens SpecialKey'),
+    link('DiagnosticError Error'),
+    link('DiagnosticWarn Question'),
+    link('DiagnosticHint Float'),
+    link('DiagnosticInfo Conditional'),
+    hi('CmpItemKindDefault guifg=#a97070'),
+    hi('WinSeparator guifg=#656565 guibg=#333233'),
+    hi('SpellBad guifg=#d9d9d9 guibg=#730b00 gui=underline'),
+  },
+  everforest = {
+    hi('TelescopeSelection guibg=#506168'),
+    hi('SpellBad gui=underline guibg=#402b2b'),
+    'let g:terminal_color_0 = "#67767e"',
+    'let g:terminal_color_8 = "#67767e"',
   },
 }
 
 local colorscheme_tweaks_group = vim.api.nvim_create_augroup('skip_colorscheme_tweaks', {})
-for colorscheme, tweaks in pairs(tweaks) do
-  for _, tweak in ipairs(tweaks) do
+for colorscheme, commands in pairs(tweaks) do
+  for _, command in ipairs(commands) do
     vim.api.nvim_create_autocmd(
       'ColorScheme',
-      { group = colorscheme_tweaks_group, pattern = colorscheme, command = 'highlight! ' .. tweak }
+      { group = colorscheme_tweaks_group, pattern = colorscheme, command = command }
     )
   end
 end
@@ -66,8 +79,8 @@ autocommands('skip_hacks', {
 })
 
 autocommands('skip_filetypes', {
-  -- enable spellchecking in git commits, reformat paragraphs as you type
-  { 'FileType', { pattern = 'gitcommit', command = 'setlocal spell formatoptions=tan | normal ] ' } },
+  -- enable spellchecking in git commits
+  { 'FileType', { pattern = 'gitcommit', command = 'setlocal spell formatoptions=tn | normal ] ' } },
 })
 
 autocommands('skip_yanking', {

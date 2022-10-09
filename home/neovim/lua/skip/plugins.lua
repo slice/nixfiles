@@ -74,11 +74,35 @@ require('packer').startup(function()
     'bluz71/vim-nightfly-guicolors',
     'itchyny/landscape.vim',
     'savq/melange',
+    'sainnhe/everforest',
   }
 
   for _, colorscheme in ipairs(colorschemes) do
-    use({ colorscheme, opt = true })
+    use({ colorscheme })
   end
+
+  use({
+    'simrat39/rust-tools.nvim',
+    config = function()
+      local rt = require('rust-tools')
+      local lsp = require('skip.lsp')
+
+      rt.setup({
+        server = {
+          capabilities = lsp.capabilities,
+          on_attach = function(client, bufnr)
+            lsp.on_shared_attach(client, bufnr)
+          end,
+        },
+        tools = {
+          inlay_hints = {
+            parameter_hints_prefix = '← ',
+            other_hints_prefix = '→ ',
+          },
+        },
+      })
+    end,
+  })
 
   -- language support {{{
 
@@ -218,7 +242,10 @@ require('packer').startup(function()
   use({
     'j-hui/fidget.nvim',
     config = function()
-      require('fidget').setup({})
+      require('fidget').setup({
+        text = { spinner = 'dots_scrolling' },
+        timer = { spinner_rate = 50 },
+      })
     end,
   })
 
@@ -241,9 +268,11 @@ require('packer').startup(function()
         'hrsh7th/cmp-nvim-lua',
         'hrsh7th/cmp-path',
         'hrsh7th/cmp-calc',
+        'hrsh7th/cmp-cmdline',
         -- cmp requires a snippet engine to function
         'hrsh7th/cmp-vsnip',
         'hrsh7th/vim-vsnip',
+        'hrsh7th/vim-vsnip-integ',
       },
     },
   })
