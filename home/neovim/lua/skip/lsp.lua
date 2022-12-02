@@ -23,6 +23,7 @@ function M.setup_lsp_buf(client, bufnr)
   map_buf('n', '<leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>')
   map_buf('n', '<leader>lr', '<cmd>lua vim.lsp.buf.rename()<CR>')
   map_buf('n', '<leader>lf', '<cmd>lua vim.lsp.buf.format()<CR>')
+  map_buf('n', '<leader>lz', '<cmd>lua vim.lsp.codelens.run()<CR>')
   vim.cmd(
     [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float(nil, { scope = "line", source = "if_many", focusable = false, focus = false })]]
   )
@@ -43,7 +44,6 @@ function M.on_shared_attach(client, bufnr)
   end
 end
 
-M.capabilities = vim.lsp.protocol.make_client_capabilities()
-M.capabilities = require('cmp_nvim_lsp').update_capabilities(M.capabilities)
+M.capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 return M

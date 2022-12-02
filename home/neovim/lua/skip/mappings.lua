@@ -26,6 +26,11 @@ function POPTERM_TOGGLE()
   end
 end
 
+-- pressing <S-Space> in a terminal used to input <Space>, but it doesn't
+-- anymore! sometimes i don't release shift before pressing space, so this is
+-- useful
+map('t', '<S-Space>', '<Space>')
+
 -- jump around windows easier. this is probably breaking something?
 map('n', '<C-H>', '<C-W><C-H>')
 map('n', '<C-J>', '<C-W><C-J>')

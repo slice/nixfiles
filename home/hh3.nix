@@ -62,19 +62,23 @@
               :root {
                 --font-code: "PragmataPro Mono" !important;
                 --font-japanese: "M PLUS 1", "Mplus 1p" !important;
-                --font-primary: Whitney, "M PLUS 1", "Mplus 1p" !important;
-                --font-display: "ABC Ginto Normal","M PLUS 1",sans-serif !important;
+                --font-primary: "gg sans", "M PLUS 1", "Mplus 1p" !important;
+                --font-display: "gg sans", "M PLUS 1",sans-serif !important;
                 --font-headline: "ABC Ginto Nord","M PLUS 1",sans-serif !important;
               }
 
-              code,
-              [class^="markup-"] code,
-              [class^="after_inlineCode-"],
+              [class^="markdown-"] [class^="codeInline-"],
+              [class^="codeLine-"],
+              [class^="codeBlockText-"],
+              [class^="durationTimeDisplay-"],
+              [class^="durationTimeSeparator-"],
+              [class*="after_inlineCode-"],
+              [class*="before_inlineCode-"],
               [class^="inlineCode-"],
-              [class^="before_inlineCode-"],
-              [class^="codeBlockText-"] [class^="codeLine-"],
-              .codeBlockText-311wOq, .codeLine-3a3dbd {
-                font-family: "PragmataPro Mono" !important;
+              code.inline,
+              code,
+              .hljs {
+                font-family: var(--font-code) !important;
               }
             '';
           };
@@ -93,6 +97,7 @@
         };
 
         enabledExts = [
+          "autopatch"
           "whoReacted"
           "inspect"
           "sentrynerf"
@@ -130,6 +135,7 @@
           "typingAvatars"
           "inviteToNowhere"
           "timeBarAllActivities"
+          "hiddenProfileColors"
         ];
       };
     };

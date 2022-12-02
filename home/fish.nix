@@ -199,11 +199,11 @@ in {
         printf '%s%s%s' (set_color magenta) (fish_git_prompt) (set_color normal)
 
         if test "$_status" -eq 0
-          printf ' %s:D%s' (set_color green) (set_color normal)
+          printf ' %s:)%s' (set_color green) (set_color normal)
         else
           # set -l face (random choice 'O_O' 'O_o' '>_>' 'v_v' ';_;')
           # printf '%s%s%s' (set_color -o red) "$face" (set_color normal)
-          printf ' %s:(%s' (set_color -o red) (set_color normal)
+          printf ' %s;_;%s' (set_color -o red) (set_color normal)
         end
       '';
     } // pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {

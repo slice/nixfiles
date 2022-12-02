@@ -6,7 +6,6 @@ require('packer').startup(function()
   -- stylua: ignore start
   use('justinmk/vim-dirvish')      -- improved builtin file browser
   use('justinmk/vim-gtfo')         -- gof opens gui file manager
-  use('justinmk/vim-sneak')        -- sneak around
   use('junegunn/vim-easy-align')   -- text alignment
   use('tpope/vim-rsi')             -- readline keybindings
   use('tpope/vim-scriptease')      -- utilities for vim scripts
@@ -28,15 +27,40 @@ require('packer').startup(function()
 
   use({
     'echasnovski/mini.nvim',
-  })
-
-  use({
-    'cohama/lexima.vim',
     config = function()
-      -- don't bind <ESC>, which messes with telescope
-      vim.g.lexima_map_escape = ''
+      require('mini.jump').setup()
+      require('mini.jump2d').setup({
+        allowed_lines = {
+          blank = false,
+          cursor_before = true,
+          cursor_at = true,
+          cursor_after = true,
+          fold = true,
+        },
+      })
+      require('mini.surround').setup({
+        mappings = {
+          add = ',a',
+          delete = ',d',
+          find = ',f',
+          find_left = ',F',
+          highlight = ',h',
+          replace = ',r',
+          update_n_lines = ',n',
+        },
+      })
+      require('mini.trailspace').setup()
+      require('mini.pairs').setup()
     end,
   })
+
+  -- use({
+  --   'cohama/lexima.vim',
+  --   config = function()
+  --     -- don't bind <ESC>, which messes with telescope
+  --     vim.g.lexima_map_escape = ''
+  --   end,
+  -- })
 
   use({
     -- 'slice/nvim-popterm.lua',
@@ -82,6 +106,31 @@ require('packer').startup(function()
   end
 
   use({
+    'MrcJkb/haskell-tools.nvim',
+    tag = '1.4.2',
+    requires = { 'neovim/nvim-lspconfig', 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
+    config = function()
+      local ht = require('haskell-tools')
+      local lsp = require('skip.lsp')
+
+      ht.setup({
+        hls = {
+          on_attach = function(client, bufnr)
+            lsp.on_shared_attach(client, bufnr)
+            local opts = { buffer = bufnr }
+            vim.keymap.set('n', '<leader>hs', ht.hoogle.hoogle_signature, opts)
+            vim.keymap.set('n', '<leader>hr', ht.repl.toggle, opts)
+            vim.keymap.set('n', '<leader>hb', function()
+              ht.repl.toggle(vim.api.nvim_buf_get_name(0))
+            end, opts)
+            vim.keymap.set('n', '<leader>hq', ht.repl.quit, opts)
+          end,
+        },
+      })
+    end,
+  })
+
+  use({
     'simrat39/rust-tools.nvim',
     config = function()
       local rt = require('rust-tools')
@@ -98,6 +147,7 @@ require('packer').startup(function()
           inlay_hints = {
             parameter_hints_prefix = '← ',
             other_hints_prefix = '→ ',
+            highlight = 'RustToolsInlayHint',
           },
         },
       })

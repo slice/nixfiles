@@ -24,6 +24,7 @@ let
       wget
       fd
       tmux
+
       # i edit nix files regularly on all of my machines, and having formatting
       # everywhere is nice
       nixfmt
@@ -33,6 +34,7 @@ let
     languages = [
       nodejs-slim-16_x
       python39
+      llvmPackages_12.llvm
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
       #   cabal-install lens wreq aeson lens-aeson bytestring text tagsoup
       #   http-client time haskell-language-server
@@ -44,7 +46,16 @@ let
       [ nodePackages.npm nodePackages.prettier shellcheck stylua nix-diff ];
 
     # video/audio
-    multimedia = [ ffmpeg sox imagemagick ];
+    multimedia = [
+      (ffmpeg_5-full.override {
+        # we want libfdk-aac for (apparently) nice, high-quality aac encoding
+        nonfreeLicensing = true;
+        fdkaacExtlib = true;
+      })
+      sox
+      imagemagick
+      mpv
+    ];
 
     # miscellaneous utilities
     utilities = [ graphviz smartmontools ];
@@ -68,6 +79,12 @@ in {
       GIT_SSH = "/usr/bin/ssh";
     });
   };
+
+  # needed for unfree packages :-)
+  nixpkgs.config.allowUnfree = true;
+  # for some reason, home-manager doesn't accept `allowUnfree = true;`
+  # see: https://github.com/nix-community/home-manager/issues/2942
+  nixpkgs.config.allowUnfreePredicate = (pkg: true);
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

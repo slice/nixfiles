@@ -5,6 +5,9 @@ local function link(cmd)
   return 'highlight! link ' .. cmd
 end
 
+vim.cmd([[highlight default link InlayHint Comment]])
+vim.cmd([[highlight default link RustToolsInlayHint InlayHint]])
+
 local tweaks = {
   bubblegum2 = {
     link('MatchParen LineNr'),
@@ -46,6 +49,10 @@ local tweaks = {
     hi('SpellBad gui=underline guibg=#402b2b'),
     'let g:terminal_color_0 = "#67767e"',
     'let g:terminal_color_8 = "#67767e"',
+  },
+  minicyan = {
+    hi('InlayHint guifg=#3c6364'),
+    hi('LspCodeLens guibg=#3c6364'),
   },
 }
 

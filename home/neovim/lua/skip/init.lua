@@ -25,4 +25,4 @@ require('skip.completion')
 require('skip.mappings')
 require('skip.autocmds')
 
-vim.cmd([[colorscheme everforest]])
+vim.cmd([[colorscheme minicyan]])

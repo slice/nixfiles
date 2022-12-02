@@ -34,7 +34,7 @@ cmp.setup({
     -- ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
   },
   experimental = {
-    ghost_text = {},
+    -- ghost_text = {},
   },
 })
 
