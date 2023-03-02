@@ -38,17 +38,7 @@ require('packer').startup(function()
           fold = true,
         },
       })
-      require('mini.surround').setup({
-        mappings = {
-          add = ',a',
-          delete = ',d',
-          find = ',f',
-          find_left = ',F',
-          highlight = ',h',
-          replace = ',r',
-          update_n_lines = ',n',
-        },
-      })
+      require('mini.surround').setup()
       require('mini.trailspace').setup()
       require('mini.pairs').setup()
     end,

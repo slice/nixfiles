@@ -26,6 +26,9 @@ function POPTERM_TOGGLE()
   end
 end
 
+-- after 6? 7? years of typing <ESC>:w<CR>, it's time for somethin' different
+map('n', '<leader>s', '<Cmd>:w<CR>')
+
 -- pressing <S-Space> in a terminal used to input <Space>, but it doesn't
 -- anymore! sometimes i don't release shift before pressing space, so this is
 -- useful

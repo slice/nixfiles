@@ -53,6 +53,13 @@ local tweaks = {
   minicyan = {
     hi('InlayHint guifg=#3c6364'),
     hi('LspCodeLens guibg=#3c6364'),
+    hi('Comment gui=italic'),
+    hi('DiagnosticError guifg=#cd7073 guibg=#2b1b1b'),
+    hi('DiagnosticSignError guifg=#cd7073 guibg=#324747'),
+    hi('SpellBad guifg=#ed9597 gui=underline'),
+    -- Most tokens onscreen are going to be `@variable`s, and we don't want to
+    -- highlight all of them. It's visually noisy.
+    link('@variable.python Normal'),
   },
 }
 

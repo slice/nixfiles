@@ -60,10 +60,10 @@
             enabled = true;
             options.cssPath = pkgs.writeText "discord.css" ''
               :root {
-                --font-code: "PragmataPro Mono" !important;
+                --font-code: "Inconsolata" !important;
                 --font-japanese: "M PLUS 1", "Mplus 1p" !important;
-                --font-primary: "gg sans", "M PLUS 1", "Mplus 1p" !important;
-                --font-display: "gg sans", "M PLUS 1",sans-serif !important;
+                --font-primary: "Lato", "M PLUS 1", "Mplus 1p" !important;
+                --font-display: "Lato", "M PLUS 1",sans-serif !important;
                 --font-headline: "ABC Ginto Nord","M PLUS 1",sans-serif !important;
               }
 
@@ -79,6 +79,7 @@
               code,
               .hljs {
                 font-family: var(--font-code) !important;
+                font-size: 16px !important;
               }
             '';
           };
@@ -93,6 +94,10 @@
           typingChannel = {
             enabled = true;
             options.ignoreSelf = true;
+          };
+          declutterTextButtons = {
+            enabled = true;
+            options.keepGif = true;
           };
         };
 
@@ -136,6 +141,7 @@
           "inviteToNowhere"
           "timeBarAllActivities"
           "hiddenProfileColors"
+          "volumeLimit"
         ];
       };
     };

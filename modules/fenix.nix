@@ -3,7 +3,7 @@
 { pkgs, ... }:
 
 {
-  nixpkgs.overlays = [ fenix.overlay ];
+  nixpkgs.overlays = [ fenix.overlays.default ];
   environment.systemPackages = with pkgs.fenix.stable; [
     cargo
     clippy

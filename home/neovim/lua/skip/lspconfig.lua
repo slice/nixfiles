@@ -50,6 +50,7 @@ nls.setup({
     nls.builtins.formatting.nixfmt,
     nls.builtins.diagnostics.shellcheck,
     nls.builtins.formatting.stylua,
+    nls.builtins.formatting.black,
     nls.builtins.diagnostics.stylelint,
   },
   capabilities = lsp.capabilities,
