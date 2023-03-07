@@ -34,7 +34,7 @@ let
     # language runtimes, compilers, etc.
     languages = [
       nodejs-slim-16_x
-      python39
+      python310
       llvmPackages_12.llvm
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
       #   cabal-install lens wreq aeson lens-aeson bytestring text tagsoup
@@ -48,10 +48,10 @@ let
 
     # video/audio
     multimedia = [
-      (ffmpeg_5-full.override {
-        # we want libfdk-aac for (apparently) nice, high-quality aac encoding
-        nonfreeLicensing = true;
-        fdkaacExtlib = true;
+      (ffmpeg_5.override {
+        # we want libfdk-aac for (allegedly) nice, high-quality aac encoding
+        withFdkAac = true;
+        withUnfree = true;
       })
       sox
       imagemagick
