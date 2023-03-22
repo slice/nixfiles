@@ -44,24 +44,17 @@ require('packer').startup(function()
     end,
   })
 
-  -- use({
-  --   'cohama/lexima.vim',
-  --   config = function()
-  --     -- don't bind <ESC>, which messes with telescope
-  --     vim.g.lexima_map_escape = ''
-  --   end,
-  -- })
-
   use({
-    -- 'slice/nvim-popterm.lua',
-    '~/src/prj/nvim-popterm.lua',
+    'slice/nvim-popterm.lua',
     config = function()
       local popterm = require('popterm')
       popterm.config.window_height = 0.8
+      popterm.config.win_opts = { border = 'none' }
       vim.cmd([[highlight! link PopTermLabel WildMenu]])
     end,
   })
 
+  -- override core UI hooks to make them more user-friendly
   use({
     'stevearc/dressing.nvim',
     config = function()
@@ -72,7 +65,7 @@ require('packer').startup(function()
     end,
   })
 
-  -- highlight colors in code (really fast)
+  -- highlight colors (hex, rgb, etc.) in code (really fast)
   use({
     'norcalli/nvim-colorizer.lua',
     config = function()
@@ -80,7 +73,7 @@ require('packer').startup(function()
     end,
   })
 
-  local colorschemes = {
+  for _, colorscheme in ipairs({
     'slice/bubblegum2',
     'junegunn/seoul256.vim',
     'jnurmine/Zenburn',
@@ -89,11 +82,11 @@ require('packer').startup(function()
     'itchyny/landscape.vim',
     'savq/melange',
     'sainnhe/everforest',
-  }
-
-  for _, colorscheme in ipairs(colorschemes) do
+  }) do
     use({ colorscheme })
   end
+
+  -- language "tools" {{{
 
   use({
     'MrcJkb/haskell-tools.nvim',
@@ -144,20 +137,15 @@ require('packer').startup(function()
     end,
   })
 
-  -- language support {{{
+  -- }}}
+
+  -- "rudimentary" language support {{{
 
   use('LnL7/vim-nix')
   use('rust-lang/rust.vim')
   use('ziglang/zig.vim')
   use('fatih/vim-go')
   use('neovimhaskell/haskell-vim')
-
-  -- use({
-  --   'isti115/agda.nvim',
-  --   config = function()
-  --     vim.g.nvim_agda_settings = { agda = '/opt/homebrew/bin/agda' }
-  --   end,
-  -- })
 
   -- }}}
 
@@ -192,19 +180,15 @@ require('packer').startup(function()
     end,
   })
 
-  -- use({
-  --   'romgrk/nvim-treesitter-context',
-  --   config = function()
-  --     require('treesitter-context').setup({
-  --       enable = true,
-  --       throttle = true,
-  --       max_lines = 5,
-  --       patterns = {
-  --         default = { 'class', 'function', 'method' },
-  --       },
-  --     })
-  --   end,
-  -- })
+  use({
+    'romgrk/nvim-treesitter-context',
+    config = function()
+      require('treesitter-context').setup({
+        enable = true,
+        max_lines = 5,
+      })
+    end,
+  })
 
   -- }}}
 
@@ -219,7 +203,7 @@ require('packer').startup(function()
 
       vim.cmd([[highlight! link TelescopeNormal NormalFloat]])
 
-      -- a custom, compact layout strategy
+      -- a custom, compact layout strategy that mimics @norcalli's fuzzy finder
       local layout_strategies = require('telescope.pickers.layout_strategies')
       layout_strategies.compact = function(picker, cols, lines, layout_config)
         local layout = layout_strategies.vertical(picker, cols, lines, layout_config)
@@ -237,13 +221,19 @@ require('packer').startup(function()
           winblend = 10,
           color_devicons = false,
           prompt_prefix = '? ',
-          selection_caret = '▶ ',
+          selection_caret = '> ',
           border = false,
           preview = false,
           layout_config = { width = 0.5 },
           layout_strategy = 'compact',
           -- immediately close the prompt when pressing <ESC> in insert mode
-          mappings = { i = { ['<esc>'] = 'close' } },
+          mappings = {
+            i = {
+              ['<esc>'] = 'close',
+              ['<c-u>'] = 'results_scrolling_up',
+              ['<c-d>'] = 'results_scrolling_down',
+            },
+          },
         },
         extensions = {
           file_browser = {
@@ -263,19 +253,34 @@ require('packer').startup(function()
     'nvim-telescope/telescope-file-browser.nvim',
   })
 
-  -- fzf sorter for telescope written in c (speed..)
-  -- use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
-
-  -- my bespoke project navigator
+  -- bespoke project navigator
   use('slice/telescope-trampoline.nvim')
 
   -- }}}
 
-  -- language server protocol {{{
+  -- lsp {{{
 
   use({
     'neovim/nvim-lspconfig',
     requires = { { 'nvim-lua/lsp_extensions.nvim' } },
+    config = function()
+      local util = require('lspconfig.util')
+      local skip_lsp = require('skip.lsp')
+
+      if util._patched then
+        return
+      end
+
+      util._patched = true
+
+      local _original_bufname_valid = util.bufname_valid
+      function util.bufname_valid(bufname)
+        if skip_lsp.bufname_banned(bufname) then
+          return false
+        end
+        return _original_bufname_valid(bufname)
+      end
+    end,
   })
 
   -- lsp progress ui
@@ -305,10 +310,12 @@ require('packer').startup(function()
         -- completion sources
         'hrsh7th/cmp-buffer',
         'hrsh7th/cmp-nvim-lsp',
+        'hrsh7th/cmp-nvim-lsp-signature-help',
         'hrsh7th/cmp-nvim-lua',
         'hrsh7th/cmp-path',
         'hrsh7th/cmp-calc',
         'hrsh7th/cmp-cmdline',
+
         -- cmp requires a snippet engine to function
         'hrsh7th/cmp-vsnip',
         'hrsh7th/vim-vsnip',

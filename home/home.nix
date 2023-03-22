@@ -33,7 +33,7 @@ let
 
     # language runtimes, compilers, etc.
     languages = [
-      nodejs-slim-16_x
+      nodejs-slim
       python310
       llvmPackages_12.llvm
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
@@ -59,7 +59,7 @@ let
     ];
 
     # miscellaneous utilities
-    utilities = [ graphviz smartmontools ];
+    utilities = [ graphviz smartmontools colmena ];
 
     everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
   };

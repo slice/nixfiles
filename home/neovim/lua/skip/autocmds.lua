@@ -8,6 +8,16 @@ end
 vim.cmd([[highlight default link InlayHint Comment]])
 vim.cmd([[highlight default link RustToolsInlayHint InlayHint]])
 
+local mini_tweaks = {
+  hi('Comment gui=italic'),
+  hi('DiagnosticHint guifg=#70a1cd guibg=#254258'),
+  hi('DiagnosticWarn guifg=#cdbe70 guibg=#3d3928'),
+  hi('DiagnosticError guifg=#cd7073 guibg=#3d2828'),
+  hi('DiagnosticUnderlineError gui=undercurl guisp=#cd7073'),
+  hi('DiagnosticSignError guifg=#cd7073 guibg=#324747'),
+  hi('SpellBad guifg=#ed9597 gui=underline'),
+}
+
 local tweaks = {
   bubblegum2 = {
     link('MatchParen LineNr'),
@@ -50,17 +60,17 @@ local tweaks = {
     'let g:terminal_color_0 = "#67767e"',
     'let g:terminal_color_8 = "#67767e"',
   },
-  minicyan = {
-    hi('InlayHint guifg=#3c6364'),
-    hi('LspCodeLens guibg=#3c6364'),
-    hi('Comment gui=italic'),
-    hi('DiagnosticError guifg=#cd7073 guibg=#2b1b1b'),
-    hi('DiagnosticSignError guifg=#cd7073 guibg=#324747'),
-    hi('SpellBad guifg=#ed9597 gui=underline'),
-    -- Most tokens onscreen are going to be `@variable`s, and we don't want to
-    -- highlight all of them. It's visually noisy.
-    link('@variable.python Normal'),
-  },
+  minicyan = vim.tbl_flatten({
+    mini_tweaks,
+    {
+      hi('InlayHint guifg=#467374'),
+      hi('LspCodeLens guibg=#3c6364'),
+      -- Most tokens onscreen are going to be `@variable`s, and we don't want to
+      -- highlight all of them. It's visually noisy.
+      link('@variable.python Normal'),
+    },
+  }),
+  minischeme = vim.tbl_flatten({ mini_tweaks, {} }),
 }
 
 local colorscheme_tweaks_group = vim.api.nvim_create_augroup('skip_colorscheme_tweaks', {})

@@ -17,23 +17,6 @@ if vim.o.shell:find('bash%-interactive') then
   vim.o.shell = '/run/current-system/sw/bin/fish'
 end
 
-if vim.env.TERM_PROGRAM == 'iTerm.app' then
-  local function set_iterm_profile(profile)
-    io.write('\27]1337;SetProfile=' .. profile .. '\a')
-  end
-
-  set_iterm_profile('nvim')
-
-  local id = vim.api.nvim_create_augroup('TerminalAugmentation', {})
-  vim.api.nvim_create_autocmd('VimLeavePre', {
-    group = id,
-    desc = 'Reverts the iTerm profile to Default before exiting.',
-    callback = function()
-      set_iterm_profile('Default')
-    end,
-  })
-end
-
 require('skip.options')
 require('skip.plugin_options')
 require('skip.plugins')
@@ -43,3 +26,5 @@ require('skip.mappings')
 require('skip.autocmds')
 
 vim.cmd([[colorscheme minicyan]])
+
+require('skip.assimilate')

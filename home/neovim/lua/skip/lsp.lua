@@ -1,7 +1,7 @@
 local M = {}
 
 function map_buf(mode, key, result)
-  vim.api.nvim_buf_set_keymap(0, mode, key, result, { noremap = true, silent = true })
+  vim.keymap.set(mode, key, result, { buffer = true, remap = false, silent = true })
 end
 
 -- setup a buffer with an lsp server attached with the proper mappings and
@@ -18,21 +18,38 @@ function M.setup_lsp_buf(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
   vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
 
-  map_buf('n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>')
-  map_buf('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
-  map_buf('n', '<leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-  map_buf('n', '<leader>lr', '<cmd>lua vim.lsp.buf.rename()<CR>')
-  map_buf('n', '<leader>lf', '<cmd>lua vim.lsp.buf.format()<CR>')
-  map_buf('n', '<leader>lz', '<cmd>lua vim.lsp.codelens.run()<CR>')
+  map_buf('n', '<c-]>', vim.lsp.buf.definition)
+  map_buf('n', 'K', vim.lsp.buf.hover)
+  map_buf('n', '<leader>la', vim.lsp.buf.code_action)
+  map_buf('n', '<leader>lr', vim.lsp.buf.rename)
+  map_buf('n', '<leader>lf', vim.lsp.buf.format)
+  map_buf('n', '<leader>lz', vim.lsp.codelens.run)
   vim.cmd(
     [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float(nil, { scope = "line", source = "if_many", focusable = false, focus = false })]]
   )
 end
 
+M.banned_patterns = { '^/nix/store/', '%.cargo/registry', 'node_modules/' }
+
+-- we patch lspconfig.util.bufname_valid to call this
+function M.bufname_banned(bufname)
+  for _, banned_pattern in ipairs(M.banned_patterns) do
+    if bufname:find(banned_pattern) then
+      -- vim.api.nvim_echo({ { string.format('(>_>)o not attaching LSP; matched %s', banned_pattern) } }, true, {})
+      return true
+    end
+  end
+  return false
+end
+
 -- this function should be passed to `on_attach` when setting up all language
 -- servers!
 function M.on_shared_attach(client, bufnr)
-  vim.cmd(string.format('echomsg "(>_>)o attach for: %s (%s), bufnr: %d"', client.name, client.id, bufnr))
+  vim.api.nvim_echo(
+    { { string.format('(>_>)o LSP %s (ID: %s) attached to bufnr: %d', client.name, client.id, bufnr) } },
+    true,
+    {}
+  )
 
   M.setup_lsp_buf(client, bufnr)
   if vim.api.nvim_buf_get_option(0, 'filetype') == 'rust' then

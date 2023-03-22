@@ -1,18 +1,6 @@
 vim.g.mapleader = ' '
 
--- from: https://github.com/wbthomason/dotfiles/blob/5117f6d76c64baa661368e85a25ca463ff858a05/neovim/.config/nvim/lua/config/utils.lua
-local function map(modes, lhs, rhs, opts)
-  opts = opts or {}
-  if opts.noremap == nil then
-    opts.noremap = true
-  end
-  if type(modes) == 'string' then
-    modes = { modes }
-  end
-  for _, mode in ipairs(modes) do
-    vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
-  end
-end
+local map = vim.keymap.set
 
 -- have i_CTRL-U make the previous word uppercase instead
 map('i', '<c-u>', '<esc>gUiwea')
@@ -27,7 +15,7 @@ function POPTERM_TOGGLE()
 end
 
 -- after 6? 7? years of typing <ESC>:w<CR>, it's time for somethin' different
-map('n', '<leader>s', '<Cmd>:w<CR>')
+map('n', '<leader>s', '<cmd>:w<CR>')
 
 -- pressing <S-Space> in a terminal used to input <Space>, but it doesn't
 -- anymore! sometimes i don't release shift before pressing space, so this is
@@ -80,14 +68,14 @@ map('n', '<leader>vs', '<cmd>vsplit | terminal hm-switch<CR>')
 -- map('n', '<leader>ve', '<cmd>edit ~/src/prj/nixfiles/home/neovim<CR>')
 
 -- align stuff easily
--- NOTE: need noremap=false because of <Plug>
-map('x', 'ga', '<Plug>(EasyAlign)', { noremap = false })
-map('n', 'ga', '<Plug>(EasyAlign)', { noremap = false })
+-- NOTE: need remap=true because of <Plug>
+map('x', 'ga', '<Plug>(EasyAlign)', { remap = true })
+map('n', 'ga', '<Plug>(EasyAlign)', { remap = true })
 
 -- Q enters ex mode by default, so let's bind it to gq instead
 -- (as suggested by :h gq)
-map('n', 'Q', 'gq', { noremap = false })
-map('v', 'Q', 'gq', { noremap = false })
+map('n', 'Q', 'gq', { remap = true })
+map('v', 'Q', 'gq', { remap = true })
 
 -- replace :bdelete with sayonara
 map('c', 'bd', 'Sayonara!')
