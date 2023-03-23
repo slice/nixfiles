@@ -12,6 +12,46 @@ let
   };
 in {
   config = lib.mkIf (!server && pkgs.stdenv.isLinux) {
+    # Since we're applying an overlay, make sure we build the patch and make
+    # the resulting, patched binary available. The system `swaylock` won't have
+    # it.
+    home.packages = [ pkgs.swaylock ];
+
+    services.swayidle = let lockCommand = "${pkgs.swaylock}/bin/swaylock";
+    in {
+      enable = true;
+      events = [
+        {
+          event = "before-sleep";
+          command = lockCommand;
+        }
+        {
+          event = "lock";
+          command = lockCommand;
+        }
+      ];
+      timeouts = let minutes = minutes: minutes * 60;
+      in [
+        {
+          timeout = minutes 3;
+          command = lockCommand;
+        }
+        {
+          timeout = minutes 10;
+          command = ''swaymsg "output * power off"'';
+          resumeCommand = ''swaymsg "output * power on"'';
+        }
+      ];
+    };
+
+    programs.swaylock.settings = {
+      color = "#808080";
+      font = "PT Sans";
+      font-size = 24;
+      show-failed-attempts = true;
+      show-keyboard-layout = true;
+    };
+
     wayland.windowManager.sway = {
       enable = true;
 

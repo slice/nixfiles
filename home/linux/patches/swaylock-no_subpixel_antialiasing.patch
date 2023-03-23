@@ -1,0 +1,16 @@
+diff --git a/render.c b/render.c
+index b7febc1..bca1c56 100644
+--- a/render.c
++++ b/render.c
+@@ -82,9 +82,8 @@ void render_frame_background(struct swaylock_surface *surface) {
+ static void configure_font_drawing(cairo_t *cairo, struct swaylock_state *state,
+ 		enum wl_output_subpixel subpixel, int arc_radius) {
+ 	cairo_font_options_t *fo = cairo_font_options_create();
+-	cairo_font_options_set_hint_style(fo, CAIRO_HINT_STYLE_FULL);
+-	cairo_font_options_set_antialias(fo, CAIRO_ANTIALIAS_SUBPIXEL);
+-	cairo_font_options_set_subpixel_order(fo, to_cairo_subpixel_order(subpixel));
++	cairo_font_options_set_hint_style(fo, CAIRO_HINT_STYLE_SLIGHT);
++	cairo_font_options_set_antialias(fo, CAIRO_ANTIALIAS_GRAY);
+ 
+ 	cairo_set_font_options(cairo, fo);
+ 	cairo_select_font_face(cairo, state->args.font,

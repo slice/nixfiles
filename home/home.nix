@@ -74,6 +74,15 @@ in {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  nixpkgs.overlays = [
+    (self: super: {
+      swaylock = super.swaylock.overrideAttrs (prev: {
+        patches = (prev.patches or [ ])
+          ++ [ ./linux/patches/swaylock-no_subpixel_antialiasing.patch ];
+      });
+    })
+  ];
+
   home = {
     packages = if server then packagesets.base else packagesets.everything;
 
