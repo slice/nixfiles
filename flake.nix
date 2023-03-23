@@ -22,7 +22,7 @@
 
   outputs = { self, darwin, nixpkgs, home-manager, fenix, ... }@inputs:
     (let
-      hm = { system, server ? false, username ? "slice"
+      hm = { system, specialArgs ? { }, username ? "slice"
         , homeDirectory ? "/home/slice" }:
         home-manager.lib.homeManagerConfiguration {
           modules = [
@@ -33,24 +33,39 @@
               home.homeDirectory = homeDirectory;
             })
           ];
-          pkgs = nixpkgs.legacyPackages.${system};
-          extraSpecialArgs = { inherit server; };
+
+          # I think importing `nixpkgs` here is bad, but we need unfree
+          # packages, so ... *grumble grumble*
+          pkgs = import nixpkgs {
+            config.allowUnfree = true;
+            inherit system;
+          };
+
+          extraSpecialArgs = specialArgs;
         };
     in {
       packages = {
         x86_64-linux.homeConfigurations.slice = hm {
           system = "x86_64-linux";
-          server = true;
+          specialArgs.server = true;
         };
 
         aarch64-linux.homeConfigurations.slice = hm {
           system = "aarch64-linux";
-          server = true;
+          specialArgs.server = true;
+        };
+
+        aarch64-linux.homeConfigurations.asahi = hm {
+          system = "aarch64-linux";
+          specialArgs.server = false;
         };
 
         aarch64-darwin.homeConfigurations.slice = hm {
           system = "aarch64-darwin";
-          server = false;
+          specialArgs = {
+            server = false;
+            customFFmpeg = true;
+          };
           homeDirectory = "/Users/slice";
         };
       };

@@ -1,4 +1,4 @@
-{ config, pkgs, specialArgs, ... }:
+{ config, lib, pkgs, specialArgs, ... }:
 
 let
   server = specialArgs.server;
@@ -25,6 +25,7 @@ let
       fd
       tmux
       cachix
+      unzip
 
       # i edit nix files regularly on all of my machines, and having formatting
       # everywhere is nice
@@ -48,11 +49,14 @@ let
 
     # video/audio
     multimedia = [
-      (ffmpeg_5.override {
-        # we want libfdk-aac for (allegedly) nice, high-quality aac encoding
-        withFdkAac = true;
-        withUnfree = true;
-      })
+      (if (specialArgs.customFFmpeg or false) then
+        (ffmpeg_5.override {
+          # we want libfdk-aac for (allegedly) nice, high-quality aac encoding
+          withFdkAac = true;
+          withUnfree = true;
+        })
+      else
+        ffmpeg_5)
       sox
       imagemagick
       mpv
@@ -64,8 +68,8 @@ let
     everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
   };
 in {
-  imports = [ ./neovim ./fish.nix ./git.nix ]
-    ++ (if !server then [ ./hh3.nix ] else [ ]);
+  imports = [ ./neovim ./fish.nix ./git.nix ./linux ]
+    ++ (lib.optional (!server) ./hh3.nix);
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -75,17 +79,11 @@ in {
 
     sessionVariables = {
       EDITOR = textEditor;
-    } // (pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
+    } // (lib.optionalAttrs pkgs.stdenv.isDarwin {
       # when using git, use the system ssh so we can get keychain integration
       GIT_SSH = "/usr/bin/ssh";
     });
   };
-
-  # needed for unfree packages :-)
-  nixpkgs.config.allowUnfree = true;
-  # for some reason, home-manager doesn't accept `allowUnfree = true;`
-  # see: https://github.com/nix-community/home-manager/issues/2942
-  nixpkgs.config.allowUnfreePredicate = (pkg: true);
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
