@@ -1,4 +1,4 @@
-{ config, pkgs, lib, specialArgs, ... }:
+{ config, pkgs, lib, server, ... }:
 
 let
   mocu-xcursor =
@@ -33,7 +33,7 @@ let
         '';
       });
 in {
-  config = lib.mkIf (!specialArgs.server && pkgs.stdenv.isLinux) {
+  config = lib.mkIf (!server && pkgs.stdenv.isLinux) {
     home.pointerCursor = {
       package = pkgs.callPackage mocu-xcursor { };
       name = "Mocu-White-Right";

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, specialArgs, ... }:
+{ config, pkgs, lib, server, ... }:
 
 let
   palette = {
@@ -11,7 +11,7 @@ let
     darkGray = "#262626";
   };
 in {
-  config = lib.mkIf (!specialArgs.server && pkgs.stdenv.isLinux) {
+  config = lib.mkIf (!server && pkgs.stdenv.isLinux) {
     wayland.windowManager.sway = {
       enable = true;
 
