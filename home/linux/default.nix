@@ -1,18 +1,9 @@
 { config, lib, pkgs, specialArgs, ... }:
 
 {
-  imports = [ ./sway.nix ];
+  imports = [ ./sway.nix ./cursor.nix ];
 
   config = lib.mkIf (!specialArgs.server && pkgs.stdenv.isLinux) {
-    home.pointerCursor = {
-      package = pkgs.callPackage ./cursor.nix { };
-      name = "Mocu-White-Right";
-      size = 64;
-
-      x11.enable = true;
-      gtk.enable = true;
-    };
-
     fonts.fontconfig.enable = true;
 
     programs.firefox = {
