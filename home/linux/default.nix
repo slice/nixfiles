@@ -1,58 +1,14 @@
-{ config, lib, pkgs, specialArgs, ... }:
+{ config, lib, pkgs, server, ... }:
 
 {
-  imports = [ ./sway.nix ./cursor.nix ];
+  imports = [ ./sway.nix ./cursor.nix ./firefox.nix ];
 
-  config = lib.mkIf (!specialArgs.server && pkgs.stdenv.isLinux) {
-    fonts.fontconfig.enable = true;
-
-    programs.firefox = {
-      enable = true;
-      profiles.default = {
-        search = {
-          default = "Google";
-          engines = {
-            "Nix Packages" = {
-              urls = [{
-                template = "https://search.nixos.org/packages";
-                params = [
-                  {
-                    name = "type";
-                    value = "packages";
-                  }
-                  {
-                    name = "query";
-                    value = "{searchTerms}";
-                  }
-                ];
-              }];
-
-              icon =
-                "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-              definedAliases = [ "@np" ];
-            };
-            "Bing".metaData.hidden = true;
-            "Amazon.com".metaData.hidden = true;
-            "eBay".metaData.hidden = true;
-          };
-
-          force = true;
-          order = [ "Google" "DuckDuckGo" ];
-        };
-        settings = let mouseWheelMultiplier = 30;
-        in {
-          "mousewheel.default.delta_multiplier_x" = mouseWheelMultiplier;
-          "mousewheel.default.delta_multiplier_y" = mouseWheelMultiplier;
-          "mousewheel.default.delta_multiplier_z" = mouseWheelMultiplier;
-          "browser.compactmode.show" = true;
-        };
-      };
-    };
-
+  config = lib.mkIf (!server && pkgs.stdenv.isLinux) {
     home.packages = with pkgs; [
       # desktop applications
       gimp
       pinta
+
       (let
         pristineXdgOpen = runCommandWith {
           name = "pristine-xdg-open";
@@ -103,6 +59,7 @@
       source-code-pro
     ];
 
+    fonts.fontconfig.enable = true;
     xdg.configFile."fontconfig/fonts.conf".source = ./fonts.conf;
   };
 }
