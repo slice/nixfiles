@@ -62,8 +62,8 @@
               :root {
                 --font-code: "Inconsolata" !important;
                 --font-japanese: "M PLUS 1", "Mplus 1p" !important;
-                --font-primary: "PT Sans", "M PLUS 1", "Mplus 1p" !important;
-                --font-display: "PT Sans", "M PLUS 1", sans-serif !important;
+                --font-primary: "Lato", "M PLUS 1", "Mplus 1p" !important;
+                --font-display: "Lato", "M PLUS 1", sans-serif !important;
                 --font-headline: "ABC Ginto Nord","M PLUS 1",sans-serif !important;
               }
 

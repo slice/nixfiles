@@ -33,6 +33,11 @@ M.banned_patterns = { '^/nix/store/', '%.cargo/registry', 'node_modules/' }
 
 -- we patch lspconfig.util.bufname_valid to call this
 function M.bufname_banned(bufname)
+  -- HACK, tbh
+  if vim.g.LSP_DONT_ATTACH then
+    return true
+  end
+
   for _, banned_pattern in ipairs(M.banned_patterns) do
     if bufname:find(banned_pattern) then
       -- vim.api.nvim_echo({ { string.format('(>_>)o not attaching LSP; matched %s', banned_pattern) } }, true, {})

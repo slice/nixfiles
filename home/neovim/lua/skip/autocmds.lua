@@ -51,6 +51,7 @@ local tweaks = {
     link('DiagnosticHint Float'),
     link('DiagnosticInfo Conditional'),
     hi('CmpItemKindDefault guifg=#a97070'),
+    hi('Comment gui=italic'),
     hi('WinSeparator guifg=#656565 guibg=#333233'),
     hi('SpellBad guifg=#d9d9d9 guibg=#730b00 gui=underline'),
   },

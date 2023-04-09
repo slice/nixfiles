@@ -28,7 +28,36 @@ require('packer').startup(function()
   use({
     'echasnovski/mini.nvim',
     config = function()
-      require('mini.jump').setup()
+      local jump = require('mini.jump')
+      jump.setup({
+        mappings = {
+          repeat_jump = '',
+        },
+      })
+
+      -- Use more conservative mappings that match closely with vim's existing
+      -- motions. I'm not sure why mini.jump decides to remap ; but not ,. It
+      -- makes ; repeat the last jump, but in the direction that was last used
+      -- (!). Remap them so they work identically (?) to vanilla ; and ,
+      -- (always working either forwards or backwards).
+      --
+      -- stylua: ignore start
+      local function jump_forwards() jump.jump(nil) end
+      local function jump_backwards()
+        local backward = jump.state.backward
+        jump.jump(nil, not backward)
+        -- The jump we just did updated the state, so preserve the backward
+        -- state from before.
+        jump.state.backward = backward
+      end
+      vim.keymap.set('n', ';', jump_forwards, { desc = "Repeat jump (same direction)" })
+      vim.keymap.set('x', ';', jump_forwards, { desc = "Repeat jump (same direction)" })
+      vim.keymap.set('o', ';', jump_forwards, { desc = "Repeat jump (same direction)" })
+      vim.keymap.set('n', ',', jump_backwards, { desc = "Repeat jump (the other direction)" })
+      vim.keymap.set('x', ',', jump_backwards, { desc = "Repeat jump (the other direction)" })
+      vim.keymap.set('o', ',', jump_backwards, { desc = "Repeat jump (the other direction)" })
+      -- stylua: ignore end
+
       require('mini.jump2d').setup({
         allowed_lines = {
           blank = false,
@@ -38,6 +67,7 @@ require('packer').startup(function()
           fold = true,
         },
       })
+
       require('mini.surround').setup()
       require('mini.trailspace').setup()
       require('mini.pairs').setup()
