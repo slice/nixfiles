@@ -13,12 +13,11 @@
         exts = {
           pinnedDMs = {
             enabled = true;
-            options.pinned = [
-              "896923292013834260"
-              "896562285596778547"
-              "723796426827759647"
-              "939928912710991953"
-            ];
+            options.pinned = [ "896562285596778547" "939928912710991953" ];
+          };
+          volumeLimit = {
+            enabled = true;
+            options.limit = 500;
           };
           customRinging = {
             enabled = true;
@@ -141,7 +140,8 @@
           "inviteToNowhere"
           "timeBarAllActivities"
           "hiddenProfileColors"
-          "volumeLimit"
+          "arbitraryVoiceMessages"
+          "antiDelete"
         ];
       };
     };

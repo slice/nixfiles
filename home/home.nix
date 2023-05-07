@@ -34,7 +34,7 @@ let
 
     # language runtimes, compilers, etc.
     languages = [
-      nodejs-slim
+      nodejs_20
       python310
       llvmPackages_12.llvm
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
@@ -44,8 +44,7 @@ let
     ];
 
     # tools to help with programming
-    tooling =
-      [ nodePackages.npm nodePackages.prettier shellcheck stylua nix-diff ];
+    tooling = [ nodePackages.prettier shellcheck stylua nix-diff ];
 
     # video/audio
     multimedia = [
