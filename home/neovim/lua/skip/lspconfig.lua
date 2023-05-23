@@ -52,6 +52,8 @@ nls.setup({
     nls.builtins.formatting.stylua,
     nls.builtins.formatting.black,
     nls.builtins.diagnostics.stylelint,
+    nls.builtins.diagnostics.eslint_d,
+    nls.builtins.code_actions.eslint_d,
   },
   capabilities = lsp.capabilities,
   on_attach = lsp.on_shared_attach,

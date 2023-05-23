@@ -7,8 +7,7 @@
       canary = {
         enable = true;
 
-        # my beloved
-        inspectAll = true;
+        inspectAll = false;
 
         exts = {
           pinnedDMs = {
@@ -57,12 +56,13 @@
           };
           css = {
             enabled = true;
-            options.cssPath = pkgs.writeText "discord.css" ''
+            options.cssPath = let mainFont = "Source Sans Pro";
+            in pkgs.writeText "discord.css" ''
               :root {
                 --font-code: "Inconsolata" !important;
                 --font-japanese: "M PLUS 1", "Mplus 1p" !important;
-                --font-primary: "Lato", "M PLUS 1", "Mplus 1p" !important;
-                --font-display: "Lato", "M PLUS 1", sans-serif !important;
+                --font-primary: "${mainFont}", "M PLUS 1", "Mplus 1p" !important;
+                --font-display: "${mainFont}", "M PLUS 1", sans-serif !important;
                 --font-headline: "ABC Ginto Nord","M PLUS 1",sans-serif !important;
               }
 

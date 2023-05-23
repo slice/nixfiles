@@ -205,8 +205,7 @@ require('packer').startup(function()
         incremental_selection = { enable = true },
       })
 
-      local ft_to_parser = require('nvim-treesitter.parsers').filetype_to_parsername
-      ft_to_parser.typescriptreact = 'tsx'
+      vim.treesitter.language.register('typescriptreact', 'tsx')
     end,
   })
 
@@ -230,6 +229,7 @@ require('packer').startup(function()
     requires = { { 'nvim-lua/popup.nvim' }, { 'nvim-lua/plenary.nvim' } },
     config = function()
       local telescope = require('telescope')
+      local fb_actions = require('telescope._extensions.file_browser.actions')
 
       vim.cmd([[highlight! link TelescopeNormal NormalFloat]])
 
@@ -267,8 +267,18 @@ require('packer').startup(function()
         },
         extensions = {
           file_browser = {
-            hidden = true,
             disable_devicons = true,
+            mappings = {
+              ['i'] = {
+                ['<s-cr>'] = fb_actions.create_from_prompt,
+                ['<c-o>'] = fb_actions.open,
+                ['<c-n>'] = fb_actions.create,
+                ['<c-r>'] = fb_actions.rename,
+                -- ['<c-m>'] = fb_actions.move,
+                ['<c-y>'] = fb_actions.copy,
+                ['<c-d>'] = fb_actions.remove,
+              },
+            },
           },
         },
       })

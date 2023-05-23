@@ -72,6 +72,12 @@ local tweaks = {
     },
   }),
   minischeme = vim.tbl_flatten({ mini_tweaks, {} }),
+  moonfly = {
+    hi('SpellBad gui=undercurl guifg=#cb8185 guisp=#cb8185'),
+    hi('SpellRare gui=undercurl guifg=#a69a53 guisp=#a69a53'),
+    hi('SpellCap gui=undercurl guifg=#739bd2 guisp=#739bd2'),
+    link('SpellLocal SpellCap'),
+  },
 }
 
 local colorscheme_tweaks_group = vim.api.nvim_create_augroup('skip_colorscheme_tweaks', {})
@@ -100,12 +106,16 @@ end
 
 autocommands('skip_hacks', {
   -- <C-x> opens splits in telescope, so we need this to be unmapped
-  { 'VimEnter', { pattern = '*', command = 'silent! iunmap <c-x><c-a>' } },
+  {
+    'VimEnter',
+    { pattern = '*', command = 'silent! iunmap <c-x><c-a>', desc = 'Unmaps <c-x><c->a for Telescope' },
+  },
 })
 
 autocommands('skip_filetypes', {
   -- enable spellchecking in git commits
   { 'FileType', { pattern = 'gitcommit', command = 'setlocal spell formatoptions=tn | normal ] ' } },
+  { 'BufReadPost', { pattern = '*.md,*.mdx', command = 'setlocal spell' } },
 })
 
 autocommands('skip_yanking', {

@@ -55,7 +55,7 @@ map('n', '<leader>lp', '<cmd>lua require"telescope".extensions.trampoline.trampo
 map('n', '<leader>lh', '<cmd>Telescope help_tags<CR>')
 map('n', '<leader>lt', '<cmd>Telescope builtin<CR>')
 map('n', '<leader>lg', '<cmd>Telescope live_grep<CR>')
-map('n', '<leader>lb', '<cmd>Telescope file_browser<CR>')
+map('n', '<leader>n', '<cmd>Telescope file_browser<CR>')
 map('n', '<leader>lc', '<cmd>Telescope colorscheme<CR>')
 map('n', '<leader>lls', '<cmd>Telescope lsp_workspace_symbols<CR>')
 map('n', '<leader>lld', '<cmd>Telescope diagnostics<CR>')

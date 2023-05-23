@@ -29,7 +29,7 @@ opt.statusline = [[%c,%l/%L %f%H %r%m%=%y (%P)]]
 opt.shada = [['1000]] -- remember 1,000 oldfiles
 opt.undodir = vim.fn.stdpath('data') .. '/undo'
 opt.undofile = true
-opt.scrolloff = 10
+opt.scrolloff = 5
 
 -- blending is extremely important! how will i get work done without it?
 local blend = 10
