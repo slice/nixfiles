@@ -115,6 +115,20 @@ in {
       # don't let the inherited environment clobber our preferred EDITOR,
       # because that's annoying as hell
       set --erase --global EDITOR; true
+
+      # kitty terminal integration (not using home-manager's management of that
+      # here because we aren't managing kitty with it atm, and we need to do this
+      # in the first place because kitty doesn't seem to autodetect fish when
+      # we call it straight from ~/.nix-profile)
+      if set -q KITTY_INSTALLATION_DIR
+        set --global KITTY_SHELL_INTEGRATION enabled
+        source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
+        set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
+      end
+
+      if command -q kitty
+        alias ssh="kitty +kitten ssh"
+      end
     '';
 
     functions = {

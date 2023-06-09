@@ -56,7 +56,7 @@
           };
           css = {
             enabled = true;
-            options.cssPath = let mainFont = "Source Sans Pro";
+            options.cssPath = let mainFont = "Lato";
             in pkgs.writeText "discord.css" ''
               :root {
                 --font-code: "Inconsolata" !important;

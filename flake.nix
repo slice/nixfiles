@@ -70,6 +70,6 @@
         };
       };
 
-      darwinConfigurations.dewey = (import ./hosts/dewey.nix) inputs;
+      darwinConfigurations.plata = (import ./hosts/dewey.nix) inputs;
     });
 }

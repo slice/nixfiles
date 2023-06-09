@@ -70,7 +70,6 @@ require('packer').startup(function()
 
       require('mini.surround').setup()
       require('mini.trailspace').setup()
-      require('mini.pairs').setup()
     end,
   })
 

@@ -8,6 +8,13 @@ end
 vim.cmd([[highlight default link InlayHint Comment]])
 vim.cmd([[highlight default link RustToolsInlayHint InlayHint]])
 
+local moonfly_spelling = {
+  hi('SpellBad gui=undercurl guifg=#cb8185 guisp=#cb8185'),
+  hi('SpellRare gui=undercurl guifg=#a69a53 guisp=#a69a53'),
+  hi('SpellCap gui=undercurl guifg=#739bd2 guisp=#739bd2'),
+  link('SpellLocal SpellCap'),
+}
+
 local mini_tweaks = {
   hi('Comment gui=italic'),
   hi('DiagnosticHint guifg=#70a1cd guibg=#254258'),
@@ -15,7 +22,6 @@ local mini_tweaks = {
   hi('DiagnosticError guifg=#cd7073 guibg=#3d2828'),
   hi('DiagnosticUnderlineError gui=undercurl guisp=#cd7073'),
   hi('DiagnosticSignError guifg=#cd7073 guibg=#324747'),
-  hi('SpellBad guifg=#ed9597 gui=underline'),
 }
 
 local tweaks = {
@@ -63,6 +69,7 @@ local tweaks = {
   },
   minicyan = vim.tbl_flatten({
     mini_tweaks,
+    moonfly_spelling,
     {
       hi('InlayHint guifg=#467374'),
       hi('LspCodeLens guibg=#3c6364'),
@@ -71,13 +78,8 @@ local tweaks = {
       link('@variable.python Normal'),
     },
   }),
-  minischeme = vim.tbl_flatten({ mini_tweaks, {} }),
-  moonfly = {
-    hi('SpellBad gui=undercurl guifg=#cb8185 guisp=#cb8185'),
-    hi('SpellRare gui=undercurl guifg=#a69a53 guisp=#a69a53'),
-    hi('SpellCap gui=undercurl guifg=#739bd2 guisp=#739bd2'),
-    link('SpellLocal SpellCap'),
-  },
+  minischeme = vim.tbl_flatten({ mini_tweaks, moonfly_spelling }),
+  moonfly = moonfly_spelling,
 }
 
 local colorscheme_tweaks_group = vim.api.nvim_create_augroup('skip_colorscheme_tweaks', {})

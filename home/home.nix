@@ -26,6 +26,7 @@ let
       tmux
       cachix
       unzip
+      gallery-dl
 
       # i edit nix files regularly on all of my machines, and having formatting
       # everywhere is nice

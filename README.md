@@ -16,7 +16,7 @@ environment.
 ## Contents
 
 This repository is a [flake][flakes]. Right now, I export the main configuration
-for my Mac through the `darwinConfigurations.dewey` output. I have elected not
+for my Mac through the `darwinConfigurations.plata` output. I have elected not
 to publish my NixOS configurations here (for now).
 
 My home-manager configuration is exported as
@@ -25,7 +25,7 @@ My home-manager configuration is exported as
 
 - [`home/`](https://github.com/slice/nixfiles/tree/main/home): home-manager
   configuration. My "dotfiles".
-- [`darwin/`](https://github.com/slice/nixfiles/tree/main/darwin): nix-darwin
-  configuration. Doesn't do much.
+- [`hosts/`](https://github.com/slice/nixfiles/tree/main/hosts): nix-darwin
+  configurations. Doesn't do terribly much.
 
 [flakes]: https://nixos.wiki/wiki/Flakes
