@@ -45,6 +45,8 @@ local tweaks = {
     link('DiagnosticWarn Repeat'),
     link('DiagnosticError Error'),
     link('DiagnosticInfo Number'),
+    link('diffRemoved DiffText'),
+    link('diffAdded DiffAdd'),
   },
   melange = {
     hi('LineNr guifg=#70645b'),

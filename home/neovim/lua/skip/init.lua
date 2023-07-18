@@ -26,6 +26,6 @@ require('skip.mappings')
 require('skip.autocmds')
 
 vim.opt.background = 'dark'
-vim.cmd([[colorscheme minicyan]])
+vim.cmd([[colorscheme zenburn]])
 
 require('skip.assimilate')
