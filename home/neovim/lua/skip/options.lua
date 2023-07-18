@@ -9,7 +9,7 @@ opt.ignorecase = true
 opt.inccommand = 'nosplit'
 opt.pumheight = 20
 opt.list = true
-opt.listchars = { tab = '> ', trail = '·', nbsp = '+' }
+opt.listchars = { tab = '> ', trail = '·', nbsp = '+', precedes = '<', extends = '>' }
 opt.modeline = true
 opt.mouse = 'a'
 opt.swapfile = false
@@ -21,6 +21,8 @@ opt.wrap = false
 opt.number = true
 opt.relativenumber = true
 opt.splitright = true
+opt.sidescroll = 5
+opt.showbreak = '>'
 opt.sidescrolloff = 10
 -- don't give the intro message and file editing messages
 opt.shortmess:append('I')
