@@ -175,6 +175,7 @@ require('packer').startup(function()
   use('ziglang/zig.vim')
   use('fatih/vim-go')
   use('neovimhaskell/haskell-vim')
+  use('projectfluent/fluent.vim')
 
   -- }}}
 
@@ -325,6 +326,7 @@ require('packer').startup(function()
   -- lsp progress ui
   use({
     'j-hui/fidget.nvim',
+    tag = 'legacy',
     config = function()
       require('fidget').setup({
         text = { spinner = 'dots_scrolling' },
