@@ -30,8 +30,8 @@ require('packer').startup(function()
     config = function()
       local jump = require('mini.jump')
       jump.setup({
-        mappings = {
-          repeat_jump = '',
+        delay = {
+          idle_stop = 1000 * 8,
         },
       })
 
@@ -40,9 +40,10 @@ require('packer').startup(function()
       -- makes ; repeat the last jump, but in the direction that was last used
       -- (!). Remap them so they work identically (?) to vanilla ; and ,
       -- (always working either forwards or backwards).
-      --
-      -- stylua: ignore start
-      local function jump_forwards() jump.jump(nil) end
+
+      local function jump_forwards()
+        jump.jump(nil)
+      end
       local function jump_backwards()
         local backward = jump.state.backward
         jump.jump(nil, not backward)
@@ -50,13 +51,24 @@ require('packer').startup(function()
         -- state from before.
         jump.state.backward = backward
       end
-      vim.keymap.set('n', ';', jump_forwards, { desc = "Repeat jump (same direction)" })
-      vim.keymap.set('x', ';', jump_forwards, { desc = "Repeat jump (same direction)" })
-      vim.keymap.set('o', ';', jump_forwards, { desc = "Repeat jump (same direction)" })
-      vim.keymap.set('n', ',', jump_backwards, { desc = "Repeat jump (the other direction)" })
-      vim.keymap.set('x', ',', jump_backwards, { desc = "Repeat jump (the other direction)" })
-      vim.keymap.set('o', ',', jump_backwards, { desc = "Repeat jump (the other direction)" })
-      -- stylua: ignore end
+      vim.keymap.set('n', ';', jump_forwards, { desc = 'Repeat jump (same direction)' })
+      vim.keymap.set('x', ';', jump_forwards, { desc = 'Repeat jump (same direction)' })
+      vim.keymap.set('o', ';', jump_forwards, { desc = 'Repeat jump (same direction)' })
+      vim.keymap.set('n', ',', jump_backwards, { desc = 'Repeat jump (the other direction)' })
+      vim.keymap.set('x', ',', jump_backwards, { desc = 'Repeat jump (the other direction)' })
+      vim.keymap.set('o', ',', jump_backwards, { desc = 'Repeat jump (the other direction)' })
+
+      local original_smart_jump = jump.smart_jump
+      jump.smart_jump = function(...)
+        -- Always smash the jumping state (make "smart jump" no longer smart);
+        -- we always want to enter a new character to jump to when pressing f,
+        -- F, t, or T. I'm "patching" the function because I don't _have_ to
+        -- remap these keys like I did with the "repeat jump" ones, and there's
+        -- some "make_expr_jump" weirdness that I'd rather avoid touching
+        -- if possible (although I sorta am already).
+        jump.state.jumping = false
+        original_smart_jump(...)
+      end
 
       require('mini.jump2d').setup({
         allowed_lines = {
@@ -79,7 +91,6 @@ require('packer').startup(function()
       local popterm = require('popterm')
       popterm.config.window_height = 0.8
       popterm.config.win_opts = { border = 'none' }
-      vim.cmd([[highlight! link PopTermLabel WildMenu]])
     end,
   })
 
@@ -102,10 +113,17 @@ require('packer').startup(function()
     end,
   })
 
+  use({
+    'phha/zenburn.nvim',
+    config = function()
+      -- automatically activates the colorscheme, so uncomment when using:
+      -- require('zenburn').setup()
+    end,
+  })
+
   for _, colorscheme in ipairs({
     'slice/bubblegum2',
     'junegunn/seoul256.vim',
-    'jnurmine/Zenburn',
     'bluz71/vim-moonfly-colors',
     'bluz71/vim-nightfly-guicolors',
     'itchyny/landscape.vim',
@@ -202,7 +220,10 @@ require('packer').startup(function()
           'yaml',
         },
         highlight = { enable = true },
-        incremental_selection = { enable = true },
+        incremental_selection = {
+          enable = true,
+          keymaps = { init_selection = '\\', node_incremental = '\\', node_decremental = '<bs>' },
+        },
       })
 
       vim.treesitter.language.register('typescriptreact', 'tsx')
@@ -230,8 +251,6 @@ require('packer').startup(function()
     config = function()
       local telescope = require('telescope')
       local fb_actions = require('telescope._extensions.file_browser.actions')
-
-      vim.cmd([[highlight! link TelescopeNormal NormalFloat]])
 
       -- a custom, compact layout strategy that mimics @norcalli's fuzzy finder
       local layout_strategies = require('telescope.pickers.layout_strategies')
@@ -313,12 +332,14 @@ require('packer').startup(function()
 
       util._patched = true
 
-      local _original_bufname_valid = util.bufname_valid
+      local original_bufname_valid = util.bufname_valid
+
+      -- some day, this'll break ...
       function util.bufname_valid(bufname)
-        if skip_lsp.bufname_banned(bufname) then
+        if not skip_lsp.attach_allowed(bufname) then
           return false
         end
-        return _original_bufname_valid(bufname)
+        return original_bufname_valid(bufname)
       end
     end,
   })

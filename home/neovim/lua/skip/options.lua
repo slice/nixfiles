@@ -1,5 +1,6 @@
 local opt = vim.opt
 
+opt.title = true
 opt.colorcolumn = { 81, 121 }
 opt.completeopt = { 'menu', 'menuone', 'noselect' }
 opt.cursorline = true

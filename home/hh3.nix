@@ -102,9 +102,9 @@
           "inviteToNowhere"
           "timeBarAllActivities"
           "hiddenProfileColors"
-          "arbitraryVoiceMessages"
           "antiDelete"
           "mediaMosaicTweaks"
+          "greentext"
         ];
       };
     };

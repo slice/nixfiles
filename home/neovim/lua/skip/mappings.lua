@@ -2,9 +2,6 @@ vim.g.mapleader = ' '
 
 local map = vim.keymap.set
 
--- have i_CTRL-U make the previous word uppercase instead
-map('i', '<c-u>', '<esc>gUiwea')
-
 function POPTERM_TOGGLE()
   if IS_POPTERM() then
     -- if we're currently inside a popterm, just hide it

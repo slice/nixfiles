@@ -2,7 +2,8 @@
 
 { darwin, home-manager, fenix, nixpkgs, ... }:
 
-darwin.lib.darwinSystem {
+let filthyPkgs = import nixpkgs { config.allowUnfree = true; };
+in darwin.lib.darwinSystem {
   system = "aarch64-darwin";
   modules = [
     ({ ... }: {
@@ -27,8 +28,9 @@ darwin.lib.darwinSystem {
       system.stateVersion = 4;
     })
 
+    # we need the raw flake input here
     (import ../modules/nix.nix { inherit nixpkgs; })
     (import ../modules/fenix.nix { inherit fenix; })
   ];
-  inputs = { pkgs = nixpkgs; };
+  inputs = { pkgs = filthyPkgs; };
 }

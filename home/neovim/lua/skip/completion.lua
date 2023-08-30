@@ -1,5 +1,7 @@
 local cmp = require('cmp')
 
+-- TODO: move these out, they need to be applied by default but not override
+-- colorschemes that actually define colors for these
 vim.cmd([[
   highlight! link CmpItemKindDefault SpecialKey
   highlight! link CmpItemAbbrMatch Function

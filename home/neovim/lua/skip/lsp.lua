@@ -22,7 +22,9 @@ function M.setup_lsp_buf(client, bufnr)
   map_buf('n', 'K', vim.lsp.buf.hover)
   map_buf('n', '<leader>la', vim.lsp.buf.code_action)
   map_buf('n', '<leader>lr', vim.lsp.buf.rename)
-  map_buf('n', '<leader>lf', vim.lsp.buf.format)
+  map_buf('n', '<leader>lf', function()
+    vim.lsp.buf.format({ timeout_ms = 1000 * 6 })
+  end)
   map_buf('n', '<leader>lz', vim.lsp.codelens.run)
   vim.cmd(
     [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float(nil, { scope = "line", source = "if_many", focusable = false, focus = false })]]
@@ -30,28 +32,36 @@ function M.setup_lsp_buf(client, bufnr)
 end
 
 M.banned_patterns = { '^/nix/store/', '%.cargo/registry', 'node_modules/' }
+M.noattach_key = 'LSP_NOATTACH'
 
 -- we patch lspconfig.util.bufname_valid to call this
-function M.bufname_banned(bufname)
-  -- HACK, tbh
-  if vim.g.LSP_DONT_ATTACH then
-    return true
+function M.attach_allowed(bufname)
+  -- i'd add some cute messages here, but this function can be called more than
+  -- once and i don't want to trigger the hit-enter-prompt
+
+  if
+    vim.g[M.noattach_key] == 1
+    or vim.b[M.noattach_key] == 1
+    or vim.t[M.noattach_key] == 1
+    or vim.w[M.noattach_key] == 1
+  then
+    return false
   end
 
   for _, banned_pattern in ipairs(M.banned_patterns) do
     if bufname:find(banned_pattern) then
-      -- vim.api.nvim_echo({ { string.format('(>_>)o not attaching LSP; matched %s', banned_pattern) } }, true, {})
-      return true
+      return false
     end
   end
-  return false
+
+  return true
 end
 
 -- this function should be passed to `on_attach` when setting up all language
 -- servers!
 function M.on_shared_attach(client, bufnr)
   vim.api.nvim_echo(
-    { { string.format('(>_>)o LSP %s (ID: %s) attached to bufnr: %d', client.name, client.id, bufnr) } },
+    { { string.format('(^_^)/ LSP %s (ID: %s) attached to bufnr %d', client.name, client.id, bufnr) } },
     true,
     {}
   )

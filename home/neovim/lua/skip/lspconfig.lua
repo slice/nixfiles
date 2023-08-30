@@ -58,6 +58,6 @@ nls.setup({
   capabilities = lsp.capabilities,
   on_attach = lsp.on_shared_attach,
   should_attach = function(bufnr)
-    return not lsp.bufname_banned(vim.api.nvim_buf_get_name(bufnr))
+    return lsp.attach_allowed(vim.api.nvim_buf_get_name(bufnr))
   end,
 })

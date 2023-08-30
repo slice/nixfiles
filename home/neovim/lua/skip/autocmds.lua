@@ -25,6 +25,10 @@ local mini_tweaks = {
 }
 
 local tweaks = {
+  ['*'] = {
+    link('TelescopeNormal NormalFloat'),
+    link('PopTermLabel WildMenu'),
+  },
   bubblegum2 = {
     link('MatchParen LineNr'),
     link('TelescopeMatching IncSearch'),
@@ -47,6 +51,7 @@ local tweaks = {
     link('DiagnosticInfo Number'),
     link('diffRemoved DiffText'),
     link('diffAdded DiffAdd'),
+    hi('Error guifg=#e37170 guibg=#3d3535'),
   },
   melange = {
     hi('LineNr guifg=#70645b'),
@@ -131,6 +136,7 @@ local lang_indent_settings = {
   scss = { width = 2, with = 'spaces' },
   sass = { width = 2, with = 'spaces' },
   cabal = { width = 4, with = 'spaces' },
+  fluent = { width = 2, with = 'spaces' },
 }
 
 local indentation_tweaks_group = vim.api.nvim_create_augroup('skip_indentation_tweaks', {})
