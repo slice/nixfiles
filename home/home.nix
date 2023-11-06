@@ -74,6 +74,11 @@ in {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
   nixpkgs.overlays = [
     (self: super: {
       swaylock = super.swaylock.overrideAttrs (prev: {

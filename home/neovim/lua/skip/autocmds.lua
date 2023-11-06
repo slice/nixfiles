@@ -5,9 +5,6 @@ local function link(cmd)
   return 'highlight! link ' .. cmd
 end
 
-vim.cmd([[highlight default link InlayHint Comment]])
-vim.cmd([[highlight default link RustToolsInlayHint InlayHint]])
-
 local moonfly_spelling = {
   hi('SpellBad gui=undercurl guifg=#cb8185 guisp=#cb8185'),
   hi('SpellRare gui=undercurl guifg=#a69a53 guisp=#a69a53'),
@@ -64,6 +61,7 @@ local tweaks = {
     link('DiagnosticHint Float'),
     link('DiagnosticInfo Conditional'),
     hi('CmpItemKindDefault guifg=#a97070'),
+    hi('LspInlayHint gui=italic guifg=#808080'),
     hi('Comment gui=italic'),
     hi('WinSeparator guifg=#656565 guibg=#333233'),
     hi('SpellBad guifg=#d9d9d9 guibg=#730b00 gui=underline'),
@@ -78,7 +76,7 @@ local tweaks = {
     mini_tweaks,
     moonfly_spelling,
     {
-      hi('InlayHint guifg=#467374'),
+      hi('LspInlayHint guifg=#467374'),
       hi('LspCodeLens guibg=#3c6364'),
       -- Most tokens onscreen are going to be `@variable`s, and we don't want to
       -- highlight all of them. It's visually noisy.

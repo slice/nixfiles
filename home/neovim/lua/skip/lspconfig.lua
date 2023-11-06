@@ -24,25 +24,28 @@ lspconfig.pyright.setup({
   on_attach = lsp.on_shared_attach,
 })
 
--- now handled by rust-tools.nvim (see plugins.lua)
---
--- lspconfig.rust_analyzer.setup({
---   capabilities = lsp.capabilities,
---   on_attach = lsp.on_shared_attach,
---   settings = {
---     ['rust-analyzer'] = {
---       imports = {
---         granularity = {
---           group = 'module',
---         },
---         prefix = 'crate',
---       },
---       procMacro = {
---         enable = true,
---       },
---     },
---   },
--- })
+lspconfig.hls.setup({
+  filetypes = { 'haskell', 'lhaskell', 'cabal' },
+  on_attach = lsp.on_shared_attach,
+})
+
+lspconfig.rust_analyzer.setup({
+  capabilities = lsp.capabilities,
+  on_attach = lsp.on_shared_attach,
+  settings = {
+    ['rust-analyzer'] = {
+      imports = {
+        granularity = {
+          group = 'module',
+        },
+        prefix = 'crate',
+      },
+      procMacro = {
+        enable = true,
+      },
+    },
+  },
+})
 
 nls.setup({
   sources = {

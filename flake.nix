@@ -70,6 +70,6 @@
         };
       };
 
-      darwinConfigurations.fruitcake = (import ./hosts/dewey.nix) inputs;
+      darwinConfigurations.vantage = (import ./hosts/vantage.nix) inputs;
     });
 }

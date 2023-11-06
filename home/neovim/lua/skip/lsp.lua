@@ -17,6 +17,7 @@ function M.setup_lsp_buf(client, bufnr)
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
   vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
+  vim.lsp.inlay_hint(0, true) -- :O]
 
   map_buf('n', '<c-]>', vim.lsp.buf.definition)
   map_buf('n', 'K', vim.lsp.buf.hover)

@@ -97,5 +97,9 @@ map('v', 'fp', ":'<,'>diffput<CR>")
 map('v', 'fo', ":'<,'>diffget<CR>")
 
 -- vsnip
-map('i', '<C-h>', "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-h>'", { noremap = false, expr = true })
-map('i', '<C-l>', "vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'", { noremap = false, expr = true })
+local vsnip_modes = { 'i', 's' }
+-- remap for <Plug>, don't replace keycodes since expr (?)
+local vsnip_opts = { remap = true, expr = true, replace_keycodes = false }
+
+map(vsnip_modes, '<C-h>', "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''", vsnip_opts)
+map(vsnip_modes, '<C-l>', "vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : ''", vsnip_opts)

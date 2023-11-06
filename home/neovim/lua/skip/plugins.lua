@@ -133,59 +133,6 @@ require('packer').startup(function()
     use({ colorscheme })
   end
 
-  -- language "tools" {{{
-
-  use({
-    'MrcJkb/haskell-tools.nvim',
-    tag = '1.4.2',
-    requires = { 'neovim/nvim-lspconfig', 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
-    config = function()
-      local ht = require('haskell-tools')
-      local lsp = require('skip.lsp')
-
-      ht.setup({
-        hls = {
-          on_attach = function(client, bufnr)
-            lsp.on_shared_attach(client, bufnr)
-            local opts = { buffer = bufnr }
-            vim.keymap.set('n', '<leader>hs', ht.hoogle.hoogle_signature, opts)
-            vim.keymap.set('n', '<leader>hr', ht.repl.toggle, opts)
-            vim.keymap.set('n', '<leader>hb', function()
-              ht.repl.toggle(vim.api.nvim_buf_get_name(0))
-            end, opts)
-            vim.keymap.set('n', '<leader>hq', ht.repl.quit, opts)
-          end,
-        },
-      })
-    end,
-  })
-
-  use({
-    'simrat39/rust-tools.nvim',
-    config = function()
-      local rt = require('rust-tools')
-      local lsp = require('skip.lsp')
-
-      rt.setup({
-        server = {
-          capabilities = lsp.capabilities,
-          on_attach = function(client, bufnr)
-            lsp.on_shared_attach(client, bufnr)
-          end,
-        },
-        tools = {
-          inlay_hints = {
-            parameter_hints_prefix = '← ',
-            other_hints_prefix = '→ ',
-            highlight = 'RustToolsInlayHint',
-          },
-        },
-      })
-    end,
-  })
-
-  -- }}}
-
   -- "rudimentary" language support {{{
 
   use('LnL7/vim-nix')
@@ -194,6 +141,7 @@ require('packer').startup(function()
   use('fatih/vim-go')
   use('neovimhaskell/haskell-vim')
   use('projectfluent/fluent.vim')
+  use('keith/swift.vim')
 
   -- }}}
 
@@ -217,6 +165,7 @@ require('packer').startup(function()
           'tsx',
           'javascript',
           'vim',
+          'markdown',
           'yaml',
         },
         highlight = { enable = true },
@@ -230,15 +179,15 @@ require('packer').startup(function()
     end,
   })
 
-  use({
-    'romgrk/nvim-treesitter-context',
-    config = function()
-      require('treesitter-context').setup({
-        enable = true,
-        max_lines = 5,
-      })
-    end,
-  })
+  -- use({
+  --   'romgrk/nvim-treesitter-context',
+  --   config = function()
+  --     require('treesitter-context').setup({
+  --       enable = true,
+  --       max_lines = 5,
+  --     })
+  --   end,
+  -- })
 
   -- }}}
 

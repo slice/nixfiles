@@ -9,12 +9,16 @@ vim.cmd([[
 ]])
 
 cmp.setup({
-  -- completion = {
-  --   completeopt = 'menu,menuone,noinsert'
-  -- },
   formatting = {
-    fields = { 'abbr', 'kind' },
+    fields = { 'abbr' },
     format = function(entry, vim_item)
+      local max = 40
+      if vim_item.abbr:len() > max then
+        vim_item.abbr = vim_item.abbr:sub(0, max) .. '…'
+      end
+      -- nuke these, these seem to still affect the window width
+      vim_item.menu = ''
+      vim_item.kind = ''
       return vim_item
     end,
   },
@@ -29,23 +33,13 @@ cmp.setup({
     { { name = 'path' }, { name = 'calc' } }
   ),
   mapping = {
-    ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-    ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-    -- ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<Tab>'] = cmp.mapping.confirm({ select = true }),
-    -- ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-  },
-  experimental = {
-    -- ghost_text = {},
   },
 })
 
 cmp.setup.cmdline({ '/', '?' }, {
   mapping = cmp.mapping.preset.cmdline(),
   sources = { { name = 'buffer' } },
-})
-
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({ { name = 'path' }, { name = 'cmdline' } }),
 })

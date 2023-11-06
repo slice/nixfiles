@@ -37,7 +37,7 @@
             options.cssPath = let mainFont = "Lato";
             in pkgs.writeText "discord.css" ''
               :root {
-                --font-code: "Inconsolata" !important;
+                --font-code: "PragmataPro" !important;
                 --font-japanese: "M PLUS 1", "Mplus 1p" !important;
                 --font-primary: "${mainFont}", "M PLUS 1", "Mplus 1p" !important;
                 --font-display: "${mainFont}", "M PLUS 1", sans-serif !important;
@@ -56,7 +56,7 @@
               code,
               .hljs {
                 font-family: var(--font-code) !important;
-                font-size: 16px !important;
+                font-size: 14px !important;
               }
             '';
           };
@@ -78,7 +78,6 @@
           "inspect"
           "sentrynerf"
           "pseudoscience"
-          "noVoice"
           "loadingScreen"
           "createEmoji"
           "copyAvatarUrl"
@@ -94,11 +93,9 @@
           "fixmentions"
           "imageUrls"
           "noconmsg"
-          "timeInCall"
           "panic"
           "noJoinMessageWave"
           "tardid"
-          "typingAvatars"
           "inviteToNowhere"
           "timeBarAllActivities"
           "hiddenProfileColors"
