@@ -42,6 +42,7 @@ in {
       gpl = "git pull"; # (not the license)
       grh = "git reset HEAD";
       gs = "git show";
+      gsw = "git switch";
       gl = "git log";
       grm = "git rm";
       gb = "git branch";
@@ -137,6 +138,10 @@ in {
 
         sox $argv[1] -n spectrogram -o "$path"
         and open "$path"
+      '';
+
+      autocommit = ''
+        git commit -a -m (date)
       '';
 
       fish_greeting = "";

@@ -3,9 +3,11 @@ local nls = require('null-ls')
 local lspconfig = require('lspconfig')
 
 vim.diagnostic.config({
-  virtual_text = true,
   -- make warnings and errors appear over hints
   severity_sort = true,
+  float = {
+    header = nil,
+  },
 })
 
 lspconfig.tsserver.setup({

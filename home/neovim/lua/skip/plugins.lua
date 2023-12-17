@@ -20,7 +20,6 @@ require('packer').startup(function()
   use('tpope/vim-afterimage')      -- edit images, pdfs, and plists
   use('mhinz/vim-sayonara')        -- close buffers more intuitively
   use('Konfekt/vim-CtrlXA')        -- superpowers for <C-X> & <C-A>
-  use('AndrewRadev/splitjoin.vim') -- splitting and joining stuff
   use('airblade/vim-rooter')       -- cding to project roots
   use('romainl/vim-cool')          -- automatically :nohlsearch
   -- stylua: ignore end
@@ -82,6 +81,8 @@ require('packer').startup(function()
 
       require('mini.surround').setup()
       require('mini.trailspace').setup()
+      require('mini.splitjoin').setup()
+      require('mini.move').setup()
     end,
   })
 
@@ -257,12 +258,9 @@ require('packer').startup(function()
   })
 
   -- file browser for telescope
-  use({
-    'nvim-telescope/telescope-file-browser.nvim',
-  })
+  use('nvim-telescope/telescope-file-browser.nvim')
 
-  -- bespoke project navigator
-  use('slice/telescope-trampoline.nvim')
+  use('~/src/prj/telescope-trampoline.nvim')
 
   -- }}}
 

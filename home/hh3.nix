@@ -99,7 +99,6 @@
           "inviteToNowhere"
           "timeBarAllActivities"
           "hiddenProfileColors"
-          "antiDelete"
           "mediaMosaicTweaks"
           "greentext"
         ];

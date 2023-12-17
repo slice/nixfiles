@@ -64,7 +64,7 @@ local tweaks = {
     hi('LspInlayHint gui=italic guifg=#808080'),
     hi('Comment gui=italic'),
     hi('WinSeparator guifg=#656565 guibg=#333233'),
-    hi('SpellBad guifg=#d9d9d9 guibg=#730b00 gui=underline'),
+    hi('SpellBad guifg=#d9d9d9 guibg=#4f3333 gui=underline'),
   },
   everforest = {
     hi('TelescopeSelection guibg=#506168'),

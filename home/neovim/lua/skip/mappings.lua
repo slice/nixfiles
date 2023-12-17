@@ -61,6 +61,7 @@ map('n', '<leader>llr', '<cmd>Telescope lsp_references<CR>')
 -- vimrc; https://learnvimscriptthehardway.stevelosh.com/chapters/08.html
 -- map('n', '<leader>ve', "bufname('%') == '' ? '<cmd>edit $MYVIMRC<CR>' : '<cmd>vsplit $MYVIMRC<CR>'", { expr = true })
 map('n', '<leader>ve', '<cmd>Telescope find_files cwd=~/src/prj/nixfiles/home/neovim<CR>')
+map('n', '<leader>vn', '<cmd>Telescope find_files cwd=~/src/prj/nixfiles<CR>')
 map('n', '<leader>vs', '<cmd>vsplit | terminal hm-switch<CR>')
 -- map('n', '<leader>ve', '<cmd>edit ~/src/prj/nixfiles/home/neovim<CR>')
 

@@ -35,7 +35,6 @@ let
 
     # language runtimes, compilers, etc.
     languages = [
-      nodejs_20
       python310
       llvmPackages_12.llvm
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
