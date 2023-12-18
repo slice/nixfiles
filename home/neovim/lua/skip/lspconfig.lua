@@ -6,7 +6,7 @@ vim.diagnostic.config({
   -- make warnings and errors appear over hints
   severity_sort = true,
   float = {
-    header = nil,
+    header = '',
   },
 })
 

@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, specialArgs, ... }:
 
 let
   lua = code: ''
@@ -32,12 +32,15 @@ let
 in {
   programs.neovim = {
     enable = true;
-    extraConfig = "lua require('skip')";
+    extraConfig = lua "require('skip')";
     plugins = [ pkgs.vimPlugins.packer-nvim ];
   };
 
-  home.file.".config/nvim/colors".source = ./colors;
-  home.file.".config/nvim/lua".source = ./lua;
+  home.file.".config/nvim/lua".source = if (specialArgs.ergonomic or false) then
+    config.lib.file.mkOutOfStoreSymlink
+    ("${specialArgs.ergonomicRepoLocation}/home/neovim/lua")
+  else
+    ./lua;
 
   nixpkgs.overlays = [ overlay ];
 

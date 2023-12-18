@@ -60,14 +60,22 @@
           specialArgs.server = false;
         };
 
-        aarch64-darwin.homeConfigurations.slice = hm {
-          system = "aarch64-darwin";
-          specialArgs = {
-            server = false;
-            customFFmpeg = true;
+        aarch64-darwin.homeConfigurations.slice =
+          let homeDirectory = "/Users/slice";
+          in hm {
+            system = "aarch64-darwin";
+            specialArgs = {
+              server = false;
+              # build FFmpeg with libfdk-aac support
+              customFFmpeg = true;
+
+              # create out of store symlinks for neovim's configuration files
+              # for faster editing
+              ergonomic = true;
+              ergonomicRepoLocation = "${homeDirectory}/src/prj/nixfiles";
+            };
+            homeDirectory = homeDirectory;
           };
-          homeDirectory = "/Users/slice";
-        };
       };
 
       darwinConfigurations.vantage = (import ./hosts/vantage.nix) inputs;
