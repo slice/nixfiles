@@ -5,12 +5,13 @@ opt.breakindent = true
 opt.colorcolumn = { 81, 121 }
 opt.completeopt = { 'menu', 'menuone', 'noselect' }
 opt.cursorline = true
-opt.cursorlineopt = { 'number' }
 opt.diffopt:append({ 'linematch:60' })
+opt.hidden = false
 opt.guicursor:append({ 'a:blinkwait1000', 'a:blinkon1000', 'a:blinkoff1000' })
 opt.ignorecase = true
 opt.inccommand = 'nosplit'
 opt.pumheight = 20
+opt.jumpoptions = 'view'
 opt.list = true
 opt.listchars = { tab = '> ', trail = '·', nbsp = '+', precedes = '<', extends = '>' }
 opt.modeline = true
@@ -27,12 +28,10 @@ opt.splitright = true
 opt.sidescroll = 5
 opt.showbreak = '>'
 opt.sidescrolloff = 10
--- don't give the intro message and file editing messages
-opt.shortmess:append('I')
 opt.smartcase = true
-opt.statusline = [[%c,%l/%L %f%H %r%m%=%y (%P)]]
+opt.statusline = [[%f%H %r%m%=%y %c,%l/%L (%P)]]
+opt.timeoutlen = 500
 opt.shada = [['1000]] -- remember 1,000 oldfiles
-opt.undodir = vim.fn.stdpath('data') .. '/undo'
 opt.undofile = true
 opt.scrolloff = 5
 
@@ -41,7 +40,7 @@ local blend = 10
 opt.pumblend = blend
 opt.winblend = blend
 
--- actual tabs are 8 spaces long ...
+-- render real tabs as being 8 spaces wide ...
 opt.tabstop = 8
 
 -- ... but indent with 2 sapces

@@ -10,30 +10,20 @@ vim.diagnostic.config({
   },
 })
 
-lspconfig.tsserver.setup({
-  capabilities = lsp.capabilities,
-  on_attach = function(client, bufnr)
-    lsp.on_shared_attach(client, bufnr)
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
-  end,
-})
-
 lspconfig.sourcekit.setup({})
+
+lspconfig.lua_ls.setup({})
 
 lspconfig.pyright.setup({
   capabilities = lsp.capabilities,
-  on_attach = lsp.on_shared_attach,
 })
 
 lspconfig.hls.setup({
   filetypes = { 'haskell', 'lhaskell', 'cabal' },
-  on_attach = lsp.on_shared_attach,
 })
 
 lspconfig.rust_analyzer.setup({
   capabilities = lsp.capabilities,
-  on_attach = lsp.on_shared_attach,
   settings = {
     ['rust-analyzer'] = {
       imports = {
@@ -51,17 +41,14 @@ lspconfig.rust_analyzer.setup({
 
 nls.setup({
   sources = {
-    nls.builtins.formatting.prettier,
-    nls.builtins.formatting.nixfmt,
+    -- nls.builtins.formatting.prettier,
+    -- ahggggghhhhhh
     nls.builtins.diagnostics.shellcheck,
-    nls.builtins.formatting.stylua,
-    nls.builtins.formatting.black,
     nls.builtins.diagnostics.stylelint,
     nls.builtins.diagnostics.eslint_d,
     nls.builtins.code_actions.eslint_d,
   },
   capabilities = lsp.capabilities,
-  on_attach = lsp.on_shared_attach,
   should_attach = function(bufnr)
     return lsp.attach_allowed(vim.api.nvim_buf_get_name(bufnr))
   end,

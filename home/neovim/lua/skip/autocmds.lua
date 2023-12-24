@@ -1,5 +1,7 @@
+local autocmds = require('skip.utils').autocmds
+
 local function hi(cmd)
-  return 'highlight!' .. cmd
+  return 'highlight! ' .. cmd
 end
 local function link(cmd)
   return 'highlight! link ' .. cmd
@@ -42,13 +44,20 @@ local tweaks = {
     link('TelescopeSelection Search'),
   },
   zenburn = {
-    link('TelescopeMatching ErrorMsg'),
+    hi('TelescopeMatching gui=bold guifg=#ffffe0 guibg=#284f28'),
+    link('TelescopeSelectionCaret TelescopeMatching'),
     link('DiagnosticWarn Repeat'),
     link('DiagnosticError Error'),
     link('DiagnosticInfo Number'),
     link('diffRemoved DiffText'),
     link('diffAdded DiffAdd'),
     hi('Error guifg=#e37170 guibg=#3d3535'),
+    hi('DiagnosticUnderlineError gui=undercurl'),
+    hi('DiagnosticUnderlineWarn gui=undercurl'),
+    hi('CursorLine guibg=#4a2724'),
+    hi('StatusLine gui=bold'),
+    hi('CursorLineNr gui=bold'),
+    hi('clear Label'), -- underline color is wrong in telescope??
   },
   melange = {
     hi('LineNr guifg=#70645b'),
@@ -60,11 +69,22 @@ local tweaks = {
     link('DiagnosticWarn Question'),
     link('DiagnosticHint Float'),
     link('DiagnosticInfo Conditional'),
+    hi('CursorLine guibg=#4a2724'),
     hi('CmpItemKindDefault guifg=#a97070'),
+    hi('DiffText guibg=#006978'),
+    hi('DiffAdd guibg=#366c2d'),
+    hi('DiffChange guibg=#1a525a'),
     hi('LspInlayHint gui=italic guifg=#808080'),
     hi('Comment gui=italic'),
     hi('WinSeparator guifg=#656565 guibg=#333233'),
     hi('SpellBad guifg=#d9d9d9 guibg=#4f3333 gui=underline'),
+    link('TelescopeBorder WinSeparator'),
+    -- needed for tint.nvim
+    link('NormalNC Normal'),
+    -- seoul256 relies on these being implicitly set (which is true in vanilla
+    -- vim, but not in nvim)
+    hi('StatusLine gui=reverse,bold'),
+    hi('StatusLineNC gui=reverse'),
   },
   everforest = {
     hi('TelescopeSelection guibg=#506168'),
@@ -85,9 +105,35 @@ local tweaks = {
   }),
   minischeme = vim.tbl_flatten({ mini_tweaks, moonfly_spelling }),
   moonfly = moonfly_spelling,
+  ['tokyonight'] = {
+    hi('StatusLine gui=reverse,bold'),
+    hi('TermCursor guibg=#c22125 guifg=#000000 gui=NONE'),
+    hi('TermCursorNC gui=reverse'),
+    link('DiagnosticUnnecessary Comment'),
+  },
+  default = { -- <3
+    link('NormalNC Normal'),
+    hi('StatusLine gui=reverse,bold'),
+    hi('TabLine guifg=NvimLightGrey3 guibg=NvimDarkGrey1'),
+    hi('TabLineSel gui=bold,reverse'),
+
+    link('LspInlayHint Comment'),
+    hi('DiagnosticUnderlineError gui=undercurl'),
+    hi('DiagnosticUnderlineWarn gui=undercurl'),
+
+    -- fugitive:
+    hi('fugitiveStagedModifier guifg=NvimLightGreen'),
+    hi('fugitiveUnstagedModifier guifg=NvimLightRed'),
+    link('fugitiveUntrackedModifier Comment'),
+    link('fugitiveUnstagedHeading Identifier'),
+    link('fugitiveStagedHeading Identifier'),
+    hi('fugitiveCount gui=bold'),
+    link('diffRemoved DiffDelete'),
+    link('diffAdded DiffAdd'),
+  },
 }
 
-local colorscheme_tweaks_group = vim.api.nvim_create_augroup('skip_colorscheme_tweaks', {})
+local colorscheme_tweaks_group = vim.api.nvim_create_augroup('SkipColorschemeTweaks', {})
 for colorscheme, commands in pairs(tweaks) do
   for _, command in ipairs(commands) do
     vim.api.nvim_create_autocmd(
@@ -97,21 +143,7 @@ for colorscheme, commands in pairs(tweaks) do
   end
 end
 
--- from: https://github.com/wbthomason/dotfiles/blob/5117f6d76c64baa661368e85a25ca463ff858a05/neovim/.config/nvim/lua/config/utils.lua
-local function autocommands(group_name, commands)
-  if type(commands) == 'string' then
-    commands = { commands }
-  end
-
-  local group_id = vim.api.nvim_create_augroup(group_name, {})
-
-  for _, command in ipairs(commands) do
-    command[2].group = group_id
-    vim.api.nvim_create_autocmd(unpack(command))
-  end
-end
-
-autocommands('skip_hacks', {
+autocmds('SkipHacks', {
   -- <C-x> opens splits in telescope, so we need this to be unmapped
   {
     'VimEnter',
@@ -119,13 +151,13 @@ autocommands('skip_hacks', {
   },
 })
 
-autocommands('skip_filetypes', {
+autocmds('SkipFiletypes', {
   -- enable spellchecking in git commits
   { 'FileType', { pattern = 'gitcommit', command = 'setlocal spell formatoptions=tn | normal ] ' } },
   { 'BufReadPost', { pattern = '*.md,*.mdx', command = 'setlocal spell' } },
 })
 
-autocommands('skip_yanking', {
+autocmds('SkipYanking', {
   { 'TextYankPost', { pattern = '*', command = 'silent! lua vim.highlight.on_yank()' } },
 })
 
@@ -137,7 +169,7 @@ local lang_indent_settings = {
   fluent = { width = 2, with = 'spaces' },
 }
 
-local indentation_tweaks_group = vim.api.nvim_create_augroup('skip_indentation_tweaks', {})
+local indentation_tweaks_group = vim.api.nvim_create_augroup('SkipIndentationTweaks', {})
 for extension, settings in pairs(lang_indent_settings) do
   local width = settings['width']
 
@@ -158,6 +190,43 @@ vim.api.nvim_create_autocmd(
 )
 
 -- hide line numbers in terminals
-autocommands('skip_terminal_numbers', {
+autocmds('SkipTerminalNumbers', {
   { 'TermOpen', { pattern = '*', command = 'setlocal nonumber norelativenumber' } },
+})
+
+autocmds('SkipLocalCursorline', {
+  { 'WinEnter', { pattern = '*', command = 'setlocal cursorline' } },
+  { 'WinLeave', { pattern = '*', command = 'setlocal nocursorline' } },
+})
+
+autocmds('SkipParentDirectoryCreation', {
+  {
+    { 'BufWritePre', 'FileWritePre' },
+    {
+      pattern = '*',
+      callback = function()
+        if vim.api.nvim_buf_get_name(0):find('://') then
+          return
+        end
+        vim.fn.mkdir(vim.fn.expand('<afile>:p:h'), 'p')
+      end,
+      desc = 'Automatically create parent directories when saving',
+    },
+  },
+})
+
+autocmds('SkipTelescopeCursorLine', {
+  {
+    -- this should really be BufEnter or something, but it doesn't work :(
+    'InsertEnter',
+    {
+      pattern = '*',
+      callback = function()
+        if vim.bo.filetype == 'TelescopePrompt' then
+          vim.wo.cursorline = false
+        end
+      end,
+      desc = 'Automatically disable cursorline inside of Telescope',
+    },
+  },
 })

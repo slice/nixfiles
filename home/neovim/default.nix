@@ -17,14 +17,14 @@ let
       };
     };
 
-    # nvim "0.10" (2023-12-16)
+    # nvim "0.10" (2023-12-21)
     neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs {
-      version = "0.10.0-dev-5cefec7";
+      version = "0.10.0-dev-af93a7";
 
       src = pkgs.fetchFromGitHub {
         owner = "neovim";
         repo = "neovim";
-        rev = "8f08b1efbd096850c04c2e8e2890d993bd4d9f95";
+        rev = "af93a74a0f4afa9a3a4f55ffdf28141eaf776d22";
         hash = "sha256-Kaq//79n61r4e2p5N7g0MDDdUUPOj5+NnUhtLC0k23s";
       };
     };
@@ -33,7 +33,6 @@ in {
   programs.neovim = {
     enable = true;
     extraConfig = lua "require('skip')";
-    plugins = [ pkgs.vimPlugins.packer-nvim ];
   };
 
   home.file.".config/nvim/lua".source = if (specialArgs.ergonomic or false) then

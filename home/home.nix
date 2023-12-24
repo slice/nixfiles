@@ -44,7 +44,14 @@ let
     ];
 
     # tools to help with programming
-    tooling = [ nodePackages.prettier shellcheck stylua nix-diff ];
+    tooling = [
+      nodePackages.prettier
+      shellcheck
+      stylua
+      lua-language-server
+      nix-diff
+      gh
+    ];
 
     # video/audio
     multimedia = [
