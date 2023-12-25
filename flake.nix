@@ -72,7 +72,7 @@
               # create out of store symlinks for neovim's configuration files
               # for faster editing
               ergonomic = true;
-              ergonomicRepoLocation = "${homeDirectory}/src/prj/nixfiles";
+              ergonomicRepoPath = "${homeDirectory}/src/prj/nixfiles";
             };
             homeDirectory = homeDirectory;
           };

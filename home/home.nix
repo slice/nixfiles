@@ -74,12 +74,19 @@ let
     everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
   };
 in {
-  lib.skip.ergonomic = relativeToRepo: storePath:
+  lib.skip.ergonomic = path:
     if (specialArgs.ergonomic or false) then
-      config.lib.file.mkOutOfStoreSymlink
-      "${specialArgs.ergonomicRepoLocation}/${relativeToRepo}"
+      let
+        # since we're in a flake, paths will always point inside of the Nix store
+        # regardless of whether we interpolate them or not, so just toString it
+        # and extract out the path
+        matches = (builtins.match "/nix/store/[a-zA-Z0-9_-]+/(.+)"
+          (builtins.toString path));
+        trimmedPath = builtins.head matches;
+        reconstructedPath = "${specialArgs.ergonomicRepoPath}/${trimmedPath}";
+      in config.lib.file.mkOutOfStoreSymlink reconstructedPath
     else
-      storePath;
+      path;
 
   imports = [ ./neovim ./fish.nix ./git.nix ./linux ]
     ++ (lib.optional (!server) ./hh3.nix);
@@ -112,8 +119,7 @@ in {
     });
   };
 
-  home.file.".hammerspoon".source =
-    config.lib.skip.ergonomic "home/hammerspoon" ./hammerspoon;
+  home.file.".hammerspoon".source = config.lib.skip.ergonomic ./hammerspoon;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

@@ -35,8 +35,7 @@ in {
     extraConfig = lua "require('skip')";
   };
 
-  home.file.".config/nvim/lua".source =
-    config.lib.skip.ergonomic "home/neovim/lua" ./lua;
+  home.file.".config/nvim/lua".source = config.lib.skip.ergonomic ./lua;
 
   nixpkgs.overlays = [ overlay ];
 
