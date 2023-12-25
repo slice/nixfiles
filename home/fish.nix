@@ -47,7 +47,7 @@ in {
       grm = "git rm";
       gb = "git branch";
       gcl = "git clone";
-      grs = "git restore";
+      grs = "git reset";
     } // pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
       sc = "sudo systemctl";
       scs = "sudo systemctl status";

@@ -199,15 +199,38 @@ return {
       },
       notify_on_error = false,
     },
+    keys = {
+      {
+        '<Leader>lf',
+        function()
+          require('conform').format({ timeout_ms = 3000, lsp_fallback = true })
+        end,
+        desc = 'Format buffer',
+      },
+    },
+    init = function()
+      local lsp = require('skip.lsp')
+
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        desc = 'LSP-powered automatic formatting on buffer write',
+        group = lsp.formatting_augroup,
+        callback = function(args)
+          if lsp.flag_set(lsp.noformat_key) then
+            return
+          end
+
+          require('conform').format({
+            bufnr = args.buf,
+            lsp_fallback = true,
+          })
+        end,
+      })
+    end,
   },
 
   -- notifications tray
   {
     'j-hui/fidget.nvim',
-    opts = {
-      notification = {
-        override_vim_notify = true,
-      },
-    },
+    opts = {},
   },
 }

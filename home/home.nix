@@ -74,6 +74,13 @@ let
     everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
   };
 in {
+  lib.skip.ergonomic = relativeToRepo: storePath:
+    if (specialArgs.ergonomic or false) then
+      config.lib.file.mkOutOfStoreSymlink
+      "${specialArgs.ergonomicRepoLocation}/${relativeToRepo}"
+    else
+      storePath;
+
   imports = [ ./neovim ./fish.nix ./git.nix ./linux ]
     ++ (lib.optional (!server) ./hh3.nix);
 
@@ -104,6 +111,9 @@ in {
       GIT_SSH = "/usr/bin/ssh";
     });
   };
+
+  home.file.".hammerspoon".source =
+    config.lib.skip.ergonomic "home/hammerspoon" ./hammerspoon;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

@@ -35,11 +35,8 @@ in {
     extraConfig = lua "require('skip')";
   };
 
-  home.file.".config/nvim/lua".source = if (specialArgs.ergonomic or false) then
-    config.lib.file.mkOutOfStoreSymlink
-    ("${specialArgs.ergonomicRepoLocation}/home/neovim/lua")
-  else
-    ./lua;
+  home.file.".config/nvim/lua".source =
+    config.lib.skip.ergonomic "home/neovim/lua" ./lua;
 
   nixpkgs.overlays = [ overlay ];
 

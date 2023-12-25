@@ -45,8 +45,7 @@ map({ 'v', 'n' }, ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 
 -- vimrc; https://learnvimscriptthehardway.stevelosh.com/chapters/08.html
 -- map('n', '<Leader>ve', "bufname('%') == '' ? '<cmd>edit $MYVIMRC<CR>' : '<cmd>vsplit $MYVIMRC<CR>'", { expr = true })
-map('n', '<Leader>ve', '<cmd>Telescope find_files cwd=~/src/prj/nixfiles/home/neovim<CR>')
-map('n', '<Leader>vn', '<cmd>Telescope find_files cwd=~/src/prj/nixfiles<CR>')
+map('n', '<Leader>ve', '<cmd>Telescope find_files cwd=~/src/prj/nixfiles<CR>')
 map('n', '<Leader>vs', '<cmd>vsplit | terminal hm-switch<CR>')
 -- map('n', '<Leader>ve', '<cmd>edit ~/src/prj/nixfiles/home/neovim<CR>')
 

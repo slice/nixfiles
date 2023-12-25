@@ -14,7 +14,7 @@ end
 M.noattach_key = 'LSP_NOATTACH'
 M.noformat_key = 'LSP_NOFORMAT'
 
-local function flag_set(name)
+function M.flag_set(name)
   return vim.g[name] == 1 or vim.b[name] == 1 or vim.t[name] == 1 or vim.w[name] == 1
 end
 
@@ -24,24 +24,6 @@ M.formatting_augroup = vim.api.nvim_create_augroup('SkipLspAutomaticFormatting',
 -- options
 
 function M.setup_lsp_buf(client, bufnr)
-  if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      desc = 'LSP-powered automatic formatting on buffer write',
-      group = M.formatting_augroup,
-      buffer = bufnr,
-      callback = function(args)
-        if flag_set(M.noformat_key) then
-          return
-        end
-
-        require('conform').format({
-          bufnr = bufnr,
-          lsp_fallback = true,
-        })
-      end,
-    })
-  end
-
   if client.server_capabilities.codeLensProvider then
     vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]])
   end
@@ -80,7 +62,7 @@ function M.attach_allowed(bufname)
   -- i'd add some cute messages here, but this function can be called more than
   -- once and i don't want to trigger the hit-enter-prompt
 
-  if flag_set(M.noattach_key) then
+  if M.flag_set(M.noattach_key) then
     return false
   end
 

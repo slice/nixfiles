@@ -6,7 +6,6 @@
     config = {
       canary = {
         enable = true;
-
         inspectAll = false;
 
         exts = {
@@ -27,10 +26,6 @@
           commands = {
             enabled = true;
             options.dangerMode = true;
-          };
-          imgxis = {
-            enabled = false;
-            options.smoothImage = true;
           };
           css = {
             enabled = true;
@@ -75,7 +70,6 @@
         };
 
         enabledExts = [
-          "inspect"
           "sentrynerf"
           "pseudoscience"
           "loadingScreen"
