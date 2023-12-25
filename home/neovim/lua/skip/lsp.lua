@@ -11,8 +11,6 @@ local function map_buf(mode, key, result, opts)
   )
 end
 
--- a set of flags that make it easy to toggle certain behaviors on the fly in
--- special circumstances
 M.noattach_key = 'LSP_NOATTACH'
 M.noformat_key = 'LSP_NOFORMAT'
 
@@ -20,13 +18,14 @@ local function flag_set(name)
   return vim.g[name] == 1 or vim.b[name] == 1 or vim.t[name] == 1 or vim.w[name] == 1
 end
 
-M.formatting_augroup = vim.api.nvim_create_augroup('LspAutomaticFormatting', {})
+M.formatting_augroup = vim.api.nvim_create_augroup('SkipLspAutomaticFormatting', {})
 
 -- setup a buffer with an lsp server attached with the proper mappings and
 -- options
+
 function M.setup_lsp_buf(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+    vim.api.nvim_create_autocmd('BufWritePre', {
       desc = 'LSP-powered automatic formatting on buffer write',
       group = M.formatting_augroup,
       buffer = bufnr,
@@ -48,6 +47,7 @@ function M.setup_lsp_buf(client, bufnr)
   end
 
   vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
+  vim.bo.formatexpr = '' -- reserve gq for comment formatting
 
   map_buf('n', '<c-]>', vim.lsp.buf.definition)
   map_buf('n', 'K', vim.lsp.buf.hover)
@@ -108,10 +108,9 @@ utils.autocmds('SkipLsp', {
         M.setup_lsp_buf(client, bufnr)
 
         vim.schedule(function()
-          vim.api.nvim_echo(
-            { { string.format('(^_^)/ LSP server "%s" (%d) attached to bufnr %d', client.name, client.id, bufnr) } },
-            true,
-            {}
+          vim.notify(
+            string.format('(^_^)/ LSP server "%s" (%d) attached to bufnr %d', client.name, client.id, bufnr),
+            vim.log.levels.INFO
           )
         end)
       end,

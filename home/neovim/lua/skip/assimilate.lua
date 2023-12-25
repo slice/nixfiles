@@ -1,6 +1,8 @@
-local id = vim.api.nvim_create_augroup('TerminalAssimilation', {})
+local M = {}
 
-function assimilate()
+local id = vim.api.nvim_create_augroup('SkipTerminalAssimilation', {})
+
+function M.assimilate()
   if vim.env.TERM_PROGRAM == 'iTerm.app' then
     local function set_iterm_profile(profile)
       io.write('\27]1337;SetProfile=' .. profile .. '\a')
@@ -42,7 +44,11 @@ function assimilate()
   end
 end
 
-vim.api.nvim_create_autocmd('UIEnter', {
-  group = id,
-  callback = assimilate,
-})
+function M.create_autocmd()
+  vim.api.nvim_create_autocmd('UIEnter', {
+    group = id,
+    callback = M.assimilate,
+  })
+end
+
+return M

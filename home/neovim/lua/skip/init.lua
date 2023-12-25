@@ -7,11 +7,26 @@ if vim.o.shell:find('bash%-interactive') then
 end
 
 require('skip.options')
-require('skip.plugin_options')
 require('skip.mappings')
-require('skip.plugins')
-require('skip.lspconfig')
-require('skip.completion')
+
+-- bootstrap lazy
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable', -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require('lazy').setup('skip.plugins', {
+  dev = { path = '~/src/prj' },
+})
+
 require('skip.autocmds')
 
 vim.api.nvim_create_autocmd('User', {
@@ -32,4 +47,4 @@ vim.api.nvim_create_autocmd('User', {
 
 vim.cmd([[colorscheme seoul256]])
 
-require('skip.assimilate')
+require('skip.assimilate').create_autocmd()
