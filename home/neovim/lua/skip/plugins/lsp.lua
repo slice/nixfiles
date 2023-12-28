@@ -37,6 +37,8 @@ return {
         capabilities = lsp.capabilities,
       })
 
+      lsc.astro.setup({})
+
       lsc.sourcekit.setup({})
 
       lsc.lua_ls.setup({

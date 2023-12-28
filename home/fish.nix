@@ -196,13 +196,11 @@ in {
           set prompt_color 'red'
         end
 
-        set prompt_pwd (prompt_pwd)
-
-        printf '%s%s%s%s ' \
-          $prompt_pwd \
-          (set_color $prompt_color) \
-          $prompt_character \
-          (set_color normal)
+        set_color --reverse
+        printf '%s' (prompt_pwd)
+        set_color normal
+        set_color $prompt_color --bold
+        printf '%s ' $prompt_character
       '';
 
       fish_right_prompt = ''
