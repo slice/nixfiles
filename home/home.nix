@@ -106,6 +106,20 @@ in {
           ++ [ ./linux/patches/swaylock-no_subpixel_antialiasing.patch ];
       });
     })
+
+    # incorporate 9ce730064c4 - not sure why this isn't on unstable :thinking:
+    # remove when merged
+    (self: super: {
+      x264 = super.x264.overrideAttrs (prev: {
+        postPatch = ''
+          patchShebangs .
+        ''
+          # Darwin uses `llvm-strip`, which results in a crash at runtime in assembly-based routines when `-x` is specified.
+          + lib.optionalString pkgs.stdenv.isDarwin ''
+            substituteInPlace Makefile --replace '$(if $(STRIP), $(STRIP) -x $@)' '$(if $(STRIP), $(STRIP) -S $@)'
+          '';
+      });
+    })
   ];
 
   home = {

@@ -85,6 +85,7 @@ local tweaks = {
     -- vim, but not in nvim)
     hi('StatusLine gui=reverse,bold'),
     hi('StatusLineNC gui=reverse'),
+    hi('TabLineFill guibg=#333233'),
   },
   everforest = {
     hi('TelescopeSelection guibg=#506168'),
