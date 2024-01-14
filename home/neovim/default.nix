@@ -17,15 +17,15 @@ let
       };
     };
 
-    # nvim "0.10" (2023-12-21)
+    # nvim "0.10" (2023-12-29)
     neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs {
-      version = "0.10.0-dev-af93a7";
+      version = "0.10.0-dev-dd00b6b4";
 
       src = pkgs.fetchFromGitHub {
         owner = "neovim";
         repo = "neovim";
-        rev = "af93a74a0f4afa9a3a4f55ffdf28141eaf776d22";
-        hash = "sha256-Kaq//79n61r4e2p5N7g0MDDdUUPOj5+NnUhtLC0k23s";
+        rev = "dd00b6b442a6d3a8a4758b0ee10ac93d07e7db72";
+        hash = "sha256-b3iDPyFJDAhjepPm8swqd1AKd6TtuCjVGr/IweS7Mx0=";
       };
     };
   });
@@ -36,6 +36,7 @@ in {
   };
 
   home.file.".config/nvim/lua".source = config.lib.skip.ergonomic ./lua;
+  home.file.".config/nvim/colors".source = config.lib.skip.ergonomic ./colors;
 
   nixpkgs.overlays = [ overlay ];
 

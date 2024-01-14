@@ -25,6 +25,9 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup('skip.plugins', {
   dev = { path = '~/src/prj' },
+  change_detection = {
+    notify = false,
+  },
 })
 
 require('skip.autocmds')
@@ -45,6 +48,6 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
-vim.cmd([[colorscheme seoul256]])
+vim.cmd([[colorscheme skipbones]])
 
 require('skip.assimilate').create_autocmd()

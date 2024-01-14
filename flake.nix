@@ -67,7 +67,7 @@
             specialArgs = {
               server = false;
               # build FFmpeg with libfdk-aac support
-              customFFmpeg = false;
+              customFFmpeg = true;
 
               # create out of store symlinks for neovim's configuration files
               # for faster editing

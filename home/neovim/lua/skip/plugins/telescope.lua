@@ -88,10 +88,12 @@ return {
           mappings = {
             i = {
               -- immediately close the prompt when pressing <ESC> in insert mode
-              --
-              ['<esc>'] = 'close',
-              ['<c-u>'] = false,
+              ['<Esc>'] = 'close',
+              ['<C-u>'] = false,
               ['<M-p>'] = action_layout.toggle_preview,
+            },
+            n = {
+              ['<C-w>'] = 'delete_buffer',
             },
           },
         },
@@ -102,6 +104,10 @@ return {
               ['i'] = {
                 ['<S-cr>'] = fb_actions.create_from_prompt,
                 ['<C-o>'] = fb_actions.open,
+                -- unmap <C-w> to have it delete words again, but since we're
+                -- in a prompt buffer we need to use shift
+                ['<C-w>'] = { '<C-S-w>', type = 'command' },
+                ['<C-d>'] = fb_actions.change_cwd,
               },
             },
           },

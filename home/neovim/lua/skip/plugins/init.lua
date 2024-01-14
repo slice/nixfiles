@@ -66,6 +66,7 @@ return {
 
   {
     'lukas-reineke/indent-blankline.nvim',
+    enabled = false,
     opts = {
       indent = {
         char = '│',
@@ -121,6 +122,11 @@ return {
   { 'savq/melange', lazy = true },
   { 'phha/zenburn.nvim', lazy = true },
   { 'sainnhe/everforest', lazy = true },
+  {
+    'mcchrish/zenbones.nvim',
+    priority = 1000,
+    dependencies = { 'rktjmp/lush.nvim' },
+  },
   {
     'folke/tokyonight.nvim',
     lazy = true,
@@ -195,6 +201,11 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         python = { 'isort', 'black' },
+        -- typescript = { 'prettier' },
+        -- typescriptreact = { 'prettier' },
+        -- javascript = { 'prettier' },
+        -- javascriptreact = { 'prettier' },
+        -- markdown = { 'prettier' },
         nix = { 'nixfmt' },
       },
       notify_on_error = false,
@@ -226,11 +237,5 @@ return {
         end,
       })
     end,
-  },
-
-  -- notifications tray
-  {
-    'j-hui/fidget.nvim',
-    opts = {},
   },
 }

@@ -30,18 +30,19 @@ in {
       ga = "git add";
       grb = "git rebase";
       gca = "git commit --amend";
+      gcp = "git cherry-pick";
       gc = "git commit";
       gco = "git checkout";
       gr = "git remote";
       gd = "git diff";
       gds = "git diff --staged";
       gt = "git tag";
-      gst = "git status";
+      gst = "git stash";
+      gsh = "git show";
       gp = "git push";
       gpf = "git push --force";
       gpl = "git pull"; # (not the license)
-      grh = "git reset HEAD";
-      gs = "git show";
+      gs = "git status";
       gsw = "git switch";
       gl = "git log";
       grm = "git rm";
@@ -203,6 +204,10 @@ in {
         printf '%s ' $prompt_character
       '';
 
+      fish_title = ''
+        pwd
+      '';
+
       fish_right_prompt = ''
         # set this so we can compare the value pre-command_duration (which modifies
         # it)
@@ -210,7 +215,7 @@ in {
 
         command_duration
 
-        printf '%s%s%s' (set_color magenta) (fish_git_prompt) (set_color normal)
+        printf '%s%s%s' (set_color -o cyan) (fish_git_prompt) (set_color normal)
 
         if test "$_status" -eq 0
           printf ' %s:)%s' (set_color green) (set_color normal)
