@@ -41,7 +41,7 @@ opt.sidescroll = 5
 opt.showbreak = ">"
 opt.sidescrolloff = 10
 opt.smartcase = true
-opt.statusline = [[%f%<%( %m%)%( [%R%H%W]%)%=%{v:lua.RIGHT_STATUSLINE()} %y %c,%l/%L (%P) #%n]]
+opt.statusline = [[%<%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %c,%l/%L #%n]]
 opt.timeoutlen = 500
 opt.shada = [['1000]] -- remember 1,000 oldfiles
 opt.undofile = true

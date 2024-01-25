@@ -27,9 +27,11 @@ local tweaks = {
   ["*"] = {
     link "TelescopeNormal NormalFloat",
     link "PopTermLabel WildMenu",
+    link "@type.builtin Special",
+    -- pls
     link "@string String",
     link "@boolean Boolean",
-    link "@type.builtin Special",
+    link "@operator Operator",
   },
   bubblegum2 = {
     link "MatchParen LineNr",
@@ -176,6 +178,7 @@ autocmds("SkipHacks", {
 autocmds("SkipFiletypes", {
   -- enable spellchecking in git commits
   { "FileType", { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " } },
+  { "FileType", { pattern = "typescript", command = "setlocal indentexpr=" } },
   { "BufReadPost", { pattern = "*.md,*.mdx", command = "setlocal spell" } },
 })
 
@@ -211,9 +214,8 @@ vim.api.nvim_create_autocmd(
   { group = indentation_tweaks_group, pattern = "*.sc,*.sbt", command = "setfiletype scala" }
 )
 
--- hide line numbers in terminals
-autocmds("SkipTerminalNumbers", {
-  { "TermOpen", { pattern = "*", command = "setlocal nonumber norelativenumber" } },
+autocmds("SkipTerminal", {
+  { "TermOpen", { pattern = "*", command = "setlocal nonumber norelativenumber nospell" } },
 })
 
 autocmds("SkipLocalCursorline", {

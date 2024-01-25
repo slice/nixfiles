@@ -92,28 +92,4 @@ return {
     "echasnovski/mini.move",
     config = true,
   },
-
-  {
-    "echasnovski/mini.notify",
-    opts = {
-      content = {
-        format = function(notif)
-          local time = vim.fn.strftime("%I:%M %p", math.floor(notif.ts_update))
-          local formatted = string.format("%s | %s", time, notif.msg)
-          return formatted
-        end,
-      },
-      window = {
-        config = {
-          anchor = "SE",
-          border = "rounded",
-        },
-      },
-    },
-    config = function(plugin, opts)
-      local notify = require "mini.notify"
-      notify.setup(opts)
-      vim.notify = notify.make_notify()
-    end,
-  },
 }

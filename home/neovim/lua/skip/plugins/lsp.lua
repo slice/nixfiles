@@ -109,7 +109,7 @@ return {
           -- ahggggghhhhhh
           nls.builtins.diagnostics.shellcheck,
           nls.builtins.diagnostics.stylelint,
-          -- nls.builtins.diagnostics.eslint_d,
+          nls.builtins.diagnostics.eslint_d,
           nls.builtins.code_actions.eslint_d,
         },
         capabilities = lsp.capabilities,
