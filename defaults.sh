@@ -47,3 +47,11 @@ w com.apple.dock size-immutable -bool true
 # xcode
 w com.apple.dt.Xcode DVTEnableDockIconVersionNumber -bool true
 w com.apple.dt.Xcode XcodeCloudUpsellPromptEnabled -bool false
+
+# screencapture
+w com.apple.screencapture disable-shadow -bool false
+w com.apple.screencapture target -string "clipboard"
+
+# mail
+w com.apple.mail BottomPreview -bool false
+w com.apple.mail ColumnLayoutMessageList -bool true
