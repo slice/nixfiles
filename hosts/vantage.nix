@@ -23,13 +23,13 @@ in darwin.lib.darwinSystem {
       programs.fish.enable = true;
       # zsh integration is disabled for now.
       # see: https://github.com/lnl7/nix-darwin/issues/373
-      programs.zsh.enable = false;
+      programs.zsh.enable = true;
 
       system.stateVersion = 4;
     })
 
     # we need the raw flake input here
-    (import ../modules/nix.nix { inherit nixpkgs; })
+    # (import ../modules/nix.nix { inherit nixpkgs; })
     (import ../modules/fenix.nix { inherit fenix; })
   ];
   inputs = { pkgs = filthyPkgs; };

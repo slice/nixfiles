@@ -1,31 +1,56 @@
-# nixfiles
+# `nixfiles`
 
-I manage the configuration of all of my machines with [the Nix package
-manager][nix]. Here, you'll find the code to those configurations.
+This repository houses [Nix] code that is responsible for managing the
+configuration and environment of my personal machines.
 
-[nix-darwin] and [NixOS] are used to handle the system-wide configuration of any
-Macs and Linux servers I manage, respectively. [home-manager] integrates with
-both platforms, which is used to handle user-local configuration, packages, and
-environment.
+[nix]: https://nixos.org
 
-[nixos]: https://nixos.org
-[nix]: https://github.com/NixOS/nix
-[nix-darwin]: https://github.com/LnL7/nix-darwin
-[home-manager]: https://github.com/nix-community/home-manager
+## Bringup
 
-## Contents
+> [!IMPORTANT]
+> This procedure has only been tested on Apple silicon-based Macs.
 
-This repository is a [flake][flakes]. Right now, I export the main configuration
-for my Mac through the `darwinConfigurations.plata` output. I have elected not
-to publish my NixOS configurations here (for now).
+1. Ensure that your local user metadata is correct. (This configuration
+   currently requires that your username be `slice` and your user directory be
+   `/Users/slice`. This should be made more flexible in the future.)
 
-My home-manager configuration is exported as
-`packages."<system>".homeConfigurations.slice`, which can be used with the
-`home-manager` CLI tool.
+1. Install Nix via [the Determinate Nix Installer](https://determinate.systems/posts/determinate-nix-installer):
 
-- [`home/`](https://github.com/slice/nixfiles/tree/main/home): home-manager
-  configuration. My "dotfiles".
-- [`hosts/`](https://github.com/slice/nixfiles/tree/main/hosts): nix-darwin
-  configurations. Doesn't do terribly much.
+   ```
+   curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+   ```
 
-[flakes]: https://nixos.wiki/wiki/Flakes
+   The installer will describe what it intends to do before prompting you to
+   continue. However, in general, it:
+
+   - Creates a new APFS volume to house the Nix store.
+   - Creates and registers Launch Daemons that mount the volume and spawn the Nix daemon.
+   - Downloads and unpacks Nix.
+   - Creates Nix build users and groups.
+   - Writes the necessary shell profiles to make Nix usable.
+
+   The installer detects which shell you are invoking it from and only writes
+   the environment bringup scripts necessary for that shell. Since we primarily
+   use Fish and it's likely that we are invoking this from a bare Zsh shell, a
+   [Fish plugin](https://github.com/lilyball/nix-env.fish) is used to handle
+   this for us.
+
+1. Clone this repository to `~/src/prj/nixfiles`. (As you might guess, this
+   path is _also_ hardcoded. For now. Maybe.)
+
+1. Pop open a fresh shell so the computer knows where `nix` lives. Then,
+   bootstrap `home-manager`:
+
+   ```
+   nix run home-manager/master -- switch --flake ~/src/prj/nixfiles
+   ```
+
+   (The use of `nix-darwin` is being phased out.)
+
+1. Change your shell:
+
+   ```
+   sudo chsh -s /Users/slice/.nix-profile/bin/fish slice
+   ```
+
+1. All done.

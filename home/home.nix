@@ -131,6 +131,9 @@ in {
       # when using git, use the system ssh so we can get keychain integration
       GIT_SSH = "/usr/bin/ssh";
     });
+
+    username = "slice";
+    homeDirectory = "/Users/slice";
   };
 
   home.file.".hammerspoon".source = config.lib.skip.ergonomic ./hammerspoon;

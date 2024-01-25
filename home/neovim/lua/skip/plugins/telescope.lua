@@ -5,7 +5,7 @@ return {
 
     -- TODO: upstream or fork
     -- branch = '0.1.x',
-    dev = true,
+    -- dev = true,
 
     dependencies = {
       'nvim-lua/plenary.nvim',
