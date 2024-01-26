@@ -55,3 +55,6 @@ w com.apple.screencapture target -string "clipboard"
 # mail
 w com.apple.mail BottomPreview -bool false
 w com.apple.mail ColumnLayoutMessageList -bool true
+
+# crash reporter
+w com.apple.CrashReporter UseUNC -bool true
