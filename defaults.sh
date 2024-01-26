@@ -43,6 +43,7 @@ w com.apple.dock autohide-time-modifier -float 0.25
 w com.apple.dock expose-group-apps -bool true
 w com.apple.dock mru-spaces -bool false
 w com.apple.dock size-immutable -bool true
+w com.apple.dock wvous-br-corner -int 1
 
 # xcode
 w com.apple.dt.Xcode DVTEnableDockIconVersionNumber -bool true
