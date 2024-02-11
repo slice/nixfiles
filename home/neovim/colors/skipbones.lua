@@ -20,7 +20,7 @@ local spec = lush.extends({ sb }).with(function()
     TelescopeNormal { sb.NormalFloat },
     TelescopeSelectionCaret { CursorLineNr },
 
-    StatusLine { sb.StatusLine, gui = "reverse" },
+    StatusLine { sb.StatusLine, gui = "bold, reverse" },
 
     String { sb.String, gui = "" },
     Number { sb.Number, gui = "" },
@@ -28,6 +28,8 @@ local spec = lush.extends({ sb }).with(function()
 
     TabLine { bg = sb.TabLineFill.bg },
     TabLineSel { gui = "bold, reverse" },
+
+    DirvishPathTail { sb.Statement },
   }
   --- @diagnostic enable: undefined-global
 end)

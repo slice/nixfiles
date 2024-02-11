@@ -216,7 +216,7 @@ in {
       '';
 
       fish_title = ''
-        pwd
+        prompt_pwd --dir-length=0
       '';
 
       fish_right_prompt = ''

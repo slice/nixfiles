@@ -52,6 +52,8 @@ let
       lua-language-server
       nix-diff
       gh
+      corepack_20
+      nodejs_20
     ];
 
     # video/audio
@@ -138,6 +140,7 @@ in {
   };
 
   home.file.".hammerspoon".source = config.lib.skip.ergonomic ./hammerspoon;
+  home.file.".prettierrc.json".source = ./prettierrc.json;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

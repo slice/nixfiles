@@ -179,6 +179,7 @@ autocmds("SkipFiletypes", {
   -- enable spellchecking in git commits
   { "FileType", { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " } },
   { "FileType", { pattern = "typescript", command = "setlocal indentexpr=" } },
+  { "FileType", { pattern = "dirvish,man,text", command = "setlocal nospell" } },
   { "BufReadPost", { pattern = "*.md,*.mdx", command = "setlocal spell" } },
 })
 

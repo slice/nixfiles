@@ -133,9 +133,9 @@ return {
           includeCompletionsForModuleExports = true,
           quotePreference = "single",
         },
-        tsserver_format_options = {
-          semicolons = "remove",
-        },
+        -- tsserver_format_options = {
+        --   semicolons = "remove",
+        -- },
       },
     },
   },

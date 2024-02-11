@@ -69,6 +69,7 @@ return {
         draw = {
           animation = indentscope.gen_animation.none(),
         },
+        symbol = "┊",
       }
     end,
   },

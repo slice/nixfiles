@@ -13,6 +13,7 @@ w() {
 # appearance
 wg AppleReduceDesktopTinting -bool true
 wg AppleInterfaceStyleSwitchesAutomatically -bool true
+wg AppleScrollerPagingBehavior -bool true
 
 # keyboard
 wg ApplePressAndHoldEnabled -bool false
@@ -31,6 +32,11 @@ wg AppleShowAllExtensions -bool true
 w com.apple.finder _FXSortFoldersFirst -bool true
 w com.apple.finder NewWindowTarget -string "PfHm" # home folder
 w com.apple.finder FXEnableExtensionChangeWarning -bool false
+w com.apple.finder ShowHardDrivesOnDesktop -bool false
+w com.apple.finder ShowExternalHardDrivesOnDesktop -bool false
+w com.apple.finder ShowMountedServersOnDesktop -bool true
+w com.apple.finder ShowRemovableMediaOnDesktop -bool false
+w com.apple.finder ShowRecentTags -bool false
 
 # dock
 w com.apple.dock show-recents -bool false
@@ -50,7 +56,7 @@ w com.apple.dt.Xcode DVTEnableDockIconVersionNumber -bool true
 w com.apple.dt.Xcode XcodeCloudUpsellPromptEnabled -bool false
 
 # screencapture
-w com.apple.screencapture disable-shadow -bool false
+w com.apple.screencapture disable-shadow -bool true
 w com.apple.screencapture target -string "clipboard"
 
 # mail
@@ -59,3 +65,6 @@ w com.apple.mail ColumnLayoutMessageList -bool true
 
 # crash reporter
 w com.apple.CrashReporter UseUNC -bool true
+
+# preview
+w com.apple.preview PVImageSizeSizeUnit -int 0
