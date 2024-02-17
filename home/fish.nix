@@ -125,10 +125,6 @@ in {
       set fish_pager_color_progress normal --background=brblack
       # fish_pager_color_secondary
 
-      # don't let the inherited environment clobber our preferred EDITOR,
-      # because that's annoying as hell
-      set --erase --global EDITOR; true
-
       # kitty terminal integration (not using home-manager's management of that
       # here because we aren't managing kitty with it atm, and we need to do this
       # in the first place because kitty doesn't seem to autodetect fish when

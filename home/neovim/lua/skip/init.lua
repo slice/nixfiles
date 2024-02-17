@@ -1,53 +1,53 @@
 -- skip's neovim 0.10 config
 -- <o_/ <o_/ *quack quack*
 
-if vim.o.shell:find('bash%-interactive') then
+if vim.o.shell:find "bash%-interactive" then
   -- If we're running inside of nix-shell, force $SHELL to be fish.
-  vim.o.shell = '/run/current-system/sw/bin/fish'
+  vim.o.shell = "/run/current-system/sw/bin/fish"
 end
 
-require('skip.options')
-require('skip.mappings')
+require "skip.options"
+require "skip.mappings"
 
 -- bootstrap lazy
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    'git',
-    'clone',
-    '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable', -- latest stable release
+  vim.fn.system {
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
     lazypath,
-  })
+  }
 end
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup('skip.plugins', {
-  dev = { path = '~/src/prj' },
+require("lazy").setup("skip.plugins", {
+  dev = { path = "~/src/prj" },
   change_detection = {
     notify = false,
   },
 })
 
-require('skip.autocmds')
+require "skip.autocmds"
 
-vim.api.nvim_create_autocmd('User', {
-  pattern = 'LazyVimStarted',
-  desc = 'Present some lovely ducks (and startup statistics)',
+vim.api.nvim_create_autocmd("User", {
+  pattern = "LazyVimStarted",
+  desc = "Present some lovely ducks (and startup statistics)",
   callback = function()
-    local stats = require('lazy').stats()
+    local stats = require("lazy").stats()
     local message = ([[\_o> ♥ ♥ ♥ <o_/ loaded %d/%d plugins in %dms]]):format(
       stats.loaded,
       stats.count,
       stats.startuptime
     )
     vim.api.nvim_echo({
-      { message, 'DiffAdd' },
+      { message, "DiffAdd" },
     }, true, {})
   end,
 })
 
-vim.cmd([[colorscheme skipbones]])
+vim.cmd [[colorscheme minicyan]]
 
-require('skip.assimilate').create_autocmd()
+require("skip.assimilate").create_autocmd()

@@ -54,6 +54,7 @@ let
       gh
       corepack_20
       nodejs_20
+      bun
     ];
 
     # video/audio
