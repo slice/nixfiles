@@ -180,7 +180,10 @@ autocmds("SkipFiletypes", {
   { "FileType", { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " } },
   { "FileType", { pattern = "typescript", command = "setlocal indentexpr=" } },
   { "FileType", { pattern = "dirvish,man,text", command = "setlocal nospell" } },
-  { "BufReadPost", { pattern = "*.md,*.mdx", command = "setlocal spell" } },
+  -- swift interpolations look like "\(...)", and we want text objects and
+  -- motions involving parens to not think they're escaped
+  { "FileType", { pattern = "swift", command = "setl cpo+=M" } },
+  { "BufReadPost", { pattern = "*.md,*.mdx", command = "setlocal spell | setf markdown" } },
 })
 
 autocmds("SkipYanking", {

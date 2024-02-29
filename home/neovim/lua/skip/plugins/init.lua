@@ -1,4 +1,4 @@
--- vim: set fdm=marker:
+-- vim: set fdm=marker fdl=1:
 
 -- N.B. using VeryLazy smashes the UI on startup for some reason
 -- (i.e. echo output and :intro gets cleared off)
@@ -197,6 +197,8 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     lazy = false,
+    -- too slow with swift tree-sitter
+    enabled = false,
     config = function()
       require("treesitter-context").setup {}
     end,
@@ -219,11 +221,12 @@ return {
       formatters_by_ft = {
         lua = { "stylua" },
         python = { "isort", "black" },
-        -- typescript = { "prettier" },
-        -- typescriptreact = { "prettier" },
-        -- javascript = { "prettier" },
-        -- javascriptreact = { "prettier" },
+        typescript = { "prettier" },
+        typescriptreact = { "prettier" },
+        javascript = { "prettier" },
+        javascriptreact = { "prettier" },
         markdown = { "prettier" },
+        css = { "prettier" },
         nix = { "nixfmt" },
       },
       notify_on_error = false,
@@ -241,14 +244,22 @@ return {
       local lsp = require "skip.lsp"
 
       vim.api.nvim_create_autocmd("BufWritePre", {
-        desc = "LSP-powered automatic formatting on buffer write",
+        desc = "Automatic formatting on buffer write",
         group = lsp.formatting_augroup,
         callback = function(args)
           if lsp.flag_set(lsp.noformat_key) then
             return
           end
 
-          require("conform").format {
+          local conform = require "conform"
+
+          if lsp.flag_set "LSP_FORMATTING_ONLY" then
+            vim.lsp.buf.format { bufnr = args.buf }
+            return
+            -- return conform.format { bufnr = args.buf, lsp_fallback = "always", formatters = {} }
+          end
+
+          conform.format {
             bufnr = args.buf,
             lsp_fallback = true,
           }

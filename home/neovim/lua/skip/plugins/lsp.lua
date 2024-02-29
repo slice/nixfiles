@@ -48,6 +48,38 @@ return {
 
       lsc.astro.setup {}
 
+      lsc.eslint.setup {}
+
+      lsc.cssls.setup {}
+
+      lsc.html.setup {}
+
+      lsc.bashls.setup {}
+
+      -- xcrun -sdk macosx --find sourcekit-lsp
+      vim.system({ "xcrun", "-sdk", "macosx", "--find", "sourcekit-lsp" }, { system = true }, function(object)
+        if object.code ~= 0 then
+          return
+        end
+        vim.schedule(function()
+          local path = vim.trim(object.stdout)
+
+          -- sourcekit-lsp only ever indicates "(" as being a trigger character
+          -- via dynamic registration, but nvim-cmp doesn't seem to like it </3
+          --
+          -- local capabilities = vim.tbl_extend(
+          --   "force",
+          --   lsp.capabilities,
+          --   { textDocument = { completion = { dynamicRegistration = true } } }
+          -- )
+
+          lsc.sourcekit.setup {
+            cmd = { path },
+            -- capabilities = capabilities,
+          }
+        end)
+      end)
+
       lsc.sourcekit.setup {}
 
       lsc.lua_ls.setup {
@@ -107,10 +139,7 @@ return {
         sources = {
           -- nls.builtins.formatting.prettier,
           -- ahggggghhhhhh
-          nls.builtins.diagnostics.shellcheck,
           nls.builtins.diagnostics.stylelint,
-          nls.builtins.diagnostics.eslint_d,
-          nls.builtins.code_actions.eslint_d,
         },
         capabilities = lsp.capabilities,
         should_attach = function(bufnr)

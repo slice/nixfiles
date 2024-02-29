@@ -55,6 +55,7 @@ let
       corepack_20
       nodejs_20
       bun
+      tree-sitter
     ];
 
     # video/audio

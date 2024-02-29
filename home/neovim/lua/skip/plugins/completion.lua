@@ -1,35 +1,35 @@
 return {
   {
-    'hrsh7th/nvim-cmp',
-    event = 'InsertEnter',
+    "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
     dependencies = {
       -- completion sources
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-nvim-lsp-signature-help',
-      'hrsh7th/cmp-nvim-lua',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-calc',
-      'hrsh7th/cmp-cmdline',
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
+      "hrsh7th/cmp-nvim-lua",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-calc",
+      "hrsh7th/cmp-cmdline",
 
       -- cmp requires a snippet engine to function
       -- TODO: use built-in vim.snippet.
-      'hrsh7th/cmp-vsnip',
-      'hrsh7th/vim-vsnip',
-      'hrsh7th/vim-vsnip-integ',
+      "hrsh7th/cmp-vsnip",
+      "hrsh7th/vim-vsnip",
+      "hrsh7th/vim-vsnip-integ",
     },
     config = function()
-      local cmp = require('cmp')
+      local cmp = require "cmp"
 
       -- TODO: move these out, they need to be applied by default but not override
       -- colorschemes that actually define colors for these
-      vim.cmd([[
+      vim.cmd [[
         highlight! link CmpItemKindDefault SpecialKey
         highlight! link CmpItemAbbrMatch Function
         highlight! link CmpItemAbbrMatchFuzzy Function
-      ]])
+      ]]
 
-      cmp.setup({
+      cmp.setup {
         -- formatting = {
         --   expandable_indicator = true,
         --   fields = { 'abbr' },
@@ -46,23 +46,27 @@ return {
         -- },
         snippet = {
           expand = function(args)
-            vim.fn['vsnip#anonymous'](args.body)
+            vim.fn["vsnip#anonymous"](args.body)
           end,
         },
         sources = cmp.config.sources(
           -- be aggressive with resolving math expression, because sometimes
           -- the lsp source takes precedence
-          { { name = 'calc' } },
-          { { name = 'nvim_lsp' }, { name = 'nvim_lsp_signature_help' }, { name = 'vsnip' } },
-          { { name = 'nvim_lua' }, { name = 'buffer' } },
-          { { name = 'path' } }
+          { { name = "calc" } },
+          {
+            { name = "nvim_lsp", trigger_characters = { ".", "(" } },
+            { name = "nvim_lsp_signature_help" },
+            { name = "vsnip" },
+          },
+          { { name = "nvim_lua" }, { name = "buffer" } },
+          { { name = "path" } }
         ),
         mapping = {
-          ['<C-n>'] = cmp.mapping.select_next_item(),
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
-          ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+          ["<C-n>"] = cmp.mapping.select_next_item(),
+          ["<C-p>"] = cmp.mapping.select_prev_item(),
+          ["<Tab>"] = cmp.mapping.confirm { select = true },
         },
-      })
+      }
     end,
   },
 }

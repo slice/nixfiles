@@ -17,15 +17,15 @@ let
       };
     };
 
-    # nvim "0.10" (2023-12-29)
+    # nvim "0.10" (2024-02-18)
     neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs {
-      version = "0.10.0-dev-dd00b6b4";
+      version = "0.10.0-dev";
 
       src = pkgs.fetchFromGitHub {
         owner = "neovim";
         repo = "neovim";
-        rev = "dd00b6b442a6d3a8a4758b0ee10ac93d07e7db72";
-        hash = "sha256-b3iDPyFJDAhjepPm8swqd1AKd6TtuCjVGr/IweS7Mx0=";
+        rev = "eb4783fb6c8c16d3a9a10e5ef36312737fc9bc40";
+        hash = "sha256-qRRv4bLd59uQaOuGiD8W1SRsS2hiBBdIWUYYU1lySo4=";
       };
     };
   });

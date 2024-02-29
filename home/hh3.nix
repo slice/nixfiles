@@ -39,6 +39,15 @@
                 --font-headline: "ABC Ginto Nord","M PLUS 1",sans-serif !important;
               }
 
+              :root:not(.app-focused) {
+                [class*="sidebar"],
+                [data-list-id="guildsnav"],
+                [aria-label="Channel header"] {
+                  opacity: 0.4;
+                  filter: grayscale(100%);
+                }
+              }
+
               [class^="markdown-"] [class^="codeInline-"],
               [class^="codeLine-"],
               [class^="codeBlockText-"],

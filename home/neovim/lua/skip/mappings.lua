@@ -62,6 +62,7 @@ local command_aliases = {
   -- sometimes i hold down shift for too long ;_;
   W = 'w',
   Wq = 'wq',
+  WQ = 'WQ',
   Wqa = 'wqa',
   Q = 'q',
   Qa = 'qa',
