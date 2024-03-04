@@ -7,7 +7,6 @@ if vim.o.shell:find "bash%-interactive" then
 end
 
 require "skip.options"
-require "skip.mappings"
 
 -- bootstrap lazy
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
@@ -23,6 +22,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+vim.g.mapleader = " "
+
 require("lazy").setup("skip.plugins", {
   dev = { path = "~/src/prj" },
   change_detection = {
@@ -30,6 +31,7 @@ require("lazy").setup("skip.plugins", {
   },
 })
 
+require "skip.mappings"
 require "skip.autocmds"
 
 vim.api.nvim_create_autocmd("User", {

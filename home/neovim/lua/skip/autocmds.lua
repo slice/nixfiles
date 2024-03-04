@@ -34,6 +34,8 @@ local tweaks = {
     link "@string String",
     link "@boolean Boolean",
     link "@operator Operator",
+    link "@markup.raw.vimdoc Comment",
+    link "@markup.link.vimdoc String",
   },
   bubblegum2 = {
     link "MatchParen LineNr",

@@ -4,42 +4,45 @@ vim.opt.background = "dark"
 vim.g.colors_name = "skipbones"
 
 local lush = require "lush"
-local sb = require "seoulbones"
+local seoul = require "seoulbones"
 
-local spec = lush.extends({ sb }).with(function()
+local skipbones = lush.extends({ seoul }).with(function(injected)
+  local sym = injected.sym
+
   --- @diagnostic disable: undefined-global
   return {
-    Normal { sb.Normal, bg = sb.Normal.bg.darken(8) },
+    Normal { seoul.Normal, bg = seoul.Normal.bg.darken(8) },
 
-    ColorColumn { bg = sb.Normal.bg.darken(20) },
+    ColorColumn { bg = seoul.Normal.bg.darken(20) },
 
-    Cursor { fg = sb.Normal.fg, bg = lush.hsl "#c22125" },
+    Cursor { fg = seoul.Normal.fg, bg = lush.hsl "#c22125" },
     CursorLine { bg = Cursor.bg.darken(35).desaturate(60) },
-    CursorLineNr { sb.CursorLineNr, bg = CursorLine.bg },
+    CursorLineNr { seoul.CursorLineNr, bg = CursorLine.bg },
 
-    TelescopeNormal { sb.NormalFloat },
+    TelescopeNormal { seoul.NormalFloat },
+    TelescopeMatching { seoul.CursorLineNr, fg = Cursor.bg.desaturate(50).lighten(40), gui = "bold" },
     TelescopeSelectionCaret { CursorLineNr },
 
-    StatusLine { sb.StatusLine, gui = "bold, reverse" },
+    StatusLine { seoul.StatusLine, gui = "bold, reverse" },
 
-    String { sb.String, gui = "" },
-    Number { sb.Number, gui = "" },
-    Constant { sb.Constant, gui = "" },
+    String { seoul.String, gui = "" },
+    Number { seoul.Number, gui = "" },
+    Constant { seoul.Constant, gui = "" },
 
-    TabLine { bg = sb.TabLineFill.bg },
+    TabLine { bg = seoul.TabLineFill.bg },
     TabLineSel { gui = "bold, reverse" },
 
-    DirvishPathTail { sb.Statement },
+    DirvishPathTail { seoul.Statement },
 
-    fugitiveUnstagedHeading { sb.PreProc },
-    fugitiveUntrackedHeading { sb.Type },
-    fugitiveStagedHeading { sb.diffAdded },
+    fugitiveUnstagedHeading { seoul.PreProc },
+    fugitiveUntrackedHeading { seoul.Type },
+    fugitiveStagedHeading { seoul.diffAdded },
 
-    gitcommitSummary { sb.WarningMsg },
+    gitcommitSummary { seoul.WarningMsg },
 
-    SpellBad { gui = "undercurl", sp = sb.ErrorMsg.fg },
+    SpellBad { gui = "undercurl", sp = seoul.ErrorMsg.fg },
   }
   --- @diagnostic enable: undefined-global
 end)
 
-lush(spec)
+lush(skipbones)

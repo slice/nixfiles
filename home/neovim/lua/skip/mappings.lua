@@ -1,7 +1,4 @@
 local utils = require("skip.utils")
-
-vim.g.mapleader = " "
-
 local map = vim.keymap.set
 
 function POPTERM_TOGGLE()
@@ -51,8 +48,14 @@ map("n", "<Leader>ts", "<cmd>below split +terminal<CR>")
 map("n", "<Leader>tv", "<cmd>vsplit +terminal<CR>")
 
 -- diagnostics
-map({ "v", "n" }, "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
-map({ "v", "n" }, "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>")
+map({ "v", "n" }, "[d", vim.diagnostic.goto_prev)
+map({ "v", "n" }, "]d", vim.diagnostic.goto_next)
+map({ "v", "n" }, "[D", function()
+  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+end)
+map({ "v", "n" }, "]D", function()
+  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+end)
 
 -- vimrc; https://learnvimscriptthehardway.stevelosh.com/chapters/08.html
 -- map('n', '<Leader>ve', "bufname('%') == '' ? '<cmd>edit $MYVIMRC<CR>' : '<cmd>vsplit $MYVIMRC<CR>'", { expr = true })

@@ -48,6 +48,13 @@ return {
   },
 
   {
+    "echasnovski/mini.pairs",
+    opts = {
+      modes = { insert = true, command = true },
+    },
+  },
+
+  {
     "echasnovski/mini.jump2d",
     opts = {
       allowed_lines = {

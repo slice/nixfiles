@@ -311,10 +311,35 @@ return {
 
   {
     "j-hui/fidget.nvim",
-    opts = {
-      notification = {
-        override_vim_notify = true,
-      },
-    },
+    config = function()
+      local fidget = require("fidget")
+
+      fidget.setup {
+        progress = {
+          display = {
+            progress_icon = { "line" },
+            progress_style = "DiagnosticVirtualTextWarn",
+            done_style = "DiagnosticVirtualTextOk",
+            icon_style = "Title",
+          },
+        },
+        notification = {
+          configs = {
+            default = vim.tbl_deep_extend("force", require("fidget.notification").default_config, { icon = "⚠" }),
+          },
+          override_vim_notify = true,
+          view = {
+            group_separator = string.rep("-", 70),
+            group_separator_hl = "NonText",
+          },
+          window = {
+            border = "double",
+            normal_hl = "FloatBorder",
+            winblend = 0,
+            align = "top",
+          },
+        },
+      }
+    end,
   },
 }

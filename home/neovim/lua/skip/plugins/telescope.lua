@@ -20,11 +20,7 @@ return {
       { "<Leader>o", "<Cmd>Telescope find_files<CR>" },
       { "<Leader>i", "<Cmd>Telescope oldfiles<CR>" },
       { "<Leader>b", "<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>" },
-      {
-        "<Leader>p",
-        '<Cmd>lua require"telescope".extensions.trampoline.trampoline.project{}<CR>',
-        desc = "Telescope trampoline",
-      },
+      { "<Leader>p", "<Cmd>Telescope trampoline<CR>" },
       { "<Leader>h", "<Cmd>Telescope help_tags<CR>" },
       { "<Leader>g", "<Cmd>Telescope live_grep<CR>" },
       {
@@ -113,6 +109,9 @@ return {
               },
             },
           },
+          trampoline = {
+            workspace_roots = { "~/src/prj", "~/src/lib", "~/src/work/a8c" },
+          },
         },
       })
 
@@ -131,7 +130,9 @@ return {
     opts = {
       pickers = {
         oldfiles = { disable = false, use_cwd = false, sorting = "frecency" },
-        ["trampoline#project"] = {
+        help_tags = { disable = false, use_cwd = false, sorting = "frecency" },
+        man_pages = { disable = false, use_cwd = false, sorting = "frecency" },
+        ["trampoline#trampoline"] = {
           disable = false,
           use_cwd = false,
           sorting = "frecency",
