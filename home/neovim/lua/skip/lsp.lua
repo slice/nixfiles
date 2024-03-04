@@ -1,4 +1,4 @@
-local utils = require('skip.utils')
+local utils = require("skip.utils")
 
 local M = {}
 
@@ -7,18 +7,18 @@ local function map_buf(mode, key, result, opts)
     mode,
     key,
     result,
-    vim.tbl_extend('force', { buffer = true, remap = false, silent = true }, opts or {})
+    vim.tbl_extend("force", { buffer = true, remap = false, silent = true }, opts or {})
   )
 end
 
-M.noattach_key = 'LSP_NOATTACH'
-M.noformat_key = 'LSP_NOFORMAT'
+M.noattach_key = "LSP_NOATTACH"
+M.noformat_key = "LSP_NOFORMAT"
 
 function M.flag_set(name)
   return vim.g[name] == 1 or vim.b[name] == 1 or vim.t[name] == 1 or vim.w[name] == 1
 end
 
-M.formatting_augroup = vim.api.nvim_create_augroup('SkipLspAutomaticFormatting', {})
+M.formatting_augroup = vim.api.nvim_create_augroup("SkipLspAutomaticFormatting", {})
 
 -- setup a buffer with an lsp server attached with the proper mappings and
 -- options
@@ -28,26 +28,26 @@ function M.setup_lsp_buf(client, bufnr)
     vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]])
   end
 
-  vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
-  vim.bo.formatexpr = '' -- reserve gq for comment formatting
+  vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
+  vim.bo.formatexpr = "" -- reserve gq for comment formatting
 
-  map_buf('n', '<c-]>', vim.lsp.buf.definition)
-  map_buf('n', 'K', vim.lsp.buf.hover)
-  map_buf('n', '<leader>la', vim.lsp.buf.code_action, { desc = 'LSP code actions' })
-  map_buf('n', '<leader>lr', vim.lsp.buf.rename, { desc = 'LSP rename symbol' })
-  map_buf('n', '<leader>li', function()
+  map_buf("n", "<c-]>", vim.lsp.buf.definition)
+  map_buf("n", "K", vim.lsp.buf.hover)
+  map_buf("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP code actions" })
+  map_buf("n", "<leader>lr", vim.lsp.buf.rename, { desc = "LSP rename symbol" })
+  map_buf("n", "<leader>li", function()
     local is_enabled = vim.lsp.inlay_hint.is_enabled(0)
     vim.lsp.inlay_hint.enable(0, not is_enabled)
-  end, { desc = 'Toggle LSP inlay hints' })
-  map_buf('n', '<leader>lz', vim.lsp.codelens.run, { desc = 'Run LSP codelens' })
+  end, { desc = "Toggle LSP inlay hints" })
+  map_buf("n", "<leader>lz", vim.lsp.codelens.run, { desc = "Run LSP codelens" })
   vim.cmd(
     [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float(nil, { scope = "line", source = "if_many", focusable = false, focus = false })]]
   )
 end
 
 M.banned_patterns = {
-  '^/nix/store/',
-  '%.cargo/registry',
+  "^/nix/store/",
+  "%.cargo/registry",
   -- 'node_modules/'
   -- let this through for now, i wanna navigate between symbols in *.d.ts files
   -- TODO: make something more elaborate, because LSP is probably OK in library
@@ -72,11 +72,11 @@ function M.attach_allowed(bufname)
   return true
 end
 
-utils.autocmds('SkipLsp', {
+utils.autocmds("SkipLsp", {
   {
-    'LspAttach',
+    "LspAttach",
     {
-      pattern = '*',
+      pattern = "*",
       callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
         if not client then
@@ -93,11 +93,11 @@ utils.autocmds('SkipLsp', {
           )
         end)
       end,
-      desc = 'Sets up autocmds and mappings for buffers that use LSP',
+      desc = "Sets up autocmds and mappings for buffers that use LSP",
     },
   },
 })
 
-M.capabilities = require('cmp_nvim_lsp').default_capabilities()
+M.capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 return M
