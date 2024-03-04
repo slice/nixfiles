@@ -10,6 +10,12 @@ w() {
   defaults write "$@"
 }
 
+# appkit debug
+wg _NS_4445425547 -bool true
+
+# trackpad
+wg com.apple.trackpad.scaling -float 0.875
+
 # appearance
 wg AppleReduceDesktopTinting -bool true
 wg AppleInterfaceStyleSwitchesAutomatically -bool true

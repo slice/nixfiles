@@ -1,54 +1,56 @@
 return {
   -- extensible multifuzzy finder over pretty much anything
   {
-    'nvim-telescope/telescope.nvim',
+    "nvim-telescope/telescope.nvim",
+    lazy = false,
 
     -- TODO: upstream or fork
     -- branch = '0.1.x',
     -- dev = true,
 
     dependencies = {
-      'nvim-lua/plenary.nvim',
-      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+      "nvim-lua/plenary.nvim",
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
 
-    cmd = 'Telescope',
+    cmd = "Telescope",
     keys = {
       -- 1st layer (essential)
-      { '<Leader><Space>', '<Cmd>Telescope resume<CR>' }, -- TODO: not sure if this deserves having <Space>
-      { '<Leader>o', '<Cmd>Telescope find_files<CR>' },
-      { '<Leader>i', '<Cmd>Telescope oldfiles<CR>' },
-      { '<Leader>b', '<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>' },
+      { "<Leader><Space>", "<Cmd>Telescope resume<CR>" }, -- TODO: not sure if this deserves having <Space>
+      { "<Leader>o", "<Cmd>Telescope find_files<CR>" },
+      { "<Leader>i", "<Cmd>Telescope oldfiles<CR>" },
+      { "<Leader>b", "<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>" },
       {
-        '<Leader>p',
+        "<Leader>p",
         '<Cmd>lua require"telescope".extensions.trampoline.trampoline.project{}<CR>',
-        desc = 'Telescope trampoline',
+        desc = "Telescope trampoline",
       },
-      { '<Leader>h', '<Cmd>Telescope help_tags<CR>' },
-      { '<Leader>g', '<Cmd>Telescope live_grep<CR>' },
+      { "<Leader>h", "<Cmd>Telescope help_tags<CR>" },
+      { "<Leader>g", "<Cmd>Telescope live_grep<CR>" },
       {
-        '<Leader>d',
-        '<Cmd>Telescope file_browser cwd=%:p:h<CR>',
-        desc = 'Telescope file_browser (from current file)',
+        "<Leader>d",
+        "<Cmd>Telescope file_browser cwd=%:p:h<CR>",
+        desc = "Telescope file_browser (from current file)",
       },
-      { '<Leader>f', '<Cmd>Telescope file_browser<CR>' },
+      { "<Leader>f", "<Cmd>Telescope file_browser<CR>" },
 
       -- 2nd layer
-      { '<Leader>lt', '<Cmd>Telescope builtin<CR>' },
-      { '<Leader>lc', '<Cmd>Telescope colorscheme<CR>' },
-      { '<Leader>ld', '<Cmd>Telescope diagnostics<CR>' },
-      { '<Leader>lb', '<Cmd>Telescope current_buffer_fuzzy_find<CR>' },
-      { '<Leader>lls', '<Cmd>Telescope lsp_workspace_symbols<CR>' },
-      { '<Leader>llr', '<Cmd>Telescope lsp_references<CR>' },
+      { "<Leader>lt", "<Cmd>Telescope builtin<CR>" },
+      { "<Leader>lc", "<Cmd>Telescope colorscheme<CR>" },
+      { "<Leader>lm", "<Cmd>Telescope man_pages<CR>" },
+      { "<Leader>ld", "<Cmd>Telescope diagnostics<CR>" },
+      { "<Leader>lb", "<Cmd>Telescope current_buffer_fuzzy_find<CR>" },
+      { "<Leader>lls", "<Cmd>Telescope lsp_workspace_symbols<CR>" },
+      { "<Leader>llr", "<Cmd>Telescope lsp_references<CR>" },
     },
 
     config = function()
-      local telescope = require('telescope')
-      local fb_actions = require('telescope._extensions.file_browser.actions')
-      local action_layout = require('telescope.actions.layout')
+      local telescope = require("telescope")
+      local fb_actions = require("telescope._extensions.file_browser.actions")
+      local action_layout = require("telescope.actions.layout")
 
       -- a custom, compact layout strategy that mimics @norcalli's fuzzy finder
-      local layout_strategies = require('telescope.pickers.layout_strategies')
+      local layout_strategies = require("telescope.pickers.layout_strategies")
       layout_strategies.compact = function(picker, cols, lines, layout_config)
         local layout = layout_strategies.vertical(picker, cols, lines, layout_config)
 
@@ -77,10 +79,10 @@ return {
 
       telescope.setup({
         defaults = {
-          prompt_prefix = '? ',
-          selection_caret = '> ',
+          prompt_prefix = "? ",
+          selection_caret = "> ",
           layout_config = { width = 0.7 },
-          layout_strategy = 'flex_smooshed',
+          layout_strategy = "flex_smooshed",
           border = false,
           dynamic_preview_title = true,
           results_title = false,
@@ -88,12 +90,12 @@ return {
           mappings = {
             i = {
               -- immediately close the prompt when pressing <ESC> in insert mode
-              ['<Esc>'] = 'close',
-              ['<C-u>'] = false,
-              ['<M-p>'] = action_layout.toggle_preview,
+              ["<Esc>"] = "close",
+              ["<C-u>"] = false,
+              ["<M-p>"] = action_layout.toggle_preview,
             },
             n = {
-              ['<C-w>'] = 'delete_buffer',
+              ["<C-w>"] = "delete_buffer",
             },
           },
         },
@@ -101,26 +103,45 @@ return {
           file_browser = {
             disable_devicons = true,
             mappings = {
-              ['i'] = {
-                ['<S-cr>'] = fb_actions.create_from_prompt,
-                ['<C-o>'] = fb_actions.open,
+              ["i"] = {
+                ["<S-cr>"] = fb_actions.create_from_prompt,
+                ["<C-o>"] = fb_actions.open,
                 -- unmap <C-w> to have it delete words again, but since we're
                 -- in a prompt buffer we need to use shift
-                ['<C-w>'] = { '<C-S-w>', type = 'command' },
-                ['<C-d>'] = fb_actions.change_cwd,
+                ["<C-w>"] = { "<C-S-w>", type = "command" },
+                ["<C-d>"] = fb_actions.change_cwd,
               },
             },
           },
         },
       })
 
-      telescope.load_extension('fzf')
-      telescope.load_extension('file_browser')
+      telescope.load_extension("fzf")
+      telescope.load_extension("file_browser")
     end,
   },
 
-  -- file browser for telescope
-  'nvim-telescope/telescope-file-browser.nvim',
+  {
+    "prochri/telescope-all-recent.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "kkharji/sqlite.lua",
+      "stevearc/dressing.nvim",
+    },
+    opts = {
+      pickers = {
+        oldfiles = { disable = false, use_cwd = false, sorting = "frecency" },
+        ["trampoline#project"] = {
+          disable = false,
+          use_cwd = false,
+          sorting = "frecency",
+        },
+      },
+    },
+  },
 
-  { 'slice/telescope-trampoline.nvim', dev = true },
+  -- file browser for telescope
+  "nvim-telescope/telescope-file-browser.nvim",
+
+  { "slice/telescope-trampoline.nvim", dev = true },
 }

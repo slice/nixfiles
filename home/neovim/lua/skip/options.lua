@@ -16,7 +16,7 @@ opt.colorcolumn = { 81, 121 }
 opt.completeopt = { "menu", "menuone", "noselect" }
 opt.cursorline = true
 opt.diffopt:append { "linematch:60" }
-opt.hidden = false
+opt.hidden = true
 opt.guicursor:append { "a:blinkwait1000", "a:blinkon1000", "a:blinkoff1000" }
 opt.ignorecase = true
 opt.inccommand = "nosplit"

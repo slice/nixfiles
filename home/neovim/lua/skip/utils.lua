@@ -4,7 +4,7 @@ local M = {}
 --- @param group_name string augroup name
 --- @param parameter_packs ({ [1]: (string | string[]), [2]: vim.api.keyset.create_autocmd }[] | string)
 function M.autocmds(group_name, parameter_packs)
-  if type(parameter_packs) == 'string' then
+  if type(parameter_packs) == "string" then
     parameter_packs = { parameter_packs }
   end
 
@@ -15,6 +15,11 @@ function M.autocmds(group_name, parameter_packs)
     pack[2].group = group_id
     vim.api.nvim_create_autocmd(unpack(pack))
   end
+end
+
+function M.send(codes, mode)
+  local replaced = vim.api.nvim_replace_termcodes(codes, true, true, true)
+  vim.api.nvim_feedkeys(replaced, mode or "n", false)
 end
 
 return M

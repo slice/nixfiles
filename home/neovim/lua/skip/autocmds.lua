@@ -28,6 +28,8 @@ local tweaks = {
     link "TelescopeNormal NormalFloat",
     link "PopTermLabel WildMenu",
     link "@type.builtin Special",
+    -- fix underlines in telescope's preview having the wrong color
+    link "@markup.link.vimdoc Constant",
     -- pls
     link "@string String",
     link "@boolean Boolean",
@@ -178,8 +180,8 @@ autocmds("SkipHacks", {
 autocmds("SkipFiletypes", {
   -- enable spellchecking in git commits
   { "FileType", { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " } },
-  { "FileType", { pattern = "typescript", command = "setlocal indentexpr=" } },
-  { "FileType", { pattern = "dirvish,man,text", command = "setlocal nospell" } },
+  -- { "FileType", { pattern = "typescript", command = "setlocal indentexpr=" } },
+  { "FileType", { pattern = "dirvish,man,text,git", command = "setlocal nospell" } },
   -- swift interpolations look like "\(...)", and we want text objects and
   -- motions involving parens to not think they're escaped
   { "FileType", { pattern = "swift", command = "setl cpo+=M" } },

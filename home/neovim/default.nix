@@ -17,14 +17,14 @@ let
       };
     };
 
-    # nvim "0.10" (2024-02-18)
+    # nvim "0.10" (2024-03-03)
     neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs {
-      version = "0.10.0-dev";
+      version = "0.10.0-dev-3df121";
 
       src = pkgs.fetchFromGitHub {
         owner = "neovim";
         repo = "neovim";
-        rev = "eb4783fb6c8c16d3a9a10e5ef36312737fc9bc40";
+        rev = "3df1211ebc4c7ec4562d0ad0fa51a24569b81e15";
         hash = "sha256-qRRv4bLd59uQaOuGiD8W1SRsS2hiBBdIWUYYU1lySo4=";
       };
     };
@@ -32,7 +32,10 @@ let
 in {
   programs.neovim = {
     enable = true;
-    extraConfig = lua "require('skip')";
+    extraConfig = lua ''
+      vim.g.sqlite_clib_path = "${pkgs.sqlite.out}/lib/libsqlite3.dylib"
+      require('skip')
+    '';
   };
 
   home.file.".config/nvim/lua".source = config.lib.skip.ergonomic ./lua;

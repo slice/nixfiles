@@ -23,14 +23,13 @@ return {
   "tpope/vim-abolish",
   "tpope/vim-afterimage",
   "mhinz/vim-sayonara",
-  "Konfekt/vim-CtrlXA",
   "romainl/vim-cool",
 
   {
     "airblade/vim-rooter",
     cmd = "Rooter",
     keys = {
-      { "<Leader>r", "<Cmd>Rooter<CR>" },
+      { "<Leader>r", "<Cmd>Rooter<CR>", desc = "Rooter" },
     },
   },
 
@@ -57,11 +56,49 @@ return {
 
   {
     "folke/which-key.nvim",
-    opts = {
-      window = {
-        winblend = 20,
-      },
-    },
+    config = function()
+      local window_width = 60
+      local column_width = window_width - 3
+
+      local opts = {
+        window = {
+          winblend = 20,
+          padding = { 1, 1, 1, 1 },
+          margin = { 0, 0, 1, 1 },
+        },
+        layout = {
+          spacing = 0,
+          width = { min = column_width, max = column_width },
+        },
+      }
+      local wk = require("which-key")
+      wk.setup(opts)
+
+      wk.register({
+        ["<Leader>"] = {
+          l = { name = "+second layer", l = { name = "+third layer" } },
+          t = { name = "+terminals" },
+          v = { name = " +config" },
+        },
+      })
+
+      local group = vim.api.nvim_create_augroup("WhichKeyCompact", {})
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "WhichKey",
+        callback = function(info)
+          local displaying_windows = vim.tbl_filter(function(win)
+            return vim.api.nvim_win_get_buf(win) == info.buf and vim.api.nvim_win_is_valid(win)
+          end, vim.api.nvim_list_wins())
+          if #displaying_windows ~= 1 then
+            vim.notify("failed to find whichkey window :(", vim.log.levels.ERROR)
+            return
+          end
+          local displaying_window = displaying_windows[1]
+          vim.api.nvim_win_set_config(displaying_window, { width = window_width })
+        end,
+        group = group,
+      })
+    end,
   },
 
   {
@@ -237,11 +274,12 @@ return {
         function()
           require("conform").format { timeout_ms = 3000, lsp_fallback = true }
         end,
-        desc = "Format buffer",
+        desc = "Conform",
       },
     },
     init = function()
       local lsp = require "skip.lsp"
+      local conform = require "conform"
 
       vim.api.nvim_create_autocmd("BufWritePre", {
         desc = "Automatic formatting on buffer write",
@@ -251,7 +289,10 @@ return {
             return
           end
 
-          local conform = require "conform"
+          -- don't try to format fugitive buffers
+          if vim.api.nvim_buf_get_name(args.buf):find "fugitive://" == 1 then
+            return
+          end
 
           if lsp.flag_set "LSP_FORMATTING_ONLY" then
             vim.lsp.buf.format { bufnr = args.buf }

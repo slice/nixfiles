@@ -30,6 +30,14 @@ local spec = lush.extends({ sb }).with(function()
     TabLineSel { gui = "bold, reverse" },
 
     DirvishPathTail { sb.Statement },
+
+    fugitiveUnstagedHeading { sb.PreProc },
+    fugitiveUntrackedHeading { sb.Type },
+    fugitiveStagedHeading { sb.diffAdded },
+
+    gitcommitSummary { sb.WarningMsg },
+
+    SpellBad { gui = "undercurl", sp = sb.ErrorMsg.fg },
   }
   --- @diagnostic enable: undefined-global
 end)
