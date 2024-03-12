@@ -39,8 +39,6 @@ map("n", "<C-L>", "<C-W><C-L>")
 
 -- nvim-popterm.lua
 map({ "t", "n" }, "<A-Tab>", "<cmd>lua POPTERM_TOGGLE()<CR>")
--- because neovide doesn't have some mappings yet because of keyboard support
-map("n", "<Leader>0", "<cmd> lua POPTERM_TOGGLE()<CR>", { desc = "Popterm" })
 
 -- quickly open :terminals
 map("n", "<Leader>te", "<cmd>tabnew +terminal<CR>")
@@ -60,6 +58,7 @@ end)
 -- vimrc; https://learnvimscriptthehardway.stevelosh.com/chapters/08.html
 -- map('n', '<Leader>ve', "bufname('%') == '' ? '<cmd>edit $MYVIMRC<CR>' : '<cmd>vsplit $MYVIMRC<CR>'", { expr = true })
 map("n", "<Leader>ve", "<cmd>Telescope find_files cwd=~/src/prj/nixfiles<CR>")
+map("n", "<Leader>vg", "<cmd>Telescope live_grep cwd=~/src/prj/nixfiles<CR>")
 map("n", "<Leader>vs", "<cmd>vsplit | terminal hm-switch<CR>")
 -- map('n', '<Leader>ve', '<cmd>edit ~/src/prj/nixfiles/home/neovim<CR>')
 

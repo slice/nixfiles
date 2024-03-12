@@ -41,8 +41,12 @@ local skipbones = lush.extends({ seoul }).with(function(injected)
     gitcommitSummary { seoul.WarningMsg },
 
     SpellBad { gui = "undercurl", sp = seoul.ErrorMsg.fg },
+
+    QuickFixLine { seoul.Visual },
   }
   --- @diagnostic enable: undefined-global
 end)
 
 lush(skipbones)
+local palette = require("seoulbones.palette")[vim.o.background]
+require("zenbones.term").apply_colors(palette)

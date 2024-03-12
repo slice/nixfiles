@@ -60,6 +60,8 @@ w com.apple.dock wvous-br-corner -int 1
 # xcode
 w com.apple.dt.Xcode DVTEnableDockIconVersionNumber -bool true
 w com.apple.dt.Xcode XcodeCloudUpsellPromptEnabled -bool false
+w com.apple.dt.Xcode XcodeCloudUserHasDismissedGetStartedPrompt -bool true
+w com.apple.dt.Xcode XcodeCloudUserHasDismissedSignInPrompt -bool true
 
 # screencapture
 w com.apple.screencapture disable-shadow -bool true
@@ -74,3 +76,8 @@ w com.apple.CrashReporter UseUNC -bool true
 
 # preview
 w com.apple.preview PVImageSizeSizeUnit -int 0
+
+# zoom
+w com.apple.universalaccess closeViewSmoothImages -bool false
+w com.apple.universalaccess closeViewScrollWheelToggle -bool true
+w com.apple.universalaccess closeViewScrollWheelModifiersInt -int 262144

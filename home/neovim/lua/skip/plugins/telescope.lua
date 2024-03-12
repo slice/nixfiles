@@ -8,11 +8,6 @@ return {
     -- branch = '0.1.x',
     -- dev = true,
 
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    },
-
     cmd = "Telescope",
     keys = {
       -- 1st layer (essential)
@@ -21,6 +16,7 @@ return {
       { "<Leader>i", "<Cmd>Telescope oldfiles<CR>" },
       { "<Leader>b", "<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>" },
       { "<Leader>p", "<Cmd>Telescope trampoline<CR>" },
+      { "<Leader>0", "<Cmd>Telescope looking_glass<CR>" },
       { "<Leader>h", "<Cmd>Telescope help_tags<CR>" },
       { "<Leader>g", "<Cmd>Telescope live_grep<CR>" },
       {
@@ -83,6 +79,16 @@ return {
           dynamic_preview_title = true,
           results_title = false,
           prompt_title = false,
+          vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--fixed-strings",
+          },
           mappings = {
             i = {
               -- immediately close the prompt when pressing <ESC> in insert mode
@@ -115,7 +121,6 @@ return {
         },
       })
 
-      telescope.load_extension("fzf")
       telescope.load_extension("file_browser")
     end,
   },
@@ -129,7 +134,7 @@ return {
     },
     opts = {
       pickers = {
-        oldfiles = { disable = false, use_cwd = false, sorting = "frecency" },
+        oldfiles = { disable = false, use_cwd = false },
         help_tags = { disable = false, use_cwd = false, sorting = "frecency" },
         man_pages = { disable = false, use_cwd = false, sorting = "frecency" },
         ["trampoline#trampoline"] = {

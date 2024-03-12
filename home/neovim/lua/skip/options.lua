@@ -22,8 +22,8 @@ opt.ignorecase = true
 opt.inccommand = "nosplit"
 opt.pumheight = 20
 opt.jumpoptions = "view"
-opt.list = true
-opt.listchars = { tab = "> ", trail = "·", nbsp = "+", precedes = "<", extends = ">" }
+-- opt.list = true
+-- opt.listchars = { tab = "> ", trail = "·", nbsp = "+", precedes = "<", extends = ">" }
 opt.modeline = true
 opt.mouse = "a"
 opt.swapfile = false
