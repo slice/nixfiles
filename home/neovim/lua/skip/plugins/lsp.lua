@@ -56,6 +56,8 @@ return {
 
       lsc.bashls.setup {}
 
+      lsc.nil_ls.setup {}
+
       -- xcrun -sdk macosx --find sourcekit-lsp
       vim.system({ "xcrun", "-sdk", "macosx", "--find", "sourcekit-lsp" }, { system = true }, function(object)
         if object.code ~= 0 then
@@ -132,7 +134,7 @@ return {
   {
     "nvimtools/none-ls.nvim",
     dependencies = {
-      'nvimtools/none-ls-extras.nvim',
+      "nvimtools/none-ls-extras.nvim",
     },
     config = function()
       local lsp = require "skip.lsp"
@@ -141,9 +143,9 @@ return {
       nls.setup {
         sources = {
           nls.builtins.diagnostics.stylelint,
-          require('none-ls.diagnostics.eslint_d'),
-          require('none-ls.code_actions.eslint_d'),
-          require('none-ls.formatting.eslint_d'),
+          require("none-ls.diagnostics.eslint_d"),
+          require("none-ls.code_actions.eslint_d"),
+          require("none-ls.formatting.eslint_d"),
         },
         capabilities = lsp.capabilities,
         should_attach = function(bufnr)

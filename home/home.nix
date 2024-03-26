@@ -50,6 +50,7 @@ let
       shellcheck
       stylua
       lua-language-server
+      nil
       nix-diff
       gh
       corepack_20
@@ -70,11 +71,10 @@ let
         ffmpeg_5)
       sox
       imagemagick
-      mpv
     ];
 
     # miscellaneous utilities
-    utilities = [ graphviz smartmontools colmena ];
+    utilities = [ graphviz smartmontools colmena packwiz ];
 
     everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
   };
@@ -138,7 +138,6 @@ in {
     });
 
     username = "slice";
-    homeDirectory = "/Users/slice";
   };
 
   home.file.".hammerspoon".source = config.lib.skip.ergonomic ./hammerspoon;

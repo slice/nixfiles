@@ -56,6 +56,7 @@ w com.apple.dock expose-group-apps -bool true
 w com.apple.dock mru-spaces -bool false
 w com.apple.dock size-immutable -bool true
 w com.apple.dock wvous-br-corner -int 1
+w com.apple.dock appswitcher-all-displays -bool true
 
 # xcode
 w com.apple.dt.Xcode DVTEnableDockIconVersionNumber -bool true
@@ -72,7 +73,9 @@ w com.apple.mail BottomPreview -bool false
 w com.apple.mail ColumnLayoutMessageList -bool true
 
 # crash reporter
+w com.apple.CrashReporter DialogType -string developer
 w com.apple.CrashReporter UseUNC -bool true
+w com.apple.CrashReporter UseRegularActivationPolicy -bool true
 
 # preview
 w com.apple.preview PVImageSizeSizeUnit -int 0
@@ -81,3 +84,6 @@ w com.apple.preview PVImageSizeSizeUnit -int 0
 w com.apple.universalaccess closeViewSmoothImages -bool false
 w com.apple.universalaccess closeViewScrollWheelToggle -bool true
 w com.apple.universalaccess closeViewScrollWheelModifiersInt -int 262144
+
+# keychain access
+w com.apple.keychainaccess "User Has Acknowledged Passwords Settings Dialog" -bool true
