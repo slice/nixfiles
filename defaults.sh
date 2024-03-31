@@ -12,9 +12,11 @@ w() {
 
 # appkit debug
 wg _NS_4445425547 -bool true
+# really doesn't like it (unity stuff too, i think)
+w com.ableton.live _NS_4445425547 -bool false
 
 # trackpad
-wg com.apple.trackpad.scaling -float 0.875
+wg com.apple.trackpad.scaling -float 0.6875 # (default)
 
 # appearance
 wg AppleReduceDesktopTinting -bool true

@@ -12,9 +12,8 @@ let
   };
 in {
   config = lib.mkIf (!server && pkgs.stdenv.isLinux) {
-    # Since we're applying an overlay, make sure we build the patch and make
-    # the resulting, patched binary available. The system `swaylock` won't have
-    # it.
+    # since we're applying an overlay, make sure we build the patch and make
+    # the resulting, patched binary available
     home.packages = [ pkgs.swaylock ];
 
     services.swayidle = let lockCommand = "${pkgs.swaylock}/bin/swaylock";

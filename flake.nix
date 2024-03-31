@@ -60,6 +60,24 @@
           specialArgs.server = false;
         };
 
+        aarch64-darwin.homeConfigurations.skip =
+          let homeDirectory = "/Users/skip";
+          in hm {
+            system = "aarch64-darwin";
+            username = "skip";
+            specialArgs = {
+              server = false;
+              # build FFmpeg with libfdk-aac support
+              customFFmpeg = true;
+
+              # create out of store symlinks for neovim's configuration files
+              # for faster editing
+              ergonomic = true;
+              ergonomicRepoPath = "${homeDirectory}/src/prj/nixfiles";
+            };
+            homeDirectory = homeDirectory;
+          };
+
         aarch64-darwin.homeConfigurations.slice =
           let homeDirectory = "/Users/slice";
           in hm {

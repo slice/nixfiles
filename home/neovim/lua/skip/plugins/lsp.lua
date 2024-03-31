@@ -46,17 +46,17 @@ return {
         capabilities = lsp.capabilities,
       })
 
-      lsc.astro.setup {}
-
-      lsc.eslint.setup {}
-
-      lsc.cssls.setup {}
-
-      lsc.html.setup {}
-
-      lsc.bashls.setup {}
-
-      lsc.nil_ls.setup {}
+      for _, server in ipairs({
+        "astro",
+        "eslint",
+        "cssls",
+        "jsonls",
+        "html",
+        "bashls",
+        "nixd",
+      }) do
+        lsc[server].setup {}
+      end
 
       -- xcrun -sdk macosx --find sourcekit-lsp
       vim.system({ "xcrun", "-sdk", "macosx", "--find", "sourcekit-lsp" }, { system = true }, function(object)

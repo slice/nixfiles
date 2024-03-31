@@ -5,7 +5,7 @@
 {
   nix.settings = {
     experimental-features = "nix-command flakes";
-    trusted-users = [ "slice" ];
+    trusted-users = [ "@staff" "root" ];
   };
 
   nix.package = pkgs.nixVersions.nix_2_21;

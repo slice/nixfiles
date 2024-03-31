@@ -1,0 +1,20 @@
+{
+  "eval": {
+    "target": {
+      "args": [],
+      "installable": ""
+    },
+    "depth": 0,
+    "workers": 6
+  },
+  "formatting": {
+    "command": "nixfmt"
+  },
+  "options": {
+    "enable": true,
+    "target": {
+      "args": [],
+      "installable": ".#packages.aarch64-darwin.homeConfigurations.skip.options"
+    }
+  }
+}

@@ -46,11 +46,13 @@ let
 
     # tools to help with programming
     tooling = [
+      zig # the best c compiler?
       nodePackages.prettier
+      vscode-langservers-extracted
       shellcheck
       stylua
       lua-language-server
-      nil
+      nixd
       nix-diff
       gh
       corepack_20
@@ -96,14 +98,7 @@ in {
   imports = [ ./neovim ./fish.nix ./git.nix ./linux ]
     ++ (lib.optional (!server) ./hh3.nix);
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
-
+  # has to be here because of recursion :(
   nixpkgs.overlays = [
     (self: super: {
       swaylock = super.swaylock.overrideAttrs (prev: {
@@ -111,21 +106,15 @@ in {
           ++ [ ./linux/patches/swaylock-no_subpixel_antialiasing.patch ];
       });
     })
-
-    # incorporate 9ce730064c4 - not sure why this isn't on unstable :thinking:
-    # remove when merged
-    (self: super: {
-      x264 = super.x264.overrideAttrs (prev: {
-        postPatch = ''
-          patchShebangs .
-        ''
-          # Darwin uses `llvm-strip`, which results in a crash at runtime in assembly-based routines when `-x` is specified.
-          + lib.optionalString pkgs.stdenv.isDarwin ''
-            substituteInPlace Makefile --replace '$(if $(STRIP), $(STRIP) -x $@)' '$(if $(STRIP), $(STRIP) -S $@)'
-          '';
-      });
-    })
   ];
+
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
   home = {
     packages = if server then packagesets.base else packagesets.everything;
@@ -136,8 +125,6 @@ in {
       # when using git, use the system ssh so we can get keychain integration
       GIT_SSH = "/usr/bin/ssh";
     });
-
-    username = "slice";
   };
 
   home.file.".hammerspoon".source = config.lib.skip.ergonomic ./hammerspoon;
