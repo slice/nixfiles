@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
+    flake-utils.url = "github:numtide/flake-utils";
+
     darwin = {
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -20,82 +22,15 @@
     };
   };
 
-  outputs = { self, darwin, nixpkgs, home-manager, fenix, ... }@inputs:
-    (let
-      hm = { system, specialArgs ? { }, username ? "slice"
-        , homeDirectory ? "/home/slice" }:
-        home-manager.lib.homeManagerConfiguration {
-          modules = [
-            ./home/home.nix
-            ./modules/hh3.nix
-            ({ ... }: {
-              home.username = username;
-              home.homeDirectory = homeDirectory;
-            })
-          ];
+  outputs =
+    { self, flake-utils, darwin, nixpkgs, home-manager, fenix, ... }@inputs:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
 
-          # I think importing `nixpkgs` here is bad, but we need unfree
-          # packages, so ... *grumble grumble*
-          pkgs = import nixpkgs {
-            config.allowUnfree = true;
-            inherit system;
-          };
-
-          extraSpecialArgs = specialArgs;
-        };
-    in {
-      packages = {
-        x86_64-linux.homeConfigurations.slice = hm {
-          system = "x86_64-linux";
-          specialArgs.server = true;
-        };
-
-        aarch64-linux.homeConfigurations.slice = hm {
-          system = "aarch64-linux";
-          specialArgs.server = true;
-        };
-
-        aarch64-linux.homeConfigurations.asahi = hm {
-          system = "aarch64-linux";
-          specialArgs.server = false;
-        };
-
-        aarch64-darwin.homeConfigurations.skip =
-          let homeDirectory = "/Users/skip";
-          in hm {
-            system = "aarch64-darwin";
-            username = "skip";
-            specialArgs = {
-              server = false;
-              # build FFmpeg with libfdk-aac support
-              customFFmpeg = true;
-
-              # create out of store symlinks for neovim's configuration files
-              # for faster editing
-              ergonomic = true;
-              ergonomicRepoPath = "${homeDirectory}/src/prj/nixfiles";
-            };
-            homeDirectory = homeDirectory;
-          };
-
-        aarch64-darwin.homeConfigurations.slice =
-          let homeDirectory = "/Users/slice";
-          in hm {
-            system = "aarch64-darwin";
-            specialArgs = {
-              server = false;
-              # build FFmpeg with libfdk-aac support
-              customFFmpeg = true;
-
-              # create out of store symlinks for neovim's configuration files
-              # for faster editing
-              ergonomic = true;
-              ergonomicRepoPath = "${homeDirectory}/src/prj/nixfiles";
-            };
-            homeDirectory = homeDirectory;
-          };
-      };
-
-      darwinConfigurations.vantage = (import ./hosts/vantage.nix) inputs;
-    });
+        bootstrap = opts:
+          import ./home/bootstrap.nix ({ inherit system inputs; } // opts);
+      in {
+        packages.homeConfigurations.slice = bootstrap { username = "slice"; };
+        packages.homeConfigurations.skip = bootstrap { username = "skip"; };
+      });
 }
