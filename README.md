@@ -86,7 +86,7 @@ outputs = inputs: {
 ```
 
 To instantiate the `homeManagerConfiguration` outside of a flake context,
-[`home/bootstrap.nix`] can be used like so:
+[`home/bootstrap.nix`](./home/bootstrap.nix) can be used like so:
 
 ```nix
 import "${<nixfiles>}/home/bootstrap.nix" {
