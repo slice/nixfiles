@@ -6,6 +6,12 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
+    # for nixd
+    flake-compat = {
+      url = "github:inclyc/flake-compat";
+      flake = false;
+    };
+
     darwin = {
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";

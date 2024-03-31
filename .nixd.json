@@ -1,11 +1,13 @@
 {
   "eval": {
     "target": {
-      "args": [],
+      "args": [
+        "-f",
+        "default.nix"
+      ],
       "installable": ""
     },
-    "depth": 0,
-    "workers": 6
+    "depth": 10
   },
   "formatting": {
     "command": "nixfmt"
