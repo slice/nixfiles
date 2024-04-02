@@ -53,7 +53,7 @@ return {
         "jsonls",
         "html",
         "bashls",
-        "nixd",
+        -- "nixd",
       }) do
         lsc[server].setup {}
       end

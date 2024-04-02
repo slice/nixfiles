@@ -128,33 +128,33 @@ in {
         set time_str {$time_str}{$num_secs}s
 
         if test "$time_str" != "0s"
-          set_color brblack; printf "%s" $time_str; set_color normal
+          set_color yellow
+          printf "%s" $time_str
+          set_color normal
         end
       '';
 
       fish_prompt = ''
         # if we're in ssh, show username and hostname
         if set -q SSH_CONNECTION
-          printf '%s%s%s@%s%s ' \
-            (set_color yellow) \
-            "$USER" \
-            (set_color -o yellow) \
-            (hostname -s) \
-            (set_color normal)
+          set_color yellow
         end
 
-        set -l prompt_character '%'
-        set -l prompt_color '-o'
+        printf '%s@%s%s ' $USER (set_color -o) (hostname -s)
+        set_color normal
+
+        set -l prompt_character '>'
+        set -l prompt_color '80c'
 
         if test "$USER" = "root"
           set prompt_character '#'
           set prompt_color 'red'
         end
 
-        set_color --reverse
+        set_color eee -b 80c
         printf '%s' (prompt_pwd -D4)
         set_color normal
-        set_color $prompt_color --bold
+        set_color -o $prompt_color
         printf '%s ' $prompt_character
       '';
 
@@ -169,14 +169,13 @@ in {
 
         command_duration
 
-        printf '%s%s%s' (set_color -o cyan) (fish_git_prompt) (set_color normal)
+        printf '%s%s%s' (set_color -o blue) (fish_git_prompt) (set_color normal)
 
         if test "$_status" -eq 0
           printf ' %s:)%s' (set_color green) (set_color normal)
         else
           # set -l face (random choice 'O_O' 'O_o' '>_>' 'v_v' ';_;')
-          # printf '%s%s%s' (set_color -o red) "$face" (set_color normal)
-          printf ' %s;_;%s' (set_color -o red) (set_color normal)
+          printf ' %s:(%s' (set_color -r -o red) (set_color normal)
         end
       '';
     } // pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
