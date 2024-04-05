@@ -54,3 +54,7 @@ if set -q KITTY_INSTALLATION_DIR
   set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
   alias ssh="kitty +kitten ssh"
 end
+
+if test -f ~/.iterm2_shell_integration.fish
+  source ~/.iterm2_shell_integration.fish
+end
