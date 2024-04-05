@@ -48,14 +48,6 @@ return {
   },
 
   {
-    "echasnovski/mini.pairs",
-    enabled = false,
-    opts = {
-      modes = { insert = true, command = true },
-    },
-  },
-
-  {
     "echasnovski/mini.jump2d",
     opts = {
       allowed_lines = {
@@ -70,16 +62,7 @@ return {
 
   {
     "echasnovski/mini.indentscope",
-    config = function()
-      local indentscope = require "mini.indentscope"
-
-      indentscope.setup {
-        draw = {
-          animation = indentscope.gen_animation.none(),
-        },
-        symbol = "|",
-      }
-    end,
+    opts = {},
   },
 
   {

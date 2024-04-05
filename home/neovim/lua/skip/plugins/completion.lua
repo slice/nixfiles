@@ -54,7 +54,7 @@ return {
           -- the lsp source takes precedence
           { { name = "calc" } },
           {
-            { name = "nvim_lsp", trigger_characters = { ".", "(" } },
+            { name = "nvim_lsp" },
             { name = "nvim_lsp_signature_help" },
             { name = "vsnip" },
           },
@@ -64,6 +64,8 @@ return {
         mapping = {
           ["<C-n>"] = cmp.mapping.select_next_item(),
           ["<C-p>"] = cmp.mapping.select_prev_item(),
+          ["<C-->"] = cmp.mapping.scroll_docs(-4),
+          ["<C-=>"] = cmp.mapping.scroll_docs(4),
           ["<Tab>"] = cmp.mapping.confirm { select = true },
         },
       }

@@ -12,6 +12,7 @@ local skipbones = lush.extends({ seoul }).with(function(injected)
   --- @diagnostic disable: undefined-global
   return {
     Normal { seoul.Normal, bg = seoul.Normal.bg.darken(8) },
+    NormalFloat { bg = lush.hsl "#515151" },
 
     ColorColumn { bg = seoul.Normal.bg.darken(20) },
 
@@ -50,3 +51,5 @@ end)
 lush(skipbones)
 local palette = require("seoulbones.palette")[vim.o.background]
 require("zenbones.term").apply_colors(palette)
+vim.g.terminal_color_8 = "#999999"
+vim.g.terminal_color_0 = "#333333"

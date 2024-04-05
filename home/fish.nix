@@ -128,7 +128,7 @@ in {
         set time_str {$time_str}{$num_secs}s
 
         if test "$time_str" != "0s"
-          set_color yellow
+          set_color -o yellow
           printf "%s" $time_str
           set_color normal
         end
@@ -156,6 +156,7 @@ in {
         set_color normal
         set_color -o $prompt_color
         printf '%s ' $prompt_character
+        set_color normal
       '';
 
       fish_title = ''
@@ -168,6 +169,9 @@ in {
         set -l _status "$status"
 
         command_duration
+
+        set -l clock (date -Iminutes)
+        set_color -i brblack; printf ' %s' $clock; set_color normal
 
         printf '%s%s%s' (set_color -o blue) (fish_git_prompt) (set_color normal)
 
