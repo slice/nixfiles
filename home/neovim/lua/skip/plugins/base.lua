@@ -15,7 +15,6 @@ return {
   },
   "tpope/vim-rsi",
   "tpope/vim-eunuch",
-  "tpope/vim-commentary",
   "tpope/vim-unimpaired",
   "tpope/vim-fugitive",
   "tpope/vim-rhubarb",

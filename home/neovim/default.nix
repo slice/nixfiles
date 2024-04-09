@@ -19,13 +19,13 @@ let
 
     # nvim "0.10" (2024-03-26)
     neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs {
-      version = "0.10.0-dev-971137";
+      version = "0.10.0-dev-541c2d";
 
       src = pkgs.fetchFromGitHub {
         owner = "neovim";
         repo = "neovim";
-        rev = "9711370c26453f3a966b9306111939b144248b41";
-        hash = "sha256-dL4CYntbaRMDqa7/tjMVKu4QHKyhWXg0bM35rOX44sE=";
+        rev = "541c2d3816cdef9aba7f55f74908fa07d0cfa3ec";
+        hash = "sha256-5/E8yWlb6XiQcT8LIhf1IoMQvCsJ+YI3ydNdDteh+xU=";
       };
     };
   });
