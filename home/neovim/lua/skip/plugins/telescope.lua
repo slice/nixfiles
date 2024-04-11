@@ -2,7 +2,6 @@ return {
   -- extensible multifuzzy finder over pretty much anything
   {
     "nvim-telescope/telescope.nvim",
-    lazy = false,
 
     -- TODO: upstream or fork
     -- branch = '0.1.x',
@@ -149,5 +148,5 @@ return {
   -- file browser for telescope
   "nvim-telescope/telescope-file-browser.nvim",
 
-  { "slice/telescope-trampoline.nvim", dev = true },
+  "slice/telescope-trampoline.nvim",
 }

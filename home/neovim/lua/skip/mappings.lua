@@ -37,6 +37,8 @@ map("n", "<C-J>", "<C-W><C-J>")
 map("n", "<C-K>", "<C-W><C-K>")
 map("n", "<C-L>", "<C-W><C-L>")
 
+map({ "i", "n" }, "<C-;>", "<cmd>nohlsearch<CR>")
+
 -- nvim-popterm.lua
 map({ "t", "n" }, "<A-Tab>", "<cmd>lua POPTERM_TOGGLE()<CR>")
 
@@ -90,11 +92,3 @@ end
 -- (can't use d because it means delete already)
 map("v", "fp", ":'<,'>diffput<CR>")
 map("v", "fo", ":'<,'>diffget<CR>")
-
--- vsnip
-local vsnip_modes = { "i", "s" }
--- remap for <Plug>, don't replace keycodes since expr (?)
-local vsnip_opts = { remap = true, expr = true, replace_keycodes = false }
-
-map(vsnip_modes, "<C-h>", "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''", vsnip_opts)
-map(vsnip_modes, "<C-l>", "vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : ''", vsnip_opts)

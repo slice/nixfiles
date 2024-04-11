@@ -44,6 +44,12 @@ local skipbones = lush.extends({ seoul }).with(function(injected)
     SpellBad { gui = "undercurl", sp = seoul.ErrorMsg.fg },
 
     QuickFixLine { seoul.Visual },
+
+    Added { bg = seoul.DiffAdd.bg },
+    Changed { bg = seoul.DiffChange.bg },
+    Removed { bg = seoul.DiffDelete.bg },
+
+    MiniMapNormal { fg = Normal.fg.darken(50) },
   }
   --- @diagnostic enable: undefined-global
 end)

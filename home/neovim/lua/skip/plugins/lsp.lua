@@ -2,6 +2,7 @@ local patched_lspconfig = false
 
 local original_jump = vim.lsp.util.jump_to_location
 
+---@diagnostic disable-next-line:duplicate-set-field
 function vim.lsp.util.jump_to_location(...)
   -- cheeky
   vim.opt.hidden = true
@@ -10,11 +11,10 @@ function vim.lsp.util.jump_to_location(...)
 end
 
 return {
-  -- proper lua editing support for neovim
-
   {
     "neovim/nvim-lspconfig",
     dependencies = { "folke/neodev.nvim" },
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       local lsp = require "skip.lsp"
       local lsc = require "lspconfig"
@@ -26,6 +26,7 @@ return {
 
       local original_bufname_valid = lsc.util.bufname_valid
       -- some day, this'll break ... :O]
+      ---@diagnostic disable-next-line:duplicate-set-field
       function lsc.util.bufname_valid(bufname)
         if not lsp.attach_allowed(bufname) then
           return false
@@ -33,7 +34,7 @@ return {
         return original_bufname_valid(bufname)
       end
 
-      -- TODO: this doesn't belong here
+      -- TODO: this doesn't belong here!!!!
       vim.diagnostic.config {
         -- make warnings and errors appear over hints
         severity_sort = true,
@@ -54,6 +55,7 @@ return {
         "html",
         "bashls",
         -- "nixd",
+        "pyright",
       }) do
         lsc[server].setup {}
       end
@@ -82,8 +84,6 @@ return {
         end)
       end)
 
-      lsc.sourcekit.setup {}
-
       lsc.lua_ls.setup {
         -- for some reason, neodev doesn't properly hook itself into lspconfig
         -- _if we're using split plugin specs with lazy.nvim_, so do it manually
@@ -92,8 +92,6 @@ return {
           require("neodev.lsp").on_new_config(config, root_dir)
         end,
       }
-
-      lsc.pyright.setup {}
 
       lsc.hls.setup {
         filetypes = { "haskell", "lhaskell", "cabal" },
@@ -120,6 +118,7 @@ return {
 
   {
     "folke/neodev.nvim",
+    lazy = true,
     opts = {
       override = function(root_dir, library)
         -- TODO: use neoconf

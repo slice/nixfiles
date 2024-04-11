@@ -7,7 +7,7 @@
     userEmail = "tinyslices@gmail.com";
 
     delta = {
-      enable = true;
+      enable = false;
       options = {
         line-numbers = true;
         features = "decorations";
@@ -26,6 +26,7 @@
       push.default = "current";
       core.ignorecase = false;
       color.ui = true;
+      color.diff.meta = "reverse";
       pull.ff = "only";
       init.defaultBranch = "main";
       # diff.colorMoved = "default";

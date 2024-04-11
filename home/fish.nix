@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let textEditor = config.home.sessionVariables.EDITOR;
 in {
@@ -22,6 +22,7 @@ in {
       md = "mkdir";
       ydl = "yt-dlp";
       ydle = "yt-dlp -f bestaudio --audio-format mp3 --extract-audio";
+      hms = "hm-switch";
 
       # vcs
       g = "git";
@@ -85,6 +86,14 @@ in {
     interactiveShellInit = builtins.readFile ./config.fish;
 
     functions = {
+      man = {
+        wraps = "man";
+        description = "diverts man to neovim";
+        body = ''
+          command man $argv | ${lib.getBin pkgs.neovim}/bin/nvim +Man!
+        '';
+      };
+
       spek = ''
         set -l id (random)
         set -l path '/tmp/spectrogram-'(random)'.png'

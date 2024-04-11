@@ -18,6 +18,24 @@ return {
       "hrsh7th/vim-vsnip",
       "hrsh7th/vim-vsnip-integ",
     },
+    keys = {
+      {
+        "<C-H>",
+        "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''",
+        mode = { "i", "s" },
+        remap = true,
+        expr = true,
+        replace_keycodes = false,
+      },
+      {
+        "<C-L>",
+        "vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : ''",
+        mode = { "i", "s" },
+        remap = true,
+        expr = true,
+        replace_keycodes = false,
+      },
+    },
     config = function()
       local cmp = require "cmp"
 
@@ -44,6 +62,14 @@ return {
         --     return vim_item
         --   end,
         -- },
+        performance = {
+          debounce = 30,
+          throttle = 30,
+          fetching_timeout = 500,
+          confirm_resolve_timeout = 80,
+          async_budget = 1,
+          max_view_entries = 200,
+        },
         snippet = {
           expand = function(args)
             vim.fn["vsnip#anonymous"](args.body)
@@ -58,7 +84,22 @@ return {
             { name = "nvim_lsp_signature_help" },
             { name = "vsnip" },
           },
-          { { name = "nvim_lua" }, { name = "buffer" } },
+          {
+            { name = "nvim_lua" },
+            {
+              name = "buffer",
+              option = {
+                keyword_length = 2,
+                get_bufnrs = function()
+                  local bufs = {}
+                  for _, win in ipairs(vim.api.nvim_list_wins()) do
+                    bufs[vim.api.nvim_win_get_buf(win)] = true
+                  end
+                  return vim.tbl_keys(bufs)
+                end,
+              },
+            },
+          },
           { { name = "path" } }
         ),
         mapping = {

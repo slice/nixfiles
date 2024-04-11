@@ -5,13 +5,23 @@ return {
   },
 
   {
+    "echasnovski/mini.operators",
+    config = true,
+  },
+
+  {
+    "echasnovski/mini.diff",
+    config = true,
+  },
+
+  {
     "echasnovski/mini.jump",
     opts = {
       delay = {
         idle_stop = 1000 * 8,
       },
     },
-    config = function(plugin, opts)
+    config = function(_, opts)
       local jump = require "mini.jump"
       jump.setup(opts)
 
@@ -35,6 +45,7 @@ return {
       vim.keymap.set({ "n", "o", "x" }, ",", jump_backwards, { desc = "Repeat jump (the other direction)" })
 
       local original_smart_jump = jump.smart_jump
+      ---@diagnostic disable-next-line:duplicate-set-field
       jump.smart_jump = function(...)
         -- Smash the jumping state (effectively making "smart jump" no longer
         -- smart), because we always want to enter a new character when pressing
@@ -62,7 +73,7 @@ return {
 
   {
     "echasnovski/mini.indentscope",
-    opts = {},
+    config = true,
   },
 
   {
@@ -83,5 +94,51 @@ return {
   {
     "echasnovski/mini.move",
     config = true,
+  },
+
+  {
+    "echasnovski/mini.map",
+    -- stylua: ignore
+    keys = {
+      { "<Leader>mt", function() require("mini.map").toggle() end, desc = "Toggle minimap" },
+      { "<Leader>mf", function() require("mini.map").toggle_focus() end, desc = "Toggle minimap focus" },
+      { "<Leader>mr", function() require("mini.map").refresh() end, desc = "Refresh minimap" },
+      { "<Leader>ms", function() require("mini.map").toggle_side() end, desc = "Switch minimap sides" },
+    },
+    config = function()
+      local map = require("mini.map")
+
+      map.setup {
+        symbols = {
+          encode = map.gen_encode_symbols.block("3x2"),
+        },
+        integrations = {
+          map.gen_integration.builtin_search(),
+          map.gen_integration.diff(),
+          map.gen_integration.diagnostic(),
+        },
+        window = {
+          show_integration_count = false,
+          width = 3,
+        },
+      }
+    end,
+  },
+
+  {
+    "echasnovski/mini.hipatterns",
+    config = function()
+      local hipatterns = require("mini.hipatterns")
+
+      hipatterns.setup {
+        highlighters = {
+          fixme = { pattern = "FIXME", group = "MiniHipatternsFixme" },
+          hack = { pattern = "HACK", group = "MiniHipatternsHack" },
+          todo = { pattern = "TODO", group = "MiniHipatternsTodo" },
+          note = { pattern = "NOTE", group = "MiniHipatternsNote" },
+          hex_color = hipatterns.gen_highlighter.hex_color(),
+        },
+      }
+    end,
   },
 }

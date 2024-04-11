@@ -22,25 +22,12 @@ return {
   "tpope/vim-abolish",
   "tpope/vim-afterimage",
   "mhinz/vim-sayonara",
-  "romainl/vim-cool",
 
   {
     "airblade/vim-rooter",
     cmd = "Rooter",
     keys = {
       { "<Leader>r", "<Cmd>Rooter<CR>", desc = "Rooter" },
-    },
-  },
-
-  {
-    "lewis6991/gitsigns.nvim",
-    opts = {
-      signs = {
-        add = { text = "+" },
-        change = { text = "~" },
-        delete = { text = "-" },
-        untracked = { text = "?" },
-      },
     },
   },
 
@@ -56,7 +43,7 @@ return {
   {
     "folke/which-key.nvim",
     config = function()
-      local window_width = 60
+      local window_width = 120
       local column_width = window_width - 3
 
       local opts = {
@@ -129,15 +116,6 @@ return {
     },
   },
 
-  -- highlight colors (hex, rgb, etc.) in code (really fast)
-  {
-    "norcalli/nvim-colorizer.lua",
-    -- idk why `main` & `config = true` (or `opts = {}`) doesn't work here
-    config = function()
-      require("colorizer").setup()
-    end,
-  },
-
   {
     "levouh/tint.nvim",
     enabled = false,
@@ -176,28 +154,17 @@ return {
 
   -- }}}
 
-  -- "rudimentary" language support {{{
-
-  "LnL7/vim-nix",
-  "rust-lang/rust.vim",
-  "ziglang/zig.vim",
-  "fatih/vim-go",
-  "neovimhaskell/haskell-vim",
-  "projectfluent/fluent.vim",
-  "keith/swift.vim",
-
-  -- }}}
-
   -- treesitter {{{
 
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
+      ---@diagnostic disable-next-line:missing-fields
       require("nvim-treesitter.configs").setup {
         ensure_installed = {
           -- override the parsers that ship with neovim itself, as nvim-treesitter
-          -- has newer definitions
+          -- has newer definitions (important)
           "c",
           "lua",
           "vim",
@@ -205,18 +172,21 @@ return {
           "query",
 
           "astro",
-          "typescript",
-          "fish",
-          "html",
-          "json",
           "css",
+          "fish",
+          "haskell",
+          "html",
+          "javascript",
+          "json",
+          "markdown",
+          "markdown_inline",
           "nix",
           "python",
           "rust",
+          "swift",
           "tsx",
-          "javascript",
+          "typescript",
           "vim",
-          "markdown",
           "yaml",
         },
         highlight = { enable = true },
@@ -233,8 +203,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     lazy = false,
-    -- too slow with swift tree-sitter
-    enabled = false,
+    enabled = true,
     config = function()
       require("treesitter-context").setup {}
     end,
