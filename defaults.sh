@@ -14,6 +14,7 @@ w() {
 wg _NS_4445425547 -bool true
 # really doesn't like it (unity stuff too, i think)
 w com.ableton.live _NS_4445425547 -bool false
+w net.kovidgoyal.kitty _NS_4445425547 -bool false
 
 # trackpad
 wg com.apple.trackpad.scaling -float 0.6875 # (default)
