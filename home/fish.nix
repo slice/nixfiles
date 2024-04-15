@@ -90,7 +90,7 @@ in {
         wraps = "man";
         description = "diverts man to neovim";
         body = ''
-          command man $argv | ${lib.getBin pkgs.neovim}/bin/nvim +Man!
+          ${lib.getBin pkgs.neovim}/bin/nvim man://$argv[1]
         '';
       };
 
