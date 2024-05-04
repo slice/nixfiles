@@ -56,7 +56,7 @@ let
       nix-diff
       gh
       corepack_20
-      nodejs_20
+      nodejs_22
       bun
       tree-sitter
     ];

@@ -66,6 +66,7 @@ local tweaks = {
     hi "CursorLine guibg=#4a2724",
     hi "StatusLine gui=bold",
     hi "CursorLineNr gui=bold",
+    hi "clear @variable",
     hi "clear Label", -- underline color is wrong in telescope??
   },
   melange = {

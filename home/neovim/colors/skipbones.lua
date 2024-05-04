@@ -11,7 +11,7 @@ local skipbones = lush.extends({ seoul }).with(function(injected)
 
   --- @diagnostic disable: undefined-global
   return {
-    Normal { seoul.Normal, bg = seoul.Normal.bg.darken(8) },
+    Normal { seoul.Normal, bg = seoul.Normal.bg.darken(20) },
     NormalFloat { bg = lush.hsl "#515151" },
 
     ColorColumn { bg = seoul.Normal.bg.darken(20) },

@@ -20,6 +20,7 @@
         helper = "!/Users/slice/.nix-profile/bin/gh auth git-credential";
       };
     in {
+      url."git@github.com:".insteadOf = "https://github.com/";
       commit.verbose = true;
       format.pretty =
         "tformat:%C(bold yellow)%h%Creset %<|(82,trunc)%s %Creset%C(bold white)%cr%C(nobold)/%ch%Creset %C(bold)(%an)%C(auto)%+d";

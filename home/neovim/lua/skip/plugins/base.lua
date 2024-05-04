@@ -21,6 +21,7 @@ return {
   "tpope/vim-repeat",
   "tpope/vim-abolish",
   "tpope/vim-afterimage",
+  "romainl/vim-cool",
   "mhinz/vim-sayonara",
 
   {
@@ -203,7 +204,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     lazy = false,
-    enabled = true,
+    enabled = false,
     config = function()
       require("treesitter-context").setup {}
     end,
