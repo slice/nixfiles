@@ -81,6 +81,7 @@ local tweaks = {
     link "DiagnosticInfo Conditional",
     hi "CursorLine guibg=#4a2724",
     hi "CmpItemKindDefault guifg=#a97070",
+    hi "TelescopeSelection gui=bold guibg=#007173",
     hi "DiffText guibg=#006978",
     hi "DiffAdd guibg=#366c2d",
     hi "DiffChange guibg=#1a525a",
