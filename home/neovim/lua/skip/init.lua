@@ -50,6 +50,6 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
-vim.cmd [[colorscheme seoul256]]
+vim.cmd [[colorscheme neobones]]
 
 require("skip.assimilate").create_autocmd()

@@ -36,6 +36,9 @@ local tweaks = {
     link "@operator Operator",
     link "@markup.raw.vimdoc Comment",
     link "@markup.link.vimdoc String",
+    link "MiniDiffSignAdd GitSignsAdd",
+    link "MiniDiffSignChange GitSignsChange",
+    link "MiniDiffSignDelete GitSignsDelete",
   },
   bubblegum2 = {
     link "MatchParen LineNr",
