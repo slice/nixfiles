@@ -84,7 +84,6 @@
           "loadingScreen"
           "createEmoji"
           "copyAvatarUrl"
-          "downmark"
           "experiments"
           "localStorage"
           "preserveToken"

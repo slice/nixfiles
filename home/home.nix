@@ -28,10 +28,7 @@ let
       unzip
       gallery-dl
       rsync
-
-      # i edit nix files regularly on all of my machines, and having formatting
-      # everywhere is nice
-      nixfmt
+      nixfmt-rfc-style
     ];
 
     # language runtimes, compilers, etc.
