@@ -7,22 +7,18 @@ Mostly documented for my own sake.
 
 [nix]: https://nixos.org
 [home-manager]: https://github.com/nix-community/home-manager
+[nix-darwin]: https://github.com/LnL7/nix-darwin
 
 ## Bringup
 
 <!-- prettier-ignore -->
-> [!IMPORTANT]
-> This procedure has only been tested on Apple silicon-based Macs.
+> [!WARNING]
+> This procedure has only been tested on Macs with Apple silicon.
 
-1. Ensure that your local user metadata is correct. (This configuration
-   currently requires that your username be `slice` and your user directory be
-   `/Users/slice`. This should be made more flexible in the future.)
-
-1. Install Nix via
-   [the Determinate Nix Installer](https://determinate.systems/posts/determinate-nix-installer):
+1. [Install Nix](https://nixos.org/download/):
 
    ```
-   curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+   sh <(curl -L https://nixos.org/nix/install)
    ```
 
    The installer will describe what it intends to do before prompting you to
@@ -35,21 +31,21 @@ Mostly documented for my own sake.
    - Creates Nix build users and groups.
    - Writes the necessary shell profiles to make Nix usable.
 
-   The installer detects which shell you are invoking it from and only writes
-   the environment bringup scripts necessary for that shell. Since I primarily
-   use Fish and it's likely that the installer is being invoked from a bare Zsh
-   shell, a [Fish plugin](https://github.com/lilyball/nix-env.fish) is used to
-   handle this for us.
-
 1. Clone this repository to `~/src/prj/nixfiles`. (As you might guess, this path
    is _also_ hardcoded. For now. Maybe.)
 
 1. Pop open a fresh shell so the computer knows where `nix` lives. Then,
-   bootstrap [Home Manager][home-manager]:
+   bootstrap [Home Manager][home-manager] and [nix-darwin]:
 
    ```
    nix run home-manager/master -- switch --flake ~/src/prj/nixfiles
+   nix run nix-darwin -- switch --flake ~/src/prj/nixfiles
    ```
+
+   <!-- prettier-ignore -->
+   > [!IMPORTANT]
+   > [nix-darwin] configurations will only work if your hostname matches a
+   > corresponding configuration in [`flake.nix`](./flake.nix).
 
 1. Change your shell:
 
@@ -98,4 +94,4 @@ import "${<nixfiles>}/home/bootstrap.nix" {
 };
 ```
 
-See that file for further details.
+Check out that file for more details.

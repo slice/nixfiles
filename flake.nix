@@ -29,14 +29,31 @@
   };
 
   outputs =
-    { self, flake-utils, darwin, nixpkgs, home-manager, fenix, ... }@inputs:
-    flake-utils.lib.eachDefaultSystem (system:
+    {
+      self,
+      flake-utils,
+      darwin,
+      nixpkgs,
+      home-manager,
+      fenix,
+      ...
+    }@inputs:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
-
-        bootstrap = opts:
-          import ./home/bootstrap.nix ({ inherit system inputs; } // opts);
-      in {
+        bootstrap = opts: import ./home/bootstrap.nix ({ inherit system inputs; } // opts);
+      in
+      {
         packages.homeConfigurations.slice = bootstrap { username = "slice"; };
         packages.homeConfigurations.skip = bootstrap { username = "skip"; };
-      });
+      }
+    )
+    // {
+      darwinConfigurations.grape = darwin.lib.darwinSystem {
+        modules = [ ./hosts/grape.nix ];
+        specialArgs = {
+          inherit inputs;
+        };
+      };
+    };
 }
