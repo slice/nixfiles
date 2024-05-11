@@ -1,9 +1,9 @@
 # `nixfiles`
 
-This repository houses [Nix] code that is responsible for managing the
-configuration and environment of my personal machines.
+[Nix] code that is responsible for managing the configuration and environment of
+my personal machines.
 
-Mostly documented for my own sake.
+Mostly documented for my own sake. I am trapped in a prison of my own design.
 
 [nix]: https://nixos.org
 [home-manager]: https://github.com/nix-community/home-manager
@@ -47,19 +47,24 @@ Mostly documented for my own sake.
    nix run nix-darwin -- switch --flake ~/src/prj/nixfiles
    ```
 
+   You will likely have to mess with some files in `/etc` to let nix-darwin
+   manage the environment.
+
 1. Change your shell:
 
    ```
    sudo chsh -s ~/.nix-profile/bin/fish $USER
    ```
 
-1. You probably have
+1. If you set up nix-darwin, then you probably have
    [two Nix installations](https://github.com/LnL7/nix-darwin/issues/931) now,
-   which needs to be somehow fixed. (Nix is required to bootstrap nix-darwin,
-   but nix-darwin essentially functions as a Nix installation in and of itself
-   by managing a Nix daemon for you. Furthermore, a nix-darwin module is used to
-   version-manage Nix, which will conflict with the Nix binary that was
-   previously used to bootstrap this entire setup.)
+   which needs to be somehow fixed.
+
+   (Nix is required to bootstrap nix-darwin, but nix-darwin essentially acts as
+   a Nix installation in and of itself by managing a Nix daemon for you.
+   Furthermore, a nix-darwin module is used to version-manage Nix, which will
+   conflict with the Nix binary that was previously used to bootstrap this
+   entire setup.)
 
    - Use `nix doctor` to verify that you don't have conflicting `nix` binaries
      in your `PATH`.
