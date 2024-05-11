@@ -6,6 +6,16 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
+    lix = {
+      url = "git+https://git@git.lix.systems/lix-project/lix?ref=refs/tags/2.90-beta.1";
+      flake = false;
+    };
+    lix-module = {
+      url = "git+https://git.lix.systems/lix-project/nixos-module";
+      inputs.lix.follows = "lix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # for nixd
     flake-compat = {
       url = "github:inclyc/flake-compat";
@@ -35,6 +45,7 @@
       darwin,
       nixpkgs,
       home-manager,
+      lix-module,
       fenix,
       ...
     }@inputs:
@@ -50,7 +61,10 @@
     )
     // {
       darwinConfigurations.grape = darwin.lib.darwinSystem {
-        modules = [ ./hosts/grape.nix ];
+        modules = [
+          ./hosts/grape.nix
+          lix-module.nixosModules.default
+        ];
         specialArgs = {
           inherit inputs;
         };
