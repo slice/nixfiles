@@ -15,6 +15,11 @@ Mostly documented for my own sake.
 > [!WARNING]
 > This procedure has only been tested on Macs with Apple silicon.
 
+<!-- prettier-ignore -->
+> [!IMPORTANT]
+> [nix-darwin] configurations will only work if your hostname matches a
+> corresponding configuration in [`flake.nix`](./flake.nix).
+
 1. [Install Nix](https://nixos.org/download/):
 
    ```
@@ -34,11 +39,6 @@ Mostly documented for my own sake.
 1. Clone this repository to `~/src/prj/nixfiles`. (As you might guess, this path
    is _also_ hardcoded. For now. Maybe.)
 
-<!-- prettier-ignore -->
-> [!IMPORTANT]
-> [nix-darwin] configurations will only work if your hostname matches a
-> corresponding configuration in [`flake.nix`](./flake.nix).
-
 1. Pop open a fresh shell so the computer knows where `nix` lives. Then,
    bootstrap [Home Manager][home-manager] and [nix-darwin]:
 
@@ -57,9 +57,9 @@ Mostly documented for my own sake.
    [two Nix installations](https://github.com/LnL7/nix-darwin/issues/931) now,
    which needs to be somehow fixed. (Nix is required to bootstrap nix-darwin,
    but nix-darwin essentially functions as a Nix installation in and of itself
-   by managing a Nix daemon for you. A nix-darwin module is also used to manage
-   which version of Nix is used, which will conflict with the Nix binary that
-   was previously used to bootstrap this entire setup.)
+   by managing a Nix daemon for you. Furthermore, a nix-darwin module is used to
+   version-manage Nix, which will conflict with the Nix binary that was
+   previously used to bootstrap this entire setup.)
 
    - Use `nix doctor` to verify that you don't have conflicting `nix` binaries
      in your `PATH`.
