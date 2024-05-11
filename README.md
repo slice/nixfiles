@@ -34,6 +34,11 @@ Mostly documented for my own sake.
 1. Clone this repository to `~/src/prj/nixfiles`. (As you might guess, this path
    is _also_ hardcoded. For now. Maybe.)
 
+<!-- prettier-ignore -->
+> [!IMPORTANT]
+> [nix-darwin] configurations will only work if your hostname matches a
+> corresponding configuration in [`flake.nix`](./flake.nix).
+
 1. Pop open a fresh shell so the computer knows where `nix` lives. Then,
    bootstrap [Home Manager][home-manager] and [nix-darwin]:
 
@@ -42,16 +47,24 @@ Mostly documented for my own sake.
    nix run nix-darwin -- switch --flake ~/src/prj/nixfiles
    ```
 
-   <!-- prettier-ignore -->
-   > [!IMPORTANT]
-   > [nix-darwin] configurations will only work if your hostname matches a
-   > corresponding configuration in [`flake.nix`](./flake.nix).
-
 1. Change your shell:
 
    ```
    sudo chsh -s ~/.nix-profile/bin/fish $USER
    ```
+
+1. You probably have
+   [two Nix installations](https://github.com/LnL7/nix-darwin/issues/931) now,
+   which needs to be somehow fixed. (Nix is required to bootstrap nix-darwin,
+   but nix-darwin essentially functions as a Nix installation in and of itself
+   by managing a Nix daemon for you. A nix-darwin module is also used to manage
+   which version of Nix is used, which will conflict with the Nix binary that
+   was previously used to bootstrap this entire setup.)
+
+   - Use `nix doctor` to verify that you don't have conflicting `nix` binaries
+     in your `PATH`.
+   - Use `launchctl` to ensure that you only have a single Nix daemon (e.g.
+     `launchctl print system`, `launchctl disable system/…`, etc.)
 
 1. All done.
 
