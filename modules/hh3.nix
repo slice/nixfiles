@@ -5,10 +5,22 @@
   ...
 }:
 
-with lib;
-
 let
   cfg = config.programs.hh3;
+
+  inherit (builtins) elem;
+
+  inherit (lib) types;
+
+  inherit (lib.attrsets)
+    listToAttrs
+    filterAttrs
+    nameValuePair
+    mapAttrs'
+    recursiveUpdate
+    ;
+
+  inherit (lib.modules) mkOption mkEnableOption mkIf;
 
   allSupportedBranches = [
     "stable"
