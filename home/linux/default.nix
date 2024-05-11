@@ -1,7 +1,17 @@
-{ config, lib, pkgs, server, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  server,
+  ...
+}:
 
 {
-  imports = [ ./sway.nix ./cursor.nix ./firefox.nix ];
+  imports = [
+    ./sway.nix
+    ./cursor.nix
+    ./firefox.nix
+  ];
 
   config = lib.mkIf (!server && pkgs.stdenv.isLinux) {
     home.packages = with pkgs; [
@@ -9,24 +19,32 @@
       gimp
       pinta
 
-      (let
-        pristineXdgOpen = runCommandWith {
-          name = "pristine-xdg-open";
-          derivationArgs.nativeBuildInputs = [ makeWrapper ];
-        } ''
-          # Wrap xdg-open, unsetting `LD_LIBRARY_PATH` becuase it's used by
-          # the `armcord` package to inject libraries at runtime; these conflict
-          # with Firefox, etc.
-          makeWrapper ${xdg-utils}/bin/xdg-open $out/bin/xdg-open \
-            --unset LD_LIBRARY_PATH
-        '';
-      in armcord.overrideAttrs (final: prev: {
-        postInstall = ''
-          makeWrapper $out/bin/armcord $out/bin/armcord-good \
-            --append-flags "--ozone-platform-hint=auto" \
-            --prefix PATH : "${pristineXdgOpen}/bin"
-        '';
-      }))
+      (
+        let
+          pristineXdgOpen =
+            runCommandWith
+              {
+                name = "pristine-xdg-open";
+                derivationArgs.nativeBuildInputs = [ makeWrapper ];
+              }
+              ''
+                # Wrap xdg-open, unsetting `LD_LIBRARY_PATH` becuase it's used by
+                # the `armcord` package to inject libraries at runtime; these conflict
+                # with Firefox, etc.
+                makeWrapper ${xdg-utils}/bin/xdg-open $out/bin/xdg-open \
+                  --unset LD_LIBRARY_PATH
+              '';
+        in
+        armcord.overrideAttrs (
+          final: prev: {
+            postInstall = ''
+              makeWrapper $out/bin/armcord $out/bin/armcord-good \
+                --append-flags "--ozone-platform-hint=auto" \
+                --prefix PATH : "${pristineXdgOpen}/bin"
+            '';
+          }
+        )
+      )
 
       # toolchains, development
       cargo

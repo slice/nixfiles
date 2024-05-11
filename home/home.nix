@@ -1,4 +1,10 @@
-{ config, lib, pkgs, specialArgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  specialArgs,
+  ...
+}:
 
 let
   server = specialArgs.server;
@@ -60,47 +66,59 @@ let
 
     # video/audio
     multimedia = [
-      (if (specialArgs.customFFmpeg or false) then
-        (ffmpeg_5.override {
-          # we want libfdk-aac for (allegedly) nice, high-quality aac encoding
-          withFdkAac = true;
-          withUnfree = true;
-        })
-      else
-        ffmpeg_5)
+      (
+        if (specialArgs.customFFmpeg or false) then
+          (ffmpeg_5.override {
+            # we want libfdk-aac for (allegedly) nice, high-quality aac encoding
+            withFdkAac = true;
+            withUnfree = true;
+          })
+        else
+          ffmpeg_5
+      )
       sox
       imagemagick
     ];
 
     # miscellaneous utilities
-    utilities = [ graphviz smartmontools colmena packwiz ];
+    utilities = [
+      graphviz
+      smartmontools
+      colmena
+      packwiz
+    ];
 
     everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
   };
-in {
-  lib.skip.ergonomic = path:
+in
+{
+  lib.skip.ergonomic =
+    path:
     if (specialArgs.ergonomic or false) then
       let
         # since we're in a flake, paths will always point inside of the Nix store
         # regardless of whether we interpolate them or not, so just toString it
         # and extract out the path
-        matches = (builtins.match "/nix/store/[a-zA-Z0-9_-]+/(.+)"
-          (builtins.toString path));
+        matches = (builtins.match "/nix/store/[a-zA-Z0-9_-]+/(.+)" (builtins.toString path));
         trimmedPath = builtins.head matches;
         reconstructedPath = "${specialArgs.ergonomicRepoPath}/${trimmedPath}";
-      in config.lib.file.mkOutOfStoreSymlink reconstructedPath
+      in
+      config.lib.file.mkOutOfStoreSymlink reconstructedPath
     else
       path;
 
-  imports = [ ./neovim ./fish.nix ./git.nix ./linux ]
-    ++ (lib.optional (!server) ./hh3.nix);
+  imports = [
+    ./neovim
+    ./fish.nix
+    ./git.nix
+    ./linux
+  ] ++ (lib.optional (!server) ./hh3.nix);
 
   # has to be here because of recursion :(
   nixpkgs.overlays = [
     (self: super: {
       swaylock = super.swaylock.overrideAttrs (prev: {
-        patches = (prev.patches or [ ])
-          ++ [ ./linux/patches/swaylock-no_subpixel_antialiasing.patch ];
+        patches = (prev.patches or [ ]) ++ [ ./linux/patches/swaylock-no_subpixel_antialiasing.patch ];
       });
     })
   ];
@@ -116,12 +134,14 @@ in {
   home = {
     packages = if server then packagesets.base else packagesets.everything;
 
-    sessionVariables = {
-      EDITOR = textEditor;
-    } // (lib.optionalAttrs pkgs.stdenv.isDarwin {
-      # when using git, use the system ssh so we can get keychain integration
-      GIT_SSH = "/usr/bin/ssh";
-    });
+    sessionVariables =
+      {
+        EDITOR = textEditor;
+      }
+      // (lib.optionalAttrs pkgs.stdenv.isDarwin {
+        # when using git, use the system ssh so we can get keychain integration
+        GIT_SSH = "/usr/bin/ssh";
+      });
   };
 
   home.file.".hammerspoon".source = config.lib.skip.ergonomic ./hammerspoon;

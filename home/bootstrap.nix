@@ -1,5 +1,11 @@
-{ system, inputs, username ? "skip", homeDirectory ? "/Users/${username}"
-, specialArgs ? { }, server ? "infer" }:
+{
+  system,
+  inputs,
+  username ? "skip",
+  homeDirectory ? "/Users/${username}",
+  specialArgs ? { },
+  server ? "infer",
+}:
 
 let
   inherit (inputs) home-manager nixpkgs;
@@ -9,14 +15,18 @@ let
   isDarwin = system == "aarch64-darwin" || system == "x86_64-darwin";
 
   serverResolved = if server == "infer" then isLinux else server;
-in home-manager.lib.homeManagerConfiguration {
+in
+home-manager.lib.homeManagerConfiguration {
   modules = [
     ./home.nix
     ../modules/hh3.nix
-    ({ ... }: {
-      home.username = username;
-      home.homeDirectory = homeDirectory;
-    })
+    (
+      { ... }:
+      {
+        home.username = username;
+        home.homeDirectory = homeDirectory;
+      }
+    )
   ];
 
   # see: https://zimbatm.com/notes/1000-instances-of-nixpkgs
@@ -26,19 +36,23 @@ in home-manager.lib.homeManagerConfiguration {
     inherit system;
   };
 
-  extraSpecialArgs = let
-    workstationArgs = {
-      # builds FFmpeg with libfdk-aac (although i just use aac_at nowadays...)
-      customFFmpeg = true;
+  extraSpecialArgs =
+    let
+      workstationArgs = {
+        # builds FFmpeg with libfdk-aac (although i just use aac_at nowadays...)
+        customFFmpeg = true;
 
-      # creates out-of-store symlinks for some configs so you don't
-      # constantly incur the overhead of a nix build
-      ergonomic = true;
-      ergonomicRepoPath = "${homeDirectory}/src/prj/nixfiles";
-    };
-  in {
-    # always forward flake inputs
-    inherit inputs;
-    server = serverResolved;
-  } // (lib.optionalAttrs (!serverResolved) workstationArgs) // specialArgs;
+        # creates out-of-store symlinks for some configs so you don't
+        # constantly incur the overhead of a nix build
+        ergonomic = true;
+        ergonomicRepoPath = "${homeDirectory}/src/prj/nixfiles";
+      };
+    in
+    {
+      # always forward flake inputs
+      inherit inputs;
+      server = serverResolved;
+    }
+    // (lib.optionalAttrs (!serverResolved) workstationArgs)
+    // specialArgs;
 }
