@@ -66,16 +66,7 @@ let
 
     # video/audio
     multimedia = [
-      (
-        if (specialArgs.customFFmpeg or false) then
-          (ffmpeg_5.override {
-            # we want libfdk-aac for (allegedly) nice, high-quality aac encoding
-            withFdkAac = true;
-            withUnfree = true;
-          })
-        else
-          ffmpeg_5
-      )
+      ffmpeg
       sox
       imagemagick
     ];

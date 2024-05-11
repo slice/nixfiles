@@ -39,9 +39,6 @@ home-manager.lib.homeManagerConfiguration {
   extraSpecialArgs =
     let
       workstationArgs = {
-        # builds FFmpeg with libfdk-aac (although i just use aac_at nowadays...)
-        customFFmpeg = true;
-
         # creates out-of-store symlinks for some configs so you don't
         # constantly incur the overhead of a nix build
         ergonomic = true;
