@@ -5,11 +5,6 @@
 {
   imports = [ ../modules/nix.nix ];
 
-  users.users.slice = {
-    name = "skip";
-    description = "Skip Rousseau";
-  };
-
   # home-manager.users.slice = (import ../home/home.nix) { };
   services.nix-daemon.enable = true;
 
