@@ -21,12 +21,12 @@ return {
     "monaqa/dial.nvim",
     -- stylua: ignore
     keys = {
-      { "<C-a>", function() M.dial("increment", "normal") end },
-      { "<C-x>", function() M.dial("decrement", "normal") end },
+      { "<C-a>",  function() M.dial("increment", "normal") end },
+      { "<C-x>",  function() M.dial("decrement", "normal") end },
       { "g<C-a>", function() M.dial("increment", "gnormal") end },
       { "g<C-x>", function() M.dial("decrement", "gnormal") end },
-      { "<C-a>", function() M.dial("increment", "visual") end, mode = "v" },
-      { "<C-x>", function() M.dial("decrement", "visual") end, mode = "v" },
+      { "<C-a>",  function() M.dial("increment", "visual") end,  mode = "v" },
+      { "<C-x>",  function() M.dial("decrement", "visual") end,  mode = "v" },
       { "g<C-a>", function() M.dial("increment", "gvisual") end, mode = "v" },
       { "g<C-x>", function() M.dial("decrement", "gvisual") end, mode = "v" },
     },
@@ -66,6 +66,8 @@ return {
         augend.date.alias["%Y-%m-%d"],
         const { "true", "false", preserve_case = true },
         const { "&&", "||", word = false },
+        const { "!=", "==", word = false },
+        const { "!==", "===", word = false },
         -- stylua: ignore
         const { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", cyclic = false, preserve_case = true },
         const { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", cyclic = false },

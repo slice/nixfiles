@@ -20,10 +20,10 @@ return {
       { "<Leader>g", "<Cmd>Telescope live_grep<CR>" },
       {
         "<Leader>d",
-        "<Cmd>Telescope file_browser cwd=%:p:h<CR>",
+        "<Cmd>Telescope file_browser hidden=true cwd=%:p:h<CR>",
         desc = "Telescope file_browser (from current file)",
       },
-      { "<Leader>f", "<Cmd>Telescope file_browser<CR>" },
+      { "<Leader>f", "<Cmd>Telescope file_browser hidden=true<CR>" },
 
       -- 2nd layer
       { "<Leader>lt", "<Cmd>Telescope builtin<CR>" },
