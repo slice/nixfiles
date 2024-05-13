@@ -126,6 +126,11 @@ local tweaks = {
     hi "TermCursorNC gui=reverse",
     link "DiagnosticUnnecessary Comment",
   },
+  neobones = {
+    hi "TabLineSel gui=reverse,bold",
+    hi "TabLine guifg=#c6d5cf guibg=#20303a",
+    hi "StatusLine gui=reverse,bold",
+  },
   default = { -- <3
     link "NormalNC Normal",
     hi "StatusLine gui=reverse,bold",

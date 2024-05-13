@@ -20,7 +20,8 @@ let
     recursiveUpdate
     ;
 
-  inherit (lib.modules) mkOption mkEnableOption mkIf;
+  inherit (lib.options) mkOption mkEnableOption;
+  inherit (lib.modules) mkIf;
 
   allSupportedBranches = [
     "stable"

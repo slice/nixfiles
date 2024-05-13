@@ -1,10 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  specialArgs,
-  ...
-}:
+{ pkgs, config, ... }:
 
 let
   lua = code: ''
@@ -15,23 +9,14 @@ let
 
   overlay = (
     final: prev: {
-      libvterm-neovim = prev.libvterm-neovim.overrideAttrs {
-        version = "0.3.3";
-        src = builtins.fetchurl {
-          url = "https://launchpad.net/libvterm/trunk/v0.3/+download/libvterm-0.3.3.tar.gz";
-          sha256 = "sha256:1q16fbznm54p24hqvw8c9v3347apk86ybsxyghsbsa11vm1ny589";
-        };
-      };
-
-      # nvim "0.10" (2024-05-02)
       neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs {
-        version = "0.10.0-dev-01e4a7";
+        version = "0.10.0-dev-d8b395";
 
         src = pkgs.fetchFromGitHub {
           owner = "neovim";
           repo = "neovim";
-          rev = "01e4a70d668d54a7cefa3ff53ec97e39df516265";
-          hash = "sha256-SMfFU+VsRTZLVIkGpf67oOTZ29gWmFvxF0nGO6CRx/4=";
+          rev = "d8b395b10fd033addef9765e30d9ab42e6cef264";
+          hash = "sha256-TF5+4IjRiMFCA80Hqd8H1UXbHgjs6766Ll5BPAeJGd8=";
         };
       };
     }
