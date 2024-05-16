@@ -36,8 +36,7 @@ function M.setup_lsp_buf(client, bufnr)
   map_buf("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP code actions" })
   map_buf("n", "<leader>lr", vim.lsp.buf.rename, { desc = "LSP rename symbol" })
   map_buf("n", "<leader>li", function()
-    local is_enabled = vim.lsp.inlay_hint.is_enabled(0)
-    vim.lsp.inlay_hint.enable(0, not is_enabled)
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(nil))
   end, { desc = "Toggle LSP inlay hints" })
   map_buf("n", "<leader>lz", vim.lsp.codelens.run, { desc = "Run LSP codelens" })
   vim.cmd(
@@ -88,7 +87,7 @@ utils.autocmds("SkipLsp", {
 
         vim.schedule(function()
           vim.notify(
-            string.format('(^_^)/ LSP server "%s" (%d) attached to bufnr %d', client.name, client.id, bufnr),
+            string.format('(^__^)/ LSP server "%s" (%d) attached to bufnr %d', client.name, client.id, bufnr),
             vim.log.levels.INFO
           )
         end)

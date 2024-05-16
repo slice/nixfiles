@@ -26,7 +26,7 @@ local mini_tweaks = {
 local tweaks = {
   ["*"] = {
     link "TelescopeNormal NormalFloat",
-    link "PopTermLabel WildMenu",
+    link "PopTermLabel TabLineSel",
     link "@type.builtin Special",
     -- fix underlines in telescope's preview having the wrong color
     link "@markup.link.vimdoc Constant",
@@ -130,6 +130,7 @@ local tweaks = {
     hi "TabLineSel gui=reverse,bold",
     hi "TabLine guifg=#c6d5cf guibg=#20303a",
     hi "StatusLine gui=reverse,bold",
+    hi "SpellBad guifg=NONE gui=undercurl",
   },
   default = { -- <3
     link "NormalNC Normal",
