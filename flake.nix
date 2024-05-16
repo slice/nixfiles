@@ -69,5 +69,15 @@
           inherit inputs;
         };
       };
+
+      darwinConfigurations.starfruit = darwin.lib.darwinSystem {
+        modules = [
+          ./hosts/grape.nix
+          lix-module.nixosModules.default
+        ];
+        specialArgs = {
+          inherit inputs;
+        };
+      };
     };
 }

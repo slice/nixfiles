@@ -35,6 +35,7 @@ let
       gallery-dl
       rsync
       nixfmt-rfc-style
+      gnused
     ];
 
     # language runtimes, compilers, etc.
