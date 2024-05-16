@@ -103,7 +103,6 @@
           "timeBarAllActivities"
           "hiddenProfileColors"
           "mediaMosaicTweaks"
-          "greentext"
         ];
       };
     };

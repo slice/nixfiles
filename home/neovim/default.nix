@@ -10,13 +10,13 @@ let
   overlay = (
     final: prev: {
       neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs {
-        version = "0.10.0-dev-d8b395";
+        version = "0.10.0";
 
         src = pkgs.fetchFromGitHub {
           owner = "neovim";
           repo = "neovim";
-          rev = "d8b395b10fd033addef9765e30d9ab42e6cef264";
-          hash = "sha256-TF5+4IjRiMFCA80Hqd8H1UXbHgjs6766Ll5BPAeJGd8=";
+          rev = "27fb62988e922c2739035f477f93cc052a4fee1e";
+          hash = "sha256-FCOipXHkAbkuFw9JjEpOIJ8BkyMkjkI0Dp+SzZ4yZlw=";
         };
       };
     }
