@@ -1,3 +1,17 @@
+local rg_flags = vim
+  .iter({
+    "--hidden",
+    "--iglob=!**/{.git,.svn,.hg,CVS,.DS_Store,.next,.cargo,.cache,.build}/**",
+  })
+  :flatten()
+  :totable()
+
+local function find_files()
+  require("telescope.builtin").find_files {
+    find_command = vim.iter({ "rg", rg_flags, "--files" }):flatten():totable(),
+  }
+end
+
 return {
   -- extensible multifuzzy finder over pretty much anything
   {
@@ -11,7 +25,7 @@ return {
     keys = {
       -- 1st layer (essential)
       { "<Leader><Space>", "<Cmd>Telescope resume<CR>" }, -- TODO: not sure if this deserves having <Space>
-      { "<Leader>o", "<Cmd>Telescope find_files<CR>" },
+      { "<Leader>o", find_files },
       { "<Leader>i", "<Cmd>Telescope oldfiles<CR>" },
       { "<Leader>b", "<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>" },
       { "<Leader>p", "<Cmd>Telescope trampoline<CR>" },
@@ -78,16 +92,20 @@ return {
           dynamic_preview_title = true,
           results_title = false,
           prompt_title = false,
-          vimgrep_arguments = {
-            "rg",
-            "--color=never",
-            "--no-heading",
-            "--with-filename",
-            "--line-number",
-            "--column",
-            "--smart-case",
-            "--fixed-strings",
-          },
+          vimgrep_arguments = vim
+            .iter({
+              "rg",
+              "--color=never",
+              "--no-heading",
+              "--with-filename",
+              "--line-number",
+              "--column",
+              "--smart-case",
+              "--fixed-strings",
+              rg_flags,
+            })
+            :flatten()
+            :totable(),
           mappings = {
             i = {
               -- immediately close the prompt when pressing <ESC> in insert mode
