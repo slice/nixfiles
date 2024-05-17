@@ -34,7 +34,6 @@ return {
 
   {
     "slice/nvim-popterm.lua",
-    dev = true,
     config = function()
       local popterm = require "popterm"
       popterm.config.window_height = 0.8
