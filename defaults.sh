@@ -1,12 +1,12 @@
 #!/bin/sh
 
+set -x
+
 wg() {
-  echo "defaults write -g" "$@"
   defaults write -g "$@"
 }
 
 w() {
-  echo "defaults write" "$@"
   defaults write "$@"
 }
 
@@ -48,6 +48,7 @@ w com.apple.finder ShowRemovableMediaOnDesktop -bool false
 w com.apple.finder ShowRecentTags -bool false
 
 # dock
+w com.apple.dock showhidden -bool true
 w com.apple.dock show-recents -bool false
 w com.apple.dock showLaunchpadGestureEnabled -bool false
 w com.apple.dock showAppExposeGestureEnabled -bool true
@@ -57,7 +58,7 @@ w com.apple.dock autohide-delay -float 0
 w com.apple.dock autohide-time-modifier -float 0.25
 w com.apple.dock expose-group-apps -bool true
 w com.apple.dock mru-spaces -bool false
-w com.apple.dock size-immutable -bool true
+# w com.apple.dock size-immutable -bool true
 w com.apple.dock wvous-br-corner -int 1
 w com.apple.dock appswitcher-all-displays -bool true
 
