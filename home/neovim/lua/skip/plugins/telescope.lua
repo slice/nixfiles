@@ -2,7 +2,7 @@ local rg_flags = vim
   .iter({
     "--ignore",
     "--hidden",
-    "--iglob=!**/{.git,.svn,.hg,CVS,.DS_Store,.next,.cargo,.cache,.build}/**",
+    "--iglob=!**/{.git,.svn,.hg,CVS,.DS_Store,.next,.cargo,.cache,.build,.yarn/releases}/**",
   })
   :flatten()
   :totable()
