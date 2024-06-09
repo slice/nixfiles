@@ -154,14 +154,14 @@ in
           set_color normal
 
           set -l prompt_character '>'
-          set -l prompt_color '80c'
+          set -l prompt_color 'magenta'
 
           if test "$USER" = "root"
             set prompt_character '#'
             set prompt_color 'red'
           end
 
-          set_color eee -b 80c
+          set_color 000 -b $prompt_color
           printf '%s' (prompt_pwd -D4)
           set_color normal
           set_color -o $prompt_color

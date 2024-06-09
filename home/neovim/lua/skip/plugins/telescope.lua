@@ -152,7 +152,7 @@ return {
     },
     opts = {
       pickers = {
-        oldfiles = { disable = false, use_cwd = false },
+        oldfiles = { disable = false, use_cwd = true },
         help_tags = { disable = false, use_cwd = false, sorting = "frecency" },
         man_pages = { disable = false, use_cwd = false, sorting = "frecency" },
         ["trampoline#trampoline"] = {

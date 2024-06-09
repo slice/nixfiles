@@ -20,7 +20,7 @@ return {
   "tpope/vim-rhubarb",
   "tpope/vim-repeat",
   "tpope/vim-abolish",
-  "tpope/vim-afterimage",
+  { "tpope/vim-afterimage", enabled = false },
   "romainl/vim-cool",
   "mhinz/vim-sayonara",
 
