@@ -125,6 +125,12 @@ in
     nix-direnv.enable = true;
   };
 
+  news = {
+    display = "silent";
+    json = lib.mkForce { };
+    entries = lib.mkForce [ ];
+  };
+
   home = {
     packages = if server then packagesets.base else packagesets.everything;
 

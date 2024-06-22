@@ -1,28 +1,57 @@
 { pkgs, ... }:
 
+let
+  conservative = [
+    "sentrynerf"
+    "pseudoscience"
+    "localStorage"
+    "preserveToken"
+    "noconmsg"
+  ];
+  full = conservative ++ [
+    "loadingScreen"
+    "createEmoji"
+    "copyAvatarUrl"
+    "experiments"
+    "postnet"
+    "oldQuote"
+    "3y3"
+    "unravelMessage"
+    "callIdling"
+    "fixmentions"
+    "imageUrls"
+    "panic"
+    "noJoinMessageWave"
+    "tardid"
+    "inviteToNowhere"
+    "timeBarAllActivities"
+    "hiddenProfileColors"
+    "mediaMosaicTweaks"
+  ];
+in
 {
   programs.hh3 = {
     enable = true;
     config = {
       canary = {
         enable = true;
-        inspectAll = false;
+        inspectAll = true;
 
         exts = {
           customRinging = {
-            enabled = true;
+            enabled = false;
             options.ptt_stop = "https://cdn.discordapp.com/attachments/228317351672545290/973531652745728000/MicUpLoud.wav";
             options.ptt_start = "https://cdn.discordapp.com/attachments/228317351672545290/973531761558568971/MicDownLoud.wav";
           };
           rpcTypeChanger = {
-            enabled = true;
+            enabled = false;
             options.mappings = {
               "402370117901484042" = "2";
               "899192189618368552" = "2";
             };
           };
           commands = {
-            enabled = true;
+            enabled = false;
             options.dangerMode = true;
           };
           css = {
@@ -70,40 +99,16 @@
             options.username = true;
           };
           hiddenTyping = {
-            enabled = true;
+            enabled = false;
             options.whenInvisible = true;
           };
           declutterTextButtons = {
-            enabled = true;
+            enabled = false;
             options.keepGif = true;
           };
         };
 
-        enabledExts = [
-          "sentrynerf"
-          "pseudoscience"
-          "loadingScreen"
-          "createEmoji"
-          "copyAvatarUrl"
-          "experiments"
-          "localStorage"
-          "preserveToken"
-          "postnet"
-          "oldQuote"
-          "3y3"
-          "unravelMessage"
-          "callIdling"
-          "fixmentions"
-          "imageUrls"
-          "noconmsg"
-          "panic"
-          "noJoinMessageWave"
-          "tardid"
-          "inviteToNowhere"
-          "timeBarAllActivities"
-          "hiddenProfileColors"
-          "mediaMosaicTweaks"
-        ];
+        enabledExts = conservative;
       };
     };
   };
