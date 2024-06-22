@@ -36,7 +36,6 @@ opt.updatetime = 1000
 opt.wrap = false
 opt.number = true
 opt.relativenumber = true
-opt.spell = true
 opt.spelloptions = { "camel" }
 opt.splitright = true
 opt.sidescroll = 5
@@ -45,7 +44,6 @@ opt.sidescrolloff = 10
 opt.smartcase = true
 opt.statusline = [[%<%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %c,%l/%L #%n]]
 opt.timeoutlen = 500
-opt.shada = [['1000]] -- remember 1,000 oldfiles
 opt.undofile = true
 opt.scrolloff = 5
 

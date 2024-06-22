@@ -75,6 +75,7 @@ let
 
     # miscellaneous utilities
     utilities = [
+      eza
       graphviz
       smartmontools
       colmena

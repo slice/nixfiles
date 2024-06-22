@@ -5,12 +5,12 @@
 
 return {
   "justinmk/vim-dirvish",
-  { "justinmk/vim-gtfo", keys = { "gof", "got" } },
+  { "justinmk/vim-gtfo",    keys = { "gof", "got" } },
   {
     "junegunn/vim-easy-align",
     keys = {
       { "ga", "<Plug>(EasyAlign)", remap = true },
-      { "ga", "<Plug>(EasyAlign)", mode = "x", remap = true },
+      { "ga", "<Plug>(EasyAlign)", mode = "x",  remap = true },
     },
   },
   "tpope/vim-rsi",
@@ -129,14 +129,14 @@ return {
 
   -- colorschemes {{{
 
-  { "slice/bubblegum2", lazy = true },
-  { "junegunn/seoul256.vim", lazy = true },
-  { "bluz71/vim-moonfly-colors", lazy = true },
+  { "slice/bubblegum2",              lazy = true },
+  { "junegunn/seoul256.vim",         lazy = true },
+  { "bluz71/vim-moonfly-colors",     lazy = true },
   { "bluz71/vim-nightfly-guicolors", lazy = true },
-  { "itchyny/landscape.vim", lazy = true },
-  { "savq/melange", lazy = true },
-  { "phha/zenburn.nvim", lazy = true },
-  { "sainnhe/everforest", lazy = true },
+  { "itchyny/landscape.vim",         lazy = true },
+  { "savq/melange",                  lazy = true },
+  { "phha/zenburn.nvim",             lazy = true },
+  { "sainnhe/everforest",            lazy = true },
   {
     "mcchrish/zenbones.nvim",
     priority = 1000,
@@ -204,7 +204,6 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     lazy = false,
-    enabled = false,
     config = function()
       require("treesitter-context").setup {}
     end,

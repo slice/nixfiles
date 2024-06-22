@@ -116,6 +116,9 @@ local tweaks = {
       -- Most tokens onscreen are going to be `@variable`s, and we don't want to
       -- highlight all of them. It's visually noisy.
       link "@variable.python Normal",
+
+      hi "CursorLine guibg=#341d1b",
+      hi "StatusLine gui=reverse,bold",
     },
   },
   minischeme = vim.tbl_flatten { mini_tweaks, moonfly_spelling },
@@ -192,12 +195,12 @@ autocmds("SkipHacks", {
 
 autocmds("SkipFiletypes", {
   -- enable spellchecking in git commits
-  { "FileType", { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " } },
+  { "FileType",    { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " } },
   -- { "FileType", { pattern = "typescript", command = "setlocal indentexpr=" } },
-  { "FileType", { pattern = "dirvish,man,text,git", command = "setlocal nospell" } },
+  { "FileType",    { pattern = "dirvish,man,text,git,gitignore", command = "setlocal nospell" } },
   -- swift interpolations look like "\(...)", and we want text objects and
   -- motions involving parens to not think they're escaped
-  { "FileType", { pattern = "swift", command = "setl cpo+=M" } },
+  { "FileType",    { pattern = "swift", command = "setl cpo+=M" } },
   { "BufReadPost", { pattern = "*.md,*.mdx", command = "setlocal spell | setf markdown" } },
 })
 
@@ -239,7 +242,7 @@ autocmds("SkipTerminal", {
 
 autocmds("SkipLocalCursorline", {
   { { "BufWinEnter", "WinEnter" }, { pattern = "*", command = "setlocal cursorline" } },
-  { "WinLeave", { pattern = "*", command = "setlocal nocursorline" } },
+  { "WinLeave",                    { pattern = "*", command = "setlocal nocursorline" } },
 })
 
 autocmds("SkipParentDirectoryCreation", {

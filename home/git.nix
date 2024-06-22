@@ -31,6 +31,7 @@
         color.diff.meta = "reverse";
         pull.ff = "only";
         init.defaultBranch = "main";
+        branch.sort = "-committerdate";
         # diff.colorMoved = "default";
         "credential \"https://github.com\"" = ghHelper;
         "credential \"https://gist.github.com\"" = ghHelper;
