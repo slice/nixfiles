@@ -7,7 +7,6 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-nvim-lsp-signature-help",
-      "hrsh7th/cmp-nvim-lua",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-calc",
       "hrsh7th/cmp-cmdline",
@@ -78,14 +77,19 @@ return {
         sources = cmp.config.sources(
           -- be aggressive with resolving math expression, because sometimes
           -- the lsp source takes precedence
-          { { name = "calc" } },
+          { name = "calc" },
           {
             { name = "nvim_lsp" },
             { name = "nvim_lsp_signature_help" },
             { name = "vsnip" },
           },
           {
-            { name = "nvim_lua" },
+            name = "lazydev",
+            -- refers to the table above; takes precedence when this source is
+            -- active
+            group_index = 2,
+          },
+          {
             {
               name = "buffer",
               option = {

@@ -13,7 +13,6 @@ end
 return {
   {
     "neovim/nvim-lspconfig",
-    dependencies = { "folke/neodev.nvim" },
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       local lsp = require "skip.lsp"
@@ -84,14 +83,7 @@ return {
         end)
       end)
 
-      lsc.lua_ls.setup {
-        -- for some reason, neodev doesn't properly hook itself into lspconfig
-        -- _if we're using split plugin specs with lazy.nvim_, so do it manually
-        -- here. neodev's override functionality still kicks in, too
-        on_new_config = function(config, root_dir)
-          require("neodev.lsp").on_new_config(config, root_dir)
-        end,
-      }
+      lsc.lua_ls.setup {}
 
       lsc.hls.setup {
         filetypes = { "haskell", "lhaskell", "cabal" },
@@ -117,16 +109,15 @@ return {
   },
 
   {
-    "folke/neodev.nvim",
+    "folke/lazydev.nvim",
     lazy = true,
+    dependencies = { "Bilal2453/luvit-meta", lazy = true },
+    ft = "lua",
     opts = {
-      override = function(root_dir, library)
-        -- TODO: use neoconf
-        if root_dir:find("nixfiles", 1, true) then
-          library.enabled = true
-          library.plugins = true
-        end
-      end,
+      library = {
+        "lazy.nvim",
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
     },
   },
 
