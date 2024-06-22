@@ -63,7 +63,7 @@ return {
         -- },
         performance = {
           debounce = 30,
-          throttle = 30,
+          throttle = 10,
           fetching_timeout = 500,
           confirm_resolve_timeout = 80,
           async_budget = 1,
