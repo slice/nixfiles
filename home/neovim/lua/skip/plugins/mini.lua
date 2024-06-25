@@ -12,6 +12,9 @@ return {
   {
     "echasnovski/mini.diff",
     config = true,
+    opts = {
+      view = { style = "sign" },
+    },
   },
 
   {

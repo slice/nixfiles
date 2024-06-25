@@ -1,15 +1,5 @@
 local patched_lspconfig = false
 
-local original_jump = vim.lsp.util.jump_to_location
-
----@diagnostic disable-next-line:duplicate-set-field
-function vim.lsp.util.jump_to_location(...)
-  -- cheeky
-  vim.opt.hidden = true
-  original_jump(...)
-  vim.opt.hidden = false
-end
-
 return {
   {
     "neovim/nvim-lspconfig",
