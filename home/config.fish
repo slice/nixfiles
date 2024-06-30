@@ -55,6 +55,11 @@ if set -q KITTY_INSTALLATION_DIR
   alias ssh="kitty +kitten ssh"
 end
 
+# ghostty terminal integration (detect doesn't seem to work?)
+if set -q GHOSTTY_RESOURCES_DIR
+  source $GHOSTTY_RESOURCES_DIR/shell-integration/fish/vendor_conf.d/ghostty-shell-integration.fish
+end
+
 if test -f ~/.iterm2_shell_integration.fish
   source ~/.iterm2_shell_integration.fish
 end

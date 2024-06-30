@@ -41,7 +41,7 @@ let
 
     # language runtimes, compilers, etc.
     languages = [
-      python310
+      python3
       llvmPackages_12.llvm
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
       #   cabal-install lens wreq aeson lens-aeson bytestring text tagsoup
