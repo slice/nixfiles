@@ -17,11 +17,40 @@ function M.assimilate()
         set_iterm_profile("Default")
       end,
     })
+    return
+  end
+
+  colorscheme_bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg
+
+  -- TODO: what terminals does this (OSC 11) work with? is it standard?
+  if vim.env.TERM_PROGRAM == "ghostty" then
+    local r, g, b
+    vim.api.nvim_create_autocmd('TermResponse', {
+      once = true,
+      group = id,
+      callback = function(args)
+        local resp = args.data
+        r, g, b = resp:match("\027%]11;rgb:(%w+)/(%w+)/(%w+)")
+        vim.print(r, ' ', g, ' ', b)
+      end,
+    })
+    io.stdout:write("\027]11;?")
+
+    local hex = string.format("%06x", colorscheme_bg)
+    -- set background color via OSC 11
+    io.write("\27]11;rgb:" .. hex:gsub("%x%x", "%1/", 2))
+
+    vim.api.nvim_create_autocmd("VimLeavePre", {
+      group = id,
+      desc = "Reverts terminal colors to default before exiting.",
+      callback = function()
+        io.write(("\27]11;rgb:%s/%s/%s"):format(r, g, b))
+      end,
+    })
+    return
   end
 
   if vim.env.KITTY_PID ~= nil then
-    background = vim.api.nvim_get_hl_by_name("Normal", true).background
-
     local kitty_extensions = { push_colors = "\27]30001\27\\", pop_colors = "\27]30101\27\\" }
     local function kitty_remote(cmd)
       vim.cmd("silent! !kitty @ " .. cmd)
@@ -29,7 +58,7 @@ function M.assimilate()
 
     -- kitty_remote(string.format('set-colors background=\\#%06x', background))
     io.write(kitty_extensions.push_colors)
-    io.write(string.format("\27]11;#%06x\27\\", background))
+    io.write(string.format("\27]11;#%06x\27\\", colorscheme_bg))
     -- kitty_remote(string.format('set-colors tab_bar_background=\\#%06x', background))
 
     vim.api.nvim_create_autocmd("VimLeavePre", {
