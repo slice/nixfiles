@@ -34,7 +34,13 @@ in
         md = "mkdir";
         ydl = "yt-dlp";
         ydle = "yt-dlp -f bestaudio --audio-format mp3 --extract-audio";
+
         hms = "hm-switch";
+        nds = "nd-switch";
+        hmu = "hm-update";
+        ndu = "nd-update";
+
+        agp = "autocommit; and git push -v";
 
         # vcs
         g = "git";
