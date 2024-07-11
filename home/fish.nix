@@ -7,6 +7,7 @@
 
 let
   textEditor = config.home.sessionVariables.EDITOR;
+  nixfiles = "~/src/prj/nixfiles";
 in
 {
   programs.fish = {
@@ -202,9 +203,19 @@ in
           xattr -dr com.apple.quarantine $argv
         '';
 
+        hm-update = ''
+          git -C ${nixfiles} pull -v --autostash
+          and hm-switch
+        '';
+
+        nd-update = ''
+          git -C ${nixfiles} pull -v --autostash
+          and nd-switch
+        '';
+
         nd-switch = ''
           set -l hostname_sans_local (string split -f1 '.' (hostname))
-          set -l flake_src ~/src/prj/nixfiles
+          set -l flake_src ${nixfiles}
 
           nix build $flake_src#darwinConfigurations.$hostname_sans_local.system --verbose $argv
           and ./result/sw/bin/darwin-rebuild switch --flake $flake_src
@@ -212,7 +223,7 @@ in
         '';
 
         hm-switch = ''
-          home-manager switch --flake ~/src/prj/nixfiles
+          home-manager switch --flake ${nixfiles}
         '';
       };
   };
