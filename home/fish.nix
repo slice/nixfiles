@@ -90,13 +90,14 @@ in
 
     functions =
       {
-        man = {
-          wraps = "man";
-          description = "diverts man to neovim";
-          body = ''
-            ${lib.getBin pkgs.neovim}/bin/nvim man://$argv[1]
-          '';
-        };
+        # NOTE: MANPAGER (and MANWIDTH) is used instead of this
+        # man = {
+        #   wraps = "man";
+        #   description = "diverts man to neovim";
+        #   body = ''
+        #     ${lib.getBin pkgs.neovim}/bin/nvim man://$argv[1]
+        #   '';
+        # };
 
         spek = ''
           set -l id (random)
@@ -164,8 +165,8 @@ in
             set prompt_color 'red'
           end
 
-          set_color 000 --background $prompt_color
-          printf '%s' (prompt_pwd -D4)
+          set_color --bold $prompt_color
+          printf '%s' (prompt_pwd -full-length-dirs 4 --dir-length 3)
           set_color normal
           set_color --bold white
           printf '%s ' $prompt_character
@@ -179,7 +180,7 @@ in
         fish_right_prompt = ''
           # set this so we can compare the value pre-command_duration (which modifies
           # it)
-          set -l _status "$status"
+          set -l _status $status
 
           command_duration
 
@@ -188,11 +189,11 @@ in
 
           printf '%s%s%s' (set_color -o blue) (fish_git_prompt) (set_color normal)
 
-          if test "$_status" -eq 0
-            printf ' %s:)%s' (set_color green) (set_color normal)
+          if test $_status -eq 0
+            printf ' %s:O3%s' (set_color green) (set_color normal)
           else
             # set -l face (random choice 'O_O' 'O_o' '>_>' 'v_v' ';_;')
-            printf ' %s:(%s' (set_color -r -o red) (set_color normal)
+            printf ' %s%s %s:O[%s' (set_color -o red) $_status (set_color -ro red) (set_color normal)
           end
         '';
       }
@@ -202,8 +203,8 @@ in
         '';
 
         nd-switch = ''
-          set hostname_sans_local (string split -f1 '.' (hostname))
-          set flake_src ~/src/prj/nixfiles
+          set -l hostname_sans_local (string split -f1 '.' (hostname))
+          set -l flake_src ~/src/prj/nixfiles
 
           nix build $flake_src#darwinConfigurations.$hostname_sans_local.system --verbose $argv
           and ./result/sw/bin/darwin-rebuild switch --flake $flake_src

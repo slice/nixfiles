@@ -7,10 +7,16 @@ local rg_flags = vim
   :flatten()
   :totable()
 
+local builtin = require("telescope.builtin")
+
 local function find_files()
-  require("telescope.builtin").find_files {
+  builtin.find_files {
     find_command = vim.iter({ "rg", rg_flags, "--files" }):flatten():totable(),
   }
+end
+
+local function man_pages()
+  builtin.man_pages { man_cmd = { "apropos", "-s", "1:4:5:7", "." } }
 end
 
 return {
@@ -43,7 +49,7 @@ return {
       -- 2nd layer
       { "<Leader>lt", "<Cmd>Telescope builtin<CR>" },
       { "<Leader>lc", "<Cmd>Telescope colorscheme<CR>" },
-      { "<Leader>lm", "<Cmd>Telescope man_pages<CR>" },
+      { "<Leader>lm", man_pages },
       { "<Leader>ld", "<Cmd>Telescope diagnostics<CR>" },
       { "<Leader>lb", "<Cmd>Telescope current_buffer_fuzzy_find<CR>" },
       { "<Leader>lls", "<Cmd>Telescope lsp_workspace_symbols<CR>" },

@@ -75,6 +75,8 @@ return {
 
       lsc.lua_ls.setup {}
 
+      lsc.gopls.setup {}
+
       lsc.hls.setup {
         filetypes = { "haskell", "lhaskell", "cabal" },
       }
