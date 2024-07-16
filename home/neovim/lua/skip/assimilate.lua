@@ -20,7 +20,7 @@ function M.assimilate()
     return
   end
 
-  colorscheme_bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg
+  local colorscheme_bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg
 
   -- TODO: what terminals does this (OSC 11) work with? is it standard?
   if vim.env.TERM_PROGRAM == "ghostty" then
@@ -31,7 +31,6 @@ function M.assimilate()
       callback = function(args)
         local resp = args.data
         r, g, b = resp:match("\027%]11;rgb:(%w+)/(%w+)/(%w+)")
-        vim.print(r, ' ', g, ' ', b)
       end,
     })
     io.stdout:write("\027]11;?")
