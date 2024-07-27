@@ -141,7 +141,7 @@ in
         MANPAGER = "nvim +Man!";
         # let Neovim format the man page text, not groff - so we can wrap on
         # the fly
-        MANWIDTH = 999;
+        # MANWIDTH = 999;
       }
       // (lib.optionalAttrs pkgs.stdenv.isDarwin {
         # when using git, use the system ssh so we can get keychain integration

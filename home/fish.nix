@@ -13,20 +13,24 @@ in
   programs.fish = {
     enable = true;
 
-    shellAliases = ({
-      # the usual suspects
-      ls = "eza --classify=always";
+    shellAliases = (
+      {
+        # the usual suspects
+        ls = "eza --classify=always";
 
-      # worth noting that aliases resolve within aliases
-      ll = "ls --header --long --sort=modified --reverse --time-style=relative --git --created --modified";
-      lt = "ll --time-style=iso"; # force absolute timestamps
-      la = "ll -aa";
+        # worth noting that aliases resolve within aliases
+        ll = "ls --header --long --sort=modified --reverse --time-style=relative --git --created --modified";
+        lt = "ll --time-style=iso"; # force absolute timestamps
+        la = "ll -aa";
 
-      e = textEditor;
-      se = "sudo ${textEditor}";
-    } // lib.optionalAttrs pkgs.stdenv.isDarwin {
-      lsregister = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
-    });
+        e = textEditor;
+        se = "sudo ${textEditor}";
+      }
+      // lib.optionalAttrs pkgs.stdenv.isDarwin {
+        lsregister = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
+        tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
+      }
+    );
 
     shellAbbrs =
       {
@@ -206,7 +210,7 @@ in
           end
         '';
       }
-      // pkgs.lib.optionalAttrs pkgs.stdenv.isDarwin {
+      // lib.optionalAttrs pkgs.stdenv.isDarwin {
         unquarantine = ''
           xattr -dr com.apple.quarantine $argv
         '';

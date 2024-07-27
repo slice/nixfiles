@@ -110,5 +110,5 @@ for employer in ~/src/work/*
   set -ga CDPATH $employer
 end
 
-test -d ~/src; and set -ga CDPATH ~/src/{prj,lib,scraps}
-test -d ~/Developer; and set -ga CDPATH ~/Developer/{prj,lib,scraps}
+test -d ~/src; and set -ga CDPATH ~/src{/prj,/lib,/scraps,}
+test -d ~/Developer; and set -ga CDPATH ~/Developer{/prj,/lib,/scraps,}
