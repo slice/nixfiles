@@ -40,6 +40,18 @@ local tweaks = {
     link "MiniDiffSignChange GitSignsChange",
     link "MiniDiffSignDelete GitSignsDelete",
   },
+  apparition = {
+    hi "@variable guifg=NONE",
+    hi "@punctuation guifg=NONE",
+    hi "@constructor.lua guifg=NONE",
+    hi "TelescopeMatching guifg=#000000 guibg=#96bade gui=bold",
+    link "DiagnosticInfo Statement",
+    link "DiagnosticHint Statement", -- make diff from info?
+    link "DiagnosticError ErrorMsg",
+    link "DiagnosticWarn WarningMsg",
+    hi "CursorLine guibg=#4e1012",
+    hi "CursorLineNr guibg=#842024 gui=bold guifg=#ffc8c3",
+  },
   bubblegum2 = {
     link "MatchParen LineNr",
     link "TelescopeMatching IncSearch",
@@ -217,6 +229,7 @@ local lang_indent_settings = {
   sass = { width = 2, with = "spaces" },
   cabal = { width = 4, with = "spaces" },
   fluent = { width = 2, with = "spaces" },
+  rust = { width = 4, with = "spaces" },
 }
 
 local indentation_tweaks_group = vim.api.nvim_create_augroup("SkipIndentationTweaks", {})

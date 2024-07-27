@@ -21,7 +21,7 @@ return {
   "tpope/vim-repeat",
   "tpope/vim-abolish",
   { "tpope/vim-afterimage", enabled = false },
-  "romainl/vim-cool",
+  { "romainl/vim-cool",     enabled = false },
   "mhinz/vim-sayonara",
 
   {
@@ -129,6 +129,7 @@ return {
 
   -- colorschemes {{{
 
+  { "lunacookies/vim-apparition",    lazy = true },
   { "slice/bubblegum2",              lazy = true },
   { "junegunn/seoul256.vim",         lazy = true },
   { "bluz71/vim-moonfly-colors",     lazy = true },
@@ -139,7 +140,7 @@ return {
   { "sainnhe/everforest",            lazy = true },
   {
     "mcchrish/zenbones.nvim",
-    priority = 1000,
+    lazy = true,
     dependencies = { "rktjmp/lush.nvim" },
   },
   {
@@ -311,4 +312,11 @@ return {
       }
     end,
   },
+
+  {
+    'danobi/prr',
+    config = function(plugin)
+      vim.opt.rtp:append(plugin.dir .. "/vim")
+    end
+  }
 }

@@ -13,7 +13,7 @@ in
   programs.fish = {
     enable = true;
 
-    shellAliases = {
+    shellAliases = ({
       # the usual suspects
       ls = "eza --classify=always";
 
@@ -24,7 +24,9 @@ in
 
       e = textEditor;
       se = "sudo ${textEditor}";
-    };
+    } // lib.optionalAttrs pkgs.stdenv.isDarwin {
+      lsregister = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
+    });
 
     shellAbbrs =
       {
