@@ -2,12 +2,12 @@
   description = "skip's machines";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/c7b5f486d39f75b7653fb3246297e58ceef3e8fb";
 
     flake-utils.url = "github:numtide/flake-utils";
 
     lix = {
-      url = "git+https://git@git.lix.systems/lix-project/lix?ref=refs/tags/2.90.0-rc1";
+      url = "git+https://git@git.lix.systems/lix-project/lix?ref=refs/tags/2.90.0";
       flake = false;
     };
     lix-module = {
