@@ -50,42 +50,27 @@ return {
       local column_width = window_width - 3
 
       local opts = {
-        window = {
-          winblend = 20,
+        win = {
+          width = 0.25,
+          col = 1,
+          wo = { winblend = 20, },
           padding = { 1, 1, 1, 1 },
-          margin = { 0, 0, 1, 1 },
         },
         layout = {
           spacing = 0,
           width = { min = column_width, max = column_width },
         },
+        icons = { mappings = false, },
       }
       local wk = require("which-key")
       wk.setup(opts)
 
-      wk.register({
-        ["<Leader>"] = {
-          l = { name = "+second layer", l = { name = "+third layer" } },
-          t = { name = "+terminals" },
-          v = { name = " +config" },
-        },
-      })
-
-      local group = vim.api.nvim_create_augroup("WhichKeyCompact", {})
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "WhichKey",
-        callback = function(info)
-          local displaying_windows = vim.tbl_filter(function(win)
-            return vim.api.nvim_win_get_buf(win) == info.buf and vim.api.nvim_win_is_valid(win)
-          end, vim.api.nvim_list_wins())
-          if #displaying_windows ~= 1 then
-            vim.notify("failed to find whichkey window :(", vim.log.levels.ERROR)
-            return
-          end
-          local displaying_window = displaying_windows[1]
-          vim.api.nvim_win_set_config(displaying_window, { width = window_width })
-        end,
-        group = group,
+      wk.add({
+        { "<Leader>l",  group = "second layer" },
+        { "<Leader>ll", group = "third layer" },
+        { "<Leader>t",  group = "terminals" },
+        { "<Leader>v",  group = "config" },
+        { "<Leader>m",  group = "minimap" },
       })
     end,
   },
