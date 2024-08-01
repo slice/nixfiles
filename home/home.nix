@@ -68,7 +68,7 @@ let
 
     # video/audio
     multimedia = [
-      ffmpeg
+      ffmpeg_7
       sox
       imagemagick
     ];
