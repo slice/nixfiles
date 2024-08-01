@@ -9,16 +9,19 @@ let
 
   overlay = (
     final: prev: {
-      neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs {
+      neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (orig: {
         version = "0.10.0";
 
         src = pkgs.fetchFromGitHub {
           owner = "neovim";
           repo = "neovim";
-          rev = "27fb62988e922c2739035f477f93cc052a4fee1e";
-          hash = "sha256-FCOipXHkAbkuFw9JjEpOIJ8BkyMkjkI0Dp+SzZ4yZlw=";
+          # 2024-08-01 (has fix for https://github.com/neovim/neovim/issues/28987 somewhere in tree)
+          rev = "720b309c786c4a258adccc9c468d433fb0f755b9";
+          hash = "sha256-+mr1KCwb5kiDFIwVGnLb+qjuqjfS0sRSckp6hzTgrOk";
         };
-      };
+
+        buildInputs = orig.buildInputs ++ [ pkgs.utf8proc ];
+      });
     }
   );
 in
