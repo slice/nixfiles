@@ -39,6 +39,7 @@ opt.relativenumber = true
 opt.spelloptions = { "camel" }
 opt.splitright = true
 opt.sidescroll = 5
+opt.signcolumn = "yes"
 opt.showbreak = ">"
 opt.sidescrolloff = 10
 opt.smartcase = true

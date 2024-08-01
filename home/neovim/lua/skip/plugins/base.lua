@@ -206,7 +206,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter-context",
     lazy = false,
-    enabled = true,
+    enabled = false,
     config = function()
       require("treesitter-context").setup {}
     end,

@@ -211,7 +211,7 @@ autocmds("SkipHacks", {
 autocmds("SkipFiletypes", {
   -- enable spellchecking in git commits
   { "FileType",    { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " } },
-  -- { "FileType", { pattern = "typescript", command = "setlocal indentexpr=" } },
+  { "FileType",    { pattern = "typescript", command = "setlocal commentstring=//\\ %s" } },
   { "FileType",    { pattern = "dirvish,man,text,git,gitignore", command = "setlocal nospell" } },
   -- swift interpolations look like "\(...)", and we want text objects and
   -- motions involving parens to not think they're escaped
