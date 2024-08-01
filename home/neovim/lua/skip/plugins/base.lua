@@ -1,5 +1,7 @@
 -- vim: set fdm=marker fdl=1:
 
+local utils = require 'skip.utils'
+
 -- N.B. using VeryLazy smashes the UI on startup for some reason
 -- (i.e. echo output and :intro gets cleared off)
 
@@ -192,7 +194,12 @@ return {
           "vim",
           "yaml",
         },
-        highlight = { enable = true },
+        highlight = {
+          enable = true,
+          disable = function(_lang, bufnr)
+            return require('skip.huge').bouncer(bufnr)
+          end
+        },
         incremental_selection = {
           enable = true,
           keymaps = { init_selection = "\\", node_incremental = "\\", node_decremental = "<bs>" },
@@ -256,7 +263,7 @@ return {
         desc = "Automatic formatting on buffer write",
         group = lsp.formatting_augroup,
         callback = function(args)
-          if lsp.flag_set(lsp.noformat_key) then
+          if utils.flag_set(lsp.noformat_key) then
             return
           end
 
@@ -265,7 +272,7 @@ return {
             return
           end
 
-          if lsp.flag_set "LSP_FORMATTING_ONLY" then
+          if utils.flag_set "LSP_FORMATTING_ONLY" then
             vim.lsp.buf.format { bufnr = args.buf }
             return
             -- return conform.format { bufnr = args.buf, lsp_fallback = "always", formatters = {} }

@@ -124,6 +124,20 @@ return {
               ["<C-w>"] = "delete_buffer",
             },
           },
+          preview = {
+            filesize_limit = 1,
+            highlight_limit = 1,
+            treesitter = false, -- can block on huge files
+            filetype_hook = function(_filepath, bufnr, opts)
+              local bounced = require('skip.huge').bouncer(bufnr, { silently = true })
+              if bounced then
+                -- seemingly _need_ to set the preview message in order to suppress previewing
+                require('telescope.previewers.utils').set_preview_message(bufnr, opts.winid, "bounced")
+                return false
+              end
+              return true
+            end
+          },
         },
         extensions = {
           file_browser = {

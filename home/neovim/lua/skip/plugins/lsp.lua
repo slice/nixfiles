@@ -8,19 +8,25 @@ return {
       local lsp = require "skip.lsp"
       local lsc = require "lspconfig"
 
-      if patched_lspconfig then
-        return
-      end
-      patched_lspconfig = true
+      if not patched_lspconfig then
+        local original_bufname_valid = lsc.util.bufname_valid
 
-      local original_bufname_valid = lsc.util.bufname_valid
-      -- some day, this'll break ... :O]
-      ---@diagnostic disable-next-line:duplicate-set-field
-      function lsc.util.bufname_valid(bufname)
-        if not lsp.attach_allowed(bufname) then
-          return false
+        -- some day, this'll break ... :O]
+        ---@diagnostic disable-next-line:duplicate-set-field
+        function lsc.util.bufname_valid(bufname)
+          -- reverse engineer bufnr :(
+          -- lspconfig pls let me conditionally attach (but early)
+          local bufs = vim.api.nvim_list_bufs()
+          for _, bufnr in ipairs(bufs) do
+            if vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_buf_is_loaded(bufnr) and vim.api.nvim_buf_get_name(bufnr) == bufname then
+              if not lsp.attach_allowed(bufnr) then return false end
+            end
+          end
+
+          return original_bufname_valid(bufname)
         end
-        return original_bufname_valid(bufname)
+
+        patched_lspconfig = true
       end
 
       -- TODO: this doesn't belong here!!!!
@@ -131,7 +137,7 @@ return {
         },
         capabilities = lsp.capabilities,
         should_attach = function(bufnr)
-          return lsp.attach_allowed(vim.api.nvim_buf_get_name(bufnr))
+          return lsp.attach_allowed(bufnr)
         end,
       }
     end,

@@ -14,10 +14,6 @@ end
 M.noattach_key = "LSP_NOATTACH"
 M.noformat_key = "LSP_NOFORMAT"
 
-function M.flag_set(name)
-  return vim.g[name] == 1 or vim.b[name] == 1 or vim.t[name] == 1 or vim.w[name] == 1
-end
-
 M.formatting_augroup = vim.api.nvim_create_augroup("SkipLspAutomaticFormatting", {})
 
 -- setup a buffer with an lsp server attached with the proper mappings and
@@ -54,16 +50,25 @@ M.banned_patterns = {
 }
 
 -- we patch lspconfig.util.bufname_valid to call this
-function M.attach_allowed(bufname)
+function M.attach_allowed(bufnr)
+  local bufname = vim.api.nvim_buf_get_name(bufnr)
+
   -- i'd add some cute messages here, but this function can be called more than
   -- once and i don't want to trigger the hit-enter-prompt
 
-  if M.flag_set(M.noattach_key) then
+  -- if utils.flag_set(M.noattach_key) then
+  if utils.flag_set(M.noattach_key, bufnr) then
+    vim.notify(
+      ('attach_allowed: REFUSING buffer %d (%s), flag was set'):format(bufnr, bufname),
+      vim.log.levels.WARN)
     return false
   end
 
   for _, banned_pattern in ipairs(M.banned_patterns) do
     if bufname:find(banned_pattern) then
+      vim.notify(
+        ('attach_allowed: REFUSING buffer %d (%s), matched banned pattern %s'):format(bufnr, bufname, banned_pattern),
+        vim.log.levels.WARN)
       return false
     end
   end

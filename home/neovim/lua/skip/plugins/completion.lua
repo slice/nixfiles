@@ -47,6 +47,10 @@ return {
       ]]
 
       cmp.setup {
+        enabled = function()
+          if vim.b.huge_bounced then return false end
+          return true
+        end,
         -- formatting = {
         --   expandable_indicator = true,
         --   fields = { 'abbr' },
@@ -75,8 +79,8 @@ return {
           end,
         },
         sources = cmp.config.sources(
-          -- be aggressive with resolving math expression, because sometimes
-          -- the lsp source takes precedence
+        -- be aggressive with resolving math expression, because sometimes
+        -- the lsp source takes precedence
           { name = "calc" },
           {
             { name = "nvim_lsp" },
