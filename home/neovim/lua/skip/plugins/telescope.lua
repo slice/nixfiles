@@ -58,7 +58,6 @@ return {
 
     config = function()
       local telescope = require("telescope")
-      local fb_actions = require("telescope._extensions.file_browser.actions")
       local action_layout = require("telescope.actions.layout")
 
       -- a custom, compact layout strategy that mimics @norcalli's fuzzy finder
@@ -141,26 +140,11 @@ return {
           },
         },
         extensions = {
-          file_browser = {
-            disable_devicons = true,
-            mappings = {
-              ["i"] = {
-                ["<S-cr>"] = fb_actions.create_from_prompt,
-                ["<C-o>"] = fb_actions.open,
-                -- unmap <C-w> to have it delete words again, but since we're
-                -- in a prompt buffer we need to use shift
-                ["<C-w>"] = { "<C-S-w>", type = "command" },
-                ["<C-d>"] = fb_actions.change_cwd,
-              },
-            },
-          },
           trampoline = {
             workspace_roots = { "~/src/prj", "~/src/lib", "~/src/work/a8c" },
           },
         },
       })
-
-      telescope.load_extension("file_browser")
     end,
   },
 
@@ -183,9 +167,6 @@ return {
       },
     },
   },
-
-  -- file browser for telescope
-  "nvim-telescope/telescope-file-browser.nvim",
 
   "slice/telescope-trampoline.nvim",
 }

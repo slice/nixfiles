@@ -4,7 +4,6 @@
 -- (i.e. echo output and :intro gets cleared off)
 
 return {
-  "justinmk/vim-dirvish",
   { "justinmk/vim-gtfo", keys = { "gof", "got" } },
   {
     "junegunn/vim-easy-align",
