@@ -255,6 +255,10 @@ vim.api.nvim_create_autocmd(
   { group = indentation_tweaks_group, pattern = "*.sc,*.sbt", command = "setfiletype scala" }
 )
 
+autocmds("SkipHelp", {
+  { "FileType", { pattern = "help", command = "setlocal signcolumn=no" } },
+})
+
 -- for stopping LSPs - we can't do it inside of tree-sitter highlight.disable
 -- because that's after LSPs ._.
 autocmds("SkipHugeFiles", {
