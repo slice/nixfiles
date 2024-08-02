@@ -7,6 +7,8 @@ local function link(cmd)
   return "highlight! link " .. cmd
 end
 
+-- TODO: move all of these colorscheme tweaks into their own files
+
 local moonfly_spelling = {
   hi "SpellBad gui=undercurl guifg=#cb8185 guisp=#cb8185",
   hi "SpellRare gui=undercurl guifg=#a69a53 guisp=#a69a53",
@@ -124,24 +126,27 @@ local tweaks = {
     'let g:terminal_color_0 = "#67767e"',
     'let g:terminal_color_8 = "#67767e"',
   },
-  minicyan = vim.tbl_flatten {
-    mini_tweaks,
-    -- moonfly_spelling,
-    {
-      hi "LspInlayHint guifg=#467374",
-      hi "LspCodeLens guibg=#3c6364",
-      -- Most tokens onscreen are going to be `@variable`s, and we don't want to
-      -- highlight all of them. It's visually noisy.
-      link "@variable.python Normal",
+  minicyan = vim
+    .iter({
+      mini_tweaks,
+      -- moonfly_spelling,
+      {
+        hi "LspInlayHint guifg=#467374",
+        hi "LspCodeLens guibg=#3c6364",
+        -- Most tokens onscreen are going to be `@variable`s, and we don't want to
+        -- highlight all of them. It's visually noisy.
+        link "@variable.python Normal",
 
-      hi "CursorLine guibg=#341d1b",
-      hi "CursorLineNr guibg=#c42124 guifg=#3d0305",
+        hi "CursorLine guibg=#341d1b",
+        hi "CursorLineNr guibg=#c42124 guifg=#3d0305",
 
-      hi "StatusLine gui=reverse,bold",
-      hi "SpellBad guifg=NONE gui=undercurl",
-    },
-  },
-  minischeme = vim.tbl_flatten { mini_tweaks, moonfly_spelling },
+        hi "StatusLine gui=reverse,bold",
+        hi "SpellBad guifg=NONE gui=undercurl",
+      },
+    })
+    :flatten()
+    :totable(),
+  minischeme = vim.iter({ mini_tweaks, moonfly_spelling }):flatten():totable(),
   moonfly = moonfly_spelling,
   ["tokyonight"] = {
     hi "StatusLine gui=reverse,bold",
@@ -222,6 +227,7 @@ autocmds("SkipFiletypes", {
   -- motions involving parens to not think they're escaped
   { "FileType", { pattern = "swift", command = "setl cpo+=M" } },
   { "BufReadPost", { pattern = "*.md,*.mdx", command = "setlocal spell | setf markdown" } },
+  { { "BufNewFile", "BufReadPre" }, { pattern = "*.sc,*.sbt", command = "setfiletype scala" } },
 })
 
 autocmds("SkipYanking", {
@@ -252,10 +258,6 @@ for extension, settings in pairs(lang_indent_settings) do
     command = string.format("setlocal tabstop=%d softtabstop=%d shiftwidth=%d %s", width, width, width, expandtab),
   })
 end
-vim.api.nvim_create_autocmd(
-  { "BufNewFile", "BufReadPre" },
-  { group = indentation_tweaks_group, pattern = "*.sc,*.sbt", command = "setfiletype scala" }
-)
 
 autocmds("SkipHelp", {
   { "FileType", { pattern = "help", command = "setlocal signcolumn=no" } },
