@@ -35,12 +35,19 @@ return {
               local config = vim.api.nvim_win_get_config(win_id)
               config.border = "solid"
               vim.api.nvim_win_set_config(win_id, config)
-
-              -- has to be scheduled for some reason (idk if i want to know why)
-              vim.schedule(function()
-                vim.wo[win_id].number = true
-                vim.wo[win_id].relativenumber = true
-              end)
+            end,
+          },
+        },
+        {
+          "User",
+          {
+            pattern = "MiniFilesWindowUpdate",
+            callback = function(args)
+              -- this needs to be set more frequently, e.g. if this is done by
+              -- MiniFilesWindowOpen above instead (and it needs to be
+              -- scheduled, too) it doesn't work when using <
+              vim.wo[args.data.win_id].number = true
+              vim.wo[args.data.win_id].relativenumber = true
             end,
           },
         },
