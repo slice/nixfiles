@@ -41,7 +41,7 @@ local tweaks = {
     link "MiniDiffSignDelete GitSignsDelete",
   },
   apparition = {
-    hi "@variable guifg=NONE",
+    hi "@variable guifg=fg",
     hi "@punctuation guifg=NONE",
     hi "@constructor.lua guifg=NONE",
     hi "TelescopeMatching guifg=#000000 guibg=#96bade gui=bold",
