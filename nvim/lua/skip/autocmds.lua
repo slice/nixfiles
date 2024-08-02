@@ -51,7 +51,7 @@ local tweaks = {
     link "DiagnosticWarn WarningMsg",
     hi "CursorLine guibg=#4e1012",
     hi "CursorLineNr guibg=#842024 gui=bold guifg=#ffc8c3",
-    link "SignColumn LineNr",
+    hi "SignColumn guibg=NONE",
     hi "ColorColumn guibg=#1d1d1d",
     link "MiniIndentscopeSymbol NonText",
     link "Directory PreProc",
