@@ -1,24 +1,27 @@
 local M = {}
 
 function M.dial(direction, mode)
-  local group_name = "default"
+  local opts = _G._SkipDialOpts
 
-  local filetype = vim.bo.filetype
-  local filetype_group = M._forwarded_opts.groups[filetype]
-  local redirection = M._forwarded_opts.additional_filetypes_to_group_mappings[filetype]
+  local resolved_group = "default"
 
-  if filetype_group ~= nil then
-    group_name = filetype
-  elseif redirection ~= nil and M._forwarded_opts.groups[redirection] ~= nil then
-    group_name = redirection
+  local ft = vim.bo.filetype
+  local ft_specific_group = opts.groups[ft]
+  local redirection = opts.additional_filetypes_to_group_mappings[ft]
+
+  if ft_specific_group ~= nil then
+    resolved_group = ft
+  elseif redirection ~= nil and opts.groups[redirection] ~= nil then
+    resolved_group = redirection
   end
 
-  require("dial.map").manipulate(direction, mode, group_name)
+  require("dial.map").manipulate(direction, mode, resolved_group)
 end
 
 return {
   {
     "monaqa/dial.nvim",
+
     -- stylua: ignore
     keys = {
       { "<C-a>",  function() M.dial("increment", "normal") end },
@@ -53,7 +56,7 @@ return {
         bubble("preserve_case")
         bubble("pattern_regexp")
 
-        assert(vim.tbl_islist(opts), "const opts not a list after bubbling")
+        assert(vim.islist(opts), "const opts not a list after bubbling")
 
         params.elements = opts
 
@@ -109,7 +112,7 @@ return {
     end,
 
     config = function(_, opts)
-      M._forwarded_opts = opts
+      _G._SkipDialOpts = opts -- :D (can't use `M` for some reason)
       require("dial.config").augends:register_group(opts.groups)
     end,
   },
