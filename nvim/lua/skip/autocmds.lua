@@ -55,6 +55,7 @@ local tweaks = {
     hi "ColorColumn guibg=#1d1d1d",
     link "MiniIndentscopeSymbol NonText",
     link "Directory PreProc",
+    hi "WinSeparator guibg=NONE",
   },
   bubblegum2 = {
     link "MatchParen LineNr",
