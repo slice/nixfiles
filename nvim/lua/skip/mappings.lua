@@ -1,15 +1,6 @@
 local utils = require("skip.utils")
 local map = vim.keymap.set
 
-function POPTERM_TOGGLE()
-  if IS_POPTERM() then
-    -- if we're currently inside a popterm, just hide it
-    POPTERM_HIDE()
-  else
-    POPTERM_NEXT()
-  end
-end
-
 -- after 6? 7? years of typing <ESC>:w<CR>, it's time for somethin' different
 map("n", "<Leader>s", "<cmd>w<CR>")
 map("n", "<Leader>w", "<cmd>noautocmd w<CR>")
@@ -22,11 +13,11 @@ map("n", "<Leader>w", "<cmd>noautocmd w<CR>")
 map("t", "<S-Space>", "<Space>")
 
 map("!", "<C-j>", function()
-  ---@diagnostic disable-next-line: redundant-parameter
-  local clipboard_lines = vim.fn.getreg("+", 1, true) --[=[@as string[]]=]
   if vim.api.nvim_get_mode().mode == "c" then
     utils.send [[<C-R><C-R>+]]
   else
+    ---@diagnostic disable-next-line: redundant-parameter
+    local clipboard_lines = vim.fn.getreg("+", 1, true) --[=[@as string[]]=]
     vim.api.nvim_put(clipboard_lines, "c", false, true)
   end
 end, { desc = "Charwise paste from clipboard register" })
@@ -40,7 +31,21 @@ map("n", "<C-L>", "<C-W><C-L>")
 map({ "i", "n" }, "<C-;>", "<cmd>nohlsearch<CR>")
 
 -- nvim-popterm.lua
-map({ "t", "n" }, "<A-Tab>", "<cmd>lua POPTERM_TOGGLE()<CR>")
+map({ "t", "n" }, "<A-Tab>", function()
+  ---@diagnostic disable-next-line: undefined-global
+  if IS_POPTERM == nil then
+    return
+  end
+
+  ---@diagnostic disable-next-line: undefined-global
+  if IS_POPTERM() then
+    ---@diagnostic disable-next-line: undefined-global
+    POPTERM_HIDE()
+  else
+    ---@diagnostic disable-next-line: undefined-global
+    POPTERM_NEXT()
+  end
+end)
 
 -- quickly open :terminals
 map("n", "<Leader>te", "<cmd>tabnew +terminal<CR>")
@@ -58,11 +63,7 @@ map({ "v", "n" }, "]D", function()
 end)
 
 -- vimrc; https://learnvimscriptthehardway.stevelosh.com/chapters/08.html
--- map('n', '<Leader>ve', "bufname('%') == '' ? '<cmd>edit $MYVIMRC<CR>' : '<cmd>vsplit $MYVIMRC<CR>'", { expr = true })
-map("n", "<Leader>ve", "<cmd>Telescope find_files cwd=~/src/prj/nixfiles<CR>")
-map("n", "<Leader>vg", "<cmd>Telescope live_grep cwd=~/src/prj/nixfiles<CR>")
 map("n", "<Leader>vs", "<cmd>vsplit | terminal hm-switch<CR>")
--- map('n', '<Leader>ve', '<cmd>edit ~/src/prj/nixfiles/home/neovim<CR>')
 
 -- replace :bdelete with sayonara
 map("c", "bd", "Sayonara!")
@@ -73,23 +74,25 @@ map("c", "bd", "Sayonara!")
 map("!", "<M-Left>", "<S-Left>")
 map("!", "<M-Right>", "<S-Right>")
 
-local command_aliases = {
+do
   -- sometimes i hold down shift for too long ;_;
-  W = "w",
-  Wq = "wq",
-  WQ = "WQ",
-  Wqa = "wqa",
-  Q = "q",
-  Qa = "qa",
-  Bd = "bd",
-  E = "e",
-}
+  local command_aliases = {
+    W = "w",
+    Wq = "wq",
+    WQ = "WQ",
+    Wqa = "wqa",
+    Q = "q",
+    Qa = "qa",
+    Bd = "bd",
+    E = "e",
+  }
 
-for lhs, rhs in pairs(command_aliases) do
-  vim.cmd(string.format("command! -nargs=* -bang %s %s<bang> <args>", lhs, rhs))
+  for lhs, rhs in pairs(command_aliases) do
+    vim.cmd(string.format("command! -nargs=* -bang %s %s<bang> <args>", lhs, rhs))
+  end
 end
 
 -- maps so we can use :diffput and :diffget in visual mode
--- (can't use d because it means delete already)
+-- (can't use d because it means delete)
 map("v", "fp", ":'<,'>diffput<CR>")
 map("v", "fo", ":'<,'>diffget<CR>")

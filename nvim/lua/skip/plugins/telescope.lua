@@ -30,6 +30,10 @@ return {
 
     cmd = "Telescope",
     keys = {
+      -- config editing (evolved from https://learnvimscriptthehardway.stevelosh.com/chapters/08.html)
+      { "<Leader>ve", "<cmd>Telescope find_files cwd=~/src/prj/nixfiles<CR>" },
+      { "<Leader>vg", "<cmd>Telescope live_grep cwd=~/src/prj/nixfiles<CR>" },
+
       -- 1st layer (essential)
       { "<Leader><Space>", "<Cmd>Telescope resume<CR>" }, -- TODO: not sure if this deserves having <Space>
       { "<Leader>o", find_files, desc = "Telescope find_files" },
