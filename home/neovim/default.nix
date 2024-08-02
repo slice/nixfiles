@@ -34,8 +34,8 @@ in
     '';
   };
 
-  home.file.".config/nvim/lua".source = config.lib.skip.ergonomic ./lua;
-  home.file.".config/nvim/colors".source = config.lib.skip.ergonomic ./colors;
+  home.file.".config/nvim/lua".source = config.lib.skip.ergonomic ../../nvim/lua;
+  home.file.".config/nvim/colors".source = config.lib.skip.ergonomic ../../nvim/colors;
 
   nixpkgs.overlays = [ overlay ];
 
