@@ -54,6 +54,7 @@ local tweaks = {
     link "SignColumn LineNr",
     hi "ColorColumn guibg=#1d1d1d",
     link "MiniIndentscopeSymbol NonText",
+    link "Directory PreProc",
   },
   bubblegum2 = {
     link "MatchParen LineNr",
