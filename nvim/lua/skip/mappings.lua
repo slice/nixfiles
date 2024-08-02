@@ -85,7 +85,7 @@ local command_aliases = {
 }
 
 for lhs, rhs in pairs(command_aliases) do
-  vim.cmd(string.format("command! -bang %s %s<bang>", lhs, rhs))
+  vim.cmd(string.format("command! -nargs=* -bang %s %s<bang> <args>", lhs, rhs))
 end
 
 -- maps so we can use :diffput and :diffget in visual mode
