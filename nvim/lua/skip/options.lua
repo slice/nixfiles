@@ -1,13 +1,6 @@
-local opt = vim.opt
+vim.g.mapleader = " "
 
-_G.RIGHT_STATUSLINE = function()
-  local ok, fugitive_output = pcall(vim.fn.FugitiveStatusline)
-  if not ok then
-    return ""
-  else
-    return fugitive_output
-  end
-end
+local opt = vim.opt
 
 opt.title = true
 opt.titlestring = [[%F]]
@@ -43,7 +36,18 @@ opt.signcolumn = "auto:2"
 opt.showbreak = ">"
 opt.sidescrolloff = 10
 opt.smartcase = true
-opt.statusline = [[%<%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %c,%l/%L #%n]]
+do
+  _G.RIGHT_STATUSLINE = function()
+    local ok, fugitive_output = pcall(vim.fn.FugitiveStatusline)
+    if not ok then
+      return ""
+    else
+      return fugitive_output
+    end
+  end
+
+  opt.statusline = [[%<%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %c,%l/%L #%n]]
+end
 opt.timeoutlen = 500
 opt.undofile = true
 opt.scrolloff = 5

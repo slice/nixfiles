@@ -20,8 +20,6 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-vim.g.mapleader = " "
-
 -- care should be taken so these are loadable sans plugins (or if they error)
 require "skip.mappings"
 require "skip.autocmds"
