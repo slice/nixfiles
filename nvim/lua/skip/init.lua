@@ -38,7 +38,11 @@ vim.api.nvim_create_autocmd("User", {
   desc = "Present some lovely ducks (and startup statistics)",
   callback = function()
     local stats = require("lazy").stats()
-    local message = ([[\_o> ♥ ♥ ♥ <o_/ %d/%d in %dms]]):format(stats.loaded, stats.count, stats.startuptime)
+    local message = ([[\_o> ♥ ♥ ♥ <o_/ %d/%d plugins in %dms]]):format(
+      stats.loaded,
+      stats.count,
+      stats.startuptime
+    )
     vim.api.nvim_echo({ { message, "DiffAdd" } }, true, {})
   end,
 })
