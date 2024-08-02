@@ -48,8 +48,7 @@ return {
 
       cmp.setup {
         enabled = function()
-          if vim.b.huge_bounced then return false end
-          return true
+          return not (vim.b.huge_bounced or vim.bo.buftype == "prompt")
         end,
         -- formatting = {
         --   expandable_indicator = true,
