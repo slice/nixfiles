@@ -82,6 +82,7 @@ local command_aliases = {
   Q = "q",
   Qa = "qa",
   Bd = "bd",
+  E = "e",
 }
 
 for lhs, rhs in pairs(command_aliases) do
