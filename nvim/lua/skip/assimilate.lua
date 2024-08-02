@@ -1,6 +1,6 @@
 local M = {}
 
-local id = vim.api.nvim_create_augroup("SkipTerminalAssimilation", {})
+M.augroup_id = vim.api.nvim_create_augroup("SkipTerminalAssimilation", {})
 
 function M.assimilate()
   if vim.env.TERM_PROGRAM == "iTerm.app" then
@@ -11,7 +11,7 @@ function M.assimilate()
     set_iterm_profile("nvim")
 
     vim.api.nvim_create_autocmd("VimLeavePre", {
-      group = id,
+      group = M.augroup_id,
       desc = "Reverts the iTerm profile to Default before exiting.",
       callback = function()
         set_iterm_profile("Default")
@@ -27,7 +27,7 @@ function M.assimilate()
     local r, g, b
     vim.api.nvim_create_autocmd("TermResponse", {
       once = true,
-      group = id,
+      group = M.augroup_id,
       callback = function(args)
         local resp = args.data
         r, g, b = resp:match("\027%]11;rgb:(%w+)/(%w+)/(%w+)")
@@ -40,7 +40,7 @@ function M.assimilate()
     io.write("\27]11;rgb:" .. hex:gsub("%x%x", "%1/", 2))
 
     vim.api.nvim_create_autocmd("VimLeavePre", {
-      group = id,
+      group = M.augroup_id,
       desc = "Reverts terminal colors to default before exiting.",
       callback = function()
         io.write(("\27]11;rgb:%s/%s/%s"):format(r, g, b))
@@ -51,9 +51,6 @@ function M.assimilate()
 
   if vim.env.KITTY_PID ~= nil then
     local kitty_extensions = { push_colors = "\27]30001\27\\", pop_colors = "\27]30101\27\\" }
-    local function kitty_remote(cmd)
-      vim.cmd("silent! !kitty @ " .. cmd)
-    end
 
     -- kitty_remote(string.format('set-colors background=\\#%06x', background))
     io.write(kitty_extensions.push_colors)
@@ -61,7 +58,7 @@ function M.assimilate()
     -- kitty_remote(string.format('set-colors tab_bar_background=\\#%06x', background))
 
     vim.api.nvim_create_autocmd("VimLeavePre", {
-      group = id,
+      group = M.augroup_id,
       desc = "Reverts Kitty colors to default before exiting.",
       callback = function()
         -- kitty_remote(string.format('set-colors --reset'))
@@ -74,7 +71,7 @@ end
 
 function M.create_autocmd()
   vim.api.nvim_create_autocmd("UIEnter", {
-    group = id,
+    group = M.augroup_id,
     callback = M.assimilate,
   })
 end
