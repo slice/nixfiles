@@ -61,12 +61,6 @@ opt.expandtab = true
 opt.softtabstop = 2
 opt.shiftwidth = 2
 
-local g = vim.g
-
 -- avoid loading the autoload portions of netrw so "e ." uses dirvish, but we
 -- can still use :GBrowse from fugitive
-g.loaded_netrwPlugin = true
-
-g.rooter_patterns = { ".git" }
-g.rooter_manual_only = true
-g.rooter_cd_cmd = "tcd"
+vim.g.loaded_netrwPlugin = true

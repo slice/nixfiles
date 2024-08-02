@@ -25,6 +25,11 @@ return {
     keys = {
       { "<Leader>r", "<Cmd>Rooter<CR>", desc = "Rooter" },
     },
+    init = function()
+      vim.g.rooter_patterns = { ".git" }
+      vim.g.rooter_manual_only = true
+      vim.g.rooter_cd_cmd = "tcd"
+    end,
   },
 
   {
