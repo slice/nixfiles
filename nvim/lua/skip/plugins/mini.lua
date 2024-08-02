@@ -13,7 +13,7 @@ return {
     "echasnovski/mini.diff",
     config = true,
     opts = {
-      view = { style = "sign" },
+      view = { style = "sign", signs = { add = "+", change = "~", delete = "-" } },
     },
   },
 
