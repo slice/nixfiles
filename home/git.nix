@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   programs.git = {
@@ -18,7 +18,7 @@
     extraConfig =
       let
         ghHelper = {
-          helper = "!/Users/slice/.nix-profile/bin/gh auth git-credential";
+          helper = "!${pkgs.gh}/bin/gh auth git-credential";
         };
       in
       {
