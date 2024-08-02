@@ -51,6 +51,9 @@ local tweaks = {
     link "DiagnosticWarn WarningMsg",
     hi "CursorLine guibg=#4e1012",
     hi "CursorLineNr guibg=#842024 gui=bold guifg=#ffc8c3",
+    link "SignColumn LineNr",
+    hi "ColorColumn guibg=#1d1d1d",
+    link "MiniIndentscopeSymbol NonText",
   },
   bubblegum2 = {
     link "MatchParen LineNr",
