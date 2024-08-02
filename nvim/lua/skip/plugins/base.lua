@@ -1,5 +1,3 @@
--- vim: set fdm=marker fdl=1:
-
 -- N.B. using VeryLazy smashes the UI on startup for some reason
 -- (i.e. echo output and :intro gets cleared off)
 
@@ -19,8 +17,6 @@ return {
   "tpope/vim-rhubarb",
   "tpope/vim-repeat",
   "tpope/vim-abolish",
-  { "tpope/vim-afterimage", enabled = false },
-  { "romainl/vim-cool", enabled = false },
   "mhinz/vim-sayonara",
 
   {
