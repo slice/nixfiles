@@ -78,8 +78,8 @@ return {
           end,
         },
         sources = cmp.config.sources(
-        -- be aggressive with resolving math expression, because sometimes
-        -- the lsp source takes precedence
+          -- be aggressive with resolving math expression, because sometimes
+          -- the lsp source takes precedence
           { name = "calc" },
           {
             { name = "nvim_lsp" },

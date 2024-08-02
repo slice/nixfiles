@@ -25,7 +25,7 @@ function M.assimilate()
   -- TODO: what terminals does this (OSC 11) work with? is it standard?
   if vim.env.TERM_PROGRAM == "ghostty" then
     local r, g, b
-    vim.api.nvim_create_autocmd('TermResponse', {
+    vim.api.nvim_create_autocmd("TermResponse", {
       once = true,
       group = id,
       callback = function(args)

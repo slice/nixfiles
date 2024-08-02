@@ -213,12 +213,12 @@ autocmds("SkipHacks", {
 
 autocmds("SkipFiletypes", {
   -- enable spellchecking in git commits
-  { "FileType",    { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " } },
-  { "FileType",    { pattern = "typescript", command = "setlocal commentstring=//\\ %s" } },
-  { "FileType",    { pattern = "dirvish,man,text,git,gitignore", command = "setlocal nospell" } },
+  { "FileType", { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " } },
+  { "FileType", { pattern = "typescript", command = "setlocal commentstring=//\\ %s" } },
+  { "FileType", { pattern = "dirvish,man,text,git,gitignore", command = "setlocal nospell" } },
   -- swift interpolations look like "\(...)", and we want text objects and
   -- motions involving parens to not think they're escaped
-  { "FileType",    { pattern = "swift", command = "setl cpo+=M" } },
+  { "FileType", { pattern = "swift", command = "setl cpo+=M" } },
   { "BufReadPost", { pattern = "*.md,*.mdx", command = "setlocal spell | setf markdown" } },
 })
 
@@ -258,20 +258,25 @@ vim.api.nvim_create_autocmd(
 -- for stopping LSPs - we can't do it inside of tree-sitter highlight.disable
 -- because that's after LSPs ._.
 autocmds("SkipHugeFiles", {
-  { "BufReadPre", {
-    pattern = "*",
-    callback = function(args)
-      local bufnr = args.buf
-      local file = args.file
-      if not bufnr or not file then return end
+  {
+    "BufReadPre",
+    {
+      pattern = "*",
+      callback = function(args)
+        local bufnr = args.buf
+        local file = args.file
+        if not bufnr or not file then
+          return
+        end
 
-      local huge = require('skip.huge')
+        local huge = require("skip.huge")
 
-      if vim.fn.getfsize(file) > huge.limits.max_file_size_bytes then
-        huge.bounce(bufnr, 'too many bytes before reading')
-      end
-    end
-  } }
+        if vim.fn.getfsize(file) > huge.limits.max_file_size_bytes then
+          huge.bounce(bufnr, "too many bytes before reading")
+        end
+      end,
+    },
+  },
 })
 
 autocmds("SkipTerminal", {
@@ -280,7 +285,7 @@ autocmds("SkipTerminal", {
 
 autocmds("SkipLocalCursorline", {
   { { "BufWinEnter", "WinEnter" }, { pattern = "*", command = "setlocal cursorline" } },
-  { "WinLeave",                    { pattern = "*", command = "setlocal nocursorline" } },
+  { "WinLeave", { pattern = "*", command = "setlocal nocursorline" } },
 })
 
 autocmds("SkipParentDirectoryCreation", {

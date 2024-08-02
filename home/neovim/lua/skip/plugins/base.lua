@@ -1,18 +1,18 @@
 -- vim: set fdm=marker fdl=1:
 
-local utils = require 'skip.utils'
+local utils = require "skip.utils"
 
 -- N.B. using VeryLazy smashes the UI on startup for some reason
 -- (i.e. echo output and :intro gets cleared off)
 
 return {
   "justinmk/vim-dirvish",
-  { "justinmk/vim-gtfo",    keys = { "gof", "got" } },
+  { "justinmk/vim-gtfo", keys = { "gof", "got" } },
   {
     "junegunn/vim-easy-align",
     keys = {
       { "ga", "<Plug>(EasyAlign)", remap = true },
-      { "ga", "<Plug>(EasyAlign)", mode = "x",  remap = true },
+      { "ga", "<Plug>(EasyAlign)", mode = "x", remap = true },
     },
   },
   "tpope/vim-rsi",
@@ -23,7 +23,7 @@ return {
   "tpope/vim-repeat",
   "tpope/vim-abolish",
   { "tpope/vim-afterimage", enabled = false },
-  { "romainl/vim-cool",     enabled = false },
+  { "romainl/vim-cool", enabled = false },
   "mhinz/vim-sayonara",
 
   {
@@ -53,24 +53,24 @@ return {
         win = {
           width = 0.25,
           col = 1,
-          wo = { winblend = 20, },
+          wo = { winblend = 20 },
           padding = { 1, 1, 1, 1 },
         },
         layout = {
           spacing = 0,
           width = { min = column_width, max = column_width },
         },
-        icons = { mappings = false, },
+        icons = { mappings = false },
       }
       local wk = require("which-key")
       wk.setup(opts)
 
       wk.add({
-        { "<Leader>l",  group = "second layer" },
+        { "<Leader>l", group = "second layer" },
         { "<Leader>ll", group = "third layer" },
-        { "<Leader>t",  group = "terminals" },
-        { "<Leader>v",  group = "config" },
-        { "<Leader>m",  group = "minimap" },
+        { "<Leader>t", group = "terminals" },
+        { "<Leader>v", group = "config" },
+        { "<Leader>m", group = "minimap" },
       })
     end,
   },
@@ -116,15 +116,15 @@ return {
 
   -- colorschemes {{{
 
-  { "lunacookies/vim-apparition",    lazy = true },
-  { "slice/bubblegum2",              lazy = true },
-  { "junegunn/seoul256.vim",         lazy = true },
-  { "bluz71/vim-moonfly-colors",     lazy = true },
+  { "lunacookies/vim-apparition", lazy = true },
+  { "slice/bubblegum2", lazy = true },
+  { "junegunn/seoul256.vim", lazy = true },
+  { "bluz71/vim-moonfly-colors", lazy = true },
   { "bluz71/vim-nightfly-guicolors", lazy = true },
-  { "itchyny/landscape.vim",         lazy = true },
-  { "savq/melange",                  lazy = true },
-  { "phha/zenburn.nvim",             lazy = true },
-  { "sainnhe/everforest",            lazy = true },
+  { "itchyny/landscape.vim", lazy = true },
+  { "savq/melange", lazy = true },
+  { "phha/zenburn.nvim", lazy = true },
+  { "sainnhe/everforest", lazy = true },
   {
     "mcchrish/zenbones.nvim",
     lazy = true,
@@ -182,8 +182,8 @@ return {
         highlight = {
           enable = true,
           disable = function(_lang, bufnr)
-            return require('skip.huge').bouncer(bufnr)
-          end
+            return require("skip.huge").bouncer(bufnr)
+          end,
         },
         incremental_selection = {
           enable = true,
@@ -306,9 +306,9 @@ return {
   },
 
   {
-    'danobi/prr',
+    "danobi/prr",
     config = function(plugin)
       vim.opt.rtp:append(plugin.dir .. "/vim")
-    end
-  }
+    end,
+  },
 }

@@ -18,8 +18,14 @@ return {
           -- lspconfig pls let me conditionally attach (but early)
           local bufs = vim.api.nvim_list_bufs()
           for _, bufnr in ipairs(bufs) do
-            if vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_buf_is_loaded(bufnr) and vim.api.nvim_buf_get_name(bufnr) == bufname then
-              if not lsp.attach_allowed(bufnr) then return false end
+            if
+              vim.api.nvim_buf_is_valid(bufnr)
+              and vim.api.nvim_buf_is_loaded(bufnr)
+              and vim.api.nvim_buf_get_name(bufnr) == bufname
+            then
+              if not lsp.attach_allowed(bufnr) then
+                return false
+              end
             end
           end
 
