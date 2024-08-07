@@ -12,6 +12,15 @@
       "@staff"
       "root"
     ];
+    extra-substituters = [ "https://cache.lix.systems" ];
+    trusted-public-keys = [ "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o=" ];
+  };
+
+  nix.linux-builder = {
+    enable = true;
+    maxJobs = 8;
+    package = pkgs.darwin.linux-builder-x86_64;
+    systems = [ "x86_64-linux" ];
   };
 
   # Nix >= 2.18 is broke as hell!!! (Colmena doesn't like it either)
@@ -26,10 +35,4 @@
     path = inputs.nixpkgs.outPath;
   };
   nix.nixPath = lib.mkForce [ { nixpkgs = "flake:nixpkgs"; } ];
-
-  nix.settings.extra-substituters = [ "https://cache.lix.systems" ];
-
-  nix.settings.trusted-public-keys = [
-    "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
-  ];
 }

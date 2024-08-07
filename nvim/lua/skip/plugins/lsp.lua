@@ -48,17 +48,73 @@ return {
         capabilities = lsp.capabilities,
       })
 
+      lsc.yamlls.setup {
+        settings = {
+          yaml = {
+            schemas = {
+              kubernetes = "*.k8s.{yml,yaml}",
+              ["http://json.schemastore.org/github-workflow"] = "/.github/workflows/*",
+              ["http://json.schemastore.org/github-action"] = "/.github/action.{yml,yaml}",
+              ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
+              ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+              ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
+              ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json"] = "*.argo-application.{yml,yaml}",
+              ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/appproject_v1alpha1.json"] = "*.argo-appproject.{yml,yaml}",
+            },
+          },
+        },
+        handlers = {
+          ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+            local is_k8s_file = vim.endswith(result.uri, ".k8s.yml") or vim.endswith(result.uri, ".k8s.yaml")
+            if not is_k8s_file then
+              return vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+            end
+
+            local filtered_diagnostics = vim
+              .iter(result.diagnostics)
+              :filter(function(diagnostic)
+                return not (
+                  diagnostic.message == "Matches multiple schemas when only one must validate."
+                  and diagnostic.code == 0
+                )
+              end)
+              :totable()
+
+            return vim.lsp.diagnostic.on_publish_diagnostics(
+              err,
+              vim.tbl_extend("force", result, { diagnostics = filtered_diagnostics }),
+              ctx,
+              config
+            )
+          end,
+        },
+      }
+
+      -- lsp.eslint.setup {}
+      lsc.nixd.setup {}
+      lsc.pyright.setup {}
+      lsc.lua_ls.setup {}
+      lsc.gopls.setup {}
+      lsc.bashls.setup {}
+
       for _, server in ipairs({
-        "astro",
-        "eslint",
         "cssls",
         "jsonls",
         "html",
-        "bashls",
-        "nixd",
-        "pyright",
       }) do
-        lsc[server].setup {}
+        lsc[server].setup {
+          handlers = {
+            ["textDocument/diagnostic"] = function(err, result, ctx, config)
+              if err.code == -32601 and err.message:find("Unhandled method") then
+                -- html language server always returns an error in response to
+                -- neovim querying it for diagnostics (?), so just ignore this
+                -- to avoid polluting notifications
+                return {}, nil
+              end
+              return vim.lsp.diagnostic.on_diagnostic(err, result, ctx, config)
+            end,
+          },
+        }
       end
 
       -- xcrun -sdk macosx --find sourcekit-lsp
@@ -84,10 +140,6 @@ return {
           }
         end)
       end)
-
-      lsc.lua_ls.setup {}
-
-      lsc.gopls.setup {}
 
       lsc.hls.setup {
         filetypes = { "haskell", "lhaskell", "cabal" },

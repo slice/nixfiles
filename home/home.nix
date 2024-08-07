@@ -61,9 +61,13 @@ let
       nix-diff
       gh
       corepack_20
+      doctl
       nodejs_18
       bun
       tree-sitter
+      kubernetes-helm
+      argocd
+      yaml-language-server
     ];
 
     # video/audio
