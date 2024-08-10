@@ -68,6 +68,7 @@ let
       kubernetes-helm
       argocd
       yaml-language-server
+      bash-language-server
     ];
 
     # video/audio

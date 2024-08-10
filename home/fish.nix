@@ -40,6 +40,7 @@ in
         md = "mkdir";
         ydl = "yt-dlp";
         ydle = "yt-dlp -f bestaudio --audio-format mp3 --extract-audio";
+        k = "kubectl";
 
         hms = "hm-switch";
         nds = "nd-switch";
