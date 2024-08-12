@@ -45,12 +45,14 @@ local tweaks = {
     -- link "MiniDiffSignDelete Removed",
   },
   apparition = { -- luna is cool
+    hi "NormalNC guibg=#383838",
+
     hi "StatusLine guibg=#8b0e0d gui=bold guifg=#ffc8c3",
     hi "StatusLineNC guifg=#909d9d gui=NONE",
     hi "TabLine guifg=#909d9d guibg=#404c4c gui=NONE",
     hi "TabLineFill guifg=#909d9d guibg=#404c4c gui=NONE",
     hi "TabLineSel guibg=#8b0e0d gui=bold guifg=#ffc8c3",
-    hi "WinSeparator guifg=#404c4c guibg=NONE",
+    -- hi "WinSeparator guifg=#404c4c guibg=NONE",
 
     hi "CursorLine guibg=#4e1012",
     hi "CursorLineNr guibg=#842024 gui=bold guifg=#ffc8c3",
@@ -59,7 +61,7 @@ local tweaks = {
     hi "LineNrBelow guifg=#5e6c59 guibg=#000000",
     hi "LineNrAbove guifg=#79605e guibg=#000000",
 
-    hi "ColorColumn guibg=#1d1d1d",
+    hi "ColorColumn guibg=#191919",
 
     hi "Comment guifg=#966629",
     hi "NonText guifg=#555555",
@@ -348,10 +350,11 @@ autocmds("SkipLocalCursorline", {
         end
         vim.wo.cursorline = true
         vim.wo.relativenumber = true
+        vim.opt_local.colorcolumn = { 81 }
       end,
     },
   },
-  { "WinLeave", { pattern = "*", command = "setlocal nocursorline norelativenumber" } },
+  { "WinLeave", { pattern = "*", command = "setlocal nocursorline norelativenumber colorcolumn=" } },
 })
 
 autocmds("SkipParentDirectoryCreation", {

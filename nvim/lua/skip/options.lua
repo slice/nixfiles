@@ -5,9 +5,9 @@ local opt = vim.opt
 opt.title = true
 opt.titlestring = [[%F]]
 opt.breakindent = true
-opt.colorcolumn = { 81, 121 }
+-- opt.colorcolumn = { 81 }
 opt.completeopt = { "menu", "menuone", "noselect" }
-opt.cursorline = true
+-- opt.cursorline = true
 opt.diffopt:append { "linematch:60" }
 opt.hidden = true
 opt.guicursor:append { "a:blinkwait1000", "a:blinkon1000", "a:blinkoff1000" }
@@ -28,7 +28,7 @@ opt.termguicolors = true
 opt.updatetime = 1000
 opt.wrap = false
 opt.number = true
-opt.relativenumber = true
+-- opt.relativenumber = true
 opt.spelloptions = { "camel" }
 opt.splitright = true
 opt.sidescroll = 5

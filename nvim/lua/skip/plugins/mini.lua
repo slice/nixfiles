@@ -103,10 +103,7 @@ return {
 
   {
     "echasnovski/mini.pairs",
-    opts = {
-      -- In which modes mappings from this `config` should be created
-      modes = { insert = true, command = false, terminal = false },
-    },
+    opts = {},
     config = function(_, opts)
       local mp = require("mini.pairs")
       mp.setup(opts)
@@ -114,28 +111,25 @@ return {
       local function bind_string_token(key)
         vim.keymap.del("i", key)
         vim.keymap.set("i", key, function()
-          local neigh_pattern = "[^\\]."
-          if key == "'" then
-            neigh_pattern = "[^%a\\]."
-          end
+          local neigh_pattern = key == "'" and "[^%a\\]." or "[^\\]."
 
           local ok, node = pcall(vim.treesitter.get_node, {
             ignore_injections = false,
           })
 
-          local function do_clopen()
+          local function clopen()
             return mp.closeopen(key .. key, neigh_pattern)
           end
 
           if not ok or not node then
-            return do_clopen()
+            return clopen()
           end
 
           local within_string_node = node:type():find("^string") ~= nil
           if within_string_node then
             if vim.fn.col(".") == select(2, node:end_()) then
               -- exception: if we are right before the ", then just close it
-              return do_clopen()
+              return clopen()
             end
             return key
           end
@@ -173,7 +167,7 @@ return {
             return key
           end
 
-          return do_clopen()
+          return clopen()
         end, { expr = true, desc = "bind_string_token for " .. key, replace_keycodes = false })
       end
 
