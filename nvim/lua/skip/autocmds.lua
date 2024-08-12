@@ -47,6 +47,9 @@ local tweaks = {
   apparition = { -- luna is cool
     hi "StatusLine guibg=#8b0e0d gui=bold guifg=#ffc8c3",
     hi "StatusLineNC guifg=#909d9d gui=NONE",
+    hi "TabLine guifg=#909d9d guibg=#404c4c gui=NONE",
+    hi "TabLineFill guifg=#909d9d guibg=#404c4c gui=NONE",
+    hi "TabLineSel guibg=#8b0e0d gui=bold guifg=#ffc8c3",
     hi "WinSeparator guifg=#404c4c guibg=NONE",
 
     hi "CursorLine guibg=#4e1012",
@@ -319,11 +322,35 @@ autocmds("SkipHugeFiles", {
 })
 
 autocmds("SkipTerminal", {
-  { "TermOpen", { pattern = "*", command = "setlocal nonumber norelativenumber nospell" } },
+  {
+    "TermOpen",
+    {
+      pattern = "*",
+      callback = function()
+        vim.wo.number = false
+        vim.wo.relativenumber = false
+        vim.wo.spell = false
+        vim.wo.signcolumn = "auto"
+        vim.b.miniindentscope_disable = true
+      end,
+    },
+  },
 })
 
 autocmds("SkipLocalCursorline", {
-  { { "BufWinEnter", "WinEnter" }, { pattern = "*", command = "setlocal cursorline relativenumber" } },
+  {
+    { "BufWinEnter", "WinEnter" },
+    {
+      pattern = "*",
+      callback = function()
+        if vim.bo.buftype == "terminal" then
+          return
+        end
+        vim.wo.cursorline = true
+        vim.wo.relativenumber = true
+      end,
+    },
+  },
   { "WinLeave", { pattern = "*", command = "setlocal nocursorline norelativenumber" } },
 })
 

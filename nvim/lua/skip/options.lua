@@ -46,7 +46,7 @@ do
     end
   end
 
-  opt.statusline = [[%<%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %c,%l/%L #%n]]
+  opt.statusline = [[%<%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %l/%L,%c #%n]]
 end
 opt.timeoutlen = 500
 opt.undofile = true
