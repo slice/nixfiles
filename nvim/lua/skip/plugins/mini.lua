@@ -106,31 +106,80 @@ return {
     opts = {
       -- In which modes mappings from this `config` should be created
       modes = { insert = true, command = false, terminal = false },
-
-      -- Global mappings. Each right hand side should be a pair information, a
-      -- table with at least these fields (see more in |MiniPairs.map|):
-      -- - <action> - one of "open", "close", "closeopen".
-      -- - <pair> - two character string for pair to be used.
-      -- By default pair is not inserted after `\`, quotes are not recognized by
-      -- `<CR>`, `'` does not insert pair after a letter.
-      -- Only parts of tables can be tweaked (others will use these defaults).
-      -- Supply `false` instead of table to not map particular key.
-      -- mappings = {
-      --   ["("] = { action = "open", pair = "()", neigh_pattern = "[^\\]." },
-      --   ["["] = { action = "open", pair = "[]", neigh_pattern = "[^\\]." },
-      --   ["{"] = { action = "open", pair = "{}", neigh_pattern = "[^\\]." },
-      --
-      --   [")"] = { action = "close", pair = "()", neigh_pattern = "[^\\]." },
-      --   ["]"] = { action = "close", pair = "[]", neigh_pattern = "[^\\]." },
-      --   ["}"] = { action = "close", pair = "{}", neigh_pattern = "[^\\]." },
-      --
-      --   -- ['"'] = { action = "closeopen", pair = '""', neigh_pattern = "[^\\].", register = { cr = false } },
-      --   -- ["'"] = { action = "closeopen", pair = "''", neigh_pattern = "[^%a\\].", register = { cr = false } },
-      --   -- ["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^\\].", register = { cr = false } },
-      -- },
     },
     config = function(_, opts)
-      require("mini.pairs").setup(opts)
+      local mp = require("mini.pairs")
+      mp.setup(opts)
+
+      local function bind_string_token(key)
+        vim.keymap.del("i", key)
+        vim.keymap.set("i", key, function()
+          local neigh_pattern = "[^\\]."
+          if key == "'" then
+            neigh_pattern = "[^%a\\]."
+          end
+
+          local ok, node = pcall(vim.treesitter.get_node, {
+            ignore_injections = false,
+          })
+
+          local function do_clopen()
+            return mp.closeopen(key .. key, neigh_pattern)
+          end
+
+          if not ok or not node then
+            return do_clopen()
+          end
+
+          local within_string_node = node:type():find("^string") ~= nil
+          if within_string_node then
+            if vim.fn.col(".") == select(2, node:end_()) then
+              -- exception: if we are right before the ", then just close it
+              return do_clopen()
+            end
+            return key
+          end
+
+          -- local line = vim.api.nvim_get_current_line()
+          -- local quotes_currently_in_line = 0
+          -- local start = 1 ---@type integer|nil
+          --
+          -- repeat
+          --   start = line:find("%" .. key, start)
+          --   if start and line:sub(start - 1, start - 1) ~= "\\" then
+          --     quotes_currently_in_line = quotes_currently_in_line + 1
+          --   end
+          -- until start == nil
+          --
+          -- vim.notify(tostring(quotes_currently_in_line))
+          --
+          -- if not within_string_node then
+          --   return do_clopen()
+          -- end
+          --
+          -- if quotes_currently_in_line % 2 == 1 then
+          --   return key
+          -- end
+
+          -- return do_clopen()
+
+          -- somewhat crude; not all tree-sitter grammars will end the string
+          -- node at the next line if it's not terminated. they will instead
+          -- just end it at the end of the same line
+          local string_ends_in_later_line = within_string_node and ({ node:end_() })[1] > (vim.fn.line(".") - 1)
+          -- local tree_has_error_anywhere = node:tree():root():has_error()
+
+          if string_ends_in_later_line then
+            return key
+          end
+
+          return do_clopen()
+        end, { expr = true, desc = "bind_string_token for " .. key, replace_keycodes = false })
+      end
+
+      bind_string_token('"')
+      bind_string_token("'")
+      bind_string_token("`")
     end,
   },
 
