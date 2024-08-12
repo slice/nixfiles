@@ -38,26 +38,57 @@ local tweaks = {
     link "@operator Operator",
     link "@markup.raw.vimdoc Comment",
     link "@markup.link.vimdoc String",
-    link "MiniDiffSignAdd Added",
-    link "MiniDiffSignChange Changed",
-    link "MiniDiffSignDelete Removed",
+
+    -- can race with colorscheme-specific tweaks to these groups i guess…
+    -- link "MiniDiffSignAdd Added",
+    -- link "MiniDiffSignChange Changed",
+    -- link "MiniDiffSignDelete Removed",
   },
-  apparition = {
+  apparition = { -- luna is cool
+    hi "StatusLine guibg=#8b0e0d gui=bold guifg=#ffc8c3",
+    hi "StatusLineNC guifg=#909d9d gui=NONE",
+    hi "WinSeparator guifg=#404c4c guibg=NONE",
+
+    hi "CursorLine guibg=#4e1012",
+    hi "CursorLineNr guibg=#842024 gui=bold guifg=#ffc8c3",
+
+    hi "LineNr gui=italic",
+    hi "LineNrBelow guifg=#5e6c59 guibg=#000000",
+    hi "LineNrAbove guifg=#79605e guibg=#000000",
+
+    hi "ColorColumn guibg=#1d1d1d",
+
+    hi "Comment guifg=#966629",
+    hi "NonText guifg=#555555",
+    hi "Operator guifg=fg",
+    link "Directory PreProc",
+
     hi "@variable guifg=fg",
     hi "@punctuation guifg=NONE",
     hi "@constructor.lua guifg=NONE",
+    hi "@markup.raw.block.vimdoc guifg=fg",
+
     hi "TelescopeMatching guifg=#000000 guibg=#96bade gui=bold",
+
     link "DiagnosticInfo Statement",
     link "DiagnosticHint Statement", -- make diff from info?
     link "DiagnosticError ErrorMsg",
     link "DiagnosticWarn WarningMsg",
-    hi "CursorLine guibg=#4e1012",
-    hi "CursorLineNr guibg=#842024 gui=bold guifg=#ffc8c3",
-    hi "SignColumn guibg=NONE",
-    hi "ColorColumn guibg=#1d1d1d",
+    hi "DiagnosticSignError guifg=#ff6a6a gui=bold guibg=#000000",
+    hi "DiagnosticSignWarn guifg=#ee9a00 guibg=#000000",
+    hi "DiagnosticSignInfo guifg=#90b0d1 gui=italic guibg=#000000",
+    hi "DiagnosticSignHint guifg=#90b0d1 gui=italic guibg=#000000",
+
     link "MiniIndentscopeSymbol NonText",
-    link "Directory PreProc",
-    hi "WinSeparator guibg=NONE",
+
+    hi "SignColumn guifg=#686858 guibg=#000000",
+    -- make diff signs match color of signcolumn
+    link "MiniDiffSignAdd NONE",
+    link "MiniDiffSignChange NONE",
+    link "MiniDiffSignDelete NONE",
+    hi "MiniDiffSignAdd guifg=#3cb371 guibg=#000000",
+    hi "MiniDiffSignChange guifg=#4f94cd guibg=#000000",
+    hi "MiniDiffSignDelete guifg=#aa4450 guibg=#000000",
   },
   bubblegum2 = {
     link "MatchParen LineNr",
@@ -260,7 +291,7 @@ for extension, settings in pairs(lang_indent_settings) do
 end
 
 autocmds("SkipHelp", {
-  { "FileType", { pattern = "help", command = "setlocal signcolumn=no" } },
+  { "FileType", { pattern = "help", command = "setlocal signcolumn=no number" } },
 })
 
 -- for stopping LSPs - we can't do it inside of tree-sitter highlight.disable
@@ -292,8 +323,8 @@ autocmds("SkipTerminal", {
 })
 
 autocmds("SkipLocalCursorline", {
-  { { "BufWinEnter", "WinEnter" }, { pattern = "*", command = "setlocal cursorline" } },
-  { "WinLeave", { pattern = "*", command = "setlocal nocursorline" } },
+  { { "BufWinEnter", "WinEnter" }, { pattern = "*", command = "setlocal cursorline relativenumber" } },
+  { "WinLeave", { pattern = "*", command = "setlocal nocursorline norelativenumber" } },
 })
 
 autocmds("SkipParentDirectoryCreation", {
@@ -321,6 +352,7 @@ autocmds("SkipTelescopeCursorLine", {
       callback = function()
         if vim.bo.filetype == "TelescopePrompt" then
           vim.wo.cursorline = false
+          vim.wo.relativenumber = false
         end
       end,
       desc = "Automatically disable cursorline inside of Telescope",

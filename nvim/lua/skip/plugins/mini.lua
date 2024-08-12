@@ -76,7 +76,9 @@ return {
 
   {
     "echasnovski/mini.indentscope",
-    config = true,
+    opts = {
+      symbol = "┊",
+    },
   },
 
   {
@@ -96,6 +98,11 @@ return {
 
   {
     "echasnovski/mini.move",
+    config = true,
+  },
+
+  {
+    "echasnovski/mini.pairs",
     config = true,
   },
 
@@ -139,6 +146,7 @@ return {
           hack = { pattern = "HACK", group = "MiniHipatternsHack" },
           todo = { pattern = "TODO", group = "MiniHipatternsTodo" },
           note = { pattern = "NOTE", group = "MiniHipatternsNote" },
+          xxx = { pattern = "XXX", group = "MiniHipatternsNote" },
           hex_color = hipatterns.gen_highlighter.hex_color(),
         },
       }

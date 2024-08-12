@@ -79,6 +79,7 @@ return {
         { "<Leader>t", group = "terminals" },
         { "<Leader>v", group = "config" },
         { "<Leader>m", group = "minimap" },
+        { "<Leader>c", "<cmd>nohlsearch<CR>", desc = "nohlsearch" },
       })
     end,
   },

@@ -2,11 +2,19 @@
 local grammars = {
   -- override the parsers that ship with neovim itself, as nvim-treesitter
   -- has newer definitions (important)
-  "c", "lua", "vim", "vimdoc", "query",
+  "c",
+  "lua",
+  "vim",
+  "vimdoc",
+  "query",
 
-  "astro", "css", "fish", "go", "haskell", "html", "javascript", "json",
-  "markdown", "markdown_inline", "nix", "python", "rust", "swift", "tsx",
-  "typescript", "vim", "yaml",
+  "asm", "astro", "bash", "cmake", "cpp", "css", "diff", "dockerfile",
+  "editorconfig", "fish", "git_config", "git_rebase", "gitattributes",
+  "gitcommit", "gitignore", "go", "gomod", "gosum", "haskell", "html", "java",
+  "javascript", "jsdoc", "json", "json5", "kotlin", "luadoc", "make",
+  "markdown", "markdown_inline", "nginx", "nix", "objc", "perl", "php",
+  "powershell", "prisma", "proto", "python", "robots", "ruby", "rust", "scss",
+  "sql", "swift", "toml", "tsx", "typescript", "typst", "vim", "xml", "yaml",
 }
 
 return {

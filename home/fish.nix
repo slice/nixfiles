@@ -198,8 +198,8 @@ in
 
           command_duration
 
-          set -l clock (date -Iminutes)
-          set_color -i brblack; printf ' %s' $clock; set_color normal
+          # set -l clock (date -Iminutes)
+          # set_color -i brblack; printf ' %s' $clock; set_color normal
 
           printf '%s%s%s' (set_color -o blue) (fish_git_prompt) (set_color normal)
 

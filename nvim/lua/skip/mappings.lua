@@ -1,6 +1,9 @@
 local utils = require("skip.utils")
 local map = vim.keymap.set
 
+-- TODO: move everything to which-key, i think, but that can't live in this
+-- exact file bc it needs to load first. maybe export them as modules :3c
+
 -- after 6? 7? years of typing <ESC>:w<CR>, it's time for somethin' different
 map("n", "<Leader>s", "<cmd>w<CR>")
 map("n", "<Leader>w", "<cmd>noautocmd w<CR>")
