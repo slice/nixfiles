@@ -15,9 +15,9 @@ let
         src = pkgs.fetchFromGitHub {
           owner = "neovim";
           repo = "neovim";
-          # 2024-08-01 (has fix for https://github.com/neovim/neovim/issues/28987 somewhere in tree)
-          rev = "720b309c786c4a258adccc9c468d433fb0f755b9";
-          hash = "sha256-+mr1KCwb5kiDFIwVGnLb+qjuqjfS0sRSckp6hzTgrOk";
+          # 2024-08-12 (has fix for https://github.com/neovim/neovim/issues/28987)
+          rev = "88f07d6ca4a6d423fa10949e85941f50ba9596e0";
+          hash = "sha256-trzdY98S3iffspkpYBAxPP6brBNw1bSupk83erZMXqw=";
         };
 
         buildInputs = orig.buildInputs ++ [ pkgs.utf8proc ];

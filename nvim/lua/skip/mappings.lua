@@ -56,13 +56,21 @@ map("n", "<Leader>ts", "<cmd>below split +terminal<CR>")
 map("n", "<Leader>tv", "<cmd>vsplit +terminal<CR>")
 
 -- diagnostics
-map({ "v", "n" }, "[d", vim.diagnostic.goto_prev)
-map({ "v", "n" }, "]d", vim.diagnostic.goto_next)
 map({ "v", "n" }, "[D", function()
-  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+  local diagnostic = vim.diagnostic.get_prev({ severity = vim.diagnostic.severity.ERROR })
+  if not diagnostic then
+    vim.notify("no prev error found")
+    return
+  end
+  vim.diagnostic.jump({ diagnostic = diagnostic })
 end)
 map({ "v", "n" }, "]D", function()
-  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+  local diagnostic = vim.diagnostic.get_next({ severity = vim.diagnostic.severity.ERROR })
+  if not diagnostic then
+    vim.notify("no next error found")
+    return
+  end
+  vim.diagnostic.jump({ diagnostic = diagnostic })
 end)
 
 -- vimrc; https://learnvimscriptthehardway.stevelosh.com/chapters/08.html

@@ -19,9 +19,9 @@ return {
           local bufs = vim.api.nvim_list_bufs()
           for _, bufnr in ipairs(bufs) do
             if
-              vim.api.nvim_buf_is_valid(bufnr)
-              and vim.api.nvim_buf_is_loaded(bufnr)
-              and vim.api.nvim_buf_get_name(bufnr) == bufname
+                vim.api.nvim_buf_is_valid(bufnr)
+                and vim.api.nvim_buf_is_loaded(bufnr)
+                and vim.api.nvim_buf_get_name(bufnr) == bufname
             then
               if not lsp.attach_allowed(bufnr) then
                 return false
@@ -72,14 +72,14 @@ return {
             end
 
             local filtered_diagnostics = vim
-              .iter(result.diagnostics)
-              :filter(function(diagnostic)
-                return not (
-                  diagnostic.message == "Matches multiple schemas when only one must validate."
-                  and diagnostic.code == 0
-                )
-              end)
-              :totable()
+                .iter(result.diagnostics)
+                :filter(function(diagnostic)
+                  return not (
+                    diagnostic.message == "Matches multiple schemas when only one must validate."
+                    and diagnostic.code == 0
+                  )
+                end)
+                :totable()
 
             return vim.lsp.diagnostic.on_publish_diagnostics(
               err,
@@ -186,11 +186,24 @@ return {
     config = function()
       local lsp = require "skip.lsp"
       local nls = require "null-ls"
+      local nls_helpers = require "null-ls.helpers"
+      local nls_utils = require "null-ls.utils"
 
       nls.setup {
+        debug = true,
         sources = {
           nls.builtins.diagnostics.stylelint,
-          require("none-ls.diagnostics.eslint_d"),
+          require("none-ls.diagnostics.eslint_d").with({
+            cwd = nls_helpers.cache.by_bufnr(function(params)
+              -- this normally searches for cosmiconfig file that looks like
+              -- .eslintrc.yml and sets the root to the first one found in
+              -- ancestors. but we don't want that because it'd stop at an
+              -- eslintrc that only intends to contain local overrides, when a
+              -- parent one might have more rules (and context-sensitive
+              -- relative paths). just start at package.json
+              return nls_utils.root_pattern("package.json")(params.bufname)
+            end),
+          }),
           require("none-ls.code_actions.eslint_d"),
           require("none-ls.formatting.eslint_d"),
         },
@@ -209,15 +222,18 @@ return {
     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
     opts = {
       settings = {
+        publish_diagnostic_on = "change",
         expose_as_code_action = "all",
+        -- code_lens = "all",
+        -- disable_member_code_lens = true,
         tsserver_file_preferences = {
           includeInlayParameterNameHints = "all",
           includeCompletionsForModuleExports = true,
           quotePreference = "single",
         },
-        -- tsserver_format_options = {
-        --   semicolons = "remove",
-        -- },
+        tsserver_format_options = {
+          semicolons = "remove",
+        },
       },
     },
   },

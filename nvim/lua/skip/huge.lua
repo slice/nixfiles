@@ -9,7 +9,7 @@ M.bypass_key = "HUGE_BYPASS"
 M.limits = {
   max_lines = 10000,
   max_file_size_bytes = 1000000,
-  max_individual_line_length = 300,
+  max_individual_line_length = 400,
 }
 
 ---@param bufnr number

@@ -163,25 +163,25 @@ local tweaks = {
     'let g:terminal_color_8 = "#67767e"',
   },
   minicyan = vim
-    .iter({
-      mini_tweaks,
-      -- moonfly_spelling,
-      {
-        hi "LspInlayHint guifg=#467374",
-        hi "LspCodeLens guibg=#3c6364",
-        -- Most tokens onscreen are going to be `@variable`s, and we don't want to
-        -- highlight all of them. It's visually noisy.
-        link "@variable.python Normal",
+      .iter({
+        mini_tweaks,
+        -- moonfly_spelling,
+        {
+          hi "LspInlayHint guifg=#467374",
+          hi "LspCodeLens guibg=#3c6364",
+          -- Most tokens onscreen are going to be `@variable`s, and we don't want to
+          -- highlight all of them. It's visually noisy.
+          link "@variable.python Normal",
 
-        hi "CursorLine guibg=#341d1b",
-        hi "CursorLineNr guibg=#c42124 guifg=#3d0305",
+          hi "CursorLine guibg=#341d1b",
+          hi "CursorLineNr guibg=#c42124 guifg=#3d0305",
 
-        hi "StatusLine gui=reverse,bold",
-        hi "SpellBad guifg=NONE gui=undercurl",
-      },
-    })
-    :flatten()
-    :totable(),
+          hi "StatusLine gui=reverse,bold",
+          hi "SpellBad guifg=NONE gui=undercurl",
+        },
+      })
+      :flatten()
+      :totable(),
   minischeme = vim.iter({ mini_tweaks, moonfly_spelling }):flatten():totable(),
   moonfly = moonfly_spelling,
   ["tokyonight"] = {
@@ -256,13 +256,13 @@ autocmds("SkipHacks", {
 
 autocmds("SkipFiletypes", {
   -- enable spellchecking in git commits
-  { "FileType", { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " } },
-  { "FileType", { pattern = "typescript", command = "setlocal commentstring=//\\ %s" } },
-  { "FileType", { pattern = "dirvish,man,text,git,gitignore", command = "setlocal nospell" } },
+  { "FileType",                     { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " } },
+  { "FileType",                     { pattern = "typescript", command = "setlocal commentstring=//\\ %s" } },
+  { "FileType",                     { pattern = "dirvish,man,text,git,gitignore", command = "setlocal nospell" } },
   -- swift interpolations look like "\(...)", and we want text objects and
   -- motions involving parens to not think they're escaped
-  { "FileType", { pattern = "swift", command = "setl cpo+=M" } },
-  { "BufReadPost", { pattern = "*.md,*.mdx", command = "setlocal spell | setf markdown" } },
+  { "FileType",                     { pattern = "swift", command = "setl cpo+=M" } },
+  { "BufReadPost",                  { pattern = "*.md,*.mdx", command = "setlocal spell | setf markdown" } },
   { { "BufNewFile", "BufReadPre" }, { pattern = "*.sc,*.sbt", command = "setfiletype scala" } },
 })
 
@@ -329,6 +329,7 @@ autocmds("SkipTerminal", {
     {
       pattern = "*",
       callback = function()
+        -- TODO: use win id
         vim.wo.number = false
         vim.wo.relativenumber = false
         vim.wo.spell = false

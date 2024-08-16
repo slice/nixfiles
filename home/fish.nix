@@ -51,30 +51,33 @@ in
 
         # vcs
         g = "git";
-        gi = "git init";
-        gap = "git add -p";
         ga = "git add";
-        grb = "git rebase";
-        gca = "git commit --amend";
-        gcp = "git cherry-pick";
+        gap = "git add -p";
+        gb = "git branch -vv";
         gc = "git commit";
+        gca = "git commit --amend";
+        gcl = "git clone";
         gco = "git checkout";
-        gr = "git remote";
+        gcp = "git cherry-pick";
         gd = "git diff";
         gds = "git diff --staged";
-        gt = "git tag";
-        gst = "git stash";
-        gsh = "git show";
+        gf = "git fetch";
+        gi = "git init";
+        gl = "git log";
         gp = "git push";
         gpf = "git push --force";
         gpl = "git pull"; # (not the license)
-        gs = "git status";
-        gsw = "git switch";
-        gl = "git log";
+        gr = "git remote";
+        grb = "git rebase";
+        grbc = "git rebase --continue";
+        grba = "git rebase --abort";
         grm = "git rm";
-        gb = "git branch -vv";
-        gcl = "git clone";
         grs = "git reset";
+        gs = "git status";
+        gsh = "git show";
+        gst = "git stash";
+        gsw = "git switch";
+        gt = "git tag";
       }
       // pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
         sc = "sudo systemctl";
