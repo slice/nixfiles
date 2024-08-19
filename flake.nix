@@ -2,17 +2,13 @@
   description = "skip's machines";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/c7b5f486d39f75b7653fb3246297e58ceef3e8fb";
+    # https://github.com/NixOS/nixpkgs/issues/335533
+    nixpkgs.url = "github:nixos/nixpkgs/0cb2fd7c59fed0cd82ef858cbcbdb552b9a33465";
 
     flake-utils.url = "github:numtide/flake-utils";
 
-    lix = {
-      url = "git+https://git@git.lix.systems/lix-project/lix?ref=refs/tags/2.90.0";
-      flake = false;
-    };
     lix-module = {
-      url = "git+https://git.lix.systems/lix-project/nixos-module";
-      inputs.lix.follows = "lix";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -40,13 +36,9 @@
 
   outputs =
     {
-      self,
       flake-utils,
       darwin,
-      nixpkgs,
-      home-manager,
       lix-module,
-      fenix,
       ...
     }@inputs:
     flake-utils.lib.eachDefaultSystem (

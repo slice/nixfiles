@@ -19,9 +19,9 @@ return {
           local bufs = vim.api.nvim_list_bufs()
           for _, bufnr in ipairs(bufs) do
             if
-                vim.api.nvim_buf_is_valid(bufnr)
-                and vim.api.nvim_buf_is_loaded(bufnr)
-                and vim.api.nvim_buf_get_name(bufnr) == bufname
+              vim.api.nvim_buf_is_valid(bufnr)
+              and vim.api.nvim_buf_is_loaded(bufnr)
+              and vim.api.nvim_buf_get_name(bufnr) == bufname
             then
               if not lsp.attach_allowed(bufnr) then
                 return false
@@ -72,14 +72,14 @@ return {
             end
 
             local filtered_diagnostics = vim
-                .iter(result.diagnostics)
-                :filter(function(diagnostic)
-                  return not (
-                    diagnostic.message == "Matches multiple schemas when only one must validate."
-                    and diagnostic.code == 0
-                  )
-                end)
-                :totable()
+              .iter(result.diagnostics)
+              :filter(function(diagnostic)
+                return not (
+                  diagnostic.message == "Matches multiple schemas when only one must validate."
+                  and diagnostic.code == 0
+                )
+              end)
+              :totable()
 
             return vim.lsp.diagnostic.on_publish_diagnostics(
               err,
@@ -97,6 +97,7 @@ return {
       lsc.lua_ls.setup {}
       lsc.gopls.setup {}
       lsc.bashls.setup {}
+      lsc.dhall_lsp_server.setup {}
 
       for _, server in ipairs({
         "cssls",

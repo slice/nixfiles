@@ -77,7 +77,7 @@ end)
 map("n", "<Leader>vs", "<cmd>vsplit | terminal hm-switch<CR>")
 
 -- replace :bdelete with sayonara
-map("c", "bd", "Sayonara!")
+-- map("c", "bd", "Sayonara!")
 
 -- if we're using "CSI u" (a specification for accurate key reporting in
 -- terminals) or otherwise correctly recognize these key presses, let

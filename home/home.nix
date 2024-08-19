@@ -66,8 +66,12 @@ let
       bun
       tree-sitter
       kubernetes-helm
+      fluxcd
       argocd
       yaml-language-server
+      dhall
+      dhall-yaml
+      dhall-lsp-server
       bash-language-server
     ];
 

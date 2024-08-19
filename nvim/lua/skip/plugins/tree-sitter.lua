@@ -8,7 +8,7 @@ local grammars = {
   "vimdoc",
   "query",
 
-  "asm", "astro", "bash", "cmake", "cpp", "css", "diff", "dockerfile",
+  "asm", "astro", "bash", "cmake", "cpp", "css", "diff", "dockerfile", "dhall",
   "editorconfig", "fish", "git_config", "git_rebase", "gitattributes",
   "gitcommit", "gitignore", "go", "gomod", "gosum", "haskell", "html", "java",
   "javascript", "jsdoc", "json", "json5", "kotlin", "luadoc", "make",

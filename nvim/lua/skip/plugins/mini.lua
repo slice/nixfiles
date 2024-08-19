@@ -6,6 +6,7 @@ return {
 
   {
     "echasnovski/mini.operators",
+    enabled = false,
     config = true,
   },
 
@@ -63,6 +64,7 @@ return {
 
   {
     "echasnovski/mini.jump2d",
+    enabled = false,
     opts = {
       allowed_lines = {
         blank = false,
