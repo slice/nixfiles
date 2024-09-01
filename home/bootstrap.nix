@@ -2,7 +2,12 @@
   system,
   inputs,
   username ? "skip",
-  homeDirectory ? "/Users/${username}",
+  homeDirectory ? (
+    if system == "aarch64-linux" || system == "x86_64-linux" then
+      "/home/${username}"
+    else
+      "/Users/${username}"
+  ),
   specialArgs ? { },
   server ? "infer",
 }:

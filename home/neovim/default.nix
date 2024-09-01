@@ -10,14 +10,14 @@ let
   overlay = (
     final: prev: {
       neovim-unwrapped = prev.neovim-unwrapped.overrideAttrs (orig: {
-        version = "0.10.0";
+        version = "0.11.0-dev";
 
         src = pkgs.fetchFromGitHub {
           owner = "neovim";
           repo = "neovim";
-          # 2024-08-12 (has fix for https://github.com/neovim/neovim/issues/28987)
-          rev = "88f07d6ca4a6d423fa10949e85941f50ba9596e0";
-          hash = "sha256-trzdY98S3iffspkpYBAxPP6brBNw1bSupk83erZMXqw=";
+          # 2024-09-01
+          rev = "61e9137394fc5229e582a64316c2ffef55d8d7af";
+          hash = "sha256-fzo3m7JBEolhfLVcgCdox0Cj3kQKDhDbZTjC/8eWlj4=";
         };
 
         buildInputs = orig.buildInputs ++ [ pkgs.utf8proc ];
