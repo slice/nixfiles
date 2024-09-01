@@ -46,9 +46,11 @@ return {
   },
 
   {
-    "nvim-treesitter/nvim-treesitter-context",
+    -- https://github.com/slice/nvim-treesitter-context/commit/55255056d85d6521638c3cf377e6f39cadc58fdb
+    -- TODO: remove me when this is fixed upstream (broke 4 hours ago, 2024-09-01)
+    "slice/nvim-treesitter-context",
     lazy = false,
-    enabled = true, -- too slow? :/
+    enabled = true,
     opts = {},
     keys = {
       {

@@ -127,7 +127,7 @@ in
         '';
 
         autocommit = ''
-          git commit -a -m (date)
+          git commit --allow-empty-message -a -m ""
         '';
 
         fish_greeting = "";
