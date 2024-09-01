@@ -19,6 +19,7 @@ let
       croc
       jq
       jo
+      eza
       ripgrep
       rlwrap
       curl
@@ -84,7 +85,6 @@ let
 
     # miscellaneous utilities
     utilities = [
-      eza
       graphviz
       smartmontools
       colmena
