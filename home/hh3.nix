@@ -10,6 +10,7 @@ let
   ];
   full = conservative ++ [
     "loadingScreen"
+    "arbitraryVoiceMessages"
     "createEmoji"
     "copyAvatarUrl"
     "experiments"
@@ -108,7 +109,7 @@ in
           };
         };
 
-        enabledExts = conservative;
+        enabledExts = full;
       };
     };
   };

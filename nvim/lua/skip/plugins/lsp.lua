@@ -145,6 +145,13 @@ return {
 
       lsc.hls.setup {
         filetypes = { "haskell", "lhaskell", "cabal" },
+        settings = {
+          haskell = {
+            plugin = {
+              rename = { config = { crossModule = true } },
+            },
+          },
+        },
       }
 
       lsc.rust_analyzer.setup {

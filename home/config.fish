@@ -102,7 +102,8 @@ functions --erase m
 # }}}
 
 # directly manipulate PATH such that Nix bin paths are _always_ consulted first
-fish_add_path -mP ~/.nix-profile/bin /run/current-system/sw/bin
+# /run/wrappers/bin is important on NixOS, but is ~irrelevant on nix-darwin
+fish_add_path -mP ~/.nix-profile/bin /run/wrappers/bin /run/current-system/sw/bin
 
 set -ga CDPATH .
 
