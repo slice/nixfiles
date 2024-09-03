@@ -2,8 +2,7 @@
   description = "skip's machines";
 
   inputs = {
-    # https://github.com/NixOS/nixpkgs/issues/335533
-    nixpkgs.url = "github:nixos/nixpkgs/0cb2fd7c59fed0cd82ef858cbcbdb552b9a33465";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
 
