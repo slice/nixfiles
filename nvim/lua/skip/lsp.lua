@@ -91,7 +91,7 @@ utils.autocmds("SkipLsp", {
 
         vim.schedule(function()
           vim.notify(
-            string.format('(^__^)/ LSP server "%s" (%d) attached to bufnr %d', client.name, client.id, bufnr),
+            string.format("(^_^)/ %s (%d) attached to buf %d", client.name, client.id, bufnr),
             vim.log.levels.INFO
           )
         end)

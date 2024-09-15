@@ -164,6 +164,9 @@ return {
               },
               prefix = "crate",
             },
+            files = {
+              excludeDirs = { ".cargo", ".direnv", ".git", "node_modules", "target" },
+            },
             procMacro = {
               enable = true,
             },
