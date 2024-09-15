@@ -148,7 +148,7 @@ return {
 
   {
     "prochri/telescope-all-recent.nvim",
-    enabled = false,
+    enabled = true,
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "kkharji/sqlite.lua",

@@ -14,10 +14,11 @@ local skipbones = lush.extends({ seoul }).with(function(injected)
     Normal { seoul.Normal, bg = seoul.Normal.bg.darken(20) },
     NormalFloat { bg = lush.hsl "#515151" },
 
-    ColorColumn { bg = seoul.Normal.bg.darken(20) },
+    ColorColumn { bg = Normal.bg.darken(5) },
 
     Cursor { fg = seoul.Normal.fg, bg = lush.hsl "#c22125" },
     CursorLine { bg = Cursor.bg.darken(35).desaturate(60) },
+    CursorLineSign { bg = CursorLine.bg },
     CursorLineNr { seoul.CursorLineNr, bg = CursorLine.bg },
 
     TelescopeNormal { seoul.NormalFloat },
