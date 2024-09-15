@@ -9,7 +9,7 @@ M.bypass_key = "HUGE_BYPASS"
 M.limits = {
   max_lines = 10000,
   max_file_size_bytes = 1000000,
-  max_individual_line_length = 400,
+  max_individual_line_length = 500,
 }
 
 ---@param bufnr number
@@ -77,7 +77,7 @@ function M.bouncer(bufnr, opts)
 
   for _, file_line in pairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
     if #file_line > M.limits.max_individual_line_length then
-      M.bounce(bufnr, "really long line", opts)
+      M.bounce(bufnr, ("some line longer than %d"):format(M.limits.max_individual_line_length), opts)
       return true
     end
   end

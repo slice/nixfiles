@@ -61,7 +61,7 @@ let
       nixd
       nix-diff
       gh
-      corepack_20
+      corepack_18
       doctl
       nodejs_18
       bun

@@ -14,6 +14,7 @@ map("n", "<Leader>w", "<cmd>noautocmd w<CR>")
 --
 -- update(2023-12-18): doesn't seem to be necessary anymore with CSI u?
 map("t", "<S-Space>", "<Space>")
+map("t", "<Esc>", "<C-\\><C-n>")
 
 map("!", "<C-j>", function()
   if vim.api.nvim_get_mode().mode == "c" then

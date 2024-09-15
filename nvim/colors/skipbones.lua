@@ -29,6 +29,7 @@ local skipbones = lush.extends({ seoul }).with(function(injected)
     String { seoul.String, gui = "" },
     Number { seoul.Number, gui = "" },
     Constant { seoul.Constant, gui = "" },
+    Boolean { seoul.Number, gui = "bold" },
 
     TabLine { bg = seoul.TabLineFill.bg },
     TabLineSel { gui = "bold, reverse" },

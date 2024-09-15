@@ -41,6 +41,7 @@
       "*~"
       "*.swp"
       ".DS_Store"
+      "/.yalc" # https://github.com/wclr/yalc
       "__MACOSX"
     ];
   };

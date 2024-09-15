@@ -1,4 +1,4 @@
--- N.B. using VeryLazy smashes the UI on startup for some reason
+-- N.B. using VeryLazy smashes the UI on startup for some reasonbase
 -- (i.e. echo output and :intro gets cleared off)
 
 return {
@@ -8,13 +8,18 @@ return {
     enabled = false,
     keys = {
       { "ga", "<Plug>(EasyAlign)", remap = true },
-      { "ga", "<Plug>(EasyAlign)", mode = "x", remap = true },
+      { "ga", "<Plug>(EasyAlign)", mode = "x",  remap = true },
     },
   },
   "tpope/vim-rsi",
   "tpope/vim-eunuch",
   "tpope/vim-unimpaired",
-  "tpope/vim-fugitive",
+  {
+    "tpope/vim-fugitive",
+    cmd = "Git",
+    lazy = false,
+    keys = { { "<Leader>a", "<Cmd>vert G<CR>", desc = "Git" } }
+  },
   "tpope/vim-rhubarb",
   "tpope/vim-repeat",
   "tpope/vim-abolish",
@@ -53,7 +58,7 @@ return {
         group = "LeapRemote",
         callback = function(event)
           -- Do not paste if some special register was in use.
-          if vim.v.operator == "y" and event.data.register == '"' then
+          if (vim.v.operator == "y" or vim.v.operator == "d") and event.data.register == '"' then
             vim.cmd("normal! p")
           end
         end,
