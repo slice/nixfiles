@@ -38,6 +38,8 @@ local tweaks = {
     link "@operator Operator",
     link "@markup.raw.vimdoc Comment",
     link "@markup.link.vimdoc String",
+    link "@lsp.type.keyword Keyword",
+    link "@keyword.coroutine @keyword",
 
     -- can race with colorscheme-specific tweaks to these groups i guess…
     -- link "MiniDiffSignAdd Added",
