@@ -204,7 +204,7 @@ return {
         debug = true,
         sources = {
           nls.builtins.diagnostics.stylelint,
-          require("none-ls.diagnostics.eslint").with({
+          require("none-ls.diagnostics.eslint_d").with({
             cwd = nls_helpers.cache.by_bufnr(function(params)
               -- this normally searches for cosmiconfig file that looks like
               -- .eslintrc.yml and sets the root to the first one found in
@@ -215,8 +215,8 @@ return {
               return nls_utils.root_pattern("package.json")(params.bufname)
             end),
           }),
-          require("none-ls.code_actions.eslint"),
-          require("none-ls.formatting.eslint"),
+          require("none-ls.code_actions.eslint_d"),
+          require("none-ls.formatting.eslint_d"),
         },
         capabilities = lsp.capabilities,
         should_attach = function(bufnr)

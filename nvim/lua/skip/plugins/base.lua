@@ -18,7 +18,10 @@ return {
     "tpope/vim-fugitive",
     cmd = "Git",
     lazy = false,
-    keys = { { "<Leader>a", "<Cmd>vert G<CR>", desc = "Git" } }
+    keys = {
+      { "<Leader>a", "<Cmd>vert G<CR>",    desc = "Git" },
+      { "<Leader>q", "<Cmd>.GBrowse!<CR>", desc = ".GBrowse!" }
+    },
   },
   "tpope/vim-rhubarb",
   "tpope/vim-repeat",

@@ -16,9 +16,18 @@ M.noformat_key = "LSP_NOFORMAT"
 
 M.formatting_augroup = vim.api.nvim_create_augroup("SkipLspAutomaticFormatting", {})
 
+function M.has_open_focusable_float()
+  for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+    local config = vim.api.nvim_win_get_config(winid)
+    if config.relative ~= "" and config.focusable then
+      return true
+    end
+  end
+  return false
+end
+
 -- setup a buffer with an lsp server attached with the proper mappings and
 -- options
-
 function M.setup_lsp_buf(client, bufnr)
   if client.server_capabilities.codeLensProvider then
     vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]])
@@ -35,9 +44,26 @@ function M.setup_lsp_buf(client, bufnr)
     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(nil))
   end, { desc = "Toggle LSP inlay hints" })
   map_buf("n", "<leader>lz", vim.lsp.codelens.run, { desc = "Run LSP codelens" })
-  vim.cmd(
-    [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float(nil, { scope = "line", source = "if_many", focusable = false, focus = false })]]
-  )
+
+  vim.api.nvim_create_autocmd('CursorHold', {
+    buffer = bufnr,
+    desc = 'Open diagnostic float when holding cursor',
+    callback = function()
+      if M.has_open_focusable_float() then return end
+      vim.diagnostic.open_float(nil, { scope = "line", source = "if_many", focusable = false, focus = false })
+    end
+  })
+
+  vim.api.nvim_create_autocmd('BufWritePre', {
+    buffer = bufnr,
+    desc = 'Automatically LSP format before writing buffer',
+    callback = function()
+      local is_fugitive_buf = vim.api.nvim_buf_get_name(bufnr):find "fugitive://" == 1
+      if utils.flag_set(M.noformat_key) or is_fugitive_buf then return end
+
+      vim.lsp.buf.format { timeout_ms = 500, bufnr = bufnr }
+    end
+  })
 end
 
 M.banned_patterns = {
