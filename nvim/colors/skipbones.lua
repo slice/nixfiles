@@ -13,7 +13,7 @@ local skipbones = lush.extends({ seoul }).with(function(injected)
   --- @diagnostic disable: undefined-global
   return {
     Normal { seoul.Normal, bg = seoul.Normal.bg.darken(20) },
-    NormalNC { bg = Normal.bg.lighten(15) },
+    NormalNC { bg = Normal.bg.lighten(12) },
     NormalFloat { bg = lush.hsl "#515151" },
 
     ColorColumn { bg = Normal.bg.darken(5) },
@@ -22,13 +22,15 @@ local skipbones = lush.extends({ seoul }).with(function(injected)
     CursorLine { bg = attention.darken(40).desaturate(50) },
     CursorLineSign { bg = CursorLine.bg },
     CursorLineNr { fg = seoul.CursorLineNr.fg.saturate(30), bg = CursorLine.bg, gui = "bold" },
-    LineNrAbove { fg = seoul.LineNr.fg.saturate(15).darken(20) },
-    LineNrBelow { fg = seoul.LineNr.fg.hue(120).saturate(15).darken(20) },
+    LineNrAbove { fg = seoul.LineNr.fg.saturate(10).darken(20) },
+    LineNrBelow { fg = seoul.LineNr.fg.hue(120).saturate(10).darken(20) },
     TelescopeNormal { seoul.NormalFloat },
     TelescopeMatching { seoul.CursorLineNr, fg = attention.desaturate(50).lighten(40), gui = "bold" },
     TelescopeSelectionCaret { CursorLineNr },
 
     StatusLine { fg = CursorLineNr.fg, bg = attention.desaturate(15), gui = "bold" },
+    ModeMsg { fg = lush.hsl "#ffffff", bg = lush.hsl "#008517", gui = "bold" },
+
     String { seoul.String, gui = "" },
     Number { seoul.Number, gui = "" },
     Constant { seoul.Constant, gui = "" },
