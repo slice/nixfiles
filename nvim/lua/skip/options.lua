@@ -16,7 +16,7 @@ opt.inccommand = "nosplit"
 opt.pumheight = 20
 opt.jumpoptions = "view"
 opt.list = true
-opt.listchars = { tab = "> ", trail = "·", nbsp = "+", precedes = "<", extends = ">" }
+opt.listchars = { tab = "▸ ", trail = "·", nbsp = "+", precedes = "<", extends = ">" }
 opt.foldtext = ""
 opt.fillchars:append { fold = "-" }
 opt.modeline = true

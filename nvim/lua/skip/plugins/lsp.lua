@@ -19,9 +19,9 @@ return {
           local bufs = vim.api.nvim_list_bufs()
           for _, bufnr in ipairs(bufs) do
             if
-                vim.api.nvim_buf_is_valid(bufnr)
-                and vim.api.nvim_buf_is_loaded(bufnr)
-                and vim.api.nvim_buf_get_name(bufnr) == bufname
+              vim.api.nvim_buf_is_valid(bufnr)
+              and vim.api.nvim_buf_is_loaded(bufnr)
+              and vim.api.nvim_buf_get_name(bufnr) == bufname
             then
               if not lsp.attach_allowed(bufnr) then
                 return false
@@ -72,14 +72,14 @@ return {
             end
 
             local filtered_diagnostics = vim
-                .iter(result.diagnostics)
-                :filter(function(diagnostic)
-                  return not (
-                    diagnostic.message == "Matches multiple schemas when only one must validate."
-                    and diagnostic.code == 0
-                  )
-                end)
-                :totable()
+              .iter(result.diagnostics)
+              :filter(function(diagnostic)
+                return not (
+                  diagnostic.message == "Matches multiple schemas when only one must validate."
+                  and diagnostic.code == 0
+                )
+              end)
+              :totable()
 
             return vim.lsp.diagnostic.on_publish_diagnostics(
               err,
@@ -232,6 +232,10 @@ return {
     ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
     opts = {
+      on_attach = function(client)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+      end,
       settings = {
         publish_diagnostic_on = "change",
         expose_as_code_action = "all",
