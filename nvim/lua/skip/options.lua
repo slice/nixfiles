@@ -9,7 +9,7 @@ opt.colorcolumn = { 81 }
 opt.completeopt = { "menu", "menuone", "noselect" }
 opt.cursorline = true
 opt.diffopt:append { "linematch:60" }
-opt.hidden = true
+opt.hidden = false
 opt.guicursor:append { "a:blinkwait1000", "a:blinkon1000", "a:blinkoff1000" }
 opt.ignorecase = true
 opt.inccommand = "nosplit"
@@ -46,7 +46,7 @@ do
     end
   end
 
-  opt.statusline = [[%<%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %l/%L,%c #%n]]
+  opt.statusline = [[%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %l/%L,%c #%n%<]]
 end
 opt.timeoutlen = 500
 opt.undofile = true

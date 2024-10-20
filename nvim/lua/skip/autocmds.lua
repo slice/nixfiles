@@ -39,7 +39,7 @@ local tweaks = {
     link "@markup.raw.vimdoc Comment",
     link "@markup.link.vimdoc String",
     link "@lsp.type.keyword Keyword",
-    link "@keyword.coroutine @keyword",
+    -- link "@keyword.coroutine @keyword",
 
     -- can race with colorscheme-specific tweaks to these groups i guess…
     -- link "MiniDiffSignAdd Added",
@@ -335,11 +335,11 @@ autocmds("SkipTerminal", {
       pattern = "*",
       callback = function()
         -- TODO: use win id
-        vim.wo.number = false
-        vim.wo.relativenumber = false
-        vim.wo.spell = false
-        vim.wo.signcolumn = "auto"
-        vim.b.miniindentscope_disable = true
+        -- vim.wo.number = false
+        -- vim.wo.relativenumber = false
+        -- vim.wo.spell = false
+        -- vim.wo.signcolumn = "auto"
+        -- vim.b.miniindentscope_disable = true
       end,
     },
   },

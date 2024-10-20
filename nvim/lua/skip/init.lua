@@ -45,6 +45,11 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
-vim.cmd [[colorscheme skipbones]]
+do
+  vim.g.colors_name = 'skippy'
+  local lush = require('lush')
+  lush(require('skip.skippy'))
+end
+-- vim.cmd [[colorscheme skipbones]]
 
 require("skip.assimilate").create_autocmd()
