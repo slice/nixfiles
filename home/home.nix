@@ -63,7 +63,7 @@ let
       gh
       corepack_18
       doctl
-      nodejs_18
+      nodejs
       bun
       tree-sitter
       kubernetes-helm

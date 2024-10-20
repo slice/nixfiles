@@ -32,6 +32,8 @@ local spec = lush(function(injected_functions)
     Visual { bg = bg_3() },
 
     LineNr { fg = bg_fg() },
+    LineNrAbove { fg = bg_fg().mix(hsl("#ff0000"), 13) },
+    LineNrBelow { fg = bg_fg().mix(hsl("#00ff00"), 8) },
     NonText { LineNr },
     SignColumn { LineNr },
     CursorLine { bg = urgent.da(50) },
@@ -65,6 +67,7 @@ local spec = lush(function(injected_functions)
     DiagnosticWarn { fg = highlighter },
     WarningMsg { DiagnosticWarn },
     DiagnosticUnderlineWarn { fg = highlighter, gui = "undercurl" },
+    DiagnosticUnnecessary { gui = "strikethrough" },
 
     ModeMsg { fg = "white", bg = urgent, gui = "bold" },
     MoreMsg { fg = forest, gui = "bold" },
@@ -75,45 +78,62 @@ local spec = lush(function(injected_functions)
     TabLineFill { TabLine },
     TabLineSel { StatusLine },
 
-    -- NormalNC kinda makes this annoying ._.
-    PmenuSel { gui = "reverse,bold" },
-
     Search { fg = bronze.de(70).li(60), bg = bronze },
     IncSearch { Search },
     CurSearch { Search, gui = "reverse,bold" },
 
     -- actual thingies
     sym "@keyword" { fg = deep_lilac, gui = "bold" },
+    sym "@attribute" { sym "@keyword", gui = "" },
+
+    -- resets
     sym "@variable" {},
     Type {},
-    Boolean { fg = highlighter, gui = "bold" },
-    Operator { gui = "bold" },
     Function {},
-    Special {},
     Constant {},
     Identifier {},
-    sym "@skp.this" { fg = Normal.fg.mix(sym("@keyword").fg, 40) },
-    Number { Boolean, gui = "NONE" },
+    Statement {},
+
+    -- `null`, `undefined`, `this`
+    Special { fg = Normal.fg.mix(sym("@keyword").fg, 60) },
+    sym "@variable.builtin" {}, -- because it doesn't catch _every_ built-in so it's not consistent >:(
+    sym "@skp.this" { Special },
+    sym "@skp.var_decl_keyword" { gui = "NONE,nocombine" },
+
+    Number { fg = highlighter, gui = "NONE" },
+    Boolean { Number, gui = "bold" },
+
+    -- imports, includes, macros, conditional compilation, defines, etc.
     sym "@keyword.import" { fg = sym("@keyword").fg.hue(0), gui = "bold" },
     Include { sym "@keyword.import" },
     Macro { sym "@keyword.import" },
     Precondit { sym "@keyword.import" },
     Define { sym "@keyword.import" },
-    sym "@attribute" { sym "@keyword", gui = "" },
+
+    -- `while`/`for`/`continue`
     sym "@keyword.repeat" { fg = forest, gui = "bold" },
     Repeat { sym "@keyword.repeat" },
+    -- `return`/`break`
     sym "@keyword.return" { fg = forest, gui = "underdotted,bold", sp = forest },
-    sym "@keyword.exception" { fg = rose, bg = rose.da(70), gui = "bold" },
-    Exception { sym "@keyword.exception" },
     sym "@skp.break" { sym "@keyword.return" },
+
+    -- `try`/`catch`/`finally`
+    sym "@keyword.exception" { fg = rose, bg = rose.da(60), gui = "bold" },
+    Exception { sym "@keyword.exception" },
+
+    -- `if`/`switch`/`case`/ternary
     sym "@keyword.conditional" { fg = rose, gui = "bold" },
     Conditional { sym "@keyword.conditional" },
+
+    -- `async`/`await`
     sym "@keyword.coroutine" { fg = rose.hue(250).li(20), gui = "bold,italic" },
-    sym "@lsp.typemod.variable.declaration" {},
 
     TelescopeSelection { gui = "bold,reverse" },
     TelescopeMatching { bg = bg_3(), gui = "bold" },
+    -- can't really tweak this any further because of NormalNC
+    PmenuSel { gui = "reverse,bold" },
 
+    -- object keys are slightly brighter
     sym "@lsp.typemod.property.declaration" { fg = Normal.fg.li(50) },
 
     -- types
@@ -121,39 +141,40 @@ local spec = lush(function(injected_functions)
     Directory { sym "@skp.type_like_actually" },                              -- here for some reason
     sym "@type.builtin.typescript" { fg = (sym "@type").fg, gui = "italic" }, -- ?
 
-    -- String { fg = blue, bg = blue.da(78), gui = "italic" },
+    -- strings, characters
     String { fg = blue, gui = "italic" },
-    Character { String },
-
-    DiagnosticUnnecessary { gui = "strikethrough" },
+    Character { String, gui = "NONE" },
 
     -- dim punctuation/delimiters
     sym "@punctuation" { fg = Normal.fg.da(35) },
     MatchParen { fg = (sym "@punctuation").fg.li(40), gui = "bold,reverse" },
     sym "@skp.fat_arrow" { sym "@punctuation" },
 
-    -- function/method decl
+    Operator { gui = "bold" },
+
+    -- function/method decls
     -- sym "@lsp.typemod.function.declaration" { fg = neon, bg = neon.da(80), gui = "bold" },
     sym "@skp.major_decl" { fg = neon.li(10).de(20), bg = neon.da(90), gui = "bold" },
     -- sym "@function.method.call" {},
     -- sym "@lsp.type.method.lua" {},
 
-    -- class decl
+    -- class decls
     sym "@lsp.typemod.class.declaration" { fg = neon.hue(20), bg = neon.hue(20).da(80), gui = "bold" },
     sym "@skp.constructor" { fg = neon.hue(20), gui = "bold" },
 
-    -- {j,t}sx
+    -- {j,t}sx, (x)(ht)ml
     sym "@tag" { fg = forest.li(20).de(30) },
     sym "@tag.delimiter" { fg = (sym "@tag").fg.da(40) },
     sym "@tag.attribute" { fg = (sym "@tag").fg.li(20) },
     sym "@skp.tag.opening" { sym "@tag", gui = "bold" },
     sym "@skp.tag.closing" { sym "@tag", gui = "bold" },
 
+    -- React hooks (useState, etc.)
     sym "@skp.hook" { fg = hsl(280, 50, 80) },
 
-    FugitiveUntrackedSection { bg = hsl(0, 100, 10) },
-    FugitiveUntrackedHeading { FugitiveUntrackedSection, gui = "bold" },
-    FugitiveUntrackedModifier { FugitiveUntrackedSection, gui = "bold" },
+    fugitiveUntrackedSection { bg = hsl(0, 100, 10) },
+    fugitiveUntrackedHeading { fugitiveUntrackedSection, gui = "bold" },
+    fugitiveUntrackedModifier { fugitiveUntrackedSection, gui = "bold" },
     fugitiveUnstagedSection { bg = hsl(50, 100, 15) },
     fugitiveUnstagedHeading { fugitiveUnstagedSection, gui = "bold" },
     fugitiveUnstagedModifier { fugitiveUnstagedSection, gui = "bold" },
@@ -162,6 +183,7 @@ local spec = lush(function(injected_functions)
     fugitiveStagedModifier { fugitiveStagedSection, gui = "bold" },
     fugitiveCount {},
 
+    -- diffs
     Added { fg = forest },
     diffAdded { Added },
     Removed { fg = forest.hue(0), gui = "strikethrough" },
