@@ -48,8 +48,10 @@ local spec = lush(function(injected_functions)
     Folded { bg = bg_3() },
 
     WinSeparator { fg = bg_3() },
-    StatusLine { fg = chalk(), bg = urgent.da(20), bold = true },
+    StatusLine { fg = chalk(), bg = urgent.da(10), bold = true },
     StatusLineNC { Normal, bg = bg_3() },
+    StatusLineTerm { fg = "black", bg = StatusLine.bg.hue(140).li(10), bold = true },
+    StatusLineTermNC { StatusLineTerm, bg = StatusLineTerm.bg.da(60) },
 
     -- comment
     Comment { bg = Normal.bg.li(10), fg = Normal.fg.hue(Normal.bg.h).da(30).sa(20), italic = true },
@@ -60,19 +62,6 @@ local spec = lush(function(injected_functions)
 
     -- indent lines
     MiniIndentscopeSymbol { fg = bg_fg() },
-
-    -- diagnostics
-    DiagnosticError { fg = urgent.li(30) },
-    DiagnosticUnderlineError { fg = DiagnosticError.fg, gui = "undercurl" },
-    ErrorMsg { DiagnosticError, bold = true },
-    DiagnosticHint { fg = skyblue },
-    DiagnosticUnderlineHint { fg = skyblue, gui = "undercurl" },
-    DiagnosticInfo { DiagnosticHint },
-    DiagnosticUnderlineInfo { DiagnosticUnderlineHint },
-    DiagnosticWarn { fg = highlighter },
-    WarningMsg { DiagnosticWarn, bold = true },
-    DiagnosticUnderlineWarn { fg = highlighter, gui = "undercurl" },
-    DiagnosticUnnecessary { gui = "strikethrough" },
 
     ModeMsg { fg = "white", bg = urgent, bold = true },
     MoreMsg { fg = forest, bold = true },
@@ -185,6 +174,19 @@ local spec = lush(function(injected_functions)
     PmenuExtraSel { PmenuSel },
     PmenuKind { sym"@skp.type_like_actually" },
     PmenuExtra { PmenuKind },
+
+    -- diagnostics
+    DiagnosticError { fg = urgent.li(30) },
+    DiagnosticUnderlineError { fg = DiagnosticError.fg, gui = "undercurl" },
+    ErrorMsg { DiagnosticError, bold = true },
+    DiagnosticHint { fg = skyblue },
+    DiagnosticUnderlineHint { fg = skyblue, gui = "undercurl" },
+    DiagnosticInfo { DiagnosticHint },
+    DiagnosticUnderlineInfo { DiagnosticUnderlineHint },
+    DiagnosticWarn { fg = highlighter },
+    WarningMsg { DiagnosticWarn, bold = true },
+    DiagnosticUnderlineWarn { fg = highlighter, gui = "undercurl" },
+    DiagnosticUnnecessary { fg = sym"@punctuation".fg, gui = "undercurl" },
 
     fugitiveUntrackedSection { bg = hsl(0, 100, 10) },
     fugitiveUntrackedHeading { fugitiveUntrackedSection, bold = true },

@@ -36,8 +36,14 @@ function M.setup_lsp_buf(client, bufnr)
   vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
   vim.bo.formatexpr = "" -- reserve gq for comment formatting
 
-  map_buf("n", "<c-]>", vim.lsp.buf.definition)
-  map_buf("n", "K", vim.lsp.buf.hover)
+  -- will ship with Nvim 0.11:
+  -- map_buf("n", "grn", vim.lsp.buf.rename)
+  -- map_buf("n", "grr", vim.lsp.buf.references)
+  -- map_buf("n", "gri", vim.lsp.buf.implementation)
+  -- map_buf("n", "gra", vim.lsp.buf.code_action)
+  -- map_buf("i", "<C-S>", vim.lsp.buf.signature_help)
+
+  map_buf("n", "<C-]>", vim.lsp.buf.definition)
   map_buf("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP code actions" })
   map_buf("n", "<leader>lr", vim.lsp.buf.rename, { desc = "LSP rename symbol" })
   map_buf("n", "<leader>li", function()
