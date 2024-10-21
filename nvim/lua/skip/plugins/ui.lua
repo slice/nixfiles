@@ -35,8 +35,9 @@ return {
   {
     "levouh/tint.nvim",
     enabled = false,
+    lazy = false,
     opts = {
-      tint = -60,
+      tint = -80,
       saturation = 0.5,
       highlight_ignore_patterns = { "WinSeparator", "StatusLine", "StatusLineNC", "LineNr", "EndOfBuffer" },
     },
@@ -58,28 +59,30 @@ return {
       local column_width = window_width - 3
 
       local opts = {
+        preset = "helix",
         win = {
-          width = 0.25,
-          col = 1,
-          wo = { winblend = 20 },
-          padding = { 1, 1, 1, 1 },
+          -- width = 0.5,
+          -- col = 1,
+          wo = { winblend = 25 },
+          border = "single",
+          -- padding = { 1, 1, 1, 1 },
         },
-        layout = {
-          spacing = 0,
-          width = { min = column_width, max = column_width },
+        icons = {
+          separator = "",
+          mappings = false,
+          colors = false,
         },
-        icons = { mappings = false },
       }
       local wk = require("which-key")
       wk.setup(opts)
 
       wk.add({
-        { "<Leader>l", group = "second layer" },
+        { "<Leader>l",  group = "second layer" },
         { "<Leader>ll", group = "third layer" },
-        { "<Leader>t", group = "terminals" },
-        { "<Leader>v", group = "config" },
-        { "<Leader>m", group = "minimap" },
-        { "<Leader>c", "<cmd>nohlsearch<CR>", desc = "nohlsearch" },
+        { "<Leader>t",  group = "terminals" },
+        { "<Leader>v",  group = "config" },
+        { "<Leader>m",  group = "minimap" },
+        { "<Leader>c",  "<cmd>nohlsearch<CR>", desc = "nohlsearch" },
       })
     end,
   },

@@ -64,22 +64,14 @@ return {
         --     return vim_item
         --   end,
         -- },
-        performance = {
-          debounce = 30,
-          throttle = 10,
-          fetching_timeout = 500,
-          confirm_resolve_timeout = 80,
-          async_budget = 1,
-          max_view_entries = 200,
-        },
         snippet = {
           expand = function(args)
             vim.fn["vsnip#anonymous"](args.body)
           end,
         },
         sources = cmp.config.sources(
-          -- be aggressive with resolving math expression, because sometimes
-          -- the lsp source takes precedence
+        -- be aggressive with resolving math expression, because sometimes
+        -- the lsp source takes precedence
           { name = "calc" },
           {
             { name = "nvim_lsp" },
@@ -117,6 +109,16 @@ return {
           ["<Tab>"] = cmp.mapping.confirm { select = true },
         },
       }
+
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+          { name = 'cmdline' }
+        }),
+        matching = { disallow_symbol_nonprefix_matching = false }
+      })
     end,
   },
 }

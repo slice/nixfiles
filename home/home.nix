@@ -52,28 +52,29 @@ let
 
     # tools to help with programming
     tooling = [
-      zig # the best c compiler?
+      argocd
+      bash-language-server
+      bun
+      corepack_18
+      dhall
+      dhall-lsp-server
+      dhall-yaml
+      doctl
+      fluxcd
+      gh
+      kubernetes-helm
+      lua-language-server
+      nix-diff
+      nixd
       nodePackages.prettier
-      vscode-langservers-extracted
+      nodejs
       shellcheck
       stylua
-      lua-language-server
-      nixd
-      nix-diff
-      gh
-      corepack_18
-      doctl
-      nodejs
-      bun
       tree-sitter
-      kubernetes-helm
-      fluxcd
-      argocd
+      typescript
+      vscode-langservers-extracted
       yaml-language-server
-      dhall
-      dhall-yaml
-      dhall-lsp-server
-      bash-language-server
+      zig # the best c compiler?
     ];
 
     # video/audio

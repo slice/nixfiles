@@ -29,17 +29,21 @@ local tweaks = {
   ["*"] = {
     link "TelescopeNormal NormalFloat",
     link "PopTermLabel TabLineSel",
-    link "@type.builtin Special",
-    -- fix underlines in telescope's preview having the wrong color
-    link "@markup.link.vimdoc Constant",
-    -- pls
-    link "@string String",
-    link "@boolean Boolean",
-    link "@operator Operator",
-    link "@markup.raw.vimdoc Comment",
-    link "@markup.link.vimdoc String",
-    link "@lsp.type.keyword Keyword",
-    -- link "@keyword.coroutine @keyword",
+
+    -- these are commented out because it breaks :Lushify somewhat. this is too
+    -- crude of a hammer
+    --
+    -- link "@type.builtin Special",
+    -- -- fix underlines in telescope's preview having the wrong color
+    -- link "@markup.link.vimdoc Constant",
+    -- -- pls
+    -- link "@string String",
+    -- link "@boolean Boolean",
+    -- link "@operator Operator",
+    -- link "@markup.raw.vimdoc Comment",
+    -- link "@markup.link.vimdoc String",
+    -- link "@lsp.type.keyword Keyword",
+    -- -- link "@keyword.coroutine @keyword",
 
     -- can race with colorscheme-specific tweaks to these groups i guess…
     -- link "MiniDiffSignAdd Added",
@@ -165,25 +169,25 @@ local tweaks = {
     'let g:terminal_color_8 = "#67767e"',
   },
   minicyan = vim
-    .iter({
-      mini_tweaks,
-      -- moonfly_spelling,
-      {
-        hi "LspInlayHint guifg=#467374",
-        hi "LspCodeLens guibg=#3c6364",
-        -- Most tokens onscreen are going to be `@variable`s, and we don't want to
-        -- highlight all of them. It's visually noisy.
-        link "@variable.python Normal",
+      .iter({
+        mini_tweaks,
+        -- moonfly_spelling,
+        {
+          hi "LspInlayHint guifg=#467374",
+          hi "LspCodeLens guibg=#3c6364",
+          -- Most tokens onscreen are going to be `@variable`s, and we don't want to
+          -- highlight all of them. It's visually noisy.
+          link "@variable.python Normal",
 
-        hi "CursorLine guibg=#341d1b",
-        hi "CursorLineNr guibg=#c42124 guifg=#3d0305",
+          hi "CursorLine guibg=#341d1b",
+          hi "CursorLineNr guibg=#c42124 guifg=#3d0305",
 
-        hi "StatusLine gui=reverse,bold",
-        hi "SpellBad guifg=NONE gui=undercurl",
-      },
-    })
-    :flatten()
-    :totable(),
+          hi "StatusLine gui=reverse,bold",
+          hi "SpellBad guifg=NONE gui=undercurl",
+        },
+      })
+      :flatten()
+      :totable(),
   minischeme = vim.iter({ mini_tweaks, moonfly_spelling }):flatten():totable(),
   moonfly = moonfly_spelling,
   ["tokyonight"] = {
@@ -262,12 +266,12 @@ autocmds("SkipFiletypes", {
     "FileType",
     { pattern = "gitcommit", command = "setlocal spell formatoptions=tn | normal ] " },
   },
-  { "FileType", { pattern = "typescript", command = "setlocal commentstring=//\\ %s" } },
-  { "FileType", { pattern = "dirvish,man,text,git,gitignore", command = "setlocal nospell" } },
+  { "FileType",                     { pattern = "typescript", command = "setlocal commentstring=//\\ %s" } },
+  { "FileType",                     { pattern = "dirvish,man,text,git,gitignore", command = "setlocal nospell" } },
   -- swift interpolations look like "\(...)", and we want text objects and
   -- motions involving parens to not think they're escaped
-  { "FileType", { pattern = "swift", command = "setl cpo+=M" } },
-  { "BufReadPost", { pattern = "*.md,*.mdx", command = "setlocal spell | setf markdown" } },
+  { "FileType",                     { pattern = "swift", command = "setl cpo+=M" } },
+  { "BufReadPost",                  { pattern = "*.md,*.mdx", command = "setlocal spell | setf markdown" } },
   { { "BufNewFile", "BufReadPre" }, { pattern = "*.sc,*.sbt", command = "setfiletype scala" } },
 })
 
@@ -320,8 +324,9 @@ autocmds("SkipHugeFiles", {
 
         local huge = require("skip.huge")
 
-        if vim.fn.getfsize(file) > huge.limits.max_file_size_bytes then
-          huge.bounce(bufnr, "too many bytes before reading")
+        local size = vim.fn.getfsize(file)
+        if size > huge.limits.max_file_size_bytes then
+          huge.bounce(bufnr, ("too many bytes (%d)"):format(size))
         end
       end,
     },

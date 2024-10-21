@@ -1,12 +1,15 @@
-local utils = require("skip.utils")
-local map = vim.keymap.set
-
 -- TODO: move everything to which-key, i think, but that can't live in this
 -- exact file bc it needs to load first. maybe export them as modules :3c
+-- general keybindings can be a massive nested table??
+
+local utils = require("skip.utils")
+local map = vim.keymap.set
 
 -- after 6? 7? years of typing <ESC>:w<CR>, it's time for somethin' different
 map("n", "<Leader>s", "<cmd>w<CR>")
 map("n", "<Leader>w", "<cmd>noautocmd w<CR>")
+
+map("n", "<Leader>ji", "<Cmd>Inspect<CR>")
 
 -- pressing <S-Space> in a terminal used to input <Space>, but it doesn't
 -- anymore! sometimes i don't release shift before pressing space, so this is
@@ -64,7 +67,7 @@ map({ "v", "n" }, "[D", function()
     return
   end
   vim.diagnostic.jump({ diagnostic = diagnostic })
-end)
+end, { desc = "Previous error diagnostic" })
 map({ "v", "n" }, "]D", function()
   local diagnostic = vim.diagnostic.get_next({ severity = vim.diagnostic.severity.ERROR })
   if not diagnostic then
@@ -72,7 +75,7 @@ map({ "v", "n" }, "]D", function()
     return
   end
   vim.diagnostic.jump({ diagnostic = diagnostic })
-end)
+end, { desc = "Next error diagnostic"})
 
 -- vimrc; https://learnvimscriptthehardway.stevelosh.com/chapters/08.html
 map("n", "<Leader>vs", "<cmd>vsplit | terminal hm-switch<CR>")
