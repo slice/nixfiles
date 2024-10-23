@@ -44,6 +44,10 @@ let
     languages = [
       python3
       llvmPackages_12.llvm
+      nodejs
+      typescript
+      deno
+      zig # the best c compiler?
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
       #   cabal-install lens wreq aeson lens-aeson bytestring text tagsoup
       #   http-client time haskell-language-server
@@ -54,6 +58,7 @@ let
     tooling = [
       argocd
       bash-language-server
+      biome
       bun
       corepack_18
       dhall
@@ -67,14 +72,11 @@ let
       nix-diff
       nixd
       nodePackages.prettier
-      nodejs
       shellcheck
       stylua
       tree-sitter
-      typescript
       vscode-langservers-extracted
       yaml-language-server
-      zig # the best c compiler?
     ];
 
     # video/audio

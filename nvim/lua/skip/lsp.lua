@@ -60,16 +60,16 @@ function M.setup_lsp_buf(client, bufnr)
     end
   })
 
-  vim.api.nvim_create_autocmd('BufWritePre', {
-    buffer = bufnr,
-    desc = 'Automatically LSP format before writing buffer',
-    callback = function()
-      local is_fugitive_buf = vim.api.nvim_buf_get_name(bufnr):find "fugitive://" == 1
-      if utils.flag_set(M.noformat_key) or is_fugitive_buf then return end
-
-      vim.lsp.buf.format { timeout_ms = 500, bufnr = bufnr }
-    end
-  })
+  -- vim.api.nvim_create_autocmd('BufWritePre', {
+  --   buffer = bufnr,
+  --   desc = 'Automatically LSP format before writing buffer',
+  --   callback = function()
+  --     local is_fugitive_buf = vim.api.nvim_buf_get_name(bufnr):find "fugitive://" == 1
+  --     if utils.flag_set(M.noformat_key) or is_fugitive_buf then return end
+  --
+  --     vim.lsp.buf.format { timeout_ms = 500, bufnr = bufnr }
+  --   end
+  -- })
 end
 
 M.banned_patterns = {

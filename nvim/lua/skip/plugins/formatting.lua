@@ -3,20 +3,24 @@ local utils = require "skip.utils"
 return {
   {
     "stevearc/conform.nvim",
-    enabled = false,
+    enabled = true,
     opts = {
       formatters_by_ft = {
-        lua = { "stylua" },
-        python = { "isort", "black" },
-        typescript = { "prettier" },
-        typescriptreact = { "prettier" },
-        javascript = { "prettier" },
-        javascriptreact = { "prettier" },
+        -- lua = { "stylua" },
+        -- python = { "isort", "black" },
+        typescript = { "prettierd", "prettier" },
+        typescriptreact = { "prettierd", "prettier" },
+        javascript = { "prettierd", "prettier" },
+        javascriptreact = { "prettierd", "prettier" },
+        json = { "biome" },
+        css = { "biome" },
         markdown = { "prettier" },
-        css = { "prettier" },
         nix = { "nixfmt" },
       },
       notify_on_error = false,
+      default_format_opts = {
+        lsp_format = "fallback",
+      },
     },
     keys = {
       {
@@ -35,14 +39,9 @@ return {
         desc = "Automatic formatting on buffer write",
         group = lsp.formatting_augroup,
         callback = function(args)
-          if utils.flag_set(lsp.noformat_key) then
-            return
-          end
-
+          if utils.flag_set(lsp.noformat_key) then return end
           -- don't try to format fugitive buffers
-          if vim.api.nvim_buf_get_name(args.buf):find "fugitive://" == 1 then
-            return
-          end
+          if vim.api.nvim_buf_get_name(args.buf):find "fugitive://" == 1 then return end
 
           if utils.flag_set "LSP_FORMATTING_ONLY" then
             vim.lsp.buf.format { bufnr = args.buf }
@@ -56,6 +55,8 @@ return {
           }
         end,
       })
+
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
     end,
   },
 }
