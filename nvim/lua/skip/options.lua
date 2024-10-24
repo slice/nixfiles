@@ -16,6 +16,7 @@ opt.inccommand = "nosplit"
 opt.pumheight = 20
 opt.jumpoptions = "view"
 opt.list = true
+opt.diffopt = { "internal", "filler", "closeoff", "linematch:60", "indent-heuristic", "algorithm:patience" }
 opt.listchars = { tab = "  ", trail = "·", nbsp = "+", precedes = "<", extends = ">" }
 opt.foldtext = ""
 opt.fillchars:append { fold = "-" }

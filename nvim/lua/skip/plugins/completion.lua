@@ -72,6 +72,10 @@ return {
             vim.fn["vsnip#anonymous"](args.body)
           end,
         },
+        performance = {
+          throttle = 5,
+          debounce = 5,
+        },
         sources = cmp.config.sources(
         -- be aggressive with resolving math expression, because sometimes
         -- the lsp source takes precedence

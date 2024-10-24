@@ -45,7 +45,7 @@ local spec = lush(function(injected_functions)
     CursorLineNr { CursorLine, bold = true },
     CursorLineSign { CursorLineNr },
     ColorColumn { bg = Normal.bg.li(5) },
-    Folded { bg = bg_3() },
+    Folded { bg = bg_3(), italic = true },
 
     WinSeparator { fg = bg_3() },
     StatusLine { fg = chalk(), bg = urgent.da(10), bold = true },

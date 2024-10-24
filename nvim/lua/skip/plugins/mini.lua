@@ -1,3 +1,5 @@
+local utils = require('skip.utils')
+
 return {
   {
     "echasnovski/mini.base16",
@@ -78,9 +80,33 @@ return {
 
   {
     "echasnovski/mini.indentscope",
-    opts = {
-      symbol = "┊",
-    },
+    opts = function()
+      local indentscope = require("mini.indentscope")
+
+      return {
+        symbol = "│",
+        draw = {
+          delay = 0,
+          animation = indentscope.gen_animation.quadratic({
+            easing = 'in',
+            duration = 15,
+          })
+        }
+      }
+    end,
+    init = function()
+      utils.autocmds('SkipMiniIndentscope', {
+        { 'FileType', {
+          pattern = { 'help', 'TelescopePrompt' },
+          callback = function() vim.b.miniindentscope_disable = true end,
+          desc = 'Disable mini.indentscope'
+        } },
+        { 'TermOpen', {
+          callback = function() vim.b.miniindentscope_disable = true end,
+          desc = 'Disable mini.indentscope'
+        } }
+      })
+    end
   },
 
   {
