@@ -47,6 +47,9 @@ return {
       ]]
 
       cmp.setup {
+        experimental = {
+          ghost_text = { hl_group = "CmpGhostText" },
+        },
         enabled = function()
           return not (vim.b.huge_bounced or vim.bo.buftype == "prompt")
         end,

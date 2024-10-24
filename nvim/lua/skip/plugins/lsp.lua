@@ -91,6 +91,35 @@ return {
         },
       }
 
+      lsc.vtsls.setup {
+        settings = {
+          complete_function_calls = true,
+          vtsls = {
+            enableMoveToFileCodeAction = true,
+            autoUseWorkspaceTsdk = true,
+            experimental = {
+              completion = {
+                enableServerSideFuzzyMatch = true,
+              },
+            },
+          },
+          typescript = {
+            updateImportsOnFileMove = { enabled = "always" },
+            suggest = {
+              completeFunctionCalls = true,
+            },
+            inlayHints = {
+              enumMemberValues = { enabled = true },
+              functionLikeReturnTypes = { enabled = true },
+              parameterNames = { enabled = "literals" },
+              parameterTypes = { enabled = true },
+              propertyDeclarationTypes = { enabled = true },
+              variableTypes = { enabled = false },
+            },
+          },
+        }
+      }
+
       -- lsp.eslint.setup {}
       lsc.nixd.setup {}
       lsc.pyright.setup {}
@@ -224,32 +253,5 @@ return {
         end,
       }
     end,
-  },
-
-  -- interacts with tsserver, runs LSP "server" in-process
-  {
-    "pmizio/typescript-tools.nvim",
-    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
-    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    opts = {
-      on_attach = function(client)
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.documentRangeFormattingProvider = false
-      end,
-      settings = {
-        publish_diagnostic_on = "change",
-        expose_as_code_action = "all",
-        -- code_lens = "all",
-        -- disable_member_code_lens = true,
-        tsserver_file_preferences = {
-          includeInlayParameterNameHints = "all",
-          includeCompletionsForModuleExports = true,
-          quotePreference = "single",
-        },
-        tsserver_format_options = {
-          semicolons = "remove",
-        },
-      },
-    },
   },
 }

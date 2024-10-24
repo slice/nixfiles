@@ -216,6 +216,8 @@ local spec = lush(function(injected_functions)
     -- which-key
     sym"WhichKey" { sym"@skp.type_like_actually", bold = true },
     WhichKeySeparator { sym"@punctuation", gui = "NONE" },
+
+    CmpGhostText { fg = CursorLine.bg.li(50).de(40) },
   }
 end)
 
