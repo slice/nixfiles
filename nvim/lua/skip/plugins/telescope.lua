@@ -19,6 +19,7 @@ local function man_pages()
   builtin.man_pages { man_cmd = { "apropos", "-s", "1:4:5:7", "." } }
 end
 
+---@type LazySpec
 return {
   -- extensible multifuzzy finder over pretty much anything
   {
@@ -36,22 +37,25 @@ return {
 
       -- 1st layer (essential)
       { "<Leader><Space>", "<Cmd>Telescope resume<CR>" }, -- TODO: not sure if this deserves having <Space>
-      { "<Leader>o",       find_files,                                                   desc = "Telescope find_files" },
-      { "<Leader>i",       "<Cmd>Telescope oldfiles<CR>" },
-      { "<Leader>b",       "<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>" },
-      { "<Leader>p",       "<Cmd>Telescope trampoline<CR>" },
       { "<Leader>0",       "<Cmd>Telescope looking_glass<CR>" },
-      { "<Leader>h",       "<Cmd>Telescope help_tags<CR>" },
+      { "<Leader>b",       "<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>" },
       { "<Leader>g",       "<Cmd>Telescope live_grep<CR>" },
+      { "<Leader>h",       "<Cmd>Telescope help_tags<CR>" },
+      { "<Leader>i",       "<Cmd>Telescope oldfiles<CR>" },
       { "<Leader>k",       "<Cmd>Telescope lsp_references<CR>" },
+      { "<Leader>o",       find_files,                                                   desc = "Telescope find_files" },
+      { "<Leader>p",       "<Cmd>Telescope trampoline<CR>" },
+      { "<Leader>/",       "<Cmd>Telescope current_buffer_fuzzy_find<CR>" },
 
       -- 2nd layer
       { "<Leader>lt",      "<Cmd>Telescope builtin<CR>" },
       { "<Leader>lc",      "<Cmd>Telescope colorscheme<CR>" },
+      { "<Leader>lh",      "<Cmd>Telescope highlights<CR>" },
       { "<Leader>lm",      man_pages,                                                    desc = "Telescope man_pages" },
-      { "<Leader>ld",      "<Cmd>Telescope diagnostics<CR>" },
-      { "<Leader>lb",      "<Cmd>Telescope current_buffer_fuzzy_find<CR>" },
-      { "<Leader>lls",     "<Cmd>Telescope lsp_workspace_symbols<CR>" },
+      { "<Leader>ld",      "<Cmd>Telescope diagnostics bufnr=0<CR>",                     desc = "Telescope diagnostics (buffer)" },
+      { "<Leader>lD",      "<Cmd>Telescope diagnostics<CR>",                             desc = "Telescope diagnostics (workspace)" },
+      { "<Leader>ls",      "<Cmd>Telescope lsp_document_symbols<CR>",                    desc = "Telescope lsp_document_symbols" },
+      { "<Leader>lS",      "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>",           desc = "Telescope lsp_dynamic_workspace_symbols" },
     },
 
     config = function()
@@ -88,6 +92,7 @@ return {
 
       telescope.setup({
         defaults = {
+          winblend = 0,
           prompt_prefix = "? ",
           selection_caret = "> ",
           layout_config = { width = 0.7 },
@@ -150,6 +155,7 @@ return {
   {
     "prochri/telescope-all-recent.nvim",
     enabled = true,
+    event = "VeryLazy",
     dependencies = {
       "nvim-telescope/telescope.nvim",
       "kkharji/sqlite.lua",
@@ -157,7 +163,7 @@ return {
     },
     opts = {
       pickers = {
-        oldfiles = { disable = false, use_cwd = true, sorting = "frecency" },
+        -- oldfiles = { disable = false, use_cwd = true, sorting = "frecency" },
         help_tags = { disable = false, use_cwd = false, sorting = "frecency" },
         man_pages = { disable = false, use_cwd = false, sorting = "frecency" },
         ["trampoline#trampoline"] = {

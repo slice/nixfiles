@@ -85,6 +85,7 @@ return {
         const { "enabled", "disabled", preserve_case = true },
         const { "enable", "disable", preserve_case = true },
         const { "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" },
+        const { "outer", "inner", preserve_case = true },
       }
 
       local function extend_default(group)

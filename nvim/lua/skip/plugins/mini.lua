@@ -130,26 +130,6 @@ return {
   },
 
   {
-    "LazyVim/LazyVim",
-    lazy = true,
-  },
-
-  {
-    "echasnovski/mini.pairs",
-    opts = {
-      modes = { insert = true, command = true, terminal = false },
-      skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
-      skip_ts = { "string" },
-      skip_unbalanced = true,
-      markdown = true,
-    },
-    config = function(_, opts)
-      _G.LazyVim = require("lazyvim.util")
-      require("lazyvim.util.mini").pairs(opts)
-    end,
-  },
-
-  {
     "echasnovski/mini.map",
     -- stylua: ignore
     keys = {

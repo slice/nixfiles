@@ -50,6 +50,8 @@ local spec = lush(function(injected_functions)
     WinSeparator { fg = bg_3() },
     StatusLine { fg = chalk(), bg = urgent.da(10), bold = true },
     StatusLineNC { Normal, bg = bg_3() },
+    WinBar { StatusLine },
+    WinBarNC { StatusLineNC },
     StatusLineTerm { fg = "black", bg = StatusLine.bg.hue(140).li(10), bold = true },
     StatusLineTermNC { StatusLineTerm, bg = StatusLineTerm.bg.da(60) },
 
@@ -168,7 +170,7 @@ local spec = lush(function(injected_functions)
     sym"@skp.hook" { fg = hsl(280, 50, 80) },
 
     -- popup menu
-    Pmenu { Normal, italic = true },
+    Pmenu { fg = Normal.fg.da(15), bg = Normal.bg.li(8) },
     PmenuSel { Normal, reverse = true, bold = true },
     PmenuKindSel { PmenuSel },
     PmenuExtraSel { PmenuSel },
@@ -198,6 +200,7 @@ local spec = lush(function(injected_functions)
     fugitiveStagedHeading { fugitiveStagedSection, bold = true },
     fugitiveStagedModifier { fugitiveStagedSection, bold = true },
     fugitiveCount {},
+    gitHashAbbrev { Special },
 
     -- diffs
     Added { fg = forest },
@@ -210,7 +213,7 @@ local spec = lush(function(injected_functions)
     -- vimdoc
     sym"@label.vimdoc" { sym"@keyword" },
     sym"@markup.link.vimdoc" { Special },
-    sym"@markup.raw.block.vimdoc" { fg = Normal.fg.da(15) },
+    sym"@markup.raw.block" { fg = Normal.fg.da(15) },
     sym"@variable.parameter.vimdoc" { bold = true },
 
     -- which-key
@@ -218,6 +221,18 @@ local spec = lush(function(injected_functions)
     WhichKeySeparator { sym"@punctuation", gui = "NONE" },
 
     CmpGhostText { fg = CursorLine.bg.li(50).de(40) },
+
+    -- can't just be blend or else it gets overwritten for some reason >:/
+    -- (done so nerd icons can draw fully, ghostty can't let the glyph occupy
+    -- 2 cells unless there's empty space. blending would prevent that a lot of
+    -- the time)
+    BlinkCmpMenu { bg = Pmenu.bg, blend = 0 },
+
+    NoiceFormatConfirm { fg = forest },
+    NoiceFormatProgressTodo { fg = forest, bold = true },
+    NoiceCmdlineIcon { },
+    NoiceCmdlinePopupBorder { },
+    NoiceVirtualText { CurSearch, underline = true },
   }
 end)
 

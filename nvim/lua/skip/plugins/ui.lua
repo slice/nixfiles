@@ -1,6 +1,7 @@
 return {
   {
     "j-hui/fidget.nvim",
+    enabled = false,
     config = function()
       local fidget = require("fidget")
 
@@ -54,37 +55,37 @@ return {
 
   {
     "folke/which-key.nvim",
-    config = function()
-      local window_width = 120
-      local column_width = window_width - 3
+    event = "VeryLazy",
+    keys = {
+      { "<Leader>l",  group = "second layer" },
+      { "<Leader>ll", group = "third layer" },
+      { "<Leader>t",  group = "terminals" },
+      { "<Leader>v",  group = "config" },
+      { "<Leader>m",  group = "minimap" },
 
-      local opts = {
-        preset = "helix",
-        win = {
-          -- width = 0.5,
-          -- col = 1,
-          wo = { winblend = 25 },
-          border = "single",
-          -- padding = { 1, 1, 1, 1 },
-        },
-        icons = {
-          separator = "",
-          mappings = false,
-          colors = false,
-        },
-      }
-      local wk = require("which-key")
-      wk.setup(opts)
-
-      wk.add({
-        { "<Leader>l",  group = "second layer" },
-        { "<Leader>ll", group = "third layer" },
-        { "<Leader>t",  group = "terminals" },
-        { "<Leader>v",  group = "config" },
-        { "<Leader>m",  group = "minimap" },
-        { "<Leader>c",  "<cmd>nohlsearch<CR>", desc = "nohlsearch" },
-      })
-    end,
+      { "<Leader>?",  function() require "which-key".show({ global = true }) end,  desc = "Show keymaps" },
+      { "<Leader>.",  function() require "which-key".show({ global = false }) end, desc = "Show buffer local keymaps" },
+      { "<Leader>c",  "<Cmd>nohlsearch<CR>",                                       desc = ":nohlsearch" },
+    },
+    ---@module "which-key"
+    ---@type wk.Config
+    opts = {
+      preset = "helix",
+      sort = { "local", "order", "alphanum" },
+      triggers = { "<auto>", mode = "nixsotc" },
+      win = {
+        -- width = 0.5,
+        -- col = 1,
+        wo = { winblend = 25 },
+        border = "single",
+        -- padding = { 1, 1, 1, 1 },
+      },
+      icons = {
+        separator = "",
+        mappings = false,
+        colors = false,
+      },
+    },
   },
 
   {

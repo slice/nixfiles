@@ -23,9 +23,23 @@ in
     '';
   };
 
-  home.file.".config/nvim/lua".source = config.lib.skip.ergonomic ../../nvim/lua;
-  home.file.".config/nvim/colors".source = config.lib.skip.ergonomic ../../nvim/colors;
-  home.file.".config/nvim/after".source = config.lib.skip.ergonomic ../../nvim/after;
+  home.file =
+    let
+      mirrored = [
+        "lua"
+        "fnl"
+        "colors"
+        "after"
+        ".hotpot"
+        ".hotpot.lua"
+      ];
+    in
+    builtins.listToAttrs (
+      map (n: {
+        name = ".config/nvim/${n}";
+        value.source = config.lib.skip.ergonomic ../../nvim/${n};
+      }) mirrored
+    );
 
   home.packages = [ pkgs.neovim-remote ];
 }

@@ -44,7 +44,7 @@ return {
         },
       }
 
-      lsc.util.default_config = vim.tbl_extend("force", lsc.util.default_config, {
+      lsc.util.default_config = vim.tbl_deep_extend("force", lsc.util.default_config, {
         capabilities = lsp.capabilities,
       })
 
@@ -117,7 +117,60 @@ return {
               variableTypes = { enabled = false },
             },
           },
-        }
+        },
+        ---@param client vim.lsp.Client
+        ---@param buffer number
+        on_attach = function(client, buffer)
+          -- this is stolen from LazyVim (thanks)
+          client.commands["_typescript.moveToFileRefactoring"] = function(command, ctx)
+            ---@type string, string, lsp.Range
+            local action, uri, range = unpack(command.arguments)
+
+            local function move(newf)
+              client.request("workspace/executeCommand", {
+                command = command.command,
+                arguments = { action, uri, range, newf },
+              })
+            end
+
+            local fname = vim.uri_to_fname(uri)
+            client.request("workspace/executeCommand", {
+              command = "typescript.tsserverRequest",
+              arguments = {
+                "getMoveToRefactoringFileSuggestions",
+                {
+                  file = fname,
+                  startLine = range.start.line + 1,
+                  startOffset = range.start.character + 1,
+                  endLine = range["end"].line + 1,
+                  endOffset = range["end"].character + 1,
+                },
+              },
+            }, function(_, result)
+              ---@type string[]
+              local files = result.body.files
+              table.insert(files, 1, "Manually specify path...")
+              vim.ui.select(files, {
+                prompt = "Move where?",
+                format_item = function(f)
+                  return vim.fn.fnamemodify(f, ":~:.")
+                end,
+              }, function(f)
+                if f and f:find("^Manually specify path") then
+                  vim.ui.input({
+                    prompt = "Specify move destination:",
+                    default = vim.fn.fnamemodify(fname, ":h") .. "/",
+                    completion = "file",
+                  }, function(newf)
+                    return newf and move(newf)
+                  end)
+                elseif f then
+                  move(f)
+                end
+              end)
+            end)
+          end
+        end
       }
 
       -- lsp.eslint.setup {}
@@ -127,6 +180,18 @@ return {
       lsc.gopls.setup {}
       lsc.bashls.setup {}
       lsc.dhall_lsp_server.setup {}
+      lsc.tailwindcss.setup {
+        settings = {
+          tailwindCSS = {
+            experimental = {
+              classRegex = {
+                { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+                { "cx\\(([^)]*)\\)",  "(?:'|\"|`)([^']*)(?:'|\"|`)" }
+              },
+            },
+          },
+        },
+      }
 
       for _, server in ipairs({
         "cssls",
@@ -136,7 +201,7 @@ return {
         lsc[server].setup {
           handlers = {
             ["textDocument/diagnostic"] = function(err, result, ctx, config)
-              if err.code == -32601 and err.message:find("Unhandled method") then
+              if err ~= nil and err.code == -32601 and err.message:find("Unhandled method") then
                 -- html language server always returns an error in response to
                 -- neovim querying it for diagnostics (?), so just ignore this
                 -- to avoid polluting notifications

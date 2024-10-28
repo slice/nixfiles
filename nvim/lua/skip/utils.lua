@@ -17,6 +17,18 @@ function M.autocmds(group_name, parameter_packs)
   end
 end
 
+---@param pattern string
+function M.purge(pattern)
+  for name, _ in pairs(package.loaded) do
+    if name:match(pattern) then
+      vim.notify('purge: ' .. name, vim.log.levels.DEBUG)
+      package.loaded[name] = nil
+    end
+  end
+end
+
+---@param codes string
+---@param mode string
 function M.send(codes, mode)
   local replaced = vim.api.nvim_replace_termcodes(codes, true, true, true)
   vim.api.nvim_feedkeys(replaced, mode or "n", false)

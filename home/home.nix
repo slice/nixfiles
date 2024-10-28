@@ -47,6 +47,8 @@ let
       nodejs
       typescript
       deno
+      luajitPackages.moonscript
+      luajitPackages.fennel
       zig # the best c compiler?
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
       #   cabal-install lens wreq aeson lens-aeson bytestring text tagsoup
@@ -63,6 +65,7 @@ let
       corepack_18
       dhall
       dhall-lsp-server
+      fnlfmt
       dhall-yaml
       doctl
       fluxcd

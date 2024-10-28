@@ -133,6 +133,17 @@ utils.autocmds("SkipLsp", {
   },
 })
 
-M.capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+M.capabilities = {}
+
+local function try_adding_capabilities(module)
+  local ok, module = pcall(require, module)
+  if ok then
+    M.capabilities = vim.tbl_deep_extend('force', M.capabilities, module.default_capabilities())
+  end
+end
+
+try_adding_capabilities('cmp_nvim_lsp')
+try_adding_capabilities('lsp-file-operations')
 
 return M

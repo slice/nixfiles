@@ -12,21 +12,23 @@ return {
         typescriptreact = { "prettierd", "prettier" },
         javascript = { "prettierd", "prettier" },
         javascriptreact = { "prettierd", "prettier" },
+        fennel = { "fnlfmt" },
         json = { "biome" },
-        css = { "biome" },
+        css = { "prettierd", "prettier", "biome" },
         markdown = { "prettier" },
         nix = { "nixfmt" },
       },
-      notify_on_error = false,
       default_format_opts = {
         lsp_format = "fallback",
+        timeout_ms = 500,
+        stop_after_first = true,
       },
     },
     keys = {
       {
         "<Leader>lf",
         function()
-          require("conform").format { timeout_ms = 3000, lsp_fallback = true }
+          require("conform").format { timeout_ms = 2000 }
         end,
         desc = "Conform",
       },
@@ -51,7 +53,6 @@ return {
 
           conform.format {
             bufnr = args.buf,
-            lsp_fallback = true,
           }
         end,
       })

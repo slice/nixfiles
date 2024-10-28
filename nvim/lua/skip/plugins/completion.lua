@@ -1,7 +1,89 @@
+-- vim: set fdm=indent fdl=3:
+
+---@type LazySpec
 return {
+  {
+    "saghen/blink.cmp",
+    lazy = false, -- plugin is already lazy
+    dependencies = 'rafamadriz/friendly-snippets',
+    version = '0.*',
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      highlight = {
+        use_nvim_cmp_as_default = true,
+      },
+      trigger = { signature_help = { enabled = true } },
+      accept = { auto_brackets = { enabled = true } },
+      windows = { autocomplete = { max_height = 20 } },
+      nerd_font_variant = 'normal',
+      sources = {
+        providers = {
+          lsp = {
+            name = 'LSP',
+            module = 'blink.cmp.sources.lsp',
+            transform_items = function(_, items)
+              ---@param item blink.cmp.CompletionItem
+              return vim.tbl_filter(function(item)
+                return item.kind ~= 14 -- keyword
+              end, items)
+            end
+          }
+        }
+      },
+      kind_icons = {
+        Text = ' ',
+        Method = '\u{ea8c}',
+        Function = '\u{ea8c}',
+        Constructor = '\u{ea8c}',
+
+        Field = '\u{eb5f}',
+        Variable = '\u{ea88}',
+        Property = '\u{f0ad}',
+
+        Class = '\u{eb5b}',
+        Interface = '\u{eb61}',
+        Struct = '\u{ea91}',
+
+        Module = '\u{f0169}',
+        Unit = '󰪚',
+        Value = '󰦨',
+        Enum = '\u{ea95}',
+        EnumMember = '\u{eb5e}',
+
+        Keyword = '\u{eb62}',
+        Constant = '\u{eb5d}',
+
+        Snippet = '\u{eb66}',
+        Color = '\u{eb5c}',
+        File = '\u{eae9}',
+        Reference = '\u{eb36}',
+        Folder = '\u{ea83}',
+        Event = '\u{ea86}',
+        Operator = '\u{eb64}',
+        TypeParameter = '\u{ea92}',
+      },
+    },
+    config = function(_, opts)
+      local autocomplete = require("blink.cmp.windows.autocomplete")
+      local original_open = autocomplete.open
+      ---@diagnostic disable-next-line:duplicate-set-field
+      function autocomplete.open()
+        local value = original_open()
+        if value == nil then return end
+        -- value:set_option_values('winblend', 0)
+        return value
+      end
+
+      local blink = require("blink.cmp")
+      blink.setup(opts)
+    end
+  },
+
   {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
+    enabled = false,
     dependencies = {
       -- completion sources
       "hrsh7th/cmp-buffer",
@@ -71,10 +153,6 @@ return {
           expand = function(args)
             vim.fn["vsnip#anonymous"](args.body)
           end,
-        },
-        performance = {
-          throttle = 5,
-          debounce = 5,
         },
         sources = cmp.config.sources(
         -- be aggressive with resolving math expression, because sometimes

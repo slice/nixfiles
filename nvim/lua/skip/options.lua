@@ -9,8 +9,7 @@ opt.colorcolumn = { 81 }
 opt.completeopt = { "menu", "menuone", "noselect" }
 opt.cursorline = true
 opt.diffopt:append { "linematch:60" }
-opt.hidden = false
-opt.guicursor:append { "a:blinkwait1000", "a:blinkon1000", "a:blinkoff1000" }
+opt.hidden = true
 opt.ignorecase = true
 opt.inccommand = "nosplit"
 opt.pumheight = 20
@@ -54,9 +53,9 @@ opt.undofile = true
 opt.scrolloff = 5
 
 -- blending is extremely important! how will i get work done without it?
-local blend = 10
-opt.pumblend = blend
-opt.winblend = blend
+-- local blend = 10
+-- opt.pumblend = blend
+-- opt.winblend = blend
 
 -- render real tabs as being 8 spaces wide ...
 opt.tabstop = 8
