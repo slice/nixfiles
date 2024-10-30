@@ -3,8 +3,8 @@
 ---@type LazySpec
 return {
   {
-    "saghen/blink.cmp",
-    lazy = false,                                         -- plugin is already lazy
+    'saghen/blink.cmp',
+    lazy = false, -- plugin is already lazy
     dependencies = 'rafamadriz/friendly-snippets',
     version = '2ac2f43513cdf63313192271427cc55608f0bedb', -- 2024-10-30
     ---@module 'blink.cmp'
@@ -17,7 +17,10 @@ return {
       highlight = {
         use_nvim_cmp_as_default = true,
       },
-      trigger = { completion = { keyword_range = 'full' }, signature_help = { enabled = true } },
+      trigger = {
+        completion = { keyword_range = 'full' },
+        signature_help = { enabled = true },
+      },
       accept = { auto_brackets = { enabled = true } },
       windows = { autocomplete = { max_height = 25 } },
       nerd_font_variant = 'normal',
@@ -31,9 +34,9 @@ return {
               return vim.tbl_filter(function(item)
                 return item.kind ~= 14 -- keyword
               end, items)
-            end
-          }
-        }
+            end,
+          },
+        },
       },
       kind_icons = {
         Text = ' ',
@@ -69,60 +72,62 @@ return {
       },
     },
     config = function(_, opts)
-      local autocomplete = require("blink.cmp.windows.autocomplete")
+      local autocomplete = require('blink.cmp.windows.autocomplete')
       local original_open = autocomplete.open
       ---@diagnostic disable-next-line:duplicate-set-field
       function autocomplete.open()
         local value = original_open()
-        if value == nil then return end
+        if value == nil then
+          return
+        end
         -- value:set_option_values('winblend', 0)
         return value
       end
 
-      local blink = require("blink.cmp")
+      local blink = require('blink.cmp')
       blink.setup(opts)
-    end
+    end,
   },
 
   {
-    "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
+    'hrsh7th/nvim-cmp',
+    event = 'InsertEnter',
     enabled = false,
     dependencies = {
       -- completion sources
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-nvim-lsp-signature-help",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-calc",
-      "hrsh7th/cmp-cmdline",
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-calc',
+      'hrsh7th/cmp-cmdline',
 
       -- cmp requires a snippet engine to function
       -- TODO: use built-in vim.snippet.
-      "hrsh7th/cmp-vsnip",
-      "hrsh7th/vim-vsnip",
-      "hrsh7th/vim-vsnip-integ",
+      'hrsh7th/cmp-vsnip',
+      'hrsh7th/vim-vsnip',
+      'hrsh7th/vim-vsnip-integ',
     },
     keys = {
       {
-        "<C-H>",
+        '<C-H>',
         "vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : ''",
-        mode = { "i", "s" },
+        mode = { 'i', 's' },
         remap = true,
         expr = true,
         replace_keycodes = false,
       },
       {
-        "<C-L>",
+        '<C-L>',
         "vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : ''",
-        mode = { "i", "s" },
+        mode = { 'i', 's' },
         remap = true,
         expr = true,
         replace_keycodes = false,
       },
     },
     config = function()
-      local cmp = require "cmp"
+      local cmp = require 'cmp'
 
       -- TODO: move these out, they need to be applied by default but not override
       -- colorschemes that actually define colors for these
@@ -134,10 +139,10 @@ return {
 
       cmp.setup {
         experimental = {
-          ghost_text = { hl_group = "CmpGhostText" },
+          ghost_text = { hl_group = 'CmpGhostText' },
         },
         enabled = function()
-          return not (vim.b.huge_bounced or vim.bo.buftype == "prompt")
+          return not (vim.b.huge_bounced or vim.bo.buftype == 'prompt')
         end,
         -- formatting = {
         --   expandable_indicator = true,
@@ -155,27 +160,27 @@ return {
         -- },
         snippet = {
           expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
+            vim.fn['vsnip#anonymous'](args.body)
           end,
         },
         sources = cmp.config.sources(
-        -- be aggressive with resolving math expression, because sometimes
-        -- the lsp source takes precedence
-          { name = "calc" },
+          -- be aggressive with resolving math expression, because sometimes
+          -- the lsp source takes precedence
+          { name = 'calc' },
           {
-            { name = "nvim_lsp" },
-            { name = "nvim_lsp_signature_help" },
-            { name = "vsnip" },
+            { name = 'nvim_lsp' },
+            { name = 'nvim_lsp_signature_help' },
+            { name = 'vsnip' },
           },
           {
-            name = "lazydev",
+            name = 'lazydev',
             -- refers to the table above; takes precedence when this source is
             -- active
             group_index = 2,
           },
           {
             {
-              name = "buffer",
+              name = 'buffer',
               option = {
                 keyword_length = 2,
                 get_bufnrs = function()
@@ -188,25 +193,25 @@ return {
               },
             },
           },
-          { { name = "path" } }
+          { { name = 'path' } }
         ),
         mapping = {
-          ["<C-n>"] = cmp.mapping.select_next_item(),
-          ["<C-p>"] = cmp.mapping.select_prev_item(),
-          ["<C-->"] = cmp.mapping.scroll_docs(-4),
-          ["<C-=>"] = cmp.mapping.scroll_docs(4),
-          ["<Tab>"] = cmp.mapping.confirm { select = true },
+          ['<C-n>'] = cmp.mapping.select_next_item(),
+          ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<C-->'] = cmp.mapping.scroll_docs(-4),
+          ['<C-=>'] = cmp.mapping.scroll_docs(4),
+          ['<Tab>'] = cmp.mapping.confirm { select = true },
         },
       }
 
       cmp.setup.cmdline(':', {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
-          { name = 'path' }
+          { name = 'path' },
         }, {
-          { name = 'cmdline' }
+          { name = 'cmdline' },
         }),
-        matching = { disallow_symbol_nonprefix_matching = false }
+        matching = { disallow_symbol_nonprefix_matching = false },
       })
     end,
   },

@@ -17,12 +17,12 @@ local grammars = {
 ---@type LazySpec
 return {
   {
-    "nvim-treesitter/nvim-treesitter",
+    'nvim-treesitter/nvim-treesitter',
     version = false,
-    event = "VeryLazy",
+    event = 'VeryLazy',
     lazy = vim.fn.argc(-1) == 0, -- load early when file was passed
-    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
-    build = ":TSUpdate",
+    cmd = { 'TSUpdateSync', 'TSUpdate', 'TSInstall' },
+    build = ':TSUpdate',
     ---@type TSConfig
     ---@diagnostic disable-next-line:missing-fields
     opts = {
@@ -33,91 +33,125 @@ return {
 
         ---@diagnostic disable-next-line:unused-local
         disable = function(lang, bufnr)
-          return require("skip.huge").bouncer(bufnr)
+          return require('skip.huge').bouncer(bufnr)
         end,
       },
 
       indent = { enable = true },
 
       incremental_selection = {
-        keymaps = { init_selection = "\\", node_incremental = "\\", node_decremental = "<bs>" },
+        keymaps = {
+          init_selection = '\\',
+          node_incremental = '\\',
+          node_decremental = '<bs>',
+        },
         enable = true,
       },
     },
     config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
-      vim.treesitter.language.register("typescriptreact", "tsx")
+      require('nvim-treesitter.configs').setup(opts)
+      vim.treesitter.language.register('typescriptreact', 'tsx')
     end,
   },
 
   {
-    "nvim-treesitter/nvim-treesitter-context",
-    event = "VeryLazy",
+    'nvim-treesitter/nvim-treesitter-context',
+    event = 'VeryLazy',
     enabled = true,
     opts = {},
     keys = {
       {
-        "[c",
+        '[c',
         function()
-          require("treesitter-context").go_to_context(vim.v.count1)
+          require('treesitter-context').go_to_context(vim.v.count1)
         end,
-        desc = "Go to context",
+        desc = 'Go to context',
         silent = true,
       },
     },
   },
 
   {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    event = "VeryLazy",
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    event = 'VeryLazy',
     enabled = true,
     opts = {
       select = {
         enable = true,
         lookahead = true,
         keymaps = {
-          aa = "@parameter.outer",
-          ia = "@parameter.inner",
-          af = "@function.outer",
-          ["if"] = "@function.inner",
+          aa = '@parameter.outer',
+          ia = '@parameter.inner',
+          af = '@function.outer',
+          ['if'] = '@function.inner',
           -- FIXME: in `ecma` this is only variable decls and object keyvalue pairs;
           -- plain assignments aren't included
-          ["a="] = "@assignment.outer",
-          ["i="] = "@assignment.inner",
-          ["a;"] = "@statement.outer",
+          ['a='] = '@assignment.outer',
+          ['i='] = '@assignment.inner',
+          ['a;'] = '@statement.outer',
           -- @statement.inner doesn't exist
-          ["a?"] = "@conditional.outer",
-          ["i?"] = "@conditional.inner",
-          ["ac"] = "@class.outer",
-          ic = "@class.inner",
-          ["a/"] = "@comment.outer",
-          ["i/"] = "@comment.inner",
-        }
+          ['a?'] = '@conditional.outer',
+          ['i?'] = '@conditional.inner',
+          ['ac'] = '@class.outer',
+          ic = '@class.inner',
+          ['a/'] = '@comment.outer',
+          ['i/'] = '@comment.inner',
+        },
       },
       move = {
         enable = true,
-        goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
-        goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
-        goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
-        goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
+        goto_next_start = {
+          [']f'] = '@function.outer',
+          [']c'] = '@class.outer',
+          [']a'] = '@parameter.inner',
+        },
+        goto_next_end = {
+          [']F'] = '@function.outer',
+          [']C'] = '@class.outer',
+          [']A'] = '@parameter.inner',
+        },
+        goto_previous_start = {
+          ['[f'] = '@function.outer',
+          ['[c'] = '@class.outer',
+          ['[a'] = '@parameter.inner',
+        },
+        goto_previous_end = {
+          ['[F'] = '@function.outer',
+          ['[C'] = '@class.outer',
+          ['[A'] = '@parameter.inner',
+        },
       },
       swap = {
         enable = true,
-        swap_next = { ["<Right>"] = "@parameter.inner", ["<Down>"] = "@statement.outer" },
-        swap_previous = { ["<Left>"] = "@parameter.inner", ["<Up>"] = "@statement.outer" },
+        swap_next = {
+          ['<Right>'] = '@parameter.inner',
+          ['<Down>'] = '@statement.outer',
+        },
+        swap_previous = {
+          ['<Left>'] = '@parameter.inner',
+          ['<Up>'] = '@statement.outer',
+        },
       },
       lsp_interop = {
         enable = true,
         border = 'single',
         peek_definition_code = {
-          ["<Leader>lpc"] = { query = "@class.outer", desc = "Peek class definition", silent = true },
-          ["<Leader>lpf"] = { query = "@function.outer", desc = "Peek function definition", silent = true },
-        }
-      }
+          ['<Leader>lpc'] = {
+            query = '@class.outer',
+            desc = 'Peek class definition',
+            silent = true,
+          },
+          ['<Leader>lpf'] = {
+            query = '@function.outer',
+            desc = 'Peek function definition',
+            silent = true,
+          },
+        },
+      },
     },
     config = function(_, opts)
       ---@diagnostic disable-next-line:missing-fields
-      require("nvim-treesitter.configs").setup({ textobjects = opts })
+      require('nvim-treesitter.configs').setup({ textobjects = opts })
     end,
   },
 }

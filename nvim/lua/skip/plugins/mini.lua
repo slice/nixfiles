@@ -2,33 +2,36 @@ local utils = require('skip.utils')
 
 return {
   {
-    "echasnovski/mini.base16",
+    'echasnovski/mini.base16',
     priority = 10000,
   },
 
   {
-    "echasnovski/mini.operators",
+    'echasnovski/mini.operators',
     enabled = false,
     config = true,
   },
 
   {
-    "echasnovski/mini.diff",
+    'echasnovski/mini.diff',
     config = true,
     opts = {
-      view = { style = "sign", signs = { add = "+", change = "~", delete = "-" } },
+      view = {
+        style = 'sign',
+        signs = { add = '+', change = '~', delete = '-' },
+      },
     },
   },
 
   {
-    "echasnovski/mini.jump",
+    'echasnovski/mini.jump',
     opts = {
       delay = {
         idle_stop = 1000 * 8,
       },
     },
     config = function(_, opts)
-      local jump = require "mini.jump"
+      local jump = require 'mini.jump'
       jump.setup(opts)
 
       -- Use more conservative mappings that match closely with vim's existing
@@ -47,8 +50,18 @@ return {
         jump.state.backward = backward
       end
 
-      vim.keymap.set({ "n", "o", "x" }, ";", jump_forwards, { desc = "Repeat jump (same direction)" })
-      vim.keymap.set({ "n", "o", "x" }, ",", jump_backwards, { desc = "Repeat jump (the other direction)" })
+      vim.keymap.set(
+        { 'n', 'o', 'x' },
+        ';',
+        jump_forwards,
+        { desc = 'Repeat jump (same direction)' }
+      )
+      vim.keymap.set(
+        { 'n', 'o', 'x' },
+        ',',
+        jump_backwards,
+        { desc = 'Repeat jump (the other direction)' }
+      )
 
       local original_smart_jump = jump.smart_jump
       ---@diagnostic disable-next-line:duplicate-set-field
@@ -65,7 +78,7 @@ return {
   },
 
   {
-    "echasnovski/mini.jump2d",
+    'echasnovski/mini.jump2d',
     enabled = false,
     opts = {
       allowed_lines = {
@@ -79,58 +92,68 @@ return {
   },
 
   {
-    "echasnovski/mini.indentscope",
+    'echasnovski/mini.indentscope',
     opts = function()
-      local indentscope = require("mini.indentscope")
+      local indentscope = require('mini.indentscope')
 
       return {
-        symbol = "│",
+        symbol = '│',
         draw = {
           delay = 0,
           animation = indentscope.gen_animation.quadratic({
             easing = 'in',
             duration = 15,
-          })
-        }
+          }),
+        },
       }
     end,
     init = function()
       utils.autocmds('SkipMiniIndentscope', {
-        { 'FileType', {
-          pattern = { 'help', 'TelescopePrompt' },
-          callback = function() vim.b.miniindentscope_disable = true end,
-          desc = 'Disable mini.indentscope'
-        } },
-        { 'TermOpen', {
-          callback = function() vim.b.miniindentscope_disable = true end,
-          desc = 'Disable mini.indentscope'
-        } }
+        {
+          'FileType',
+          {
+            pattern = { 'help', 'TelescopePrompt' },
+            callback = function()
+              vim.b.miniindentscope_disable = true
+            end,
+            desc = 'Disable mini.indentscope',
+          },
+        },
+        {
+          'TermOpen',
+          {
+            callback = function()
+              vim.b.miniindentscope_disable = true
+            end,
+            desc = 'Disable mini.indentscope',
+          },
+        },
       })
-    end
+    end,
   },
 
   {
-    "echasnovski/mini.surround",
+    'echasnovski/mini.surround',
     config = true,
   },
 
   {
-    "echasnovski/mini.trailspace",
+    'echasnovski/mini.trailspace',
     config = true,
   },
 
   {
-    "echasnovski/mini.splitjoin",
+    'echasnovski/mini.splitjoin',
     config = true,
   },
 
   {
-    "echasnovski/mini.move",
+    'echasnovski/mini.move',
     config = true,
   },
 
   {
-    "echasnovski/mini.map",
+    'echasnovski/mini.map',
     -- stylua: ignore
     keys = {
       { "<Leader>mt", function() require("mini.map").toggle() end,       desc = "Toggle minimap" },
@@ -139,11 +162,11 @@ return {
       { "<Leader>ms", function() require("mini.map").toggle_side() end,  desc = "Switch minimap sides" },
     },
     config = function()
-      local map = require("mini.map")
+      local map = require('mini.map')
 
       map.setup {
         symbols = {
-          encode = map.gen_encode_symbols.block("3x2"),
+          encode = map.gen_encode_symbols.block('3x2'),
         },
         integrations = {
           map.gen_integration.builtin_search(),
@@ -159,17 +182,17 @@ return {
   },
 
   {
-    "echasnovski/mini.hipatterns",
+    'echasnovski/mini.hipatterns',
     config = function()
-      local hipatterns = require("mini.hipatterns")
+      local hipatterns = require('mini.hipatterns')
 
       hipatterns.setup {
         highlighters = {
-          fixme = { pattern = "FIXME", group = "MiniHipatternsFixme" },
-          hack = { pattern = "HACK", group = "MiniHipatternsHack" },
-          todo = { pattern = "TODO", group = "MiniHipatternsTodo" },
-          note = { pattern = "NOTE", group = "MiniHipatternsNote" },
-          xxx = { pattern = "XXX", group = "MiniHipatternsNote" },
+          fixme = { pattern = 'FIXME', group = 'MiniHipatternsFixme' },
+          hack = { pattern = 'HACK', group = 'MiniHipatternsHack' },
+          todo = { pattern = 'TODO', group = 'MiniHipatternsTodo' },
+          note = { pattern = 'NOTE', group = 'MiniHipatternsNote' },
+          xxx = { pattern = 'XXX', group = 'MiniHipatternsNote' },
           hex_color = hipatterns.gen_highlighter.hex_color(),
         },
       }

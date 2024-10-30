@@ -1,4 +1,4 @@
-vim.g.mapleader = " "
+vim.g.mapleader = ' '
 
 local opt = vim.opt
 
@@ -6,22 +6,30 @@ opt.title = true
 opt.titlestring = [[%F]]
 opt.breakindent = true
 opt.colorcolumn = { 81 }
-opt.completeopt = { "menu", "menuone", "noselect" }
+opt.completeopt = { 'menu', 'menuone', 'noselect' }
 opt.cursorline = true
-opt.diffopt:append { "linematch:60" }
+opt.diffopt:append { 'linematch:60' }
 opt.hidden = true
 opt.ignorecase = true
-opt.inccommand = "nosplit"
+opt.inccommand = 'nosplit'
 opt.pumheight = 20
-opt.formatoptions = "jcroql"
-opt.jumpoptions = "view"
+opt.formatoptions = 'jcroql'
+opt.jumpoptions = 'view'
 opt.list = true
-opt.diffopt = { "internal", "filler", "closeoff", "linematch:60", "indent-heuristic", "algorithm:patience" }
-opt.listchars = { tab = "  ", trail = "·", nbsp = "+", precedes = "<", extends = ">" }
-opt.foldtext = ""
-opt.fillchars:append { fold = "-" }
+opt.diffopt = {
+  'internal',
+  'filler',
+  'closeoff',
+  'linematch:60',
+  'indent-heuristic',
+  'algorithm:patience',
+}
+opt.listchars =
+  { tab = '  ', trail = '·', nbsp = '+', precedes = '<', extends = '>' }
+opt.foldtext = ''
+opt.fillchars:append { fold = '-' }
 opt.modeline = true
-opt.mouse = "a"
+opt.mouse = 'a'
 opt.swapfile = false
 opt.termguicolors = true
 -- lower the duration to trigger CursorHold for faster hovers. we won't be
@@ -30,24 +38,25 @@ opt.updatetime = 1000
 opt.wrap = false
 opt.number = true
 opt.relativenumber = true
-opt.spelloptions = { "camel" }
+opt.spelloptions = { 'camel' }
 opt.splitright = true
 opt.sidescroll = 5
-opt.signcolumn = "yes:1"
-opt.showbreak = ">"
+opt.signcolumn = 'yes:1'
+opt.showbreak = '>'
 opt.sidescrolloff = 10
 opt.smartcase = true
 do
   _G.RIGHT_STATUSLINE = function()
     local ok, fugitive_output = pcall(vim.fn.FugitiveStatusline)
     if not ok then
-      return ""
+      return ''
     else
       return fugitive_output
     end
   end
 
-  opt.statusline = [[%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %l/%L,%c #%n%<]]
+  opt.statusline =
+    [[%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %l/%L,%c #%n%<]]
 end
 opt.timeoutlen = 500
 opt.undofile = true

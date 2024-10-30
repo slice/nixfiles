@@ -1,17 +1,17 @@
 -- mmm yes
 
 return {
-  { "lunacookies/vim-apparition", lazy = true },
-  { "slice/bubblegum2", lazy = true },
+  { 'lunacookies/vim-apparition', lazy = true },
+  { 'slice/bubblegum2', lazy = true },
   {
-    "junegunn/seoul256.vim",
+    'junegunn/seoul256.vim',
     lazy = true,
     init = function()
       vim.g.seoul256_background = 236
     end,
   },
   {
-    "bluz71/vim-moonfly-colors",
+    'bluz71/vim-moonfly-colors',
     lazy = true,
     init = function()
       vim.g.moonflyCursorColor = true
@@ -20,7 +20,7 @@ return {
     end,
   },
   {
-    "bluz71/vim-nightfly-guicolors",
+    'bluz71/vim-nightfly-guicolors',
     lazy = true,
     init = function()
       vim.g.nightflyCursorColor = true
@@ -28,11 +28,11 @@ return {
       vim.g.nightflyItalics = false
     end,
   },
-  { "itchyny/landscape.vim", lazy = true },
-  { "savq/melange", lazy = true },
-  { "phha/zenburn.nvim", lazy = true },
+  { 'itchyny/landscape.vim', lazy = true },
+  { 'savq/melange', lazy = true },
+  { 'phha/zenburn.nvim', lazy = true },
   {
-    "jnurmine/Zenburn",
+    'jnurmine/Zenburn',
     lazy = true,
     enabled = false,
     init = function()
@@ -43,22 +43,22 @@ return {
     end,
   },
   {
-    "sainnhe/everforest",
+    'sainnhe/everforest',
     lazy = true,
     init = function()
       vim.g.everforest_ui_contrast = 1
     end,
   },
   {
-    "mcchrish/zenbones.nvim",
+    'mcchrish/zenbones.nvim',
     lazy = true,
-    dependencies = { "rktjmp/lush.nvim" },
+    dependencies = { 'rktjmp/lush.nvim' },
   },
   {
-    "folke/tokyonight.nvim",
+    'folke/tokyonight.nvim',
     lazy = true,
     opts = {
-      style = "moon",
+      style = 'moon',
       styles = {
         keywords = { italic = false },
       },

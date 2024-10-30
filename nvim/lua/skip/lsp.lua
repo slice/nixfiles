@@ -1,4 +1,4 @@
-local utils = require("skip.utils")
+local utils = require('skip.utils')
 
 local M = {}
 
@@ -7,19 +7,24 @@ local function map_buf(mode, key, result, opts)
     mode,
     key,
     result,
-    vim.tbl_extend("force", { buffer = true, remap = false, silent = true }, opts or {})
+    vim.tbl_extend(
+      'force',
+      { buffer = true, remap = false, silent = true },
+      opts or {}
+    )
   )
 end
 
-M.noattach_key = "LSP_NOATTACH"
-M.noformat_key = "LSP_NOFORMAT"
+M.noattach_key = 'LSP_NOATTACH'
+M.noformat_key = 'LSP_NOFORMAT'
 
-M.formatting_augroup = vim.api.nvim_create_augroup("SkipLspAutomaticFormatting", {})
+M.formatting_augroup =
+  vim.api.nvim_create_augroup('SkipLspAutomaticFormatting', {})
 
 function M.has_open_focusable_float()
   for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
     local config = vim.api.nvim_win_get_config(winid)
-    if config.relative ~= "" and config.focusable then
+    if config.relative ~= '' and config.focusable then
       return true
     end
   end
@@ -30,11 +35,13 @@ end
 -- options
 function M.setup_lsp_buf(client, bufnr)
   if client.server_capabilities.codeLensProvider then
-    vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]])
+    vim.cmd(
+      [[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
+    )
   end
 
-  vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
-  vim.bo.formatexpr = "" -- reserve gq for comment formatting
+  vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
+  vim.bo.formatexpr = '' -- reserve gq for comment formatting
 
   -- will ship with Nvim 0.11:
   -- map_buf("n", "grn", vim.lsp.buf.rename)
@@ -43,36 +50,51 @@ function M.setup_lsp_buf(client, bufnr)
   -- map_buf("n", "gra", vim.lsp.buf.code_action)
   -- map_buf("i", "<C-S>", vim.lsp.buf.signature_help)
 
-  map_buf("n", "<C-]>", vim.lsp.buf.definition)
-  map_buf("n", "<leader>la", vim.lsp.buf.code_action, { desc = "LSP code actions" })
-  map_buf("n", "<leader>lr", vim.lsp.buf.rename, { desc = "LSP rename symbol" })
-  map_buf("n", "<leader>li", function()
+  map_buf('n', '<C-]>', vim.lsp.buf.definition)
+  map_buf(
+    'n',
+    '<leader>la',
+    vim.lsp.buf.code_action,
+    { desc = 'LSP code actions' }
+  )
+  map_buf('n', '<leader>lr', vim.lsp.buf.rename, { desc = 'LSP rename symbol' })
+  map_buf('n', '<leader>li', function()
     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(nil))
-  end, { desc = "Toggle LSP inlay hints" })
-  map_buf("n", "<leader>lz", vim.lsp.codelens.run, { desc = "Run LSP codelens" })
+  end, { desc = 'Toggle LSP inlay hints' })
+  map_buf(
+    'n',
+    '<leader>lz',
+    vim.lsp.codelens.run,
+    { desc = 'Run LSP codelens' }
+  )
 
   vim.api.nvim_create_autocmd('CursorHold', {
     buffer = bufnr,
     desc = 'Open diagnostic float when holding cursor',
     callback = function()
       vim.lsp.buf.document_highlight()
-      if M.has_open_focusable_float() then return end
-      vim.diagnostic.open_float(nil, { scope = "line", source = "if_many", focusable = false, focus = false })
-    end
+      if M.has_open_focusable_float() then
+        return
+      end
+      vim.diagnostic.open_float(
+        nil,
+        { scope = 'line', source = 'if_many', focusable = false, focus = false }
+      )
+    end,
   })
   vim.api.nvim_create_autocmd('CursorHoldI', {
     buffer = bufnr,
     desc = 'Open diagnostic float when holding cursor',
     callback = function()
       vim.lsp.buf.document_highlight()
-    end
+    end,
   })
   vim.api.nvim_create_autocmd('CursorMoved', {
     buffer = bufnr,
     desc = 'Clears references',
     callback = function()
       vim.lsp.buf.clear_references()
-    end
+    end,
   })
 
   -- vim.api.nvim_create_autocmd('BufWritePre', {
@@ -88,8 +110,8 @@ function M.setup_lsp_buf(client, bufnr)
 end
 
 M.banned_patterns = {
-  "^/nix/store/",
-  "%.cargo/registry",
+  '^/nix/store/',
+  '%.cargo/registry',
   -- 'node_modules/'
   -- let this through for now, i wanna navigate between symbols in *.d.ts files
   -- TODO: make something more elaborate, because LSP is probably OK in library
@@ -105,14 +127,24 @@ function M.attach_allowed(bufnr)
 
   -- if utils.flag_set(M.noattach_key) then
   if utils.flag_set(M.noattach_key, bufnr) then
-    vim.notify(("attach_allowed: REFUSING buffer %d (%s), flag was set"):format(bufnr, bufname), vim.log.levels.WARN)
+    vim.notify(
+      ('attach_allowed: REFUSING buffer %d (%s), flag was set'):format(
+        bufnr,
+        bufname
+      ),
+      vim.log.levels.WARN
+    )
     return false
   end
 
   for _, banned_pattern in ipairs(M.banned_patterns) do
     if bufname:find(banned_pattern) then
       vim.notify(
-        ("attach_allowed: REFUSING buffer %d (%s), matched banned pattern %s"):format(bufnr, bufname, banned_pattern),
+        ('attach_allowed: REFUSING buffer %d (%s), matched banned pattern %s'):format(
+          bufnr,
+          bufname,
+          banned_pattern
+        ),
         vim.log.levels.WARN
       )
       return false
@@ -122,11 +154,11 @@ function M.attach_allowed(bufnr)
   return true
 end
 
-utils.autocmds("SkipLsp", {
+utils.autocmds('SkipLsp', {
   {
-    "LspAttach",
+    'LspAttach',
     {
-      pattern = "*",
+      pattern = '*',
       callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
         if not client then
@@ -138,16 +170,20 @@ utils.autocmds("SkipLsp", {
 
         vim.schedule(function()
           vim.notify(
-            string.format("(^_^)/ %s (%d) attached to buf %d", client.name, client.id, bufnr),
+            string.format(
+              '(^_^)/ %s (%d) attached to buf %d',
+              client.name,
+              client.id,
+              bufnr
+            ),
             vim.log.levels.INFO
           )
         end)
       end,
-      desc = "Sets up autocmds and mappings for buffers that use LSP",
+      desc = 'Sets up autocmds and mappings for buffers that use LSP',
     },
   },
 })
-
 
 M.capabilities = {}
 
@@ -160,9 +196,17 @@ local function try_adding_capabilities(get_capabilities)
   return false
 end
 
-if not try_adding_capabilities(function() require('cmp_nvim_lsp').default_capabilities() end) then
-  try_adding_capabilities(function() require('blink.cmp').get_lsp_capabilities() end)
+if
+  not try_adding_capabilities(function()
+    require('cmp_nvim_lsp').default_capabilities()
+  end)
+then
+  try_adding_capabilities(function()
+    require('blink.cmp').get_lsp_capabilities()
+  end)
 end
-try_adding_capabilities(function() require('lsp-file-operations').default_capabilities() end)
+try_adding_capabilities(function()
+  require('lsp-file-operations').default_capabilities()
+end)
 
 return M

@@ -3,14 +3,14 @@ return {
   -- TODO: set up tailwindcss nvim-lspconfig _just_ in here
 
   {
-    "luckasRanarison/tailwind-tools.nvim",
-    name = "tailwind-tools",
+    'luckasRanarison/tailwind-tools.nvim',
+    name = 'tailwind-tools',
     enabled = false,
-    build = ":UpdateRemotePlugins",
-    event = { "BufReadPre", "BufNewFile" },
+    build = ':UpdateRemotePlugins',
+    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      "nvim-treesitter/nvim-treesitter"
+      'nvim-treesitter/nvim-treesitter',
     },
     opts = {},
-  }
+  },
 }

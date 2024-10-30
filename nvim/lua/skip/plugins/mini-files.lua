@@ -1,9 +1,9 @@
-local utils = require("skip.utils")
+local utils = require('skip.utils')
 
 return {
   {
     -- inform LSPs of file operations
-    "antosha417/nvim-lsp-file-operations",
+    'antosha417/nvim-lsp-file-operations',
     dependencies = { 'echasnovski/mini.files', 'nvim-lua/plenary.nvim' },
     config = function()
       require('lsp-file-operations').setup()
@@ -14,7 +14,10 @@ return {
           {
             pattern = { 'MiniFilesActionMove', 'MiniFilesActionRename' },
             callback = function(event)
-              require('lsp-file-operations.did-rename').callback({ old_name = event.data.from, new_name = event.data.to })
+              require('lsp-file-operations.did-rename').callback({
+                old_name = event.data.from,
+                new_name = event.data.to,
+              })
             end,
           },
         },
@@ -23,7 +26,9 @@ return {
           {
             pattern = { 'MiniFilesActionDelete' },
             callback = function(event)
-              require('lsp-file-operations.did-delete').callback({ fname = event.from })
+              require('lsp-file-operations.did-delete').callback({
+                fname = event.from,
+              })
             end,
           },
         },
@@ -32,17 +37,19 @@ return {
           {
             pattern = { 'MiniFilesActionCopy', 'MiniFilesActionCreate' },
             callback = function(event)
-              require('lsp-file-operations.did-create').callback({ fname = event.to })
+              require('lsp-file-operations.did-create').callback({
+                fname = event.to,
+              })
             end,
-          }
-        }
+          },
+        },
       })
-    end
+    end,
   },
 
   {
-    "echasnovski/mini.files",
-    version = "*",
+    'echasnovski/mini.files',
+    version = '*',
     -- stylua: ignore
     keys = {
       { "<Leader>d", function() require('mini.files').open() end,                             desc = "Open mini.files" },
@@ -58,7 +65,7 @@ return {
       },
     },
     config = function(_, opts)
-      require("mini.files").setup(opts)
+      require('mini.files').setup(opts)
 
       vim.cmd [[hi! link MiniFilesTitleFocused Question]]
 
@@ -91,11 +98,11 @@ return {
         vim.cmd.tabedit(cur_entry_path)
       end
 
-      utils.autocmds("SkipMiniFiles", {
+      utils.autocmds('SkipMiniFiles', {
         {
-          "User",
+          'User',
           {
-            pattern = "MiniFilesWindowOpen",
+            pattern = 'MiniFilesWindowOpen',
             callback = function(args)
               local win_id = args.data.win_id
               vim.wo[win_id].winblend = 20
@@ -103,22 +110,27 @@ return {
           },
         },
         {
-          "User",
+          'User',
           {
-            pattern = "MiniFilesBufferCreate",
+            pattern = 'MiniFilesBufferCreate',
             callback = function(args)
               local buf_id = args.data.buf_id
               map_split(buf_id, '<C-s>', 'belowright horizontal')
               map_split(buf_id, '<C-v>', 'belowright vertical')
               vim.keymap.set('n', '<C-d>', files_set_cwd, { buffer = buf_id })
-              vim.keymap.set('n', '<C-t>', files_open_in_tab, { buffer = buf_id })
-            end
-          }
+              vim.keymap.set(
+                'n',
+                '<C-t>',
+                files_open_in_tab,
+                { buffer = buf_id }
+              )
+            end,
+          },
         },
         {
-          "User",
+          'User',
           {
-            pattern = "MiniFilesWindowUpdate",
+            pattern = 'MiniFilesWindowUpdate',
             callback = function(args)
               -- this needs to be set more frequently, e.g. if this is done by
               -- MiniFilesWindowOpen above instead (and it needs to be

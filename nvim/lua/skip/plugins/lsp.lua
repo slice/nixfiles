@@ -2,11 +2,11 @@ local patched_lspconfig = false
 
 return {
   {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    'neovim/nvim-lspconfig',
+    event = { 'BufReadPre', 'BufNewFile' },
     config = function()
-      local lsp = require "skip.lsp"
-      local lsc = require "lspconfig"
+      local lsp = require 'skip.lsp'
+      local lsc = require 'lspconfig'
 
       if not patched_lspconfig then
         local original_bufname_valid = lsc.util.bufname_valid
@@ -19,9 +19,9 @@ return {
           local bufs = vim.api.nvim_list_bufs()
           for _, bufnr in ipairs(bufs) do
             if
-                vim.api.nvim_buf_is_valid(bufnr)
-                and vim.api.nvim_buf_is_loaded(bufnr)
-                and vim.api.nvim_buf_get_name(bufnr) == bufname
+              vim.api.nvim_buf_is_valid(bufnr)
+              and vim.api.nvim_buf_is_loaded(bufnr)
+              and vim.api.nvim_buf_get_name(bufnr) == bufname
             then
               if not lsp.attach_allowed(bufnr) then
                 return false
@@ -40,52 +40,69 @@ return {
         -- make warnings and errors appear over hints
         severity_sort = true,
         float = {
-          header = "",
+          header = '',
         },
       }
 
-      lsc.util.default_config = vim.tbl_deep_extend("force", lsc.util.default_config, {
-        capabilities = lsp.capabilities,
-        document_highlight = { enabled = true },
-        codelens = { enabled = true },
-      })
+      lsc.util.default_config =
+        vim.tbl_deep_extend('force', lsc.util.default_config, {
+          capabilities = lsp.capabilities,
+          document_highlight = { enabled = true },
+          codelens = { enabled = true },
+        })
 
       lsc.yamlls.setup {
         settings = {
           yaml = {
             schemas = {
-              kubernetes = "*.k8s.{yml,yaml}",
-              ["http://json.schemastore.org/github-workflow"] = "/.github/workflows/*",
-              ["http://json.schemastore.org/github-action"] = "/.github/action.{yml,yaml}",
-              ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
-              ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
-              ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
-              ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json"] = "*.argo-application.{yml,yaml}",
-              ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/appproject_v1alpha1.json"] = "*.argo-appproject.{yml,yaml}",
-              ["https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/applicationset_v1alpha1.json"] = "*.argo-applicationset.{yml,yaml}",
+              kubernetes = '*.k8s.{yml,yaml}',
+              ['http://json.schemastore.org/github-workflow'] = '/.github/workflows/*',
+              ['http://json.schemastore.org/github-action'] = '/.github/action.{yml,yaml}',
+              ['http://json.schemastore.org/prettierrc'] = '.prettierrc.{yml,yaml}',
+              ['http://json.schemastore.org/kustomization'] = 'kustomization.{yml,yaml}',
+              ['http://json.schemastore.org/chart'] = 'Chart.{yml,yaml}',
+              ['https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json'] = '*.argo-application.{yml,yaml}',
+              ['https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/appproject_v1alpha1.json'] = '*.argo-appproject.{yml,yaml}',
+              ['https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/applicationset_v1alpha1.json'] = '*.argo-applicationset.{yml,yaml}',
             },
           },
         },
         handlers = {
-          ["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
-            local is_k8s_file = vim.endswith(result.uri, ".k8s.yml") or vim.endswith(result.uri, ".k8s.yaml")
+          ['textDocument/publishDiagnostics'] = function(
+            err,
+            result,
+            ctx,
+            config
+          )
+            local is_k8s_file = vim.endswith(result.uri, '.k8s.yml')
+              or vim.endswith(result.uri, '.k8s.yaml')
             if not is_k8s_file then
-              return vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx, config)
+              return vim.lsp.diagnostic.on_publish_diagnostics(
+                err,
+                result,
+                ctx,
+                config
+              )
             end
 
             local filtered_diagnostics = vim
-                .iter(result.diagnostics)
-                :filter(function(diagnostic)
-                  return not (
-                    diagnostic.message == "Matches multiple schemas when only one must validate."
-                    and diagnostic.code == 0
-                  )
-                end)
-                :totable()
+              .iter(result.diagnostics)
+              :filter(function(diagnostic)
+                return not (
+                  diagnostic.message
+                    == 'Matches multiple schemas when only one must validate.'
+                  and diagnostic.code == 0
+                )
+              end)
+              :totable()
 
             return vim.lsp.diagnostic.on_publish_diagnostics(
               err,
-              vim.tbl_extend("force", result, { diagnostics = filtered_diagnostics }),
+              vim.tbl_extend(
+                'force',
+                result,
+                { diagnostics = filtered_diagnostics }
+              ),
               ctx,
               config
             )
@@ -106,14 +123,14 @@ return {
             },
           },
           typescript = {
-            updateImportsOnFileMove = { enabled = "always" },
+            updateImportsOnFileMove = { enabled = 'always' },
             suggest = {
               completeFunctionCalls = true,
             },
             inlayHints = {
               enumMemberValues = { enabled = true },
               functionLikeReturnTypes = { enabled = true },
-              parameterNames = { enabled = "literals" },
+              parameterNames = { enabled = 'literals' },
               parameterTypes = { enabled = true },
               propertyDeclarationTypes = { enabled = true },
               variableTypes = { enabled = false },
@@ -124,45 +141,48 @@ return {
         ---@param buffer number
         on_attach = function(client, buffer)
           -- this is stolen from LazyVim (thanks)
-          client.commands["_typescript.moveToFileRefactoring"] = function(command, ctx)
+          client.commands['_typescript.moveToFileRefactoring'] = function(
+            command,
+            ctx
+          )
             ---@type string, string, lsp.Range
             local action, uri, range = unpack(command.arguments)
 
             local function move(newf)
-              client.request("workspace/executeCommand", {
+              client.request('workspace/executeCommand', {
                 command = command.command,
                 arguments = { action, uri, range, newf },
               })
             end
 
             local fname = vim.uri_to_fname(uri)
-            client.request("workspace/executeCommand", {
-              command = "typescript.tsserverRequest",
+            client.request('workspace/executeCommand', {
+              command = 'typescript.tsserverRequest',
               arguments = {
-                "getMoveToRefactoringFileSuggestions",
+                'getMoveToRefactoringFileSuggestions',
                 {
                   file = fname,
                   startLine = range.start.line + 1,
                   startOffset = range.start.character + 1,
-                  endLine = range["end"].line + 1,
-                  endOffset = range["end"].character + 1,
+                  endLine = range['end'].line + 1,
+                  endOffset = range['end'].character + 1,
                 },
               },
             }, function(_, result)
               ---@type string[]
               local files = result.body.files
-              table.insert(files, 1, "Manually specify path...")
+              table.insert(files, 1, 'Manually specify path...')
               vim.ui.select(files, {
-                prompt = "Move where?",
+                prompt = 'Move where?',
                 format_item = function(f)
-                  return vim.fn.fnamemodify(f, ":~:.")
+                  return vim.fn.fnamemodify(f, ':~:.')
                 end,
               }, function(f)
-                if f and f:find("^Manually specify path") then
+                if f and f:find('^Manually specify path') then
                   vim.ui.input({
-                    prompt = "Specify move destination:",
-                    default = vim.fn.fnamemodify(fname, ":h") .. "/",
-                    completion = "file",
+                    prompt = 'Specify move destination:',
+                    default = vim.fn.fnamemodify(fname, ':h') .. '/',
+                    completion = 'file',
                   }, function(newf)
                     return newf and move(newf)
                   end)
@@ -172,7 +192,7 @@ return {
               end)
             end)
           end
-        end
+        end,
       }
 
       -- lsp.eslint.setup {}
@@ -187,8 +207,8 @@ return {
           tailwindCSS = {
             experimental = {
               classRegex = {
-                { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-                { "cx\\(([^)]*)\\)",  "(?:'|\"|`)([^']*)(?:'|\"|`)" }
+                { 'cva\\(([^)]*)\\)', '["\'`]([^"\'`]*).*?["\'`]' },
+                { 'cx\\(([^)]*)\\)', "(?:'|\"|`)([^']*)(?:'|\"|`)" },
               },
             },
           },
@@ -196,14 +216,18 @@ return {
       }
 
       for _, server in ipairs({
-        "cssls",
-        "jsonls",
-        "html",
+        'cssls',
+        'jsonls',
+        'html',
       }) do
         lsc[server].setup {
           handlers = {
-            ["textDocument/diagnostic"] = function(err, result, ctx, config)
-              if err ~= nil and err.code == -32601 and err.message:find("Unhandled method") then
+            ['textDocument/diagnostic'] = function(err, result, ctx, config)
+              if
+                err ~= nil
+                and err.code == -32601
+                and err.message:find('Unhandled method')
+              then
                 -- html language server always returns an error in response to
                 -- neovim querying it for diagnostics (?), so just ignore this
                 -- to avoid polluting notifications
@@ -216,31 +240,35 @@ return {
       end
 
       -- xcrun -sdk macosx --find sourcekit-lsp
-      vim.system({ "xcrun", "-sdk", "macosx", "--find", "sourcekit-lsp" }, { system = true }, function(object)
-        if object.code ~= 0 then
-          return
+      vim.system(
+        { 'xcrun', '-sdk', 'macosx', '--find', 'sourcekit-lsp' },
+        { system = true },
+        function(object)
+          if object.code ~= 0 then
+            return
+          end
+          vim.schedule(function()
+            local path = vim.trim(object.stdout)
+
+            -- sourcekit-lsp only ever indicates "(" as being a trigger character
+            -- via dynamic registration, but nvim-cmp doesn't seem to like it </3
+            --
+            -- local capabilities = vim.tbl_extend(
+            --   "force",
+            --   lsp.capabilities,
+            --   { textDocument = { completion = { dynamicRegistration = true } } }
+            -- )
+
+            lsc.sourcekit.setup {
+              cmd = { path },
+              -- capabilities = capabilities,
+            }
+          end)
         end
-        vim.schedule(function()
-          local path = vim.trim(object.stdout)
-
-          -- sourcekit-lsp only ever indicates "(" as being a trigger character
-          -- via dynamic registration, but nvim-cmp doesn't seem to like it </3
-          --
-          -- local capabilities = vim.tbl_extend(
-          --   "force",
-          --   lsp.capabilities,
-          --   { textDocument = { completion = { dynamicRegistration = true } } }
-          -- )
-
-          lsc.sourcekit.setup {
-            cmd = { path },
-            -- capabilities = capabilities,
-          }
-        end)
-      end)
+      )
 
       lsc.hls.setup {
-        filetypes = { "haskell", "lhaskell", "cabal" },
+        filetypes = { 'haskell', 'lhaskell', 'cabal' },
         settings = {
           haskell = {
             plugin = {
@@ -253,15 +281,21 @@ return {
       lsc.rust_analyzer.setup {
         capabilities = lsp.capabilities,
         settings = {
-          ["rust-analyzer"] = {
+          ['rust-analyzer'] = {
             imports = {
               granularity = {
-                group = "module",
+                group = 'module',
               },
-              prefix = "crate",
+              prefix = 'crate',
             },
             files = {
-              excludeDirs = { ".cargo", ".direnv", ".git", "node_modules", "target" },
+              excludeDirs = {
+                '.cargo',
+                '.direnv',
+                '.git',
+                'node_modules',
+                'target',
+              },
             },
             procMacro = {
               enable = true,
@@ -273,34 +307,34 @@ return {
   },
 
   {
-    "folke/lazydev.nvim",
+    'folke/lazydev.nvim',
     lazy = true,
-    dependencies = { "Bilal2453/luvit-meta", lazy = true },
-    ft = "lua",
+    dependencies = { 'Bilal2453/luvit-meta', lazy = true },
+    ft = 'lua',
     opts = {
       library = {
-        "lazy.nvim",
-        { path = "luvit-meta/library", words = { "vim%.uv" } },
+        'lazy.nvim',
+        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
       },
     },
   },
 
   {
-    "nvimtools/none-ls.nvim",
+    'nvimtools/none-ls.nvim',
     dependencies = {
-      "nvimtools/none-ls-extras.nvim",
+      'nvimtools/none-ls-extras.nvim',
     },
     config = function()
-      local lsp = require "skip.lsp"
-      local nls = require "null-ls"
-      local nls_helpers = require "null-ls.helpers"
-      local nls_utils = require "null-ls.utils"
+      local lsp = require 'skip.lsp'
+      local nls = require 'null-ls'
+      local nls_helpers = require 'null-ls.helpers'
+      local nls_utils = require 'null-ls.utils'
 
       nls.setup {
         debug = true,
         sources = {
           -- nls.builtins.diagnostics.stylelint,
-          require("none-ls.diagnostics.eslint_d").with({
+          require('none-ls.diagnostics.eslint_d').with({
             cwd = nls_helpers.cache.by_bufnr(function(params)
               -- this normally searches for cosmiconfig file that looks like
               -- .eslintrc.yml and sets the root to the first one found in
@@ -308,7 +342,7 @@ return {
               -- eslintrc that only intends to contain local overrides, when a
               -- parent one might have more rules (and context-sensitive
               -- relative paths). just start at package.json
-              return nls_utils.root_pattern("package.json")(params.bufname)
+              return nls_utils.root_pattern('package.json')(params.bufname)
             end),
           }),
           -- require("none-ls.code_actions.eslint_d"),

@@ -3,7 +3,7 @@ local M = {}
 function M.dial(direction, mode)
   local opts = _G._SkipDialOpts
 
-  local resolved_group = "default"
+  local resolved_group = 'default'
 
   local ft = vim.bo.filetype
   local ft_specific_group = opts.groups[ft]
@@ -15,12 +15,12 @@ function M.dial(direction, mode)
     resolved_group = redirection
   end
 
-  require("dial.map").manipulate(direction, mode, resolved_group)
+  require('dial.map').manipulate(direction, mode, resolved_group)
 end
 
 return {
   {
-    "monaqa/dial.nvim",
+    'monaqa/dial.nvim',
 
     -- stylua: ignore
     keys = {
@@ -35,7 +35,7 @@ return {
     },
 
     opts = function()
-      local augend = require("dial.augend")
+      local augend = require('dial.augend')
 
       -- these aren't defined at the top-level because we can't require dial
       -- there :/
@@ -51,12 +51,12 @@ return {
           end
         end
 
-        bubble("word")
-        bubble("cyclic")
-        bubble("preserve_case")
-        bubble("pattern_regexp")
+        bubble('word')
+        bubble('cyclic')
+        bubble('preserve_case')
+        bubble('pattern_regexp')
 
-        assert(vim.islist(opts), "const opts not a list after bubbling")
+        assert(vim.islist(opts), 'const opts not a list after bubbling')
 
         params.elements = opts
 
@@ -66,26 +66,38 @@ return {
       local default_group = {
         augend.integer.alias.decimal,
         augend.integer.alias.hex,
-        augend.date.alias["%Y-%m-%d"],
-        const { "true", "false", preserve_case = true },
-        const { "&&", "||", word = false },
-        const { "!=", "==", word = false },
-        const { "!==", "===", word = false },
+        augend.date.alias['%Y-%m-%d'],
+        const { 'true', 'false', preserve_case = true },
+        const { '&&', '||', word = false },
+        const { '!=', '==', word = false },
+        const { '!==', '===', word = false },
         -- stylua: ignore
         const { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", cyclic = false, preserve_case = true },
-        const { "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", cyclic = false },
+        const {
+          '1st',
+          '2nd',
+          '3rd',
+          '4th',
+          '5th',
+          '6th',
+          '7th',
+          '8th',
+          '9th',
+          '10th',
+          cyclic = false,
+        },
         -- stylua: ignore
         const { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", preserve_case = true },
         -- stylua: ignore
         const { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", preserve_case = true },
-        const { "and", "or", preserve_case = true },
-        const { "am", "pm", preserve_case = true },
-        const { "yes", "no", preserve_case = true },
-        const { "on", "off", preserve_case = true },
-        const { "enabled", "disabled", preserve_case = true },
-        const { "enable", "disable", preserve_case = true },
-        const { "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD" },
-        const { "outer", "inner", preserve_case = true },
+        const { 'and', 'or', preserve_case = true },
+        const { 'am', 'pm', preserve_case = true },
+        const { 'yes', 'no', preserve_case = true },
+        const { 'on', 'off', preserve_case = true },
+        const { 'enabled', 'disabled', preserve_case = true },
+        const { 'enable', 'disable', preserve_case = true },
+        const { 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD' },
+        const { 'outer', 'inner', preserve_case = true },
       }
 
       local function extend_default(group)
@@ -97,15 +109,15 @@ return {
         default = default_group,
 
         javascript = extend_default({
-          const { "let", "const" },
+          const { 'let', 'const' },
         }),
       }
 
       return {
         additional_filetypes_to_group_mappings = {
-          typescript = "javascript",
-          typescriptreact = "javascript",
-          javascriptreact = "javascript",
+          typescript = 'javascript',
+          typescriptreact = 'javascript',
+          javascriptreact = 'javascript',
         },
 
         groups = groups,
@@ -114,7 +126,7 @@ return {
 
     config = function(_, opts)
       _G._SkipDialOpts = opts -- :D (can't use `M` for some reason)
-      require("dial.config").augends:register_group(opts.groups)
+      require('dial.config').augends:register_group(opts.groups)
     end,
   },
 }

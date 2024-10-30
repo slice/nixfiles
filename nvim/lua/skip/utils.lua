@@ -4,7 +4,7 @@ local M = {}
 --- @param group_name string augroup name
 --- @param parameter_packs ({ [1]: (string | string[]), [2]: vim.api.keyset.create_autocmd }[] | string)
 function M.autocmds(group_name, parameter_packs)
-  if type(parameter_packs) == "string" then
+  if type(parameter_packs) == 'string' then
     parameter_packs = { parameter_packs }
   end
 
@@ -35,14 +35,16 @@ end
 ---@param codes string
 ---@param mode string
 function M.send(codes, mode)
-  vim.api.nvim_feedkeys(M.termcodes(codes), mode or "n", false)
+  vim.api.nvim_feedkeys(M.termcodes(codes), mode or 'n', false)
 end
 
 ---@param variable_name string
 ---@param bufnr number?
 function M.flag_set(variable_name, bufnr)
   -- global, tab, window
-  local set_within_container_or_globally = vim.g[variable_name] or vim.t[variable_name] or vim.w[variable_name]
+  local set_within_container_or_globally = vim.g[variable_name]
+    or vim.t[variable_name]
+    or vim.w[variable_name]
 
   if bufnr then
     -- if a bufnr is passed, only check that buf for the variable (not vim.b)
