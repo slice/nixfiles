@@ -1,7 +1,6 @@
 return {
   {
     "j-hui/fidget.nvim",
-    enabled = false,
     config = function()
       local fidget = require("fidget")
 

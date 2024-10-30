@@ -4,18 +4,22 @@
 return {
   {
     "saghen/blink.cmp",
-    lazy = false, -- plugin is already lazy
+    lazy = false,                                         -- plugin is already lazy
     dependencies = 'rafamadriz/friendly-snippets',
-    version = '0.*',
+    version = '2ac2f43513cdf63313192271427cc55608f0bedb', -- 2024-10-30
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
+      keymap = {
+        ['<C-n>'] = { 'select_and_accept', 'fallback' },
+        ['<C-p>'] = { 'select_prev', 'fallback' },
+      },
       highlight = {
         use_nvim_cmp_as_default = true,
       },
-      trigger = { signature_help = { enabled = true } },
+      trigger = { completion = { keyword_range = 'full' }, signature_help = { enabled = true } },
       accept = { auto_brackets = { enabled = true } },
-      windows = { autocomplete = { max_height = 20 } },
+      windows = { autocomplete = { max_height = 25 } },
       nerd_font_variant = 'normal',
       sources = {
         providers = {

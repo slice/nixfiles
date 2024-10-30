@@ -8,6 +8,7 @@ local rg_flags = vim
     :totable()
 
 local builtin = require("telescope.builtin")
+local utils = require("skip.utils")
 
 local function find_files()
   builtin.find_files {
@@ -29,33 +30,47 @@ return {
     -- branch = '0.1.x',
     -- dev = true,
 
+    -- here because loading order woes
+    -- we need to call telescope setup _before_ load_extension. how to enforce
+    -- that?
+    dependencies = {
+      {
+        "danielfalk/smart-open.nvim",
+        dependencies = {
+          "kkharji/sqlite.lua",
+          "nvim-telescope/telescope-fzf-native.nvim",
+        },
+      }
+    },
+
     cmd = "Telescope",
     keys = {
       -- config editing (evolved from https://learnvimscriptthehardway.stevelosh.com/chapters/08.html)
-      { "<Leader>ve",      "<cmd>Telescope find_files cwd=~/src/prj/nixfiles<CR>" },
-      { "<Leader>vg",      "<cmd>Telescope live_grep cwd=~/src/prj/nixfiles<CR>" },
+      { "<Leader>ve",       "<cmd>Telescope find_files cwd=~/src/prj/nixfiles<CR>" },
+      { "<Leader>vg",       "<cmd>Telescope live_grep cwd=~/src/prj/nixfiles<CR>" },
 
       -- 1st layer (essential)
-      { "<Leader><Space>", "<Cmd>Telescope resume<CR>" }, -- TODO: not sure if this deserves having <Space>
-      { "<Leader>0",       "<Cmd>Telescope looking_glass<CR>" },
-      { "<Leader>b",       "<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>" },
-      { "<Leader>g",       "<Cmd>Telescope live_grep<CR>" },
-      { "<Leader>h",       "<Cmd>Telescope help_tags<CR>" },
-      { "<Leader>i",       "<Cmd>Telescope oldfiles<CR>" },
-      { "<Leader>k",       "<Cmd>Telescope lsp_references<CR>" },
-      { "<Leader>o",       find_files,                                                   desc = "Telescope find_files" },
-      { "<Leader>p",       "<Cmd>Telescope trampoline<CR>" },
-      { "<Leader>/",       "<Cmd>Telescope current_buffer_fuzzy_find<CR>" },
+      -- { "<Leader><Space>", "<Cmd>Telescope resume<CR>" }, -- TODO: not sure if this deserves having <Space>
+      { "<Leader>0",        "<Cmd>Telescope looking_glass<CR>" },
+      { "<Leader>b",        "<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>" },
+      { "<Leader>g",        "<Cmd>Telescope live_grep<CR>" },
+      { "<Leader>h",        "<Cmd>Telescope help_tags<CR>" },
+      { "<Leader>i",        "<Cmd>Telescope oldfiles<CR>" },
+      { "<Leader>k",        "<Cmd>Telescope lsp_references<CR>" },
+      { "<Leader>o",        find_files,                                                             desc = "Telescope find_files" },
+      { "<Leader>p",        "<Cmd>Telescope trampoline<CR>" },
+      { "<Leader>/",        "<Cmd>Telescope current_buffer_fuzzy_find<CR>" },
+      { "<Leader><Leader>", function() require('telescope').extensions.smart_open.smart_open() end, desc = 'Telescope smart_open' },
 
       -- 2nd layer
-      { "<Leader>lt",      "<Cmd>Telescope builtin<CR>" },
-      { "<Leader>lc",      "<Cmd>Telescope colorscheme<CR>" },
-      { "<Leader>lh",      "<Cmd>Telescope highlights<CR>" },
-      { "<Leader>lm",      man_pages,                                                    desc = "Telescope man_pages" },
-      { "<Leader>ld",      "<Cmd>Telescope diagnostics bufnr=0<CR>",                     desc = "Telescope diagnostics (buffer)" },
-      { "<Leader>lD",      "<Cmd>Telescope diagnostics<CR>",                             desc = "Telescope diagnostics (workspace)" },
-      { "<Leader>ls",      "<Cmd>Telescope lsp_document_symbols<CR>",                    desc = "Telescope lsp_document_symbols" },
-      { "<Leader>lS",      "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>",           desc = "Telescope lsp_dynamic_workspace_symbols" },
+      { "<Leader>lt",       "<Cmd>Telescope builtin<CR>" },
+      { "<Leader>lc",       "<Cmd>Telescope colorscheme<CR>" },
+      { "<Leader>lh",       "<Cmd>Telescope highlights<CR>" },
+      { "<Leader>lm",       man_pages,                                                              desc = "Telescope man_pages" },
+      { "<Leader>ld",       "<Cmd>Telescope diagnostics bufnr=0<CR>",                               desc = "Telescope diagnostics (buffer)" },
+      { "<Leader>lD",       "<Cmd>Telescope diagnostics<CR>",                                       desc = "Telescope diagnostics (workspace)" },
+      { "<Leader>ls",       "<Cmd>Telescope lsp_document_symbols<CR>",                              desc = "Telescope lsp_document_symbols" },
+      { "<Leader>lS",       "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>",                     desc = "Telescope lsp_dynamic_workspace_symbols" },
     },
 
     config = function()
@@ -147,8 +162,22 @@ return {
           trampoline = {
             workspace_roots = { "~/src/prj", "~/src/lib", "~/src/work/a8c" },
           },
+          smart_open = {
+            show_scores = true,
+            match_algorithm = "fzf",
+            mappings = {
+              i = {
+                ["<C-w>"] = function(prompt_bufnr, winid)
+                  -- don't let smart-open.nvim replace this with closing the
+                  -- buffer
+                end,
+              }
+            }
+          }
         },
       })
+
+      telescope.load_extension('smart_open')
     end,
   },
 
@@ -173,6 +202,24 @@ return {
         },
       },
     },
+  },
+
+  {
+    "nvim-telescope/telescope-fzf-native.nvim",
+    lazy = true,
+    build = "make",
+    opts = {
+      override_generic_sorter = true,
+      override_file_sorter = true,
+      case_mode = "smart_case",
+    },
+    config = function(_, opts)
+      local telescope = require("telescope")
+      telescope.load_extension("fzf")
+      telescope.setup {
+        extensions = { fzf = opts }
+      }
+    end
   },
 
   "slice/telescope-trampoline.nvim",

@@ -125,8 +125,10 @@ local spec = lush(function(injected_functions)
     -- `async`/`await`
     sym"@keyword.coroutine" { fg = rose.hue(250).li(20), gui = "bold,italic" },
 
-    TelescopeSelection { gui = "bold,reverse" },
+    TelescopeSelection { bg = Search.bg, gui = "bold" },
     TelescopeMatching { bg = bg_3(), bold = true },
+    TelescopePreviewLine { Search },
+    TelescopePreviewMatch { CurSearch },
 
     -- things that are slightly brighter (e.g. object keys)
     sym"@lsp.typemod.property.declaration" { fg = chalk() },

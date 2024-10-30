@@ -55,8 +55,23 @@ function M.setup_lsp_buf(client, bufnr)
     buffer = bufnr,
     desc = 'Open diagnostic float when holding cursor',
     callback = function()
+      vim.lsp.buf.document_highlight()
       if M.has_open_focusable_float() then return end
       vim.diagnostic.open_float(nil, { scope = "line", source = "if_many", focusable = false, focus = false })
+    end
+  })
+  vim.api.nvim_create_autocmd('CursorHoldI', {
+    buffer = bufnr,
+    desc = 'Open diagnostic float when holding cursor',
+    callback = function()
+      vim.lsp.buf.document_highlight()
+    end
+  })
+  vim.api.nvim_create_autocmd('CursorMoved', {
+    buffer = bufnr,
+    desc = 'Clears references',
+    callback = function()
+      vim.lsp.buf.clear_references()
     end
   })
 
@@ -136,14 +151,18 @@ utils.autocmds("SkipLsp", {
 
 M.capabilities = {}
 
-local function try_adding_capabilities(module)
-  local ok, module = pcall(require, module)
-  if ok then
-    M.capabilities = vim.tbl_deep_extend('force', M.capabilities, module.default_capabilities())
+local function try_adding_capabilities(get_capabilities)
+  local ok, caps = pcall(get_capabilities)
+  if ok and caps then
+    M.capabilities = vim.tbl_deep_extend('force', M.capabilities, caps)
+    return true
   end
+  return false
 end
 
-try_adding_capabilities('cmp_nvim_lsp')
-try_adding_capabilities('lsp-file-operations')
+if not try_adding_capabilities(function() require('cmp_nvim_lsp').default_capabilities() end) then
+  try_adding_capabilities(function() require('blink.cmp').get_lsp_capabilities() end)
+end
+try_adding_capabilities(function() require('lsp-file-operations').default_capabilities() end)
 
 return M

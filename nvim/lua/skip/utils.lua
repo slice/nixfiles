@@ -27,11 +27,15 @@ function M.purge(pattern)
   end
 end
 
+---@param input string
+function M.termcodes(input)
+  return vim.api.nvim_replace_termcodes(input, true, true, true)
+end
+
 ---@param codes string
 ---@param mode string
 function M.send(codes, mode)
-  local replaced = vim.api.nvim_replace_termcodes(codes, true, true, true)
-  vim.api.nvim_feedkeys(replaced, mode or "n", false)
+  vim.api.nvim_feedkeys(M.termcodes(codes), mode or "n", false)
 end
 
 ---@param variable_name string

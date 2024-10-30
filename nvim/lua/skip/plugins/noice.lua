@@ -2,6 +2,7 @@
 return {
   {
     "folke/noice.nvim",
+    enabled = false,
     -- event = "VeryLazy",
     -- don't be lazy as this will swallow startup messages
     ---@module "noice"

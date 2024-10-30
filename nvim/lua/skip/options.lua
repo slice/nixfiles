@@ -13,6 +13,7 @@ opt.hidden = true
 opt.ignorecase = true
 opt.inccommand = "nosplit"
 opt.pumheight = 20
+opt.formatoptions = "jcroql"
 opt.jumpoptions = "view"
 opt.list = true
 opt.diffopt = { "internal", "filler", "closeoff", "linematch:60", "indent-heuristic", "algorithm:patience" }
