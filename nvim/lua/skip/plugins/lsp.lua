@@ -198,7 +198,11 @@ return {
       -- lsp.eslint.setup {}
       lsc.nixd.setup {}
       lsc.pyright.setup {}
-      lsc.lua_ls.setup {}
+      lsc.lua_ls.setup {
+        settings = {
+          format = { enable = false },
+        },
+      }
       lsc.gopls.setup {}
       lsc.bashls.setup {}
       lsc.dhall_lsp_server.setup {}

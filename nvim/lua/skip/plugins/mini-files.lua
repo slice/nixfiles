@@ -57,8 +57,6 @@ return {
       { "<Leader>f", function() require('mini.files').open(vim.api.nvim_buf_get_name(0)) end, desc = "Open mini.files to current file" },
     },
     opts = {
-      -- hide icons
-      content = { prefix = function() end },
       -- trash
       options = {
         permanent_delete = false,

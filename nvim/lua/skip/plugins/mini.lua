@@ -133,11 +133,6 @@ return {
   },
 
   {
-    'echasnovski/mini.surround',
-    config = true,
-  },
-
-  {
     'echasnovski/mini.trailspace',
     config = true,
   },

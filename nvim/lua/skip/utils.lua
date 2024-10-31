@@ -33,7 +33,7 @@ function M.termcodes(input)
 end
 
 ---@param codes string
----@param mode string
+---@param mode? string
 function M.send(codes, mode)
   vim.api.nvim_feedkeys(M.termcodes(codes), mode or 'n', false)
 end
@@ -43,8 +43,8 @@ end
 function M.flag_set(variable_name, bufnr)
   -- global, tab, window
   local set_within_container_or_globally = vim.g[variable_name]
-    or vim.t[variable_name]
-    or vim.w[variable_name]
+      or vim.t[variable_name]
+      or vim.w[variable_name]
 
   if bufnr then
     -- if a bufnr is passed, only check that buf for the variable (not vim.b)

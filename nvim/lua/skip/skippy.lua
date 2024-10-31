@@ -83,6 +83,9 @@ local spec = lush(function(injected_functions)
     -- indent lines
     MiniIndentscopeSymbol { fg = bg_fg() },
 
+    MiniAnimateCursor { bg = urgent },
+    MiniAnimateNormalFloat { bg = '#ffffff' },
+
     ModeMsg { fg = 'white', bg = urgent, bold = true },
     MoreMsg { fg = forest, bold = true },
     Question { MoreMsg },

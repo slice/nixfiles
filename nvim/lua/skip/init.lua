@@ -26,7 +26,7 @@ local function ensure_installed(plugin, branch)
     if vim.v.shell_error ~= 0 then
       vim.api.nvim_echo({
         { 'Failed to clone ' .. plugin .. ':\n', 'ErrorMsg' },
-        { out, 'WarningMsg' },
+        { out,                                   'WarningMsg' },
         { '\nPress any key to exit...' },
       }, true, {})
       vim.fn.getchar()

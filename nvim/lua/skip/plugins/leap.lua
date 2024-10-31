@@ -58,7 +58,7 @@ return {
                 (vim.v.operator == 'y' or vim.v.operator == 'd')
                 and event.data.register == '"'
               then
-                vim.cmd('normal! p')
+                vim.cmd('normal! =p')
               end
             end,
           },

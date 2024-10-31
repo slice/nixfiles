@@ -1,11 +1,11 @@
 local rg_flags = vim
-  .iter({
-    '--ignore',
-    '--hidden',
-    '--iglob=!**/{.git,.svn,.hg,CVS,.DS_Store,.next,.cargo,.cache,.build,.yarn/releases}/**',
-  })
-  :flatten()
-  :totable()
+    .iter({
+      '--ignore',
+      '--hidden',
+      '--iglob=!**/{.git,.svn,.hg,CVS,.DS_Store,.next,.cargo,.cache,.build,.yarn/releases}/**',
+    })
+    :flatten()
+    :totable()
 
 local builtin = require('telescope.builtin')
 local utils = require('skip.utils')
@@ -56,8 +56,8 @@ return {
       },
 
       -- 1st layer (essential)
-      -- { "<Leader><Space>", "<Cmd>Telescope resume<CR>" }, -- TODO: not sure if this deserves having <Space>
-      { '<Leader>0', '<Cmd>Telescope looking_glass<CR>' },
+      { "<Leader><Space>", "<Cmd>Telescope resume<CR>" }, -- TODO: not sure if this deserves having <Space>
+      { '<Leader>0',       '<Cmd>Telescope looking_glass<CR>' },
       {
         '<Leader>b',
         '<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>',
@@ -66,15 +66,15 @@ return {
       { '<Leader>h', '<Cmd>Telescope help_tags<CR>' },
       { '<Leader>i', '<Cmd>Telescope oldfiles<CR>' },
       { '<Leader>k', '<Cmd>Telescope lsp_references<CR>' },
-      {
-        '<Leader>o',
-        find_files,
-        desc = 'Telescope find_files',
-      },
+      -- {
+      --   find_files,
+      --   desc = 'Telescope find_files',
+      -- },
       { '<Leader>p', '<Cmd>Telescope trampoline<CR>' },
       { '<Leader>/', '<Cmd>Telescope current_buffer_fuzzy_find<CR>' },
       {
-        '<Leader><Leader>',
+        -- '<Leader><Leader>',
+        '<Leader>o',
         function()
           require('telescope').extensions.smart_open.smart_open()
         end,
@@ -120,7 +120,7 @@ return {
       local layout_strategies = require('telescope.pickers.layout_strategies')
       layout_strategies.compact = function(picker, cols, lines, layout_config)
         local layout =
-          layout_strategies.vertical(picker, cols, lines, layout_config)
+            layout_strategies.vertical(picker, cols, lines, layout_config)
 
         -- make the prompt flush with the status line
         layout.prompt.line = lines + 1
@@ -138,13 +138,13 @@ return {
       end
 
       layout_strategies.flex_smooshed = function(
-        picker,
-        cols,
-        lines,
-        layout_config
+          picker,
+          cols,
+          lines,
+          layout_config
       )
         local layout =
-          layout_strategies.flex(picker, cols, lines, layout_config)
+            layout_strategies.flex(picker, cols, lines, layout_config)
 
         layout.results.height = layout.results.height + 1
 
@@ -173,19 +173,19 @@ return {
           results_title = false,
           prompt_title = false,
           vimgrep_arguments = vim
-            .iter({
-              'rg',
-              '--color=never',
-              '--no-heading',
-              '--with-filename',
-              '--line-number',
-              '--column',
-              '--smart-case',
-              '--fixed-strings',
-              rg_flags,
-            })
-            :flatten()
-            :totable(),
+              .iter({
+                'rg',
+                '--color=never',
+                '--no-heading',
+                '--with-filename',
+                '--line-number',
+                '--column',
+                '--smart-case',
+                '--fixed-strings',
+                rg_flags,
+              })
+              :flatten()
+              :totable(),
           mappings = {
             i = {
               -- immediately close the prompt when pressing <ESC> in insert mode
@@ -204,7 +204,7 @@ return {
             treesitter = true,
             filetype_hook = function(_filepath, bufnr, opts)
               local bounced =
-                require('skip.huge').bouncer(bufnr, { silently = true })
+                  require('skip.huge').bouncer(bufnr, { silently = true })
               if bounced then
                 -- seemingly _need_ to set the preview message in order to suppress previewing
                 require('telescope.previewers.utils').set_preview_message(
@@ -227,10 +227,10 @@ return {
             match_algorithm = 'fzf',
             mappings = {
               i = {
-                ['<C-w>'] = function(prompt_bufnr, winid)
-                  -- don't let smart-open.nvim replace this with closing the
-                  -- buffer
-                end,
+                -- telescope buffers are prompt buffers, which treat CTRL-W as
+                -- if you were in normal mode. remap to actually delete the
+                -- last word (idk why this isn't needed with other pickers)
+                ['<C-w>'] = { '<C-S-w>', type = 'command' },
               },
             },
           },

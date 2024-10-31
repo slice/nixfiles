@@ -1,18 +1,22 @@
--- vim: set fdm=indent fdl=3:
+-- vim: set fdm=marker:
 
 ---@type LazySpec
 return {
   {
     'saghen/blink.cmp',
-    lazy = false, -- plugin is already lazy
+    lazy = false,                                        -- plugin is already lazy
     dependencies = 'rafamadriz/friendly-snippets',
-    version = '2ac2f43513cdf63313192271427cc55608f0bedb', -- 2024-10-30
+    commit = '2ac2f43513cdf63313192271427cc55608f0bedb', -- 2024-10-30
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
       keymap = {
-        ['<C-n>'] = { 'select_and_accept', 'fallback' },
+        ['<Tab>'] = { 'select_and_accept', 'fallback' },
+        ['<C-n>'] = { 'select_next', 'fallback' },
         ['<C-p>'] = { 'select_prev', 'fallback' },
+        ['<S-Tab>'] = { 'snippet_backward', 'select_prev', 'fallback' },
+        ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
       },
       highlight = {
         use_nvim_cmp_as_default = true,
@@ -164,8 +168,8 @@ return {
           end,
         },
         sources = cmp.config.sources(
-          -- be aggressive with resolving math expression, because sometimes
-          -- the lsp source takes precedence
+        -- be aggressive with resolving math expression, because sometimes
+        -- the lsp source takes precedence
           { name = 'calc' },
           {
             { name = 'nvim_lsp' },
