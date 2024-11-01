@@ -42,6 +42,9 @@ in
         ydle = "yt-dlp -f bestaudio --audio-format mp3 --extract-audio";
         k = "kubectl";
 
+        c = "pbcopy";
+        p = "pbpaste";
+
         hms = "hm-switch";
         nds = "nd-switch";
         hmu = "hm-update";

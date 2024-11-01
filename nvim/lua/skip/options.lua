@@ -25,7 +25,7 @@ opt.diffopt = {
   'algorithm:patience',
 }
 opt.listchars =
-  { tab = '  ', trail = '·', nbsp = '+', precedes = '<', extends = '>' }
+{ tab = '  ', trail = '·', nbsp = '+', precedes = '<', extends = '>' }
 opt.foldtext = ''
 opt.fillchars:append { fold = '-' }
 opt.modeline = true
@@ -56,7 +56,7 @@ do
   end
 
   opt.statusline =
-    [[%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %l/%L,%c #%n%<]]
+  [[%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %l/%L,%c #%n%<]]
 end
 opt.timeoutlen = 500
 opt.undofile = true
@@ -78,3 +78,5 @@ opt.shiftwidth = 2
 -- avoid loading the autoload portions of netrw so "e ." uses dirvish, but we
 -- can still use :GBrowse from fugitive
 vim.g.loaded_netrwPlugin = true
+
+vim.g.markdown_fenced_languages = { 'ts=typescript' }
