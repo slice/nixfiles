@@ -1,5 +1,9 @@
 local utils = require('skip.utils')
 
+local folder_icon = ' '
+
+local monochromatic_icons
+
 return {
   {
     -- inform LSPs of file operations
@@ -64,13 +68,14 @@ return {
       content = {
         prefix = function(entry)
           if entry.fs_type == 'directory' then
-            return '  ', 'MiniFilesDirectory'
+            return (folder_icon .. ' '), 'MiniFilesDirectory'
           end
-          local icon, hl = require('mini.files').default_prefix(entry)
-          if #icon == 4 then
-            icon = icon .. ' '
-          end
-          return icon, hl
+          local extension = entry.name:match('%.(.+)')
+          -- mostly what the default is, but adding a space after the icon for
+          -- terminal emulators that can render the full thing
+          local icon, hl_name = require('nvim-web-devicons').get_icon(entry.name, extension, { default = true })
+          -- vim.notify(vim.inspect(require('mini.files').get_explorer_state()))
+          return icon .. ' ', hl_name
         end,
       },
     },
@@ -115,12 +120,52 @@ return {
             pattern = { 'MiniFilesWindowUpdate', 'MiniFilesWindowOpen' },
             callback = function(args)
               local win_id = args.data.win_id
-              -- vim.wo[win_id].winblend = 20
+              local win_nr = vim.fn.win_id2win(win_id)
+
+              local is_active = vim.api.nvim_get_current_win() == win_id
+
               local config = vim.api.nvim_win_get_config(win_id)
               config.anchor = 'SW'
+
+              -- insert padding & icon around title
+              config.title[1][1] = ' ' .. folder_icon .. ' ' .. config.title[1][1] .. ' '
+
+              local meta = ' #' .. tostring(win_nr) .. ' id:' .. tostring(win_id) .. ' '
+              -- insert, space permitting
+              if #meta + 1 < (config.width - #config.title[1][1]) then
+                table.insert(config.title, { meta, 'Comment' })
+                table.insert(config.title, { ' ', 'FloatTitle' })
+              end
+
               config.row = vim.opt.lines:get() - 2
               -- config.relative = 'win'
               vim.api.nvim_win_set_config(win_id, config)
+
+              -- vim.notify(('%d is active? %s'):format(win_id, is_active))
+              local highlights = {}
+              -- vim.wo[win_id].winblend = 20
+              vim.wo[win_id].cursorline = is_active
+              vim.wo[win_id].number = is_active
+              vim.wo[win_id].relativenumber = is_active
+              if not is_active then
+                if monochromatic_icons == nil then
+                  monochromatic_icons = vim.iter(require('nvim-web-devicons').get_icons())
+                      :fold({}, function(acc, _k, v)
+                        acc['DevIcon' .. v.name] = 'SkipMiniFilesNormalNC'
+                        return acc
+                      end)
+                end
+
+                highlights = vim.tbl_extend('force', {
+                  MiniFilesDirectory = 'SkipMiniFilesNormalNC',
+                  FloatBorder = 'SkipMiniFilesNormalNC',
+                }, monochromatic_icons)
+              end
+              highlights = vim.tbl_extend('force', highlights, {
+                Normal = 'SkipMiniFilesNormal',
+                NormalNC = 'SkipMiniFilesNormalNC',
+              })
+              vim.wo[win_id].winhl = vim.iter(highlights):map(function(k, v) return k .. ":" .. v end):join(',')
             end,
           },
         },
@@ -146,12 +191,12 @@ return {
           'User',
           {
             pattern = 'MiniFilesWindowUpdate',
-            callback = function(args)
+            callback = function(_args)
               -- this needs to be set more frequently, e.g. if this is done by
               -- MiniFilesWindowOpen above instead (and it needs to be
               -- scheduled, too) it doesn't work when using <
-              vim.wo[args.data.win_id].number = true
-              vim.wo[args.data.win_id].relativenumber = true
+              -- vim.wo[args.data.win_id].number = true
+              -- vim.wo[args.data.win_id].relativenumber = true
             end,
           },
         },

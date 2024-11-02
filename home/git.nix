@@ -22,7 +22,7 @@
         };
       in
       {
-        url."ssh://git@github.com/".insteadOf = "https://github.com/";
+        url."git@github.com:".insteadOf = "https://github.com/";
         commit.verbose = true;
         format.pretty = "tformat:%C(bold yellow)%h%Creset %<|(82,trunc)%s %Creset%C(bold white)%cr%C(nobold)/%ch%Creset %C(bold)(%an)%C(auto)%d";
         push.default = "current";

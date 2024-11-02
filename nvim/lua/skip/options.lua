@@ -25,7 +25,7 @@ opt.diffopt = {
   'algorithm:patience',
 }
 opt.listchars =
-{ tab = '  ', trail = '·', nbsp = '+', precedes = '<', extends = '>' }
+{ tab = '  ', trail = '·', nbsp = '+', precedes = '‹', extends = '›' }
 opt.foldtext = ''
 opt.fillchars:append { fold = '-' }
 opt.modeline = true
@@ -41,7 +41,7 @@ opt.relativenumber = true
 opt.spelloptions = { 'camel' }
 opt.splitright = true
 opt.sidescroll = 5
-opt.signcolumn = 'yes:1'
+opt.signcolumn = 'yes:2'
 opt.showbreak = '>'
 opt.sidescrolloff = 10
 opt.smartcase = true
@@ -80,3 +80,27 @@ opt.shiftwidth = 2
 vim.g.loaded_netrwPlugin = true
 
 vim.g.markdown_fenced_languages = { 'ts=typescript' }
+
+do
+  function _G._STATUSCOLUMN()
+    local n_lines = vim.fn.line('$')
+    local num = vim.v.lnum
+    local num_relative = vim.v.lnum - vim.fn.line('.')
+
+    local remaining_spaces = string.rep(' ', #tostring(n_lines) - #tostring(num))
+
+    if num_relative == 0 then
+      return remaining_spaces .. num
+    else
+      local positive = num_relative > 0
+      local single_digit = math.abs(num_relative) < 10
+      local symbol = positive and '󰐕 ' or '󰍴 '
+      local padding
+
+      padding = single_digit and ' ' or ''
+      return padding .. symbol .. tostring(math.abs(num_relative))
+    end
+  end
+
+  vim.o.statuscolumn = [[%C%s %{%v:lua._STATUSCOLUMN()%}│]]
+end

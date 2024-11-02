@@ -46,8 +46,8 @@ local spec = lush(function(injected_functions)
     Visual { bg = bg_3() },
 
     LineNr { fg = bg_fg() },
-    LineNrAbove { fg = bg_fg().mix(hsl('#ff0000'), 15) },
-    LineNrBelow { fg = bg_fg().mix(hsl('#00ff00'), 7) },
+    -- LineNrAbove { fg = bg_fg().mix(hsl('#ff0000'), 15) },
+    -- LineNrBelow { fg = bg_fg().mix(hsl('#00ff00'), 7) },
     NonText { LineNr },
     SpecialKey { LineNr },
     SignColumn { LineNr },
@@ -169,6 +169,8 @@ local spec = lush(function(injected_functions)
     Character { String, gui = 'NONE' },
 
     MiniFilesDirectory { String },
+    SkipMiniFilesNormal { Normal },
+    SkipMiniFilesNormalNC { fg = Normal.fg.mix(Normal.bg, 50) },
 
     -- dim punctuation/delimiters
     sym '@punctuation' { fg = Normal.fg.da(35) },
@@ -216,16 +218,26 @@ local spec = lush(function(injected_functions)
 
     -- diagnostics
     DiagnosticError { fg = urgent.li(30) },
+    DiagnosticVirtualTextError { DiagnosticError, bg = DiagnosticError.fg.darken(80), italic = true },
     DiagnosticUnderlineError { fg = DiagnosticError.fg, gui = 'undercurl' },
+
     ErrorMsg { DiagnosticError, bold = true },
+
     DiagnosticHint { fg = skyblue },
+    DiagnosticVirtualTextHint { DiagnosticHint, bg = DiagnosticHint.fg.darken(80), italic = true },
     DiagnosticUnderlineHint { fg = skyblue, gui = 'undercurl' },
+
     DiagnosticInfo { DiagnosticHint },
+    DiagnosticVirtualTextInfo { DiagnosticInfo, bg = DiagnosticInfo.fg.darken(80), italic = true },
     DiagnosticUnderlineInfo { DiagnosticUnderlineHint },
+
     DiagnosticWarn { fg = highlighter },
-    WarningMsg { DiagnosticWarn, bold = true },
+    DiagnosticVirtualTextWarn { DiagnosticWarn, bg = DiagnosticWarn.fg.darken(80), italic = true },
     DiagnosticUnderlineWarn { fg = highlighter, gui = 'undercurl' },
+
     DiagnosticUnnecessary { fg = sym '@punctuation'.fg, gui = 'undercurl' },
+
+    WarningMsg { DiagnosticWarn, bold = true },
 
     fugitiveUntrackedSection { bg = hsl(0, 100, 10) },
     fugitiveUntrackedHeading { fugitiveUntrackedSection, bold = true },
@@ -270,6 +282,13 @@ local spec = lush(function(injected_functions)
     NoiceCmdlineIcon {},
     NoiceCmdlinePopupBorder {},
     NoiceVirtualText { CurSearch, underline = true },
+
+    DevIconDefault { fg = String.fg },
+
+    TreesitterContext { bg = Normal.bg.da(30), italic = true },
+    TreesitterContextBottom { underline = true, sp = WinSeparator.fg },
+    TreesitterContextLineNumberBottom { TreesitterContextBottom },
+    TreesitterContextLineNumber { fg = LineNr.fg.da(15), italic = true },
   }
 end)
 

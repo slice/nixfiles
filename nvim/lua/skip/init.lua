@@ -37,23 +37,15 @@ local function ensure_installed(plugin, branch)
 end
 
 local lazy_path = ensure_installed('folke/lazy.nvim', 'stable')
-local hotpot_path = ensure_installed('rktjmp/hotpot.nvim', 'v0.14.7')
-vim.opt.runtimepath:prepend({ hotpot_path, lazy_path })
-vim.loader.enable()
-require('hotpot')
+vim.opt.runtimepath:prepend({ lazy_path })
 
 -- care should be taken so these are loadable sans plugins (or if they error)
 require 'skip.mappings'
 require 'skip.autocmds'
 
 require('lazy').setup({
-  performance = {
-    rtp = { paths = { vim.fn.stdpath('config') .. '/.hotpot' } },
-  },
   spec = {
-    'rktjmp/hotpot.nvim',
     { import = 'skip.plugins' },
-    { import = 'skip.plennels' },
   },
   change_detection = {
     notify = false,

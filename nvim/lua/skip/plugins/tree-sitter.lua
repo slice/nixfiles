@@ -58,7 +58,10 @@ return {
     'nvim-treesitter/nvim-treesitter-context',
     event = 'VeryLazy',
     enabled = true,
-    opts = {},
+    opts = {
+      max_lines = 3,
+      mode = 'topline',
+    },
     keys = {
       {
         '[c',

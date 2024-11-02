@@ -6,17 +6,22 @@ return {
     'saghen/blink.cmp',
     lazy = false, -- plugin is already lazy
     dependencies = 'rafamadriz/friendly-snippets',
-    commit = '88f1c203465fa3d883f2309bc22412c90a9f6a08', -- 2024-10-31
+    build = 'cargo build --release',
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
+      fuzzy = {
+        prebuilt_binaries = {
+          download = false,
+        },
+      },
       keymap = {
-        select_and_accept = '<Tab>',
-        select_next = { '<C-n>' },
-        select_prev = { '<C-p>', '<S-Tab>' },
-        snippet_backward = { '<S-Tab>' },
-        scroll_documentation_up = '<C-b>',
-        scroll_documentation_down = '<C-f>',
+        ['<Tab>'] = { 'select_and_accept', 'fallback' },
+        ['<C-n>'] = { 'select_next', 'fallback' },
+        ['<C-p>'] = { 'select_prev', 'fallback' },
+        ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
+        ['<C-b>'] = { 'scroll_documentation_up' },
+        ['<C-f>'] = { 'scroll_documentation_down' },
       },
       highlight = {
         use_nvim_cmp_as_default = true,
@@ -168,8 +173,8 @@ return {
           end,
         },
         sources = cmp.config.sources(
-          -- be aggressive with resolving math expression, because sometimes
-          -- the lsp source takes precedence
+        -- be aggressive with resolving math expression, because sometimes
+        -- the lsp source takes precedence
           { name = 'calc' },
           {
             { name = 'nvim_lsp' },
