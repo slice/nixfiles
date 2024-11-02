@@ -83,24 +83,27 @@ vim.g.markdown_fenced_languages = { 'ts=typescript' }
 
 do
   function _G._STATUSCOLUMN()
-    local n_lines = vim.fn.line('$')
     local num = vim.v.lnum
     local num_relative = vim.v.lnum - vim.fn.line('.')
 
-    local remaining_spaces = string.rep(' ', #tostring(n_lines) - #tostring(num))
-
     if num_relative == 0 then
-      return remaining_spaces .. num
+      return num
     else
       local positive = num_relative > 0
-      local single_digit = math.abs(num_relative) < 10
       local symbol = positive and '󰐕 ' or '󰍴 '
-      local padding
-
-      padding = single_digit and ' ' or ''
-      return padding .. symbol .. tostring(math.abs(num_relative))
+      return symbol .. tostring(math.abs(num_relative))
     end
   end
 
-  vim.o.statuscolumn = [[%C%s %{%v:lua._STATUSCOLUMN()%}│]]
+  function _G._SET_STATUSCOLUMN(winid)
+    -- %= right aligns (important)
+    local value = [[%C%s %=%{%v:lua._STATUSCOLUMN()%}│ ]]
+    if winid == nil then
+      vim.o.statuscolumn = value
+    else
+      vim.wo[winid][0].statuscolumn = value
+    end
+  end
+
+  _G._SET_STATUSCOLUMN()
 end

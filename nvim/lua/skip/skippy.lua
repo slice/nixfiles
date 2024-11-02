@@ -41,7 +41,9 @@ local spec = lush(function(injected_functions)
     Normal { bg = base, fg = warm },
     -- NormalNC { bg = frozen(), fg = frozen().li(60) },
     NormalNC { Normal }, -- needed for tint.nvim
-    NormalFloat { Normal },
+    NormalFloat { Normal, bg = Normal.bg.li(6) },
+    FloatTitle { NormalFloat, bg = nil, bold = true, fg = chalk() },
+    FloatSubtitle { bg = FloatTitle.bg, italic = true, fg = FloatTitle.bg.de(50).li(30) }, -- custom
 
     Visual { bg = bg_3() },
 
@@ -169,8 +171,8 @@ local spec = lush(function(injected_functions)
     Character { String, gui = 'NONE' },
 
     MiniFilesDirectory { String },
-    SkipMiniFilesNormal { Normal },
-    SkipMiniFilesNormalNC { fg = Normal.fg.mix(Normal.bg, 50) },
+    SkipMiniFilesNormal { NormalFloat },
+    SkipMiniFilesNormalNC { fg = NormalFloat.fg.mix(Normal.bg, 50) },
 
     -- dim punctuation/delimiters
     sym '@punctuation' { fg = Normal.fg.da(35) },

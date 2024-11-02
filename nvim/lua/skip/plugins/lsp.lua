@@ -46,7 +46,7 @@ return {
         -- make warnings and errors appear over hints
         severity_sort = true,
         virtual_text = {
-          prefix = function(diagnostic, index, total)
+          prefix = function(diagnostic, _index, _total)
             return signs[diagnostic.severity] or '󰟶 '
           end
         },

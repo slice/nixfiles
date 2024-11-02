@@ -130,12 +130,11 @@ return {
               -- insert padding & icon around title
               config.title[1][1] = ' ' .. folder_icon .. ' ' .. config.title[1][1] .. ' '
 
-              local meta = ' #' .. tostring(win_nr) .. ' id:' .. tostring(win_id) .. ' '
-              -- insert, space permitting
-              if #meta + 1 < (config.width - #config.title[1][1]) then
-                table.insert(config.title, { meta, 'Comment' })
-                table.insert(config.title, { ' ', 'FloatTitle' })
-              end
+              -- local meta = '#' .. tostring(win_nr) .. ' id:' .. tostring(win_id) .. ' '
+              -- -- insert, space permitting
+              -- if #meta + 1 < (config.width - #config.title[1][1]) then
+              --   table.insert(config.title, { meta, 'FloatSubtitle' })
+              -- end
 
               config.row = vim.opt.lines:get() - 2
               -- config.relative = 'win'
@@ -147,7 +146,10 @@ return {
               vim.wo[win_id].cursorline = is_active
               vim.wo[win_id].number = is_active
               vim.wo[win_id].relativenumber = is_active
-              if not is_active then
+              if is_active then
+                _G._SET_STATUSCOLUMN(win_id)
+                highlights['DevIconDefault'] = 'String'
+              else
                 if monochromatic_icons == nil then
                   monochromatic_icons = vim.iter(require('nvim-web-devicons').get_icons())
                       :fold({}, function(acc, _k, v)
