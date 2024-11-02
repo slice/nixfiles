@@ -31,4 +31,3 @@
   :dependencies [:nvim-tree/nvim-web-devicons]
   :opts make-pawline-opts
   : config}]
-

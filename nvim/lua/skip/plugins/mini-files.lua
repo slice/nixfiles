@@ -61,6 +61,18 @@ return {
       options = {
         permanent_delete = false,
       },
+      content = {
+        prefix = function(entry)
+          if entry.fs_type == 'directory' then
+            return '  ', 'MiniFilesDirectory'
+          end
+          local icon, hl = require('mini.files').default_prefix(entry)
+          if #icon == 4 then
+            icon = icon .. ' '
+          end
+          return icon, hl
+        end,
+      },
     },
     config = function(_, opts)
       require('mini.files').setup(opts)
@@ -100,10 +112,15 @@ return {
         {
           'User',
           {
-            pattern = 'MiniFilesWindowOpen',
+            pattern = { 'MiniFilesWindowUpdate', 'MiniFilesWindowOpen' },
             callback = function(args)
               local win_id = args.data.win_id
-              vim.wo[win_id].winblend = 20
+              -- vim.wo[win_id].winblend = 20
+              local config = vim.api.nvim_win_get_config(win_id)
+              config.anchor = 'SW'
+              config.row = vim.opt.lines:get() - 2
+              -- config.relative = 'win'
+              vim.api.nvim_win_set_config(win_id, config)
             end,
           },
         },

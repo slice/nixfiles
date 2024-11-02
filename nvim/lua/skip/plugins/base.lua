@@ -21,6 +21,7 @@ return {
   'mhinz/vim-sayonara',
 
   'rktjmp/hotpot.nvim',
+  'alunny/pegjs-vim',
 
   {
     'airblade/vim-rooter',

@@ -11,7 +11,7 @@ local grammars = {
   "markdown", "markdown_inline", "nginx", "nix", "objc", "perl", "php",
   "powershell", "prisma", "proto", "python", "robots", "ruby", "rust", "scss",
   "sql", "swift", "toml", "tsx", "typescript", "typst", "vim", "xml", "yaml",
-  "fennel",
+  "fennel", "racket"
 }
 
 ---@type LazySpec

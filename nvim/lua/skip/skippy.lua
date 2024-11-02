@@ -168,6 +168,8 @@ local spec = lush(function(injected_functions)
     String { fg = blue, italic = true },
     Character { String, gui = 'NONE' },
 
+    MiniFilesDirectory { String },
+
     -- dim punctuation/delimiters
     sym '@punctuation' { fg = Normal.fg.da(35) },
     MatchParen { fg = (sym '@punctuation').fg.li(40), gui = 'bold,reverse' },
