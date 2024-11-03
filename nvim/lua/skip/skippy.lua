@@ -62,6 +62,7 @@ local spec = lush(function(injected_functions)
     WinSeparator { fg = bg_3() },
     StatusLine { fg = chalk(), bg = urgent.da(10), bold = true },
     StatusLineNC { Normal, bg = bg_3() },
+    StatusLineInsert { fg = '#000000', bg = '#9bf3e9', bold = true },
     WinBar { StatusLine },
     WinBarNC { StatusLineNC },
     StatusLineTerm {

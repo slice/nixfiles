@@ -169,25 +169,25 @@ local tweaks = {
     'let g:terminal_color_8 = "#67767e"',
   },
   minicyan = vim
-    .iter({
-      mini_tweaks,
-      -- moonfly_spelling,
-      {
-        hi 'LspInlayHint guifg=#467374',
-        hi 'LspCodeLens guibg=#3c6364',
-        -- Most tokens onscreen are going to be `@variable`s, and we don't want to
-        -- highlight all of them. It's visually noisy.
-        link '@variable.python Normal',
+      .iter({
+        mini_tweaks,
+        -- moonfly_spelling,
+        {
+          hi 'LspInlayHint guifg=#467374',
+          hi 'LspCodeLens guibg=#3c6364',
+          -- Most tokens onscreen are going to be `@variable`s, and we don't want to
+          -- highlight all of them. It's visually noisy.
+          link '@variable.python Normal',
 
-        hi 'CursorLine guibg=#341d1b',
-        hi 'CursorLineNr guibg=#c42124 guifg=#3d0305',
+          hi 'CursorLine guibg=#341d1b',
+          hi 'CursorLineNr guibg=#c42124 guifg=#3d0305',
 
-        hi 'StatusLine gui=reverse,bold',
-        hi 'SpellBad guifg=NONE gui=undercurl',
-      },
-    })
-    :flatten()
-    :totable(),
+          hi 'StatusLine gui=reverse,bold',
+          hi 'SpellBad guifg=NONE gui=undercurl',
+        },
+      })
+      :flatten()
+      :totable(),
   minischeme = vim.iter({ mini_tweaks, moonfly_spelling }):flatten():totable(),
   moonfly = moonfly_spelling,
   ['tokyonight'] = {
@@ -292,7 +292,7 @@ autocmds('SkipFiletypes', {
     { pattern = '*.md,*.mdx', command = 'setlocal spell | setf markdown' },
   },
   {
-    { 'BufNewFile', 'BufReadPre' },
+    { 'BufNewFile',           'BufReadPre' },
     { pattern = '*.sc,*.sbt', command = 'setfiletype scala' },
   },
 })
@@ -314,7 +314,7 @@ local lang_indent_settings = {
 }
 
 local indentation_tweaks_group =
-  vim.api.nvim_create_augroup('SkipIndentationTweaks', {})
+    vim.api.nvim_create_augroup('SkipIndentationTweaks', {})
 for extension, settings in pairs(lang_indent_settings) do
   local width = settings['width']
 
@@ -338,6 +338,18 @@ end
 
 autocmds('SkipHelp', {
   { 'FileType', { pattern = 'help', command = 'setlocal signcolumn=no' } },
+})
+
+-- with a custom statusline that changes color depending on mode, this is
+-- needed to get statuslines in other windows (only repro'd with the same
+-- buffer) to properly re-render after triggering completion with blink.cmp
+autocmds('SkipStatusLine', {
+  { 'InsertLeave', {
+    callback = function()
+      -- https://www.reddit.com/r/neovim/comments/sxmn3k/updating_status_line_with_lspdiagnosticschanged/hxtb4gm/
+      vim.cmd [[windo let &stl=&stl]]
+    end
+  } }
 })
 
 -- for stopping LSPs - we can't do it inside of tree-sitter highlight.disable
