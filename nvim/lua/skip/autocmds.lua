@@ -343,14 +343,14 @@ autocmds('SkipHelp', {
 -- with a custom statusline that changes color depending on mode, this is
 -- needed to get statuslines in other windows (only repro'd with the same
 -- buffer) to properly re-render after triggering completion with blink.cmp
-autocmds('SkipStatusLine', {
-  { 'InsertLeave', {
-    callback = function()
-      -- https://www.reddit.com/r/neovim/comments/sxmn3k/updating_status_line_with_lspdiagnosticschanged/hxtb4gm/
-      vim.cmd [[windo let &stl=&stl]]
-    end
-  } }
-})
+-- autocmds('SkipStatusLine', {
+--   { 'InsertLeave', {
+--     callback = function()
+--       -- https://www.reddit.com/r/neovim/comments/sxmn3k/updating_status_line_with_lspdiagnosticschanged/hxtb4gm/
+--       vim.cmd [[windo let &stl=&stl]]
+--     end
+--   } }
+-- })
 
 -- for stopping LSPs - we can't do it inside of tree-sitter highlight.disable
 -- because that's after LSPs ._.

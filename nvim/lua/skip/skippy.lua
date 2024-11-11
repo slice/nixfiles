@@ -153,6 +153,7 @@ local spec = lush(function(injected_functions)
     -- `async`/`await`
     sym '@keyword.coroutine' { fg = rose.hue(250).li(20), gui = 'bold,italic' },
 
+    TelescopeNormal { NormalFloat },
     TelescopeSelection { bg = Search.bg, gui = 'bold' },
     TelescopeMatching { bg = bg_3(), bold = true },
     TelescopePreviewLine { Search },

@@ -106,6 +106,11 @@ return {
         desc = 'Telescope lsp_document_symbols',
       },
       {
+        '<Leader>s',
+        '<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>',
+        desc = 'Telescope lsp_dynamic_workspace_symbols',
+      },
+      {
         '<Leader>lS',
         '<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>',
         desc = 'Telescope lsp_dynamic_workspace_symbols',
@@ -126,11 +131,11 @@ return {
         layout.prompt.line = lines + 1
         -- make the results flush with the prompt
         layout.results.line = lines + 3
-        local results_height = 40
+        local results_height = 30
         layout.results.height = results_height
         if layout.preview then
           local preview_height = 20
-          layout.preview.line = lines - preview_height - results_height + 1
+          layout.preview.line = lines - preview_height - results_height + 2
           layout.preview.height = preview_height
         end
 
@@ -157,18 +162,18 @@ return {
           prompt_prefix = '? ',
           selection_caret = '> ',
           layout_config = { width = 0.7 },
-          layout_strategy = 'flex_smooshed',
-          border = true,
-          borderchars = {
-            '─',
-            '│',
-            '─',
-            '│',
-            '┌',
-            '┐',
-            '┘',
-            '└',
-          },
+          layout_strategy = 'compact',
+          border = false,
+          -- borderchars = {
+          --   '─',
+          --   '│',
+          --   '─',
+          --   '│',
+          --   '┌',
+          --   '┐',
+          --   '┘',
+          --   '└',
+          -- },
           dynamic_preview_title = true,
           results_title = false,
           prompt_title = false,
