@@ -1,11 +1,11 @@
 local rg_flags = vim
-    .iter({
-      '--ignore',
-      '--hidden',
-      '--iglob=!**/{.git,.svn,.hg,CVS,.DS_Store,.next,.cargo,.cache,.build,.yarn/releases}/**',
-    })
-    :flatten()
-    :totable()
+  .iter({
+    '--ignore',
+    '--hidden',
+    '--iglob=!**/{.git,.svn,.hg,CVS,.DS_Store,.next,.cargo,.cache,.build,.yarn/releases}/**',
+  })
+  :flatten()
+  :totable()
 
 local builtin = require('telescope.builtin')
 local utils = require('skip.utils')
@@ -56,8 +56,8 @@ return {
       },
 
       -- 1st layer (essential)
-      { "<Leader><Space>", "<Cmd>Telescope resume<CR>" }, -- TODO: not sure if this deserves having <Space>
-      { '<Leader>0',       '<Cmd>Telescope looking_glass<CR>' },
+      { '<Leader><Space>', '<Cmd>Telescope resume<CR>' }, -- TODO: not sure if this deserves having <Space>
+      { '<Leader>0', '<Cmd>Telescope looking_glass<CR>' },
       {
         '<Leader>b',
         '<Cmd>Telescope buffers sort_mru=true sort_lastused=true<CR>',
@@ -125,16 +125,17 @@ return {
       local layout_strategies = require('telescope.pickers.layout_strategies')
       layout_strategies.compact = function(picker, cols, lines, layout_config)
         local layout =
-            layout_strategies.vertical(picker, cols, lines, layout_config)
+          layout_strategies.vertical(picker, cols, lines, layout_config)
 
         -- make the prompt flush with the status line
         layout.prompt.line = lines + 1
         -- make the results flush with the prompt
         layout.results.line = lines + 3
-        local results_height = 30
+
+        local results_height = math.floor(lines * 0.4)
         layout.results.height = results_height
         if layout.preview then
-          local preview_height = 20
+          local preview_height = lines - results_height
           layout.preview.line = lines - preview_height - results_height + 2
           layout.preview.height = preview_height
         end
@@ -143,13 +144,13 @@ return {
       end
 
       layout_strategies.flex_smooshed = function(
-          picker,
-          cols,
-          lines,
-          layout_config
+        picker,
+        cols,
+        lines,
+        layout_config
       )
         local layout =
-            layout_strategies.flex(picker, cols, lines, layout_config)
+          layout_strategies.flex(picker, cols, lines, layout_config)
 
         layout.results.height = layout.results.height + 1
 
@@ -178,19 +179,19 @@ return {
           results_title = false,
           prompt_title = false,
           vimgrep_arguments = vim
-              .iter({
-                'rg',
-                '--color=never',
-                '--no-heading',
-                '--with-filename',
-                '--line-number',
-                '--column',
-                '--smart-case',
-                '--fixed-strings',
-                rg_flags,
-              })
-              :flatten()
-              :totable(),
+            .iter({
+              'rg',
+              '--color=never',
+              '--no-heading',
+              '--with-filename',
+              '--line-number',
+              '--column',
+              '--smart-case',
+              '--fixed-strings',
+              rg_flags,
+            })
+            :flatten()
+            :totable(),
           mappings = {
             i = {
               -- immediately close the prompt when pressing <ESC> in insert mode
@@ -209,7 +210,7 @@ return {
             treesitter = true,
             filetype_hook = function(_filepath, bufnr, opts)
               local bounced =
-                  require('skip.huge').bouncer(bufnr, { silently = true })
+                require('skip.huge').bouncer(bufnr, { silently = true })
               if bounced then
                 -- seemingly _need_ to set the preview message in order to suppress previewing
                 require('telescope.previewers.utils').set_preview_message(

@@ -6,7 +6,7 @@ return {
     'saghen/blink.cmp',
     lazy = false, -- plugin is already lazy
     dependencies = 'rafamadriz/friendly-snippets',
-    build = 'cargo build --release',
+    version = 'v0.*',
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -173,8 +173,8 @@ return {
           end,
         },
         sources = cmp.config.sources(
-        -- be aggressive with resolving math expression, because sometimes
-        -- the lsp source takes precedence
+          -- be aggressive with resolving math expression, because sometimes
+          -- the lsp source takes precedence
           { name = 'calc' },
           {
             { name = 'nvim_lsp' },

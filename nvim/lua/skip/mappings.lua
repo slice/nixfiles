@@ -19,8 +19,11 @@ map('n', '<Leader>ji', '<Cmd>Inspect<CR>')
 map('t', '<S-Space>', '<Space>')
 map('t', '<Esc>', '<C-\\><C-n>')
 
-map('!', '<C-j>', function()
-  if vim.api.nvim_get_mode().mode == 'c' then
+map({ '!', 'v' }, '<C-j>', function()
+  local mode = vim.api.nvim_get_mode().mode
+  if mode == 'v' or mode == 's' then
+    utils.send [["+p]]
+  elseif mode == 'c' then
     utils.send [[<C-R><C-R>+]]
   else
     ---@diagnostic disable-next-line: redundant-parameter

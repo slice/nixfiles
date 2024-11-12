@@ -7,8 +7,9 @@ local monochromatic_icons
 return {
   {
     -- inform LSPs of file operations
-    'antosha417/nvim-lsp-file-operations',
+    'igorlfs/nvim-lsp-file-operations', -- pls
     dependencies = { 'echasnovski/mini.files', 'nvim-lua/plenary.nvim' },
+    branch = 'fix/31',
     config = function()
       require('lsp-file-operations').setup()
 
@@ -73,7 +74,11 @@ return {
           local extension = entry.name:match('%.(.+)')
           -- mostly what the default is, but adding a space after the icon for
           -- terminal emulators that can render the full thing
-          local icon, hl_name = require('nvim-web-devicons').get_icon(entry.name, extension, { default = true })
+          local icon, hl_name = require('nvim-web-devicons').get_icon(
+            entry.name,
+            extension,
+            { default = true }
+          )
           -- vim.notify(vim.inspect(require('mini.files').get_explorer_state()))
           return icon .. ' ', hl_name
         end,
@@ -128,7 +133,11 @@ return {
               config.anchor = 'SW'
 
               -- insert padding & icon around title
-              config.title[1][1] = ' ' .. folder_icon .. ' ' .. config.title[1][1] .. ' '
+              config.title[1][1] = ' '
+                .. folder_icon
+                .. ' '
+                .. config.title[1][1]
+                .. ' '
 
               -- local meta = '#' .. tostring(win_nr) .. ' id:' .. tostring(win_id) .. ' '
               -- -- insert, space permitting
@@ -151,11 +160,12 @@ return {
                 highlights['DevIconDefault'] = 'String'
               else
                 if monochromatic_icons == nil then
-                  monochromatic_icons = vim.iter(require('nvim-web-devicons').get_icons())
-                      :fold({}, function(acc, _k, v)
-                        acc['DevIcon' .. v.name] = 'SkipMiniFilesNormalNC'
-                        return acc
-                      end)
+                  monochromatic_icons = vim
+                    .iter(require('nvim-web-devicons').get_icons())
+                    :fold({}, function(acc, _k, v)
+                      acc['DevIcon' .. v.name] = 'SkipMiniFilesNormalNC'
+                      return acc
+                    end)
                 end
 
                 highlights = vim.tbl_extend('force', {
@@ -167,7 +177,12 @@ return {
                 Normal = 'SkipMiniFilesNormal',
                 NormalNC = 'SkipMiniFilesNormalNC',
               })
-              vim.wo[win_id].winhl = vim.iter(highlights):map(function(k, v) return k .. ":" .. v end):join(',')
+              vim.wo[win_id].winhl = vim
+                .iter(highlights)
+                :map(function(k, v)
+                  return k .. ':' .. v
+                end)
+                :join(',')
             end,
           },
         },

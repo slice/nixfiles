@@ -19,9 +19,9 @@ return {
           local bufs = vim.api.nvim_list_bufs()
           for _, bufnr in ipairs(bufs) do
             if
-                vim.api.nvim_buf_is_valid(bufnr)
-                and vim.api.nvim_buf_is_loaded(bufnr)
-                and vim.api.nvim_buf_get_name(bufnr) == bufname
+              vim.api.nvim_buf_is_valid(bufnr)
+              and vim.api.nvim_buf_is_loaded(bufnr)
+              and vim.api.nvim_buf_get_name(bufnr) == bufname
             then
               if not lsp.attach_allowed(bufnr) then
                 return false
@@ -48,7 +48,7 @@ return {
         virtual_text = {
           prefix = function(diagnostic, _index, _total)
             return signs[diagnostic.severity] or '󰟶 '
-          end
+          end,
         },
         signs = {
           text = signs,
@@ -59,11 +59,11 @@ return {
       }
 
       lsc.util.default_config =
-          vim.tbl_deep_extend('force', lsc.util.default_config, {
-            capabilities = lsp.capabilities,
-            document_highlight = { enabled = true },
-            codelens = { enabled = true },
-          })
+        vim.tbl_deep_extend('force', lsc.util.default_config, {
+          capabilities = lsp.capabilities,
+          document_highlight = { enabled = true },
+          codelens = { enabled = true },
+        })
 
       lsc.yamlls.setup {
         settings = {
@@ -83,13 +83,13 @@ return {
         },
         handlers = {
           ['textDocument/publishDiagnostics'] = function(
-              err,
-              result,
-              ctx,
-              config
+            err,
+            result,
+            ctx,
+            config
           )
             local is_k8s_file = vim.endswith(result.uri, '.k8s.yml')
-                or vim.endswith(result.uri, '.k8s.yaml')
+              or vim.endswith(result.uri, '.k8s.yaml')
             if not is_k8s_file then
               return vim.lsp.diagnostic.on_publish_diagnostics(
                 err,
@@ -100,15 +100,15 @@ return {
             end
 
             local filtered_diagnostics = vim
-                .iter(result.diagnostics)
-                :filter(function(diagnostic)
-                  return not (
-                    diagnostic.message
+              .iter(result.diagnostics)
+              :filter(function(diagnostic)
+                return not (
+                  diagnostic.message
                     == 'Matches multiple schemas when only one must validate.'
-                    and diagnostic.code == 0
-                  )
-                end)
-                :totable()
+                  and diagnostic.code == 0
+                )
+              end)
+              :totable()
 
             return vim.lsp.diagnostic.on_publish_diagnostics(
               err,
@@ -158,8 +158,8 @@ return {
         on_attach = function(client, buffer)
           -- this is stolen from LazyVim (thanks)
           client.commands['_typescript.moveToFileRefactoring'] = function(
-              command,
-              ctx
+            command,
+            ctx
           )
             ---@type string, string, lsp.Range
             local action, uri, range = unpack(command.arguments)
@@ -222,18 +222,18 @@ return {
       lsc.gopls.setup {}
       lsc.bashls.setup {}
       lsc.dhall_lsp_server.setup {}
-      -- lsc.tailwindcss.setup {
-      --   settings = {
-      --     tailwindCSS = {
-      --       experimental = {
-      --         classRegex = {
-      --           { 'cva\\(([^)]*)\\)', '["\'`]([^"\'`]*).*?["\'`]' },
-      --           { 'cx\\(([^)]*)\\)',  "(?:'|\"|`)([^']*)(?:'|\"|`)" },
-      --         },
-      --       },
-      --     },
-      --   },
-      -- }
+      lsc.tailwindcss.setup {
+        settings = {
+          tailwindCSS = {
+            experimental = {
+              classRegex = {
+                { 'cva\\(([^)]*)\\)', '["\'`]([^"\'`]*).*?["\'`]' },
+                { 'cx\\(([^)]*)\\)', "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+              },
+            },
+          },
+        },
+      }
       lsc.denols.setup {
         root_dir = lsc.util.root_pattern('deno.json', 'deno.jsonc'),
       }
@@ -244,12 +244,20 @@ return {
         'html',
       }) do
         lsc[server].setup {
+          settings = {
+            css = {
+              lint = {
+                -- TODO: https://github.com/tailwindlabs/tailwindcss/discussions/5258#discussioncomment-1979394
+                unknownAtRules = 'ignore',
+              },
+            },
+          },
           handlers = {
             ['textDocument/diagnostic'] = function(err, result, ctx, config)
               if
-                  err ~= nil
-                  and err.code == -32601
-                  and err.message:find('Unhandled method')
+                err ~= nil
+                and err.code == -32601
+                and err.message:find('Unhandled method')
               then
                 -- html language server always returns an error in response to
                 -- neovim querying it for diagnostics (?), so just ignore this
