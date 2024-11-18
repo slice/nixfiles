@@ -13,7 +13,7 @@ return {
         javascript = { 'prettierd', 'prettier' },
         javascriptreact = { 'prettierd', 'prettier' },
         fennel = { 'fnlfmt' },
-        json = { 'biome' },
+        json = { 'prettier', 'biome' },
         css = { 'prettierd', 'prettier', 'biome' },
         markdown = { 'prettier' },
         nix = { 'nixfmt' },

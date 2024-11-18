@@ -95,6 +95,7 @@ let
       smartmontools
       colmena
       packwiz
+      _1password-cli
     ];
 
     everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
