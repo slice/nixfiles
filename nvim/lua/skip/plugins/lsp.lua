@@ -151,7 +151,11 @@ return {
               propertyDeclarationTypes = { enabled = true },
               variableTypes = { enabled = false },
             },
+            format = { enable = false },
           },
+          javascript = {
+            format = { enable = false },
+          }
         },
         ---@param client vim.lsp.Client
         ---@param buffer number
