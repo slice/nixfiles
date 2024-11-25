@@ -7,16 +7,17 @@ local rg_flags = vim
   :flatten()
   :totable()
 
-local builtin = require('telescope.builtin')
 local utils = require('skip.utils')
 
 local function find_files()
+  local builtin = require('telescope.builtin')
   builtin.find_files {
     find_command = vim.iter({ 'rg', rg_flags, '--files' }):flatten():totable(),
   }
 end
 
 local function man_pages()
+  local builtin = require('telescope.builtin')
   builtin.man_pages { man_cmd = { 'apropos', '-s', '1:4:5:7', '.' } }
 end
 
@@ -76,7 +77,9 @@ return {
         -- '<Leader><Leader>',
         '<Leader>o',
         function()
-          require('telescope').extensions.smart_open.smart_open()
+          require('telescope').extensions.smart_open.smart_open {
+            cwd_only = true,
+          }
         end,
         desc = 'Telescope smart_open',
       },
