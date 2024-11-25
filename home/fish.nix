@@ -68,7 +68,7 @@ in
         gi = "git init";
         gl = "git log";
         gp = "git push";
-        gpf = "git push --force";
+        gpf = "git push --force-with-lease";
         gpl = "git pull"; # (not the license)
         gr = "git remote";
         grb = "git rebase";
