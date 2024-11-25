@@ -10,11 +10,6 @@ return {
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
-      fuzzy = {
-        prebuilt_binaries = {
-          download = false,
-        },
-      },
       keymap = {
         ['<Tab>'] = { 'select_and_accept', 'fallback' },
         ['<C-n>'] = { 'select_next', 'fallback' },
