@@ -2,19 +2,15 @@ local rg_flags = vim
   .iter({
     '--ignore',
     '--hidden',
-    '--iglob=!**/{.git,.svn,.hg,CVS,.DS_Store,.next,.cargo,.cache,.build,.yarn/releases}/**',
+    '--no-require-git', -- jj
+    '--iglob=!**/{.git,.svn,.hg,CVS,.DS_Store,.next,.cargo,.cache,.build,.yarn/releases,.jj}/**',
   })
   :flatten()
   :totable()
 
 local utils = require('skip.utils')
 
-local function find_files()
-  local builtin = require('telescope.builtin')
-  builtin.find_files {
-    find_command = vim.iter({ 'rg', rg_flags, '--files' }):flatten():totable(),
-  }
-end
+local function find_files() end
 
 local function man_pages()
   local builtin = require('telescope.builtin')
@@ -67,22 +63,30 @@ return {
       { '<Leader>h', '<Cmd>Telescope help_tags<CR>' },
       { '<Leader>i', '<Cmd>Telescope oldfiles<CR>' },
       { '<Leader>k', '<Cmd>Telescope lsp_references<CR>' },
-      -- {
-      --   find_files,
-      --   desc = 'Telescope find_files',
-      -- },
-      { '<Leader>p', '<Cmd>Telescope trampoline<CR>' },
-      { '<Leader>/', '<Cmd>Telescope current_buffer_fuzzy_find<CR>' },
       {
-        -- '<Leader><Leader>',
         '<Leader>o',
         function()
-          require('telescope').extensions.smart_open.smart_open {
-            cwd_only = true,
+          require('telescope.builtin').find_files {
+            find_command = vim
+              .iter({ 'rg', rg_flags, '--files' })
+              :flatten()
+              :totable(),
           }
         end,
-        desc = 'Telescope smart_open',
+        desc = 'Telescope find_files',
       },
+      { '<Leader>p', '<Cmd>Telescope trampoline<CR>' },
+      { '<Leader>/', '<Cmd>Telescope current_buffer_fuzzy_find<CR>' },
+      -- {
+      --   -- '<Leader><Leader>',
+      --   '<Leader>o',
+      --   function()
+      --     require('telescope').extensions.smart_open.smart_open {
+      --       cwd_only = true,
+      --     }
+      --   end,
+      --   desc = 'Telescope smart_open',
+      -- },
 
       -- 2nd layer
       { '<Leader>lt', '<Cmd>Telescope builtin<CR>' },
@@ -195,6 +199,14 @@ return {
             })
             :flatten()
             :totable(),
+          pickers = {
+            find_files = {
+              find_command = vim
+                .iter({ 'rg', rg_flags, '--files' })
+                :flatten()
+                :totable(),
+            },
+          },
           mappings = {
             i = {
               -- immediately close the prompt when pressing <ESC> in insert mode
