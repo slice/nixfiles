@@ -2,6 +2,7 @@
 return {
   {
     'echasnovski/mini.animate',
+    cond = vim.g.vscode == nil,
     opts = function()
       local animate = require('mini.animate')
 

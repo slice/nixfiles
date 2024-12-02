@@ -9,35 +9,21 @@ end
 require 'skip.options'
 
 -- bootstrap lazy
-local function ensure_installed(plugin, branch)
-  local _, repo = string.match(plugin, '(.+)/(.+)')
-  local repo_path = vim.fn.stdpath('data') .. '/lazy/' .. repo
-  if not (vim.uv or vim.loop).fs_stat(repo_path) then
-    vim.notify('Installing ' .. plugin .. ' ' .. branch)
-    local repo_url = 'https://github.com/' .. plugin .. '.git'
-    local out = vim.fn.system({
-      'git',
-      'clone',
-      '--filter=blob:none',
-      '--branch=' .. branch,
-      repo_url,
-      repo_path,
-    })
-    if vim.v.shell_error ~= 0 then
-      vim.api.nvim_echo({
-        { 'Failed to clone ' .. plugin .. ':\n', 'ErrorMsg' },
-        { out,                                   'WarningMsg' },
-        { '\nPress any key to exit...' },
-      }, true, {})
-      vim.fn.getchar()
-      os.exit(1)
-    end
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
   end
-  return repo_path
 end
-
-local lazy_path = ensure_installed('folke/lazy.nvim', 'stable')
-vim.opt.runtimepath:prepend({ lazy_path })
+vim.opt.rtp:prepend(lazypath)
 
 -- care should be taken so these are loadable sans plugins (or if they error)
 require 'skip.mappings'

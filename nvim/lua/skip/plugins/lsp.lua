@@ -155,7 +155,7 @@ return {
           },
           javascript = {
             format = { enable = false },
-          }
+          },
         },
         ---@param client vim.lsp.Client
         ---@param buffer number
@@ -386,8 +386,8 @@ return {
               )
             end,
           }),
-          -- require("none-ls.code_actions.eslint_d"),
-          -- require("none-ls.formatting.eslint_d"),
+          require('none-ls.code_actions.eslint_d'),
+          require('none-ls.formatting.eslint_d'),
         },
         capabilities = lsp.capabilities,
         should_attach = function(bufnr)

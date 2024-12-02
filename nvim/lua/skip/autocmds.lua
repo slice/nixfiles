@@ -270,7 +270,7 @@ autocmds('SkipFiletypes', {
     'FileType',
     {
       pattern = 'gitcommit',
-      command = 'setlocal spell formatoptions=tn | normal ] ',
+      command = 'setlocal spell formatexpr= formatoptions=tn | normal ] ',
     },
   },
   {

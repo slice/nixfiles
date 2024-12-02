@@ -82,20 +82,6 @@ function M.setup_lsp_buf(client, bufnr)
       )
     end,
   })
-  vim.api.nvim_create_autocmd('CursorHoldI', {
-    buffer = bufnr,
-    desc = 'Open diagnostic float when holding cursor',
-    callback = function()
-      vim.lsp.buf.document_highlight()
-    end,
-  })
-  vim.api.nvim_create_autocmd('CursorMoved', {
-    buffer = bufnr,
-    desc = 'Clears references',
-    callback = function()
-      vim.lsp.buf.clear_references()
-    end,
-  })
 
   -- vim.api.nvim_create_autocmd('BufWritePre', {
   --   buffer = bufnr,

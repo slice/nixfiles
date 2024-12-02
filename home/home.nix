@@ -58,6 +58,7 @@ let
     # tools to help with programming
     tooling = [
       argocd
+      git-lfs
       bash-language-server
       biome
       bun

@@ -93,6 +93,7 @@ return {
 
   {
     'echasnovski/mini.indentscope',
+    cond = vim.g.vscode == nil,
     opts = function()
       local indentscope = require('mini.indentscope')
 
