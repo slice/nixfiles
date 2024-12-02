@@ -49,7 +49,6 @@ let
       deno
       luajitPackages.moonscript
       luajitPackages.fennel
-      zig # the best c compiler?
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
       #   cabal-install lens wreq aeson lens-aeson bytestring text tagsoup
       #   http-client time haskell-language-server
@@ -75,6 +74,7 @@ let
       nix-diff
       nixd
       nodePackages.prettier
+      jujutsu
       shellcheck
       stylua
       tree-sitter
