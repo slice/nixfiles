@@ -7,11 +7,13 @@
     userEmail = "tinyslices@gmail.com";
 
     delta = {
-      enable = false;
+      enable = true;
       options = {
         line-numbers = true;
         features = "decorations";
-        syntax-theme = "ansi";
+        hyperlinks = true;
+        syntax-theme = "zenburn";
+        side-by-side = true;
       };
     };
 

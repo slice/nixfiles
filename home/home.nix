@@ -59,6 +59,7 @@ let
     tooling = [
       argocd
       git-lfs
+      delta
       bash-language-server
       biome
       bun
@@ -75,7 +76,7 @@ let
       nix-diff
       nixd
       nodePackages.prettier
-      jujutsu
+      (specialArgs.inputs.jujutsu.packages.${pkgs.system}.jujutsu)
       shellcheck
       stylua
       tree-sitter

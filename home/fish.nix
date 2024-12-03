@@ -52,6 +52,8 @@ in
 
         agp = "autocommit; and git push -v";
 
+        j = "jj";
+
         # vcs
         g = "git";
         ga = "git add";
