@@ -113,3 +113,7 @@ end
 
 test -d ~/src; and set -ga CDPATH ~/src{/prj,/lib,/scraps,}
 test -d ~/Developer; and set -ga CDPATH ~/Developer{/prj,/lib,/scraps,}
+
+if type -q jj
+  COMPLETE=fish jj | source
+end
