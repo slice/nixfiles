@@ -61,7 +61,6 @@ return {
       lsc.util.default_config =
         vim.tbl_deep_extend('force', lsc.util.default_config, {
           capabilities = lsp.capabilities,
-          document_highlight = { enabled = true },
           codelens = { enabled = true },
         })
 

@@ -21,7 +21,7 @@ map('t', '<Esc>', '<C-\\><C-n>')
 
 map({ '!', 'v' }, '<C-j>', function()
   local mode = vim.api.nvim_get_mode().mode
-  if mode == 'v' or mode == 's' then
+  if mode:find('^[vVsS]') then
     utils.send [["+p]]
   elseif mode == 'c' then
     utils.send [[<C-R><C-R>+]]

@@ -59,8 +59,6 @@ function _G.skippy()
   lush(require('skip.skippy'))
 end
 
-_G.skippy()
-
--- vim.cmd [[colorscheme skipbones]]
+vim.cmd [[colorscheme apparition]]
 
 require('skip.assimilate').create_autocmd()
