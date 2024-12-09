@@ -72,7 +72,6 @@ function M.setup_lsp_buf(client, bufnr)
     buffer = bufnr,
     desc = 'Open diagnostic float when holding cursor',
     callback = function()
-      vim.lsp.buf.document_highlight()
       if M.has_open_focusable_float() then
         return
       end

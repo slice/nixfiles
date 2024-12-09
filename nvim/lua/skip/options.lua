@@ -25,7 +25,7 @@ opt.diffopt = {
   'algorithm:patience',
 }
 opt.listchars =
-{ tab = '  ', trail = '·', nbsp = '+', precedes = '‹', extends = '›' }
+  { tab = '  ', trail = '·', nbsp = '+', precedes = '‹', extends = '›' }
 opt.foldtext = ''
 opt.fillchars:append { fold = '-' }
 opt.modeline = true
@@ -58,13 +58,15 @@ do
   _G._ICON = function()
     local fname = vim.api.nvim_buf_get_name(0)
     local ext = fname:match('%.(%w+)$')
-    local icon = require 'nvim-web-devicons'.get_icon(fname, ext, { default = true })
+    local icon =
+      require 'nvim-web-devicons'.get_icon(fname, ext, { default = true })
     local mode = vim.api.nvim_get_mode()
     local mode_hl = mode.mode:find('i') == 1 and '%#StatusLineInsert#' or ''
     return mode_hl .. icon .. ' '
   end
 
-  opt.statusline = [[%{%v:lua._ICON()%}%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %l/%L,%c #%n%<]]
+  opt.statusline =
+    [[%{%v:lua._ICON()%}%f%( %m%)%( [%R%H%W]%)%=%( %{v:lua.RIGHT_STATUSLINE()}%) %y %l/%L,%c #%n%<]]
 end
 opt.timeoutlen = 500
 opt.undofile = true
@@ -88,30 +90,3 @@ opt.shiftwidth = 2
 vim.g.loaded_netrwPlugin = true
 
 vim.g.markdown_fenced_languages = { 'ts=typescript' }
-
-do
-  function _G._STATUSCOLUMN()
-    local num = vim.v.lnum
-    local num_relative = vim.v.lnum - vim.fn.line('.')
-
-    if num_relative == 0 then
-      return num
-    else
-      local positive = num_relative > 0
-      local symbol = positive and '󰐕 ' or '󰍴 '
-      return symbol .. tostring(math.abs(num_relative))
-    end
-  end
-
-  function _G._SET_STATUSCOLUMN(winid)
-    -- %= right aligns (important)
-    local value = [[%C%s %=%{%v:lua._STATUSCOLUMN()%}│ ]]
-    if winid == nil then
-      vim.o.statuscolumn = value
-    else
-      vim.wo[winid][0].statuscolumn = value
-    end
-  end
-
-  _G._SET_STATUSCOLUMN()
-end

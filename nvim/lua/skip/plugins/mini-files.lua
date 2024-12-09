@@ -156,7 +156,6 @@ return {
               vim.wo[win_id].number = is_active
               vim.wo[win_id].relativenumber = is_active
               if is_active then
-                _G._SET_STATUSCOLUMN(win_id)
                 highlights['DevIconDefault'] = 'String'
               else
                 if monochromatic_icons == nil then

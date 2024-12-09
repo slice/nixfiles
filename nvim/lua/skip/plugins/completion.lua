@@ -5,12 +5,20 @@ return {
   {
     'saghen/blink.cmp',
     lazy = false, -- plugin is already lazy
-    dependencies = 'rafamadriz/friendly-snippets',
+    dependencies = {
+      'rafamadriz/friendly-snippets',
+      'folke/lazydev.nvim',
+      {
+        'mikavilpas/blink-ripgrep.nvim',
+        commit = '796cc24bb56cda813f768d6bd6aed12c32ad93b4',
+      },
+    },
     version = 'v0.*',
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
       keymap = {
+        preset = 'default',
         ['<Tab>'] = { 'select_and_accept', 'fallback' },
         ['<C-n>'] = { 'select_next', 'fallback' },
         ['<C-p>'] = { 'select_prev', 'fallback' },
@@ -18,79 +26,92 @@ return {
         ['<C-b>'] = { 'scroll_documentation_up' },
         ['<C-f>'] = { 'scroll_documentation_down' },
       },
-      highlight = {
-        use_nvim_cmp_as_default = true,
+      --- @diagnostic disable-next-line:missing-fields
+      signature = {
+        enabled = true,
       },
-      trigger = {
-        completion = { keyword_range = 'full' },
-        signature_help = { enabled = true },
-      },
-      accept = { auto_brackets = { enabled = true } },
-      windows = { autocomplete = { max_height = 25 } },
-      nerd_font_variant = 'normal',
+      --- @diagnostic disable-next-line:missing-fields
       sources = {
+        completion = {
+          enabled_providers = {
+            'lsp',
+            'lazydev',
+            'path',
+            'snippets',
+            'buffer',
+            'ripgrep',
+          },
+        },
         providers = {
-          lsp = {
-            name = 'LSP',
-            module = 'blink.cmp.sources.lsp',
-            transform_items = function(_, items)
-              ---@param item blink.cmp.CompletionItem
-              return vim.tbl_filter(function(item)
-                return item.kind ~= 14 -- keyword
-              end, items)
-            end,
+          lsp = { fallback_for = { 'lazydev' } },
+          lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink' },
+          ripgrep = {
+            module = 'blink-ripgrep',
+            name = 'rg',
+            ---@module "blink-ripgrep"
+            ---@type blink-ripgrep.Options
+            opts = {
+              prefix_min_len = 4,
+              content_size = 5,
+              max_filesize = '1M',
+            },
           },
         },
       },
-      kind_icons = {
-        Text = ' ',
-        Method = '\u{ea8c}',
-        Function = '\u{ea8c}',
-        Constructor = '\u{ea8c}',
+      --- @diagnostic disable-next-line:missing-fields
+      completion = {
+        --- @diagnostic disable-next-line:missing-fields
+        keyword = {
+          range = 'full',
+        },
+        --- @diagnostic disable-next-line:missing-fields
+        menu = {
+          documentation = {
+            auto_show = true,
+          },
+          ghost_text = { enabled = true },
+        },
+      },
+      --- @diagnostic disable-next-line:missing-fields
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = 'normal',
+        -- {{{
+        kind_icons = {
+          Text = ' ',
+          Method = '\u{ea8c}',
+          Function = '\u{ea8c}',
+          Constructor = '\u{ea8c}',
 
-        Field = '\u{eb5f}',
-        Variable = '\u{ea88}',
-        Property = '\u{f0ad}',
+          Field = '\u{eb5f}',
+          Variable = '\u{ea88}',
+          Property = '\u{f0ad}',
 
-        Class = '\u{eb5b}',
-        Interface = '\u{eb61}',
-        Struct = '\u{ea91}',
+          Class = '\u{eb5b}',
+          Interface = '\u{eb61}',
+          Struct = '\u{ea91}',
 
-        Module = '\u{f0169}',
-        Unit = '󰪚',
-        Value = '󰦨',
-        Enum = '\u{ea95}',
-        EnumMember = '\u{eb5e}',
+          Module = '\u{f0169}',
+          Unit = '󰪚',
+          Value = '󰦨',
+          Enum = '\u{ea95}',
+          EnumMember = '\u{eb5e}',
 
-        Keyword = '\u{eb62}',
-        Constant = '\u{eb5d}',
+          Keyword = '\u{eb62}',
+          Constant = '\u{eb5d}',
 
-        Snippet = '\u{eb66}',
-        Color = '\u{eb5c}',
-        File = '\u{eae9}',
-        Reference = '\u{eb36}',
-        Folder = '\u{ea83}',
-        Event = '\u{ea86}',
-        Operator = '\u{eb64}',
-        TypeParameter = '\u{ea92}',
+          Snippet = '\u{eb66}',
+          Color = '\u{eb5c}',
+          File = '\u{eae9}',
+          Reference = '\u{eb36}',
+          Folder = '\u{ea83}',
+          Event = '\u{ea86}',
+          Operator = '\u{eb64}',
+          TypeParameter = '\u{ea92}',
+        },
+        -- }}}
       },
     },
-    config = function(_, opts)
-      local autocomplete = require('blink.cmp.windows.autocomplete')
-      local original_open = autocomplete.open
-      ---@diagnostic disable-next-line:duplicate-set-field
-      function autocomplete.open()
-        local value = original_open()
-        if value == nil then
-          return
-        end
-        -- value:set_option_values('winblend', 0)
-        return value
-      end
-
-      local blink = require('blink.cmp')
-      blink.setup(opts)
-    end,
   },
 
   {

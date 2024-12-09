@@ -53,6 +53,7 @@ in
         agp = "autocommit; and git push -v";
 
         j = "jj";
+        jn = "jj new";
 
         # vcs
         g = "git";
