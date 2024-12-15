@@ -117,3 +117,15 @@ test -d ~/Developer; and set -ga CDPATH ~/Developer{/prj,/lib,/scraps,}
 if type -q jj
   COMPLETE=fish jj | source
 end
+
+# fzf {{{
+
+set -gx FZF_DEFAULT_OPTS "--color=fg:-1,fg+:-1,bg:-1,bg+:#4e1012,gutter:-1 \
+--color=hl:#ffee00,hl+:#ffee00:bold,info:#ffee00:bold,marker:#6777ef:bold \
+--color=prompt:#ffee00:bold,spinner:#ffee00,pointer:-1 \
+--color=border:#3b3b3b,label:-1:bold,query:-1:regular,header:#22f19e:bold \
+--preview-window='border-double:wrap' --prompt='? ' --marker='⭐️' --pointer='🦴' \
+--ellipsis '…' \
+--separator='─' --scrollbar='│' --layout='reverse' --info='right' --height=50%"
+
+# }}}

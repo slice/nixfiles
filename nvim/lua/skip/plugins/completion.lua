@@ -39,7 +39,7 @@ return {
             'path',
             'snippets',
             'buffer',
-            'ripgrep',
+            -- 'ripgrep',
           },
         },
         providers = {
@@ -51,9 +51,21 @@ return {
             ---@module "blink-ripgrep"
             ---@type blink-ripgrep.Options
             opts = {
-              prefix_min_len = 4,
-              content_size = 5,
-              max_filesize = '1M',
+              prefix_min_len = 5,
+              get_command = function(_, prefix)
+                return {
+                  'rg',
+                  '--no-config',
+                  '--json',
+                  '--context=2',
+                  '--word-regexp',
+                  '--max-filesize=1M',
+                  '--ignore-case',
+                  '--no-require-git', -- !
+                  '--',
+                  prefix .. '[\\w_-]+',
+                }
+              end,
             },
           },
         },

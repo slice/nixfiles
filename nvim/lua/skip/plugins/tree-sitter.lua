@@ -59,7 +59,6 @@ return {
     event = 'VeryLazy',
     enabled = true,
     opts = {
-      max_lines = 3,
       mode = 'topline',
     },
     keys = {

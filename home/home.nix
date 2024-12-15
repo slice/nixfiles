@@ -21,6 +21,8 @@ let
       jo
       eza
       ripgrep
+      gawk
+      fzf
       rlwrap
       curl
       aria
@@ -76,7 +78,7 @@ let
       nix-diff
       nixd
       nodePackages.prettier
-      (specialArgs.inputs.jujutsu.packages.${pkgs.system}.jujutsu)
+      jujutsu
       shellcheck
       stylua
       tree-sitter

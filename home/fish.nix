@@ -45,6 +45,8 @@ in
         c = "pbcopy";
         p = "pbpaste";
 
+        merge = "history --merge";
+
         hms = "hm-switch";
         nds = "nd-switch";
         hmu = "hm-update";
@@ -121,6 +123,13 @@ in
         #     ${lib.getBin pkgs.neovim}/bin/nvim man://$argv[1]
         #   '';
         # };
+
+        stab = ''
+          begin
+            printf '  '
+            ps -e -o user,pid,%cpu,%mem,rss,start,etime,command
+          end | fzf --header-lines=1 --preview-window=right,25% --pointer='🔪' | awk "{print \$2}" | xargs -r kill -9
+        '';
 
         spek = ''
           set -l id (random)
