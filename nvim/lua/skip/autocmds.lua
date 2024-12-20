@@ -1,3 +1,4 @@
+local utils = require('skip.utils')
 local autocmds = require('skip.utils').autocmds
 
 local function hi(cmd)
@@ -279,7 +280,10 @@ autocmds('SkipFiletypes', {
   },
   {
     'FileType',
-    { pattern = 'dirvish,man,text,git,gitignore', command = 'setlocal nospell' },
+    {
+      pattern = 'dirvish,man,text,git,gitignore',
+      command = 'setlocal nospell',
+    },
   },
   -- swift interpolations look like "\(...)", and we want text objects and
   -- motions involving parens to not think they're escaped

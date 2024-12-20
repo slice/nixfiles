@@ -19,9 +19,11 @@ end
 
 ---@type LazySpec
 return {
+
   -- extensible multifuzzy finder over pretty much anything
   {
     'nvim-telescope/telescope.nvim',
+    cond = not HEADLESS,
 
     -- TODO: upstream or fork
     -- branch = '0.1.x',
@@ -265,6 +267,7 @@ return {
   {
     'prochri/telescope-all-recent.nvim',
     enabled = true,
+    cond = not HEADLESS,
     event = 'VeryLazy',
     dependencies = {
       'nvim-telescope/telescope.nvim',
@@ -288,6 +291,7 @@ return {
   {
     'nvim-telescope/telescope-fzf-native.nvim',
     lazy = true,
+    cond = not HEADLESS,
     build = 'make',
     opts = {
       override_generic_sorter = true,
@@ -303,5 +307,5 @@ return {
     end,
   },
 
-  'slice/telescope-trampoline.nvim',
+  { 'slice/telescope-trampoline.nvim', cond = not HEADLESS },
 }

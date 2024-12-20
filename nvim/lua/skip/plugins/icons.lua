@@ -2,6 +2,7 @@
 return {
   {
     'nvim-tree/nvim-web-devicons',
+    cond = not HEADLESS,
     lazy = true,
     opts = function()
       local icons = require('nvim-web-devicons').get_icons()

@@ -56,6 +56,7 @@ return {
 
   {
     'nvim-treesitter/nvim-treesitter-context',
+    cond = not HEADLESS,
     event = 'VeryLazy',
     enabled = true,
     opts = {

@@ -13,7 +13,7 @@
         features = "decorations";
         hyperlinks = true;
         syntax-theme = "zenburn";
-        side-by-side = true;
+        side-by-side = false;
       };
     };
 

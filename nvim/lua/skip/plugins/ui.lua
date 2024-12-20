@@ -1,6 +1,7 @@
 return {
   {
     'j-hui/fidget.nvim',
+    cond = not HEADLESS,
     config = function()
       local fidget = require('fidget')
 
@@ -39,6 +40,7 @@ return {
   {
     'levouh/tint.nvim',
     enabled = false,
+    cond = not HEADLESS,
     lazy = false,
     opts = {
       tint = -80,
@@ -56,6 +58,7 @@ return {
   -- overrides vim.ui
   {
     'stevearc/dressing.nvim',
+    cond = not HEADLESS,
     opts = {
       input = { border = 'single' },
       select = { backend = 'telescope' },
@@ -65,6 +68,7 @@ return {
   {
     'folke/which-key.nvim',
     event = 'VeryLazy',
+    cond = not HEADLESS,
     keys = {
       { '<Leader>l', group = 'second layer' },
       { '<Leader>ll', group = 'third layer' },
@@ -115,6 +119,7 @@ return {
 
   {
     'slice/nvim-popterm.lua',
+    cond = not HEADLESS,
     config = function()
       local popterm = require 'popterm'
       popterm.config.window_height = 0.8

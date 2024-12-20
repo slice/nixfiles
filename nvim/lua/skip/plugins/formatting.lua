@@ -3,6 +3,7 @@ local utils = require 'skip.utils'
 return {
   {
     'stevearc/conform.nvim',
+    cond = not HEADLESS,
     enabled = true,
     opts = {
       formatters_by_ft = {

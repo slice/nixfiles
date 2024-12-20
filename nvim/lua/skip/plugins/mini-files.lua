@@ -8,6 +8,7 @@ return {
   {
     -- inform LSPs of file operations
     'igorlfs/nvim-lsp-file-operations', -- pls
+    cond = not HEADLESS,
     dependencies = { 'echasnovski/mini.files', 'nvim-lua/plenary.nvim' },
     branch = 'fix/31',
     config = function()
@@ -55,6 +56,7 @@ return {
   {
     'echasnovski/mini.files',
     version = '*',
+    cond = not HEADLESS,
     -- stylua: ignore
     keys = {
       { "<Leader>d", function() require('mini.files').open() end,                             desc = "Open mini.files" },

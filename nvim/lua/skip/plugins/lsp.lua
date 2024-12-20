@@ -3,6 +3,7 @@ local patched_lspconfig = false
 return {
   {
     'neovim/nvim-lspconfig',
+    cond = not HEADLESS,
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       local lsp = require 'skip.lsp'
@@ -127,7 +128,6 @@ return {
         root_dir = lsc.util.root_pattern('package.json'),
         single_file_support = false,
         settings = {
-          complete_function_calls = true,
           vtsls = {
             enableMoveToFileCodeAction = true,
             autoUseWorkspaceTsdk = true,
@@ -139,9 +139,6 @@ return {
           },
           typescript = {
             updateImportsOnFileMove = { enabled = 'always' },
-            suggest = {
-              completeFunctionCalls = true,
-            },
             inlayHints = {
               enumMemberValues = { enabled = true },
               functionLikeReturnTypes = { enabled = true },
@@ -342,6 +339,7 @@ return {
 
   {
     'folke/lazydev.nvim',
+    cond = not HEADLESS,
     dependencies = { 'Bilal2453/luvit-meta', lazy = true },
     ft = 'lua',
     opts = {
@@ -354,6 +352,7 @@ return {
 
   {
     'nvimtools/none-ls.nvim',
+    cond = not HEADLESS,
     dependencies = {
       'nvimtools/none-ls-extras.nvim',
     },

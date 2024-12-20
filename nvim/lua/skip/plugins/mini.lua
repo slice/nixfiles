@@ -4,6 +4,7 @@ return {
   {
     'echasnovski/mini.base16',
     priority = 10000,
+    cond = not HEADLESS,
   },
 
   {
@@ -78,22 +79,8 @@ return {
   },
 
   {
-    'echasnovski/mini.jump2d',
-    enabled = false,
-    opts = {
-      allowed_lines = {
-        blank = false,
-        cursor_before = true,
-        cursor_at = true,
-        cursor_after = true,
-        fold = true,
-      },
-    },
-  },
-
-  {
     'echasnovski/mini.indentscope',
-    cond = vim.g.vscode == nil,
+    cond = not HEADLESS,
     opts = function()
       local indentscope = require('mini.indentscope')
 
@@ -135,6 +122,7 @@ return {
 
   {
     'echasnovski/mini.trailspace',
+    cond = not HEADLESS,
     config = true,
   },
 
@@ -151,11 +139,36 @@ return {
   {
     'echasnovski/mini.map',
     -- stylua: ignore
+    cond = not HEADLESS,
     keys = {
-      { "<Leader>mt", function() require("mini.map").toggle() end,       desc = "Toggle minimap" },
-      { "<Leader>mf", function() require("mini.map").toggle_focus() end, desc = "Toggle minimap focus" },
-      { "<Leader>mr", function() require("mini.map").refresh() end,      desc = "Refresh minimap" },
-      { "<Leader>ms", function() require("mini.map").toggle_side() end,  desc = "Switch minimap sides" },
+      {
+        '<Leader>mt',
+        function()
+          require('mini.map').toggle()
+        end,
+        desc = 'Toggle minimap',
+      },
+      {
+        '<Leader>mf',
+        function()
+          require('mini.map').toggle_focus()
+        end,
+        desc = 'Toggle minimap focus',
+      },
+      {
+        '<Leader>mr',
+        function()
+          require('mini.map').refresh()
+        end,
+        desc = 'Refresh minimap',
+      },
+      {
+        '<Leader>ms',
+        function()
+          require('mini.map').toggle_side()
+        end,
+        desc = 'Switch minimap sides',
+      },
     },
     config = function()
       local map = require('mini.map')
@@ -179,6 +192,7 @@ return {
 
   {
     'echasnovski/mini.hipatterns',
+    cond = not HEADLESS,
     config = function()
       local hipatterns = require('mini.hipatterns')
 

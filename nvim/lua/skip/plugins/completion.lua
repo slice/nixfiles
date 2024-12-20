@@ -4,6 +4,7 @@
 return {
   {
     'saghen/blink.cmp',
+    cond = not HEADLESS,
     lazy = false, -- plugin is already lazy
     dependencies = {
       'rafamadriz/friendly-snippets',

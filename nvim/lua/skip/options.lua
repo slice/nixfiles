@@ -45,7 +45,7 @@ opt.signcolumn = 'yes:2'
 opt.showbreak = '>'
 opt.sidescrolloff = 10
 opt.smartcase = true
-do
+if not HEADLESS then
   _G.RIGHT_STATUSLINE = function()
     local ok, fugitive_output = pcall(vim.fn.FugitiveStatusline)
     if not ok then

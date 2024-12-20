@@ -1,13 +1,21 @@
 {
-  config,
   pkgs,
   lib,
   ...
 }:
 
 let
-  textEditor = config.home.sessionVariables.EDITOR;
   nixfiles = "~/src/prj/nixfiles";
+  editorPkg = pkgs.writeShellScriptBin "editor" ''
+    if [ -z "$NVIM_LOG_FILE" ]; then
+      ${lib.getBin pkgs.neovim-remote}/bin/nvr --remote-tab-wait "$@"
+    elif [ "$TERM_PROGRAM" = "vscode" ]; then
+      code --wait "$@"
+    else
+      $EDITOR "$@"
+    fi
+  '';
+  editor = "${lib.getBin editorPkg}/bin/editor";
 in
 {
   programs.fish = {
@@ -23,8 +31,8 @@ in
         lt = "ll --time-style=iso"; # force absolute timestamps
         la = "ll -aa";
 
-        e = textEditor;
-        se = "sudo ${textEditor}";
+        e = "${editor}";
+        se = "sudo ${editor}";
       }
       // lib.optionalAttrs pkgs.stdenv.isDarwin {
         lsregister = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
@@ -100,7 +108,7 @@ in
       };
 
     plugins = [
-      ({
+      {
         name = "z";
         src = pkgs.fetchFromGitHub {
           owner = "jethrokuan";
@@ -108,7 +116,7 @@ in
           rev = "45a9ff6d0932b0e9835cbeb60b9794ba706eef10";
           sha256 = "1kjyl4gx26q8175wcizvsm0jwhppd00rixdcr1p7gifw6s308sd5";
         };
-      })
+      }
     ];
 
     interactiveShellInit = builtins.readFile ./config.fish;

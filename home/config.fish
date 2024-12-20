@@ -103,7 +103,8 @@ functions --erase m
 
 # directly manipulate PATH such that Nix bin paths are _always_ consulted first
 # /run/wrappers/bin is important on NixOS, but is ~irrelevant on nix-darwin
-fish_add_path -mP ~/.nix-profile/bin /run/wrappers/bin /run/current-system/sw/bin
+# TODO: this messes up nix shell :-(
+# fish_add_path -mP ~/.nix-profile/bin /run/wrappers/bin /run/current-system/sw/bin
 
 set -ga CDPATH .
 
@@ -129,3 +130,7 @@ set -gx FZF_DEFAULT_OPTS "--color=fg:-1,fg+:-1,bg:-1,bg+:#4e1012,gutter:-1 \
 --separator='─' --scrollbar='│' --layout='reverse' --info='right' --height=50%"
 
 # }}}
+
+if test $TERM_PROGRAM = "vscode"
+  set -gx EDITOR "code --wait"
+end

@@ -1,6 +1,9 @@
 -- mmm yes
 
 return {
+  -- idk if this even works
+  cond = not HEADLESS,
+
   { 'lunacookies/vim-apparition', lazy = true },
   { 'slice/bubblegum2', lazy = true },
   {

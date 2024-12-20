@@ -2,7 +2,7 @@
 return {
   {
     'echasnovski/mini.animate',
-    cond = vim.g.vscode == nil,
+    cond = not HEADLESS,
     opts = function()
       local animate = require('mini.animate')
 
@@ -16,6 +16,6 @@ return {
         open = { enable = true },
         close = { enable = true },
       }
-    end
-  }
+    end,
+  },
 }
