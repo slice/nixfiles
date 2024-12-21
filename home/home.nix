@@ -10,6 +10,16 @@ let
   server = specialArgs.server;
 
   textEditor = "nvim"; # pretty good if you ask me
+  editorPkg = pkgs.writeShellScriptBin "editor" ''
+    if [ -n "$NVIM_LOG_FILE" ]; then
+      ${lib.getBin pkgs.neovim-remote}/bin/nvr --remote-tab-wait "$@"
+    elif [ "$TERM_PROGRAM" = "vscode" ]; then
+      code --wait "$@"
+    else
+      ${textEditor} "$@"
+    fi
+  '';
+  editor = "${lib.getBin editorPkg}/bin/editor";
 
   packagesets = with pkgs; rec {
     # packages that i need on every machine
@@ -156,7 +166,7 @@ in
 
     sessionVariables =
       {
-        EDITOR = textEditor;
+        EDITOR = editor;
         LESS = "--ignore-case";
         MANPAGER = "nvim +Man!";
         # let Neovim format the man page text, not groff - so we can wrap on

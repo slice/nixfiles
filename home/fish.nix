@@ -6,16 +6,6 @@
 
 let
   nixfiles = "~/src/prj/nixfiles";
-  editorPkg = pkgs.writeShellScriptBin "editor" ''
-    if [ -z "$NVIM_LOG_FILE" ]; then
-      ${lib.getBin pkgs.neovim-remote}/bin/nvr --remote-tab-wait "$@"
-    elif [ "$TERM_PROGRAM" = "vscode" ]; then
-      code --wait "$@"
-    else
-      $EDITOR "$@"
-    fi
-  '';
-  editor = "${lib.getBin editorPkg}/bin/editor";
 in
 {
   programs.fish = {
@@ -31,8 +21,8 @@ in
         lt = "ll --time-style=iso"; # force absolute timestamps
         la = "ll -aa";
 
-        e = "${editor}";
-        se = "sudo ${editor}";
+        e = "$EDITOR";
+        se = "sudo $EDITOR";
       }
       // lib.optionalAttrs pkgs.stdenv.isDarwin {
         lsregister = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";

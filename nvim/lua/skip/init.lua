@@ -70,6 +70,6 @@ function _G.skippy()
 end
 
 if not HEADLESS then
-  vim.cmd [[colorscheme zenburn]]
+  vim.cmd [[colorscheme seoul256]]
   require('skip.assimilate').create_autocmd()
 end
