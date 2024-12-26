@@ -65,6 +65,7 @@ return {
         -- slows down editing swift files a loooooooot
         return vim.bo[buf_id].filetype ~= 'swift'
       end,
+      multiline_threshold = 2,
     },
     keys = {
       {

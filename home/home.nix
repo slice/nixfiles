@@ -84,7 +84,7 @@ let
       fluxcd
       gh
       kubernetes-helm
-      # lua-language-server
+      lua-language-server
       nix-diff
       nixd
       nodePackages.prettier

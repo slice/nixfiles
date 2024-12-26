@@ -1,12 +1,11 @@
 {
   pkgs,
   config,
-  specialArgs,
   ...
 }:
 
 let
-  nvim = specialArgs.inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+  nvim = pkgs.neovim-unwrapped;
   lua = code: ''
     lua <<EOF
     ${code}

@@ -11,10 +11,10 @@ return {
       'folke/lazydev.nvim',
       {
         'mikavilpas/blink-ripgrep.nvim',
-        commit = '796cc24bb56cda813f768d6bd6aed12c32ad93b4',
+        commit = '8a47d404a359c70c796cb0979ddde4c788fd44e5',
       },
     },
-    version = 'v0.*',
+    version = '*',
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -33,40 +33,32 @@ return {
       },
       --- @diagnostic disable-next-line:missing-fields
       sources = {
-        completion = {
-          enabled_providers = {
-            'lsp',
-            'lazydev',
-            'path',
-            'snippets',
-            'buffer',
-            -- 'ripgrep',
-          },
-        },
+        default = { 'lazydev', 'lsp', 'path', 'buffer', 'snippets', 'ripgrep' },
         providers = {
-          lsp = { fallback_for = { 'lazydev' } },
-          lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink' },
+          lazydev = {
+            name = 'LazyDev',
+            module = 'lazydev.integrations.blink',
+            score_offset = 100,
+          },
           ripgrep = {
             module = 'blink-ripgrep',
             name = 'rg',
+            transform_items = function(_, items)
+              for _, item in ipairs(items) do
+                item.kind =
+                  require('blink.cmp.types').CompletionItemKind.Reference
+              end
+              return items
+            end,
             ---@module "blink-ripgrep"
             ---@type blink-ripgrep.Options
             opts = {
-              prefix_min_len = 5,
-              get_command = function(_, prefix)
-                return {
-                  'rg',
-                  '--no-config',
-                  '--json',
-                  '--context=2',
-                  '--word-regexp',
-                  '--max-filesize=1M',
-                  '--ignore-case',
-                  '--no-require-git', -- !
-                  '--',
-                  prefix .. '[\\w_-]+',
-                }
-              end,
+              prefix_min_len = 3,
+              max_filesize = '1M',
+              project_root_marker = { '.git', '.jj', 'package.json' },
+              additional_rg_options = {
+                '--no-require-git', -- !
+              },
             },
           },
         },
@@ -79,10 +71,13 @@ return {
         },
         --- @diagnostic disable-next-line:missing-fields
         menu = {
-          documentation = {
-            auto_show = true,
-          },
-          ghost_text = { enabled = true },
+          auto_show = true,
+        },
+        documentation = {
+          auto_show = true,
+        },
+        ghost_text = {
+          enabled = true,
         },
       },
       --- @diagnostic disable-next-line:missing-fields
