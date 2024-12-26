@@ -58,7 +58,7 @@ let
       llvmPackages_12.llvm
       nodejs
       typescript
-      deno
+      # deno
       luajitPackages.moonscript
       luajitPackages.fennel
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
@@ -84,7 +84,7 @@ let
       fluxcd
       gh
       kubernetes-helm
-      lua-language-server
+      # lua-language-server
       nix-diff
       nixd
       nodePackages.prettier

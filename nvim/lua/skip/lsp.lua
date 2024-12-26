@@ -96,7 +96,7 @@ end
 
 M.banned_patterns = {
   '^/nix/store/',
-  '%.cargo/registry',
+  -- '%.cargo/registry',
   -- 'node_modules/'
   -- let this through for now, i wanna navigate between symbols in *.d.ts files
   -- TODO: make something more elaborate, because LSP is probably OK in library

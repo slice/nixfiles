@@ -37,7 +37,8 @@ return {
         end,
       },
 
-      indent = { enable = true },
+      -- https://github.com/alex-pinkus/tree-sitter-swift/issues/240
+      indent = { enable = true, disable = { 'swift', 'text' } },
 
       incremental_selection = {
         keymaps = {
@@ -60,7 +61,10 @@ return {
     event = 'VeryLazy',
     enabled = true,
     opts = {
-      mode = 'topline',
+      on_attach = function(buf_id)
+        -- slows down editing swift files a loooooooot
+        return vim.bo[buf_id].filetype ~= 'swift'
+      end,
     },
     keys = {
       {
