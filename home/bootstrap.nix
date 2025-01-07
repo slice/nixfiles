@@ -40,17 +40,7 @@ home-manager.lib.homeManagerConfiguration {
 
   # see: https://zimbatm.com/notes/1000-instances-of-nixpkgs
   # do we _need_ to do this? maybe as long as we only do it once (here), it's ok.
-  pkgs = import ((import nixpkgs nixpkgsOptions).applyPatches {
-    src = nixpkgs;
-    name = "nixpkgs-patched";
-    patches = [
-      # fix lua-language-server (https://github.com/NixOS/nixpkgs/issues/367960)
-      (builtins.fetchurl {
-        url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/368248.patch";
-        sha256 = "sha256-zcROV2cwI/O8c1BVUa1Rr1p27bdvA19AmfO0JBhg2fQ=";
-      })
-    ];
-  }) nixpkgsOptions;
+  pkgs = import nixpkgs nixpkgsOptions;
 
   extraSpecialArgs =
     let
