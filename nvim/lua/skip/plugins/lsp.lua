@@ -253,6 +253,7 @@ return {
               },
             },
           },
+          init_options = { provideFormatter = false },
           handlers = {
             ['textDocument/diagnostic'] = function(err, result, ctx, config)
               if
