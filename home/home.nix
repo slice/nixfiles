@@ -56,7 +56,7 @@ let
     languages = [
       python3
       llvmPackages_12.llvm
-      nodejs
+      nodejs_23
       typescript
       # deno
       luajitPackages.moonscript
