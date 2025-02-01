@@ -215,7 +215,7 @@ return {
       lsc.nixd.setup {}
       lsc.pyright.setup {}
       lsc.lua_ls.setup {
-        enabled = false,
+        enabled = true,
         settings = {
           format = { enable = false },
         },

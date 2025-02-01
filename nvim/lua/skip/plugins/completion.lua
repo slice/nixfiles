@@ -27,11 +27,9 @@ return {
         ['<C-b>'] = { 'scroll_documentation_up' },
         ['<C-f>'] = { 'scroll_documentation_down' },
       },
-      --- @diagnostic disable-next-line:missing-fields
       signature = {
         enabled = true,
       },
-      --- @diagnostic disable-next-line:missing-fields
       sources = {
         default = { 'lazydev', 'lsp', 'path', 'buffer', 'snippets', 'ripgrep' },
         providers = {
@@ -41,6 +39,32 @@ return {
             score_offset = 100,
           },
           ripgrep = {
+            enabled = function()
+              -- resolve /Users/skip into ~
+              local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ':~')
+
+              local permitted_ripgrep_roots = {
+                '~/Developer/prj',
+                '~/Developer/lib',
+                '~/Developer/work',
+                '~/src/prj',
+                '~/src/lib',
+                '~/src/work',
+              }
+
+              for _, root in pairs(permitted_ripgrep_roots) do
+                -- TODO: not escaping
+                if cwd:find(root) == 1 then
+                  return true
+                end
+              end
+
+              vim.notify_once(
+                'not within permitted ripgrep root; ripgrep completion source will be unavailable',
+                vim.log.levels.INFO
+              )
+              return false
+            end,
             module = 'blink-ripgrep',
             name = 'rg',
             transform_items = function(_, items)
