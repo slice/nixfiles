@@ -6,6 +6,8 @@
     userName = "Skip R";
     userEmail = "tinyslices@gmail.com";
 
+    lfs.enable = true;
+
     delta = {
       enable = true;
       options = {

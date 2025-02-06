@@ -77,11 +77,17 @@ return {
             ---@module "blink-ripgrep"
             ---@type blink-ripgrep.Options
             opts = {
-              prefix_min_len = 3,
-              max_filesize = '1M',
-              project_root_marker = { '.git', '.jj', 'package.json' },
+              prefix_min_len = 4,
+              max_filesize = '128K',
+              project_root_marker = {
+                '.git',
+                '.jj',
+                '.vscode',
+                '.github',
+              },
               additional_rg_options = {
                 '--no-require-git', -- !
+                '--glob=**.{ts,js,mjs,mts,tsx,jsx,json,sh,yaml,yml,md,m,mm,c,h,sass,scss,css,swift,html,kt,lua,cpp,hpp,hxx,cxx,cc,hh,go,hs,java,py,cjs,cjsx,cts}',
               },
             },
           },

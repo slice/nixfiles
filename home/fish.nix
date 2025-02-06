@@ -55,6 +55,9 @@ in
         j = "jj";
         jn = "jj new";
 
+        yyd = "yarn && yarn dev";
+        yd = "yarn dev";
+
         # vcs
         g = "git";
         ga = "git add";
