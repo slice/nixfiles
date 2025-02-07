@@ -9,7 +9,7 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         -- python = { "isort", "black" },
-        typescript = { 'prettier' },
+        typescript = { 'prettierd', 'prettier' },
         typescriptreact = {},
         javascript = {},
         javascriptreact = {},
@@ -18,6 +18,12 @@ return {
         css = {},
         markdown = { 'prettier' },
         nix = { 'nixfmt' },
+      },
+      formatters = {
+        prettierd = {
+          -- don't look in `node_modules/` for deno, i just install it globally
+          command = 'prettierd',
+        },
       },
       default_format_opts = {
         lsp_format = 'fallback',

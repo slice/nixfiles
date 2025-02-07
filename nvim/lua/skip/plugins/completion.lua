@@ -82,7 +82,8 @@ return {
               project_root_marker = {
                 '.git',
                 '.jj',
-                '.vscode',
+                -- '.vscode',
+                -- ~/.vscode is a thing that it stores stuff in
                 '.github',
               },
               additional_rg_options = {

@@ -58,7 +58,7 @@ let
       llvmPackages_12.llvm
       nodejs_23
       typescript
-      # deno
+      deno
       luajitPackages.moonscript
       luajitPackages.fennel
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [

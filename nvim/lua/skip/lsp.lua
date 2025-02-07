@@ -183,15 +183,15 @@ end
 
 if
   not try_adding_capabilities(function()
-    require('cmp_nvim_lsp').default_capabilities()
+    return require('cmp_nvim_lsp').default_capabilities()
   end)
 then
   try_adding_capabilities(function()
-    require('blink.cmp').get_lsp_capabilities()
+    return require('blink.cmp').get_lsp_capabilities()
   end)
 end
 try_adding_capabilities(function()
-  require('lsp-file-operations').default_capabilities()
+  return require('lsp-file-operations').default_capabilities()
 end)
 
 return M
