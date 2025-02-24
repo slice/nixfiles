@@ -1,5 +1,7 @@
 local utils = require 'skip.utils'
 
+local prettier = {}
+
 return {
   {
     'stevearc/conform.nvim',
@@ -9,14 +11,14 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         -- python = { "isort", "black" },
-        typescript = { 'prettierd', 'prettier' },
-        typescriptreact = {},
-        javascript = {},
-        javascriptreact = {},
+        typescript = prettier,
+        typescriptreact = prettier,
+        javascript = prettier,
+        javascriptreact = prettier,
         fennel = { 'fnlfmt' },
-        json = {},
-        css = {},
-        markdown = { 'prettier' },
+        json = prettier,
+        css = prettier,
+        markdown = { 'prettierd', 'prettier' },
         nix = { 'nixfmt' },
       },
       formatters = {
