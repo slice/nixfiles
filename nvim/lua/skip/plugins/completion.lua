@@ -26,6 +26,7 @@ return {
         ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
         ['<C-b>'] = { 'scroll_documentation_up' },
         ['<C-f>'] = { 'scroll_documentation_down' },
+        ['<C-k>'] = {}, -- i want digraphs
       },
       signature = {
         enabled = true,
@@ -106,9 +107,6 @@ return {
         },
         documentation = {
           auto_show = true,
-        },
-        ghost_text = {
-          enabled = true,
         },
       },
       --- @diagnostic disable-next-line:missing-fields

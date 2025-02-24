@@ -125,6 +125,7 @@ local tweaks = {
     link 'DiagnosticInfo Number',
     link 'diffRemoved DiffText',
     link 'diffAdded DiffAdd',
+    link 'CmpGhostText NonText',
     hi 'Error guifg=#e37170 guibg=#3d3535',
     hi 'DiagnosticUnderlineError gui=undercurl',
     hi 'DiagnosticUnderlineWarn gui=undercurl',

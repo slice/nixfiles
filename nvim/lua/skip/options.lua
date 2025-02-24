@@ -12,6 +12,7 @@ opt.diffopt:append { 'linematch:60' }
 opt.hidden = true
 opt.ignorecase = true
 opt.inccommand = 'nosplit'
+opt.shortmess:remove('F')
 opt.pumheight = 20
 opt.formatoptions = 'jcroql'
 opt.jumpoptions = 'view'

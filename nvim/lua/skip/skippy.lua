@@ -1,7 +1,7 @@
 local lush = require('lush')
 local hsl = lush.hsl
 
-local base = hsl('#061022')
+local base = hsl('#061022').li(3)
 local tan = hsl('#dbcaa5')
 local blue = tan.hue(214).sa(30)
 local offwhite_blue = hsl('#cbd2e2').da(2)
@@ -43,7 +43,11 @@ local spec = lush(function(injected_functions)
     NormalNC { Normal }, -- needed for tint.nvim
     NormalFloat { Normal, bg = Normal.bg.li(6) },
     FloatTitle { NormalFloat, bg = nil, bold = true, fg = chalk() },
-    FloatSubtitle { bg = FloatTitle.bg, italic = true, fg = FloatTitle.bg.de(50).li(30) }, -- custom
+    FloatSubtitle {
+      bg = FloatTitle.bg,
+      italic = true,
+      fg = FloatTitle.bg.de(50).li(30),
+    }, -- custom
 
     Visual { bg = bg_3() },
 
@@ -182,7 +186,7 @@ local spec = lush(function(injected_functions)
     Delimiter { sym '@punctuation' }, -- "character that needs attention"?
     sym '@skp.fat_arrow' { sym '@punctuation' },
 
-    Operator { bold = true },
+    Operator { Normal },
 
     -- function/method decls
     -- sym"@lsp.typemod.function.declaration" { fg = neon, bg = neon.da(80), bold = true },
@@ -222,21 +226,37 @@ local spec = lush(function(injected_functions)
 
     -- diagnostics
     DiagnosticError { fg = urgent.li(30) },
-    DiagnosticVirtualTextError { DiagnosticError, bg = DiagnosticError.fg.darken(80), italic = true },
+    DiagnosticVirtualTextError {
+      DiagnosticError,
+      bg = DiagnosticError.fg.darken(80),
+      italic = true,
+    },
     DiagnosticUnderlineError { fg = DiagnosticError.fg, gui = 'undercurl' },
 
     ErrorMsg { DiagnosticError, bold = true },
 
     DiagnosticHint { fg = skyblue },
-    DiagnosticVirtualTextHint { DiagnosticHint, bg = DiagnosticHint.fg.darken(80), italic = true },
+    DiagnosticVirtualTextHint {
+      DiagnosticHint,
+      bg = DiagnosticHint.fg.darken(80),
+      italic = true,
+    },
     DiagnosticUnderlineHint { fg = skyblue, gui = 'undercurl' },
 
     DiagnosticInfo { DiagnosticHint },
-    DiagnosticVirtualTextInfo { DiagnosticInfo, bg = DiagnosticInfo.fg.darken(80), italic = true },
+    DiagnosticVirtualTextInfo {
+      DiagnosticInfo,
+      bg = DiagnosticInfo.fg.darken(80),
+      italic = true,
+    },
     DiagnosticUnderlineInfo { DiagnosticUnderlineHint },
 
     DiagnosticWarn { fg = highlighter },
-    DiagnosticVirtualTextWarn { DiagnosticWarn, bg = DiagnosticWarn.fg.darken(80), italic = true },
+    DiagnosticVirtualTextWarn {
+      DiagnosticWarn,
+      bg = DiagnosticWarn.fg.darken(80),
+      italic = true,
+    },
     DiagnosticUnderlineWarn { fg = highlighter, gui = 'undercurl' },
 
     DiagnosticUnnecessary { fg = sym '@punctuation'.fg, gui = 'undercurl' },

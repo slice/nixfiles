@@ -321,6 +321,7 @@ return {
               },
               prefix = 'crate',
             },
+            cargo = { features = 'all' },
             files = {
               excludeDirs = {
                 '.cargo',
@@ -336,6 +337,39 @@ return {
           },
         },
       }
+    end,
+  },
+
+  {
+    'scalameta/nvim-metals',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    ft = { 'scala', 'sbt', 'java' },
+    cond = not HEADLESS,
+    opts = function()
+      local c = require 'metals'.bare_config()
+      c.init_options.statusBarProvider = 'off'
+      c.capabilities = require 'skip.lsp'.capabilities
+      c.settings = {
+        -- 2025-02-15 (hbd kuya)
+        serverVersion = '1.5.1+56-efcb8322-SNAPSHOT',
+        scalafixRulesDependencies = {
+          'org.typelevel::typelevel-scalafix:0.5.0',
+          'com.github.xuwei-k::scalafix-rules:0.6.1',
+        },
+      }
+    end,
+    config = function(self, metals_config)
+      local nvim_metals_group =
+        vim.api.nvim_create_augroup('nvim-metals', { clear = true })
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = self.ft,
+        callback = function()
+          require('metals').initialize_or_attach(metals_config)
+        end,
+        group = nvim_metals_group,
+      })
     end,
   },
 

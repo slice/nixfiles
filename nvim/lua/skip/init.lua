@@ -64,12 +64,10 @@ vim.api.nvim_create_autocmd('User', {
 
 function _G.skippy()
   vim.g.colors_name = 'skippy'
-  local lush = require('lush')
-  -- vim.loader.reset('skip.skippy')
-  lush(require('skip.skippy'))
+  require('lush')(require('skip.skippy'))
 end
 
 if not HEADLESS then
-  _G.skippy()
+  require('lush')(require('skip.hmh'))
   require('skip.assimilate').create_autocmd()
 end

@@ -72,6 +72,7 @@ let
       argocd
       git-lfs
       delta
+      coursier
       bash-language-server
       biome
       bun
