@@ -5,11 +5,6 @@
     enable = true;
   };
 
-  environment.systemPackages = [
-    pkgs.ghostty.terminfo
-    pkgs.kitty.terminfo
-  ];
-
   users.users.skip = {
     isNormalUser = true; # "normal"
     description = "Skip Wolf Rousseau";
