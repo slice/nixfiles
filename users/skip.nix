@@ -11,6 +11,7 @@
   ];
 
   users.users.skip = {
+    isNormalUser = true; # "normal"
     description = "Skip Wolf Rousseau";
     extraGroups = [ "wheel" ];
     shell = pkgs.fish;
