@@ -4,6 +4,7 @@
   imports = [
     ../mixins/homelab.nix
     ../modules/tailscale-autoconnect.nix
+    ../modules/zfs.nix
     ./hardware/marco.nix
   ];
 
