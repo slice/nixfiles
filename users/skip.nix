@@ -11,7 +11,7 @@
   ];
 
   users.users.skip = {
-    name = "Skip Rousseau";
+    description = "Skip Wolf Rousseau";
     extraGroups = [ "wheel" ];
     shell = pkgs.fish;
     openssh.authorizedKeys.keys = (import ../lib/keys.nix).skip;
