@@ -30,7 +30,7 @@ function M.assimilate()
       once = true,
       group = M.augroup_id,
       callback = function(args)
-        local resp = args.data
+        local resp = args.data.sequence or args.data
         r, g, b = resp:match('\027%]11;rgb:(%w+)/(%w+)/(%w+)')
       end,
     })

@@ -25,42 +25,44 @@ let
     # packages that i need on every machine
     base = [
       # grab bag of useful programs
-      yt-dlp
-      croc
-      jq
-      jo
-      eza
-      ripgrep
-      gawk
-      fzf
-      rlwrap
-      curl
       aria
-      p7zip
-      htop
-      tree
-      file
-      wget
-      fd
-      tmux
       cachix
-      unzip
+      croc
+      curl
+      eza
+      fd
+      file
+      fzf
       gallery-dl
-      rsync
-      rclone
-      nixfmt-rfc-style
+      gawk
       gnused
+      htop
+      jo
+      jq
+      mosh
+      nixfmt-rfc-style
+      p7zip
+      rclone
+      ripgrep
+      rlwrap
+      rsync
+      tmux
+      tree
+      unzip
+      wget
+      yt-dlp
     ];
 
     # language runtimes, compilers, etc.
     languages = [
-      python3
-      llvmPackages_12.llvm
-      nodejs_23
-      typescript
+      capnproto
       deno
-      luajitPackages.moonscript
+      llvmPackages_12.llvm
       luajitPackages.fennel
+      luajitPackages.moonscript
+      nodejs_23
+      python3
+      typescript
       # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
       #   cabal-install lens wreq aeson lens-aeson bytestring text tagsoup
       #   http-client time haskell-language-server
@@ -70,26 +72,31 @@ let
     # tools to help with programming
     tooling = [
       argocd
-      git-lfs
-      delta
-      coursier
       bash-language-server
       biome
       bun
       corepack_18
+      coursier
+      delta
       dhall
+      dhall-json
       dhall-lsp-server
-      fnlfmt
       dhall-yaml
       doctl
       fluxcd
+      fnlfmt
       gh
+      git-lfs
+      jujutsu
+      k9s
       kubernetes-helm
       lua-language-server
       nix-diff
       nixd
       nodePackages.prettier
-      jujutsu
+      nomad
+      pulumi
+      pulumiPackages.pulumi-language-nodejs
       shellcheck
       stylua
       tree-sitter

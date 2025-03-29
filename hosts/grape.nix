@@ -6,7 +6,7 @@
   imports = [ ../modules/nix.nix ];
 
   # home-manager.users.slice = (import ../home/home.nix) { };
-  services.nix-daemon.enable = true;
+  # services.nix-daemon.enable = true;
 
   environment.systemPackages = [ inputs.home-manager.packages.aarch64-darwin.home-manager ];
 

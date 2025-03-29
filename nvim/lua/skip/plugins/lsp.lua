@@ -321,7 +321,12 @@ return {
               },
               prefix = 'crate',
             },
-            cargo = { features = 'all' },
+            cargo = {
+              features = 'all',
+              buildScripts = {
+                enable = true,
+              },
+            },
             files = {
               excludeDirs = {
                 '.cargo',
