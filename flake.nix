@@ -65,6 +65,13 @@
         modules = [
           ./hosts/grape.nix
           lix-module.nixosModules.default
+          (
+            { ... }:
+            {
+              # uhhhhhhhhh
+              ids.gids.nixbld = 350;
+            }
+          )
         ];
         specialArgs = {
           inherit inputs;
