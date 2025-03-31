@@ -54,6 +54,8 @@ in
 
         j = "jj";
         jn = "jj new";
+        jup = "jj u && jj p";
+        jjbsmp = "jj bs main && jj p";
 
         yyd = "yarn && yarn dev";
         yd = "yarn dev";
