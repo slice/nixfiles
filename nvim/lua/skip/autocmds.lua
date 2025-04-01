@@ -8,6 +8,13 @@ local function link(cmd)
   return 'highlight! link ' .. cmd
 end
 
+-- https://github.com/lttb/gh-actions-language-server
+vim.filetype.add({
+  pattern = {
+    ['.*/%.github[%w/]+workflows[%w/]+.*%.ya?ml'] = 'yaml.github',
+  },
+})
+
 -- TODO: move all of these colorscheme tweaks into their own files
 
 local moonfly_spelling = {

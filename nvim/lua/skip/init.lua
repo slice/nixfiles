@@ -68,6 +68,7 @@ function _G.skippy()
 end
 
 if not HEADLESS then
-  require('lush')(require('skip.hmh'))
+  -- require('lush')(require('skip.hmh'))
+  vim.cmd.colorscheme('minicyan')
   require('skip.assimilate').create_autocmd()
 end

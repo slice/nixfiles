@@ -212,6 +212,9 @@ return {
       }
 
       -- lsp.eslint.setup {}
+      lsc.gh_actions_ls.setup {
+        filetypes = { 'yaml.github' },
+      }
       lsc.nixd.setup {}
       lsc.pyright.setup {}
       lsc.lua_ls.setup {
