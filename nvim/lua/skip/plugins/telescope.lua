@@ -243,7 +243,7 @@ return {
         },
         extensions = {
           trampoline = {
-            workspace_roots = { '~/src/prj', '~/src/lib', '~/src/work/a8c' },
+            workspace_roots = { '~/src/prj', '~/src/lib', '~/work' },
           },
           smart_open = {
             show_scores = true,

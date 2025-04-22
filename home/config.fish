@@ -108,10 +108,7 @@ functions --erase m
 
 set -ga CDPATH .
 
-for employer in ~/src/work/*
-  set -ga CDPATH $employer
-end
-
+test -d ~/work; and set -ga CDPATH ~/work
 test -d ~/src; and set -ga CDPATH ~/src{/prj,/lib,/scraps,}
 test -d ~/Developer; and set -ga CDPATH ~/Developer{/prj,/lib,/scraps,}
 
