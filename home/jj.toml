@@ -6,6 +6,7 @@ email = "tinyslices@gmail.com"
 
 [ui]
 default-command = ["log"]
+diff-editor = ":builtin"
 diff-instructions = false
 diff.format = "git"
 graph.style = "curved"
@@ -30,6 +31,7 @@ d- = ["describe", "-r", "@-"]
 df = ["diff"]
 f = ["git", "fetch"]
 l = ["log"]
+la = ["log", "-r", "::"]
 n = ["new"]
 nm = ["new", "main"]
 nmo = ["new", "main@origin"]
@@ -44,6 +46,10 @@ sp = ["split"]
 sq = ["squash"]
 squ = ["squash", "-u"]
 u = ["bookmark", "move", "--from", "heads(::@- & bookmarks() ~ main)", "--to", "@-"]
+
+[revsets]
+# prioritize nearby commits
+short-prefixes = "descendants(ancestors(@, 20), 3)"
 
 [templates]
 draft_commit_description = '''

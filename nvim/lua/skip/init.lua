@@ -69,6 +69,7 @@ end
 
 if not HEADLESS then
   -- require('lush')(require('skip.hmh'))
-  vim.cmd.colorscheme('minicyan')
+  vim.cmd.colorscheme('apparition')
+  require('skip.tabs')
   require('skip.assimilate').create_autocmd()
 end

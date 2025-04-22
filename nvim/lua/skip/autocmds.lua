@@ -88,6 +88,7 @@ local tweaks = {
     hi '@markup.raw.block.vimdoc guifg=fg',
 
     hi 'TelescopeMatching guifg=#000000 guibg=#96bade gui=bold',
+    link 'TelescopeSelection PmenuSel',
 
     link 'DiagnosticInfo Statement',
     link 'DiagnosticHint Statement', -- make diff from info?

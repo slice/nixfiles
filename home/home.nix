@@ -190,7 +190,7 @@ in
   home.file.".hammerspoon".source = config.lib.skip.ergonomic ./hammerspoon;
   home.file.".prettierrc.json".source = ./prettierrc.json;
   home.file.".stylua.toml".source = ../.stylua.toml;
-  home.file."Library/Application Support/jj/config.toml".source = ./jj.toml;
+  home.file."Library/Application Support/jj/config.toml".source = config.lib.skip.ergonomic ./jj.toml;
   xdg.configFile."kitty".source = config.lib.skip.ergonomic ./kitty;
 
   # This value determines the Home Manager release that your
