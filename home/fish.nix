@@ -54,8 +54,10 @@ in
 
         j = "jj";
         # TODO: move to config via `util exec`
-        jfnmo = "jj fetch && jj new main@origin";
-        jup = "jj u && jj p";
+        jfnmo = "jj git fetch && jj new main@origin";
+        # u = ["bookmark", "move", "--from", "heads(::@- & bookmarks() ~ main)", "--to", "@-"]
+        jup = "jj u && jj git push";
+        # bs- = ["bookmark", "set", "-r", "@-"]
         jbsmp = "jj bs- main && jj p";
 
         yyd = "yarn && yarn dev";
