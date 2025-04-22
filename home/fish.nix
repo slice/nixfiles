@@ -57,7 +57,7 @@ in
         jfnmo = "jj fetch && jj new main@origin";
         jnmo = "jj new main@origin";
         jup = "jj u && jj p";
-        jjbsmp = "jj bs main && jj p";
+        jbsmp = "jj bs main && jj p";
 
         yyd = "yarn && yarn dev";
         yd = "yarn dev";
