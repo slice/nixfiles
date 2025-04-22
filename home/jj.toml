@@ -1,0 +1,64 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
+[user]
+name = "Skip R"
+email = "tinyslices@gmail.com"
+
+[ui]
+default-command = ["log"]
+diff-instructions = false
+diff.format = "git"
+graph.style = "curved"
+log-word-wrap = true
+pager = ["delta", "--hunk-header-style", "plain"]
+paginate = "auto"
+
+[git]
+private-commits = "private"
+push-bookmark-prefix = "skip/jj-"
+
+[aliases]
+a = ["absorb"]
+aba = ["abandon"]
+bs- = ["bookmark", "set", "-r", "@-"]
+c = ["commit"]
+cm = ["commit", "-m"]
+d = ["describe"]
+d- = ["describe", "-r", "@-"]
+df = ["diff"]
+f = ["git", "fetch"]
+l = ["log"]
+n = ["new"]
+nm = ["new", "main"]
+nmo = ["new", "main@origin"]
+p = ["git", "push"]
+p- = ["git", "push", "-c", "@-"]
+pn = ["git", "push", "-N"]
+push = ["git", "push"]
+rb = ["rebase"]
+sh = ["show"]
+sh- = ["show", "@-"]
+sp = ["split"]
+sq = ["squash"]
+squ = ["squash", "-u"]
+u = ["bookmark", "move", "--from", "heads(::@- & bookmarks() ~ main)", "--to", "@-"]
+
+[templates]
+draft_commit_description = '''
+concat(
+  description,
+  surround(
+    "\nJJ: This commit contains the following changes:\n", "",
+    indent("JJ:     ", diff.stat(72)),
+  ),
+)
+'''
+
+[template-aliases]
+"format_short_id(id)" = "id.shortest()"
+"format_timestamp(timestamp)" = "timestamp.ago()"
+"format_short_signature(signature)" = "signature.name()"
+
+[revset-aliases]
+"private" = 'description(regex:"^(priv|private|PRIV|PRIVATE):")'
+"wip" = 'description(regex:"^\\[(wip|WIP|todo|TODO)\\]|(wip|WIP|todo|TODO):?") & mine() & mutable()'

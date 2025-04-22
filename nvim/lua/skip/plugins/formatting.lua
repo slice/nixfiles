@@ -7,6 +7,7 @@ return {
     'stevearc/conform.nvim',
     cond = not HEADLESS,
     enabled = true,
+    -- TODO: can this be lazy? can't just put VeryLazy i guess?
     opts = {
       formatters_by_ft = {
         lua = { 'stylua' },

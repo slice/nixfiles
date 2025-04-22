@@ -19,9 +19,16 @@
       };
     };
 
+    includes = [
+      {
+        path = "~/.config/git/work";
+        condition = "gitdir:~/work/";
+      }
+    ];
+
     extraConfig =
       let
-        ghHelper = {
+        ghCredentialHelper = {
           helper = "!${pkgs.gh}/bin/gh auth git-credential";
         };
       in
@@ -31,22 +38,32 @@
         format.pretty = "tformat:%C(bold yellow)%h%Creset %<|(82,trunc)%s %Creset%C(bold white)%cr%C(nobold)/%ch%Creset %C(bold)(%an)%C(auto)%d";
         push.default = "current";
         core.ignorecase = false;
-        color.ui = true;
-        color.diff.meta = "reverse";
-        pull.ff = "only";
+        color = {
+          ui = true;
+          diff.meta = "reverse";
+        };
+        pull.rebase = true;
         init.defaultBranch = "main";
         branch.sort = "-committerdate";
         # diff.colorMoved = "default";
-        "credential \"https://github.com\"" = ghHelper;
-        "credential \"https://gist.github.com\"" = ghHelper;
+
+        "credential \"https://github.com\"" = ghCredentialHelper;
+        "credential \"https://gist.github.com\"" = ghCredentialHelper;
       };
 
     ignores = [
       "*~"
       "*.swp"
-      ".DS_Store"
-      "/.yalc" # https://github.com/wclr/yalc
+
+      # https://en.wikipedia.org/wiki/AppleSingle_and_AppleDouble_formats
+      "._*"
       "__MACOSX"
+
+      # https://en.wikipedia.org/wiki/.DS_Store
+      ".DS_Store"
+
+      # https://github.com/wclr/yalc
+      "/.yalc"
     ];
   };
 }

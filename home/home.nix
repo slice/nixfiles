@@ -176,9 +176,9 @@ in
       {
         EDITOR = editor;
         LESS = "--ignore-case";
-        MANPAGER = "nvim +Man!";
-        # let Neovim format the man page text, not groff - so we can wrap on
+        # use Neovim for man page formatting instead of groff so we can wrap on
         # the fly
+        MANPAGER = "nvim +Man!";
         # MANWIDTH = 999;
       }
       // (lib.optionalAttrs pkgs.stdenv.isDarwin {
@@ -190,6 +190,7 @@ in
   home.file.".hammerspoon".source = config.lib.skip.ergonomic ./hammerspoon;
   home.file.".prettierrc.json".source = ./prettierrc.json;
   home.file.".stylua.toml".source = ../.stylua.toml;
+  home.file."Library/Application Support/jj/config.toml".source = ./jj.toml;
   xdg.configFile."kitty".source = config.lib.skip.ergonomic ./kitty;
 
   # This value determines the Home Manager release that your

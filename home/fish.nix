@@ -53,11 +53,10 @@ in
         agp = "autocommit; and git push -v";
 
         j = "jj";
-        jn = "jj new";
+        # TODO: move to config via `util exec`
         jfnmo = "jj fetch && jj new main@origin";
-        jnmo = "jj new main@origin";
         jup = "jj u && jj p";
-        jbsmp = "jj bs main && jj p";
+        jbsmp = "jj bs- main && jj p";
 
         yyd = "yarn && yarn dev";
         yd = "yarn dev";
