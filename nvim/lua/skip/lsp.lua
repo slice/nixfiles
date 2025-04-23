@@ -114,10 +114,7 @@ function M.attach_allowed(bufnr)
   -- if utils.flag_set(M.noattach_key) then
   if utils.flag_set(M.noattach_key, bufnr) then
     vim.notify(
-      ('attach_allowed: REFUSING buffer %d (%s), flag was set'):format(
-        bufnr,
-        shortened_bufname
-      ),
+      ('rejecting %s (flag)'):format(bufnr, shortened_bufname),
       vim.log.levels.WARN
     )
     return false
@@ -126,11 +123,7 @@ function M.attach_allowed(bufnr)
   for _, banned_pattern in ipairs(M.banned_patterns) do
     if bufname:find(banned_pattern) then
       vim.notify(
-        ('attach_allowed: REFUSING buffer %d (%s), matched banned pattern %s'):format(
-          bufnr,
-          shortened_bufname,
-          banned_pattern
-        ),
+        ('rejecting %s (%s)'):format(bufnr, shortened_bufname, banned_pattern),
         vim.log.levels.WARN
       )
       return false

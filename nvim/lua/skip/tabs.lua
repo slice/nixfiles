@@ -142,23 +142,25 @@ _G._skip_tabs = M
 vim.opt.tabline = '%!v:lua._skip_tabs.custom_tabline()'
 
 M.augroup_id = vim.api.nvim_create_augroup('SkipTabs', {})
-vim.api.nvim_create_autocmd({
-  'WinNew',
-  'WinLeave',
-  'WinEnter',
-  'WinClosed',
-  'DirChanged',
-}, {
-  group = M.augroup_id,
-  desc = 'Redraws tabline as necessary',
-  callback = function()
-    local redraw = vim.api.nvim__redraw
-    if redraw then
-      redraw({ tabline = true })
-    else
-      vim.cmd [[redraw]]
-    end
-  end,
-})
-
+-- vim.api.nvim_create_autocmd({
+--   'WinNew',
+--   'WinClosed',
+--   'DirChanged',
+-- }, {
+--   group = M.augroup_id,
+--   desc = 'Redraws tabline as necessary',
+--   callback = function()
+--     local redraw = vim.api.nvim__redraw
+--     if redraw then
+--       redraw({
+--         tabline = true,
+--         valid = true,
+--         flush = false,
+--       })
+--     else
+--       vim.cmd [[redraw]]
+--     end
+--   end,
+-- })
+--
 return M

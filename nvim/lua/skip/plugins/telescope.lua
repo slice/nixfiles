@@ -225,9 +225,17 @@ return {
             filesize_limit = 1,
             highlight_limit = 1,
             treesitter = true,
-            filetype_hook = function(_filepath, bufnr, opts)
+            filetype_hook = function(filepath, bufnr, opts)
+              -- always let help files through (this isn't baked into the
+              -- bouncing logic because attempting to grab the ft of the
+              -- preview buffer doesn't actually work (and it has no
+              -- path/name), so just check here)
+              if opts.ft == 'help' then
+                return true
+              end
+
               local bounced =
-                require('skip.huge').bouncer(bufnr, { silently = true })
+                require('skip.huge').bouncer(bufnr, { silently = false })
               if bounced then
                 -- seemingly _need_ to set the preview message in order to suppress previewing
                 require('telescope.previewers.utils').set_preview_message(

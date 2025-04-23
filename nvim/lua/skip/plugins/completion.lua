@@ -31,6 +31,13 @@ return {
       signature = {
         enabled = true,
       },
+      cmdline = {
+        enabled = true,
+        keymap = {
+          preset = 'cmdline',
+          ['<C-e>'] = {}, -- interferes with rsi
+        },
+      },
       sources = {
         default = { 'lazydev', 'lsp', 'path', 'buffer', 'snippets', 'ripgrep' },
         providers = {

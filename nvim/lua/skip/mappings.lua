@@ -9,6 +9,9 @@ local map = vim.keymap.set
 map('n', '<Leader>w', '<cmd>w<CR>')
 map('n', '<Leader>W', '<cmd>noautocmd w<CR>')
 
+map('n', '<Leader>x', '<Cmd>bdelete<CR>', { desc = ':bdelete' })
+map('n', '<Leader>X', '<Cmd>bdelete!<CR>', { desc = ':bdelete!' })
+
 map('n', '<Leader>ji', '<Cmd>Inspect<CR>')
 
 -- pressing <S-Space> in a terminal used to input <Space>, but it doesn't

@@ -7,10 +7,14 @@ M.bypass_key = 'HUGE_BYPASS'
 
 -- actual consumption of these constants is outside of this file... fixme pls
 M.limits = {
-  max_lines = 10000,
+  max_lines = 20000,
   max_file_size_bytes = 1000000,
-  max_individual_line_length = 2000,
+  max_individual_line_length = 1500,
 }
+
+function M.shorten_path(path)
+  return vim.fn.pathshorten(path, 2)
+end
 
 ---@param bufnr number
 ---@param reason string?
@@ -25,10 +29,7 @@ function M.bounce(bufnr, reason, opts)
 
   if utils.flag_set(M.bypass_key, bufnr) then
     if not silent then
-      vim.notify(
-        ('huge: not bouncing this buffer (%d), bypass flag set'):format(bufnr),
-        vim.log.levels.INFO
-      )
+      vim.notify(('huge: %d is immune'):format(bufnr), vim.log.levels.INFO)
     end
     return
   end
@@ -52,11 +53,12 @@ function M.bounce(bufnr, reason, opts)
     vim.cmd [[syntax clear]]
   end) -- and i'd do it again
 
-  local formatted_reason = reason and ('reason: %s'):format(reason)
-    or 'no resaon'
+  local formatted_reason = reason or 'no reason'
   if not silent then
+    local path = vim.api.nvim_buf_get_name(bufnr)
+
     vim.notify(
-      ('huge: BOUNCING buffer %d (%s)'):format(bufnr, formatted_reason),
+      ('huge: BOUNCING %s (%s)'):format(M.shorten_path(path), formatted_reason),
       vim.log.levels.WARN
     )
   end
