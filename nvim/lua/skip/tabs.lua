@@ -2,49 +2,110 @@ local M = {}
 
 local home = vim.fs.normalize('~')
 
-function M.tab_display_name(tabid)
-  local winnrs = vim.api.nvim_tabpage_list_wins(tabid)
-  local seen = {}
+function M.shorten_path(path)
+  local roots = { '~/Developer', '~/src' }
+  local symbolized = path:gsub(vim.pesc(home), '~')
+  for _, root in ipairs(roots) do
+    symbolized = symbolized:gsub(vim.pesc(root), '*')
+  end
+  return vim.fn.pathshorten(symbolized, 4)
+end
 
-  for _, winnr in ipairs(winnrs) do
-    local cwd = vim.fn
-      .getcwd(winnr, vim.api.nvim_tabpage_get_number(tabid))
-      :gsub(vim.pesc(home), '~')
-    cwd = cwd:gsub('~/Developer', '*'):gsub('~/src', '*')
-    local shortened_cwd = vim.fn.pathshorten(cwd, 12)
+function M.tab_display_name(tabid)
+  local tabnr = vim.api.nvim_tabpage_get_number(tabid)
+
+  local winids = vim
+    .iter(vim.api.nvim_tabpage_list_wins(tabid))
+    -- only want normal windows (i.e. no popups/floating)
+    :filter(
+      function(winid)
+        local config = vim.api.nvim_win_get_config(winid)
+        local focusable = config.focusable == nil or config.focusable == true
+
+        -- testing `config.relative` doesn't really work for some reason, this is
+        -- much more reliable
+        -- (`win_gettype` seemingly accepts both winnrs and winids)
+        local is_normal_win = vim.fn.win_gettype(winid) == ''
+
+        return vim.api.nvim_win_is_valid(winid) and focusable and is_normal_win
+      end
+    )
+    :totable()
+
+  -- tracks seen _shortened_ cwds
+  local seen = {}
+  -- maps shortened cwds back to the full paths for relative path mapping
+  local unshortened_map = {}
+  local seen_icons = {}
+
+  for _, winid in ipairs(winids) do
+    -- `getcwd` works for both winnrs and winids
+    local cwd = vim.fn.getcwd(winid, tabnr)
+    local shortened_cwd = M.shorten_path(cwd)
 
     if shortened_cwd and not seen[shortened_cwd] then
+      -- witness this cwd
       seen[shortened_cwd] = true
+      unshortened_map[shortened_cwd] = cwd
+    end
+
+    -- attempt to resolve the icon for the window's buffer
+    local bufid = vim.api.nvim_win_get_buf(winid)
+    local fname = vim.api.nvim_buf_get_name(bufid)
+    local ext = fname:match('%.(%w+)$')
+    local file_icon =
+      require('nvim-web-devicons').get_icon(fname, ext, { default = true })
+    if file_icon then
+      seen_icons[file_icon] = true
     end
   end
 
   if vim.tbl_isempty(seen) then
-    return '...'
+    return '?'
   end
 
-  local cwds = vim.tbl_keys(seen)
-  table.sort(cwds, function(a, b)
+  local shortened_cwds = vim.tbl_keys(seen)
+
+  -- make sure seen cwd set ordering is stable
+  table.sort(shortened_cwds, function(a, b)
     return a:lower() < b:lower()
   end)
-  local tab_viz = ('[%s]'):format(table.concat(cwds, '|'))
-  if #winnrs == 1 then
-    local winnr = winnrs[1]
+  -- format tabs like "[/things/cwd|/things/other/cwd]"
+  local viz = ('[%s]'):format(table.concat(shortened_cwds, '|'))
+  -- if there was only ever one filetype icon in the entire tab, then replicate
+  -- it here
+  if #vim.tbl_keys(seen_icons) == 1 then
+    viz = next(seen_icons) .. ' ' .. viz
+  end
+
+  -- only one window in this tab, try displaying its only buffer's filename
+  -- relative to the cwd and shortened
+  if #winids == 1 then
+    local winnr = winids[1]
     local only_bufnr = vim.fn.winbufnr(winnr)
     if only_bufnr ~= -1 then
-      local tab_only_file_viz =
-        vim.fn.pathshorten(vim.api.nvim_buf_get_name(only_bufnr), 3)
-      tab_viz = tab_viz .. '::' .. tab_only_file_viz
+      local only_shortened_cwd = shortened_cwds[1]
+      local only_cwd = unshortened_map[only_shortened_cwd]
+
+      local only_path = vim.api.nvim_buf_get_name(only_bufnr)
+      local only_shortened_relative_path = vim.fs.relpath(only_cwd, only_path)
+      local tab_only_file_viz = only_shortened_relative_path
+        or M.shorten_path(only_path)
+
+      viz = viz .. ':' .. tab_only_file_viz
     end
   end
 
-  return tab_viz
+  return viz
 end
 
 function M.custom_tabline()
-  local tabline_string = ''
+  local tabline = ''
 
   for _, tabid in ipairs(vim.api.nvim_list_tabpages()) do
     if vim.api.nvim_tabpage_is_valid(tabid) then
+      local tabnr = vim.api.nvim_tabpage_get_number(tabid)
+
       local tab_color
       local tabnr_color = '%#MatchParen#'
       if tabid == vim.api.nvim_get_current_tabpage() then
@@ -54,24 +115,48 @@ function M.custom_tabline()
         tab_color = '%#TabLine#'
       end
 
-      local current_tab_text = ('%s %s%d%s %s '):format(
+      local cur = ('%s%s %s%d%s %s '):format(
         tab_color,
+        -- this defines the click target for the mouse
+        ('%' .. tostring(tabnr) .. 'T'),
         tabnr_color,
         vim.api.nvim_tabpage_get_number(tabid),
         tab_color,
         M.tab_display_name(tabid)
       )
-      tabline_string = tabline_string .. current_tab_text
+
+      tabline = tabline .. cur
     end
   end
 
-  tabline_string = tabline_string .. '%#TabLineFill#'
+  -- fill out the rest of the tabline so it doesn't end at the last tab
+  tabline = tabline .. '%#TabLineFill#'
 
-  return tabline_string
+  return tabline
 end
 
 _G._skip_tabs = M
 
 vim.opt.tabline = '%!v:lua._skip_tabs.custom_tabline()'
+
+M.augroup_id = vim.api.nvim_create_augroup('SkipTabs', {})
+vim.api.nvim_create_autocmd({
+  'WinNew',
+  'WinLeave',
+  'WinEnter',
+  'WinClosed',
+  'DirChanged',
+}, {
+  group = M.augroup_id,
+  desc = 'Redraws tabline as necessary',
+  callback = function()
+    local redraw = vim.api.nvim__redraw
+    if redraw then
+      redraw({ tabline = true })
+    else
+      vim.cmd [[redraw]]
+    end
+  end,
+})
 
 return M

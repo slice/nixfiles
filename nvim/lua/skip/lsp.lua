@@ -106,6 +106,7 @@ M.banned_patterns = {
 -- we patch lspconfig.util.bufname_valid to call this
 function M.attach_allowed(bufnr)
   local bufname = vim.api.nvim_buf_get_name(bufnr)
+  local shortened_bufname = vim.fn.pathshorten(bufname, 2)
 
   -- i'd add some cute messages here, but this function can be called more than
   -- once and i don't want to trigger the hit-enter-prompt
@@ -115,7 +116,7 @@ function M.attach_allowed(bufnr)
     vim.notify(
       ('attach_allowed: REFUSING buffer %d (%s), flag was set'):format(
         bufnr,
-        bufname
+        shortened_bufname
       ),
       vim.log.levels.WARN
     )
@@ -127,7 +128,7 @@ function M.attach_allowed(bufnr)
       vim.notify(
         ('attach_allowed: REFUSING buffer %d (%s), matched banned pattern %s'):format(
           bufnr,
-          bufname,
+          shortened_bufname,
           banned_pattern
         ),
         vim.log.levels.WARN
