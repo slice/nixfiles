@@ -2,6 +2,8 @@
 return {
   {
     'echasnovski/mini.animate',
+    -- too many redraws?
+    enabled = false,
     cond = not HEADLESS,
     opts = function()
       local animate = require('mini.animate')

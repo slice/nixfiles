@@ -3,6 +3,10 @@ local M = {}
 local home = vim.fs.normalize('~')
 
 function M.shorten_path(path)
+  if not path then
+    return path
+  end
+
   local roots = { '~/Developer', '~/src' }
   local symbolized = path:gsub(vim.pesc(home), '~')
   for _, root in ipairs(roots) do
@@ -22,9 +26,9 @@ function M.tab_display_name(tabid)
         local config = vim.api.nvim_win_get_config(winid)
         local focusable = config.focusable == nil or config.focusable == true
 
-        -- testing `config.relative` doesn't really work for some reason, this is
-        -- much more reliable
-        -- (`win_gettype` seemingly accepts both winnrs and winids)
+        -- testing `config.relative` doesn't really work for some reason, this
+        -- is much more reliable (`win_gettype` seemingly accepts both winnrs
+        -- and winids)
         local is_normal_win = vim.fn.win_gettype(winid) == ''
 
         return vim.api.nvim_win_is_valid(winid) and focusable and is_normal_win
@@ -32,21 +36,17 @@ function M.tab_display_name(tabid)
     )
     :totable()
 
-  -- tracks seen _shortened_ cwds
+  -- tracks seen cwds
   local seen = {}
-  -- maps shortened cwds back to the full paths for relative path mapping
-  local unshortened_map = {}
   local seen_icons = {}
 
   for _, winid in ipairs(winids) do
     -- `getcwd` works for both winnrs and winids
     local cwd = vim.fn.getcwd(winid, tabnr)
-    local shortened_cwd = M.shorten_path(cwd)
 
-    if shortened_cwd and not seen[shortened_cwd] then
+    if cwd and not seen[cwd] then
       -- witness this cwd
-      seen[shortened_cwd] = true
-      unshortened_map[shortened_cwd] = cwd
+      seen[cwd] = true
     end
 
     -- attempt to resolve the icon for the window's buffer
@@ -64,14 +64,17 @@ function M.tab_display_name(tabid)
     return '?'
   end
 
-  local shortened_cwds = vim.tbl_keys(seen)
+  local cwds = vim.tbl_keys(seen)
 
   -- make sure seen cwd set ordering is stable
-  table.sort(shortened_cwds, function(a, b)
+  table.sort(cwds, function(a, b)
     return a:lower() < b:lower()
   end)
   -- format tabs like "[/things/cwd|/things/other/cwd]"
-  local viz = ('[%s]'):format(table.concat(shortened_cwds, '|'))
+  local viz = ('[%s]'):format(
+    -- shorten the cwd
+    table.concat(vim.iter(cwds):map(M.shorten_path):totable(), '|')
+  )
   -- if there was only ever one filetype icon in the entire tab, then replicate
   -- it here
   if #vim.tbl_keys(seen_icons) == 1 then
@@ -84,12 +87,11 @@ function M.tab_display_name(tabid)
     local winnr = winids[1]
     local only_bufnr = vim.fn.winbufnr(winnr)
     if only_bufnr ~= -1 then
-      local only_shortened_cwd = shortened_cwds[1]
-      local only_cwd = unshortened_map[only_shortened_cwd]
+      local only_cwd = cwds[1]
 
       local only_path = vim.api.nvim_buf_get_name(only_bufnr)
-      local only_shortened_relative_path = vim.fs.relpath(only_cwd, only_path)
-      local tab_only_file_viz = only_shortened_relative_path
+      local only_relpath = vim.fs.relpath(only_cwd, only_path)
+      local tab_only_file_viz = M.shorten_path(only_relpath)
         or M.shorten_path(only_path)
 
       viz = viz .. ':' .. tab_only_file_viz
