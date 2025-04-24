@@ -46,6 +46,7 @@ require('lazy').setup({
   change_detection = {
     notify = false,
   },
+  dev = { path = vim.fs.abspath('~/src/prj') },
 })
 
 vim.api.nvim_create_autocmd('User', {

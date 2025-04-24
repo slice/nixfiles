@@ -87,8 +87,12 @@ local tweaks = {
     hi '@constructor.lua guifg=NONE',
     hi '@markup.raw.block.vimdoc guifg=fg',
 
-    hi 'TelescopeMatching guifg=#000000 guibg=#96bade gui=bold',
-    link 'TelescopeSelection PmenuSel',
+    link 'TelescopeMatching Search',
+    hi 'TelescopeSelection guibg=#481e48',
+    hi 'TelescopeSelectionCaret guibg=#481e48 guifg=#8f6f8f gui=bold',
+    hi 'TelescopePromptNormal guifg=#fff127 gui=bold',
+    hi 'TelescopePromptPrefix guifg=#fff127 gui=bold,italic',
+    hi 'TelescopePromptCounter guibg=#4e1012 guifg=#842024, gui=italic',
 
     link 'DiagnosticInfo Statement',
     link 'DiagnosticHint Statement', -- make diff from info?
@@ -102,6 +106,7 @@ local tweaks = {
     link 'MiniIndentscopeSymbol NonText',
 
     hi 'SignColumn guifg=#686858 guibg=#000000',
+    link 'SkipMiniFilesNormalNC Comment',
     -- make diff signs match color of signcolumn
     link 'MiniDiffSignAdd NONE',
     link 'MiniDiffSignChange NONE',
@@ -442,6 +447,25 @@ autocmds('SkipParentDirectoryCreation', {
         vim.fn.mkdir(vim.fn.expand '<afile>:p:h', 'p')
       end,
       desc = 'Automatically create parent directories when saving',
+    },
+  },
+})
+
+autocmds('SkipAutohop', {
+  {
+    'TabNewEntered',
+    {
+      callback = function()
+        local path_in_new_tab = vim.api.nvim_buf_get_name(0)
+        local repo = vim.fs.root(path_in_new_tab, { '.git', '.jj', 'go.mod' })
+        if repo then
+          vim.notify(
+            ('autohop: %s'):format(utils.shorten(repo)),
+            vim.log.levels.INFO
+          )
+          vim.cmd.tcd(repo)
+        end
+      end,
     },
   },
 })

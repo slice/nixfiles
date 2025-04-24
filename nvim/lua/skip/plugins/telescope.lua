@@ -1,3 +1,5 @@
+local utils = require 'skip.utils'
+
 local rg_flags = vim
   .iter({
     '--ignore',
@@ -7,10 +9,6 @@ local rg_flags = vim
   })
   :flatten()
   :totable()
-
-local utils = require('skip.utils')
-
-local function find_files() end
 
 local function man_pages()
   local builtin = require('telescope.builtin')
@@ -37,9 +35,9 @@ return {
         'danielfalk/smart-open.nvim',
         dependencies = {
           'kkharji/sqlite.lua',
-          'nvim-telescope/telescope-fzf-native.nvim',
         },
       },
+      'nvim-telescope/telescope-fzf-native.nvim',
     },
 
     cmd = 'Telescope',
@@ -67,14 +65,7 @@ return {
       { '<Leader>k', '<Cmd>Telescope lsp_references<CR>' },
       {
         '<Leader>o',
-        function()
-          require('telescope.builtin').find_files {
-            find_command = vim
-              .iter({ 'rg', rg_flags, '--files' })
-              :flatten()
-              :totable(),
-          }
-        end,
+        '<Cmd>Telescope find_files<CR>',
         desc = 'Telescope find_files',
       },
       { '<Leader>p', '<Cmd>Telescope trampoline<CR>' },
@@ -129,25 +120,37 @@ return {
     config = function()
       local telescope = require('telescope')
       local action_layout = require('telescope.actions.layout')
-
-      -- a custom, compact layout strategy that mimics @norcalli's fuzzy finder
       local layout_strategies = require('telescope.pickers.layout_strategies')
+
       layout_strategies.compact = function(picker, cols, lines, layout_config)
-        local layout =
-          layout_strategies.vertical(picker, cols, lines, layout_config)
+        local width = math.floor(cols * 0.95)
+        local width_perc_input = 0.3
+        local width_input = math.floor(width * width_perc_input)
+        local width_preview = width - width_input
+        local left_col = math.floor((cols - width) / 2)
+        -- specified heights extend upward in screen space
+        local height = lines
 
-        -- make the prompt flush with the status line
-        layout.prompt.line = lines + 1
-        -- make the results flush with the prompt
-        layout.results.line = lines + 3
-
-        local results_height = math.floor(lines * 0.4)
-        layout.results.height = results_height
-        if layout.preview then
-          local preview_height = lines - results_height
-          layout.preview.line = lines - preview_height - results_height + 2
-          layout.preview.height = preview_height
-        end
+        local layout = {
+          prompt = {
+            line = lines + 2,
+            width = width_input,
+            height = 1,
+            col = left_col,
+          },
+          results = {
+            line = lines + 3,
+            width = width_input,
+            height = height,
+            col = left_col,
+          },
+          preview = {
+            line = lines + 4,
+            width = width_preview,
+            height = height + 1, -- ?? for title ???
+            col = left_col + width_input,
+          },
+        }
 
         return layout
       end
@@ -168,11 +171,36 @@ return {
 
       telescope.setup({
         defaults = {
+          -- breaks ghostty wide char expansion thingy
           winblend = 0,
-          prompt_prefix = '? ',
-          selection_caret = '> ',
+          prompt_prefix = ' ',
+          selection_caret = ' ',
           layout_config = { width = 0.7 },
           layout_strategy = 'compact',
+          path_display = function(opts, path)
+            local cwd = vim.fn.getcwd()
+            local relpath = vim.fs.relpath(cwd, path)
+            if relpath ~= nil then
+              -- the path is relative to the cwd
+              local segs = vim.split(relpath, '/')
+              local tail = segs[#segs]
+              local base_segs = vim.list_slice(segs, nil, #segs - 1)
+              table.insert(base_segs, 1, '*')
+              local base = table.concat(base_segs, '/')
+              return ('%s %s'):format(tail, base),
+                {
+                  { { 0, #tail }, '@markup.strong' },
+                  { { #tail + 1, #tail + 1 + #base }, 'Identifier' },
+                }
+            else
+              local base, tail =
+                utils.shorten(path, { return_separated_tail = true })
+              return ('%s/%s'):format(base, tail),
+                {
+                  { { 0, #base + 1 }, 'Comment' },
+                }
+            end
+          end,
           border = false,
           -- borderchars = {
           --   '─',
@@ -184,7 +212,7 @@ return {
           --   '┘',
           --   '└',
           -- },
-          dynamic_preview_title = true,
+          -- dynamic_preview_title = true,
           results_title = false,
           prompt_title = false,
           vimgrep_arguments = vim
@@ -203,10 +231,7 @@ return {
             :totable(),
           pickers = {
             find_files = {
-              find_command = vim
-                .iter({ 'rg', rg_flags, '--files' })
-                :flatten()
-                :totable(),
+              find_command = 'fd',
             },
           },
           mappings = {
@@ -224,7 +249,8 @@ return {
             -- max limits in MB
             filesize_limit = 1,
             highlight_limit = 1,
-            treesitter = true,
+            -- swift is too slow :/
+            treesitter = { enable = true, disable = { 'swift' } },
             filetype_hook = function(filepath, bufnr, opts)
               -- always let help files through (this isn't baked into the
               -- bouncing logic because attempting to grab the ft of the
@@ -253,6 +279,12 @@ return {
           trampoline = {
             workspace_roots = { '~/src/prj', '~/src/lib', '~/work' },
           },
+          fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = 'smart_case',
+          },
           smart_open = {
             show_scores = true,
             match_algorithm = 'fzf',
@@ -268,7 +300,41 @@ return {
         },
       })
 
-      telescope.load_extension('smart_open')
+      -- automatically :tcd to repo root when opening stuff in a new tab
+      --
+      -- (can't use :enhance with `post`, because they're not executed when
+      -- replaced, which is probably happening? instead, set `_static_post`,
+      -- which always gets ran after (?)
+      -- https://github.com/nvim-telescope/telescope.nvim/pull/1892)
+
+      -- local action_set = require('telescope.actions.set')
+      -- action_set.select._static_post.select = function(_, type)
+      --   if type ~= 'tab' then
+      --     -- only mess with <C-t>
+      --     return
+      --   end
+      --
+      --   local state = require('telescope.actions.state')
+      --   local selected_value = state.get_selected_entry().value
+      --   if not selected_value then
+      --     return
+      --   end
+      --
+      --   local stat = vim.uv.fs_stat(selected_value)
+      --   -- check if it exists in the fs somehow
+      --   if stat then
+      --     local repo = vim.fs.root(selected_value, { '.git', '.jj', 'go.mod' })
+      --
+      --     if repo then
+      --       vim.notify(('autohop: %s'):format(repo), vim.log.levels.INFO)
+      --       vim.cmd.tcd(repo)
+      --     end
+      --   end
+      -- end
+
+      for _, ext in ipairs({ 'smart_open', 'fzf' }) do
+        telescope.load_extension(ext)
+      end
     end,
   },
 
@@ -298,22 +364,10 @@ return {
 
   {
     'nvim-telescope/telescope-fzf-native.nvim',
-    lazy = true,
+    -- lazy = true,
     cond = not HEADLESS,
     build = 'make',
-    opts = {
-      override_generic_sorter = true,
-      override_file_sorter = true,
-      case_mode = 'smart_case',
-    },
-    config = function(_, opts)
-      local telescope = require('telescope')
-      telescope.load_extension('fzf')
-      telescope.setup {
-        extensions = { fzf = opts },
-      }
-    end,
   },
 
-  { 'slice/telescope-trampoline.nvim', cond = not HEADLESS },
+  { 'slice/telescope-trampoline.nvim', cond = not HEADLESS, dev = true },
 }

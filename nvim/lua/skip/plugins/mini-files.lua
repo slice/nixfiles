@@ -161,12 +161,10 @@ return {
           {
             pattern = { 'MiniFilesWindowUpdate', 'MiniFilesWindowOpen' },
             callback = function(args)
-              local win_id = args.data.win_id
-              local win_nr = vim.fn.win_id2win(win_id)
+              local winid = args.data.win_id
+              local is_active = vim.api.nvim_get_current_win() == winid
 
-              local is_active = vim.api.nvim_get_current_win() == win_id
-
-              local config = vim.api.nvim_win_get_config(win_id)
+              local config = vim.api.nvim_win_get_config(winid)
               config.anchor = 'SW'
 
               -- insert padding & icon around title
@@ -176,22 +174,20 @@ return {
                 .. config.title[1][1]
                 .. ' '
 
-              -- local meta = '#' .. tostring(win_nr) .. ' id:' .. tostring(win_id) .. ' '
-              -- -- insert, space permitting
-              -- if #meta + 1 < (config.width - #config.title[1][1]) then
-              --   table.insert(config.title, { meta, 'FloatSubtitle' })
-              -- end
-
               config.row = vim.opt.lines:get() - 2
+              config.border = 'double'
+              config.footer = config.title
+              config.title = ''
+              config.title_pos = nil
               -- config.relative = 'win'
-              vim.api.nvim_win_set_config(win_id, config)
+              vim.api.nvim_win_set_config(winid, config)
 
               -- vim.notify(('%d is active? %s'):format(win_id, is_active))
               local highlights = {}
               -- vim.wo[win_id].winblend = 20
-              vim.wo[win_id].cursorline = is_active
-              vim.wo[win_id].number = is_active
-              vim.wo[win_id].relativenumber = is_active
+              vim.wo[winid].cursorline = is_active
+              vim.wo[winid].number = is_active
+              vim.wo[winid].relativenumber = is_active
               if is_active then
                 highlights['DevIconDefault'] = 'String'
               else
@@ -213,7 +209,7 @@ return {
                 Normal = 'SkipMiniFilesNormal',
                 NormalNC = 'SkipMiniFilesNormalNC',
               })
-              vim.wo[win_id].winhl = vim
+              vim.wo[winid].winhl = vim
                 .iter(highlights)
                 :map(function(k, v)
                   return k .. ':' .. v

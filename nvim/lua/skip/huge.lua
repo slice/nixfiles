@@ -73,6 +73,10 @@ end
 ---@param bufnr number
 ---@param opts { silently: boolean }?
 function M.bouncer(bufnr, opts)
+  if not vim.api.nvim_buf_is_loaded(bufnr) then
+    return false
+  end
+
   if vim.api.nvim_buf_line_count(bufnr) > M.limits.max_lines then
     M.bounce(bufnr, 'too many lines', opts)
     return true

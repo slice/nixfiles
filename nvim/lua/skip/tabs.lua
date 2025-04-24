@@ -1,18 +1,13 @@
-local M = {}
+local utils = require('skip.utils')
 
-local home = vim.fs.normalize('~')
+local M = {}
 
 function M.shorten_path(path)
   if not path then
     return path
   end
 
-  local roots = { '~/Developer', '~/src' }
-  local symbolized = path:gsub(vim.pesc(home), '~')
-  for _, root in ipairs(roots) do
-    symbolized = symbolized:gsub(vim.pesc(root), '*')
-  end
-  return vim.fn.pathshorten(symbolized, 4)
+  return utils.shorten_path(path, { max = 4 })
 end
 
 function M.tab_display_name(tabid)
