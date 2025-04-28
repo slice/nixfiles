@@ -75,6 +75,7 @@ let
       bash-language-server
       biome
       bun
+      cocoapods
       corepack_18
       coursier
       delta

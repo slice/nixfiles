@@ -78,10 +78,7 @@ opt.scrolloff = 5
 -- opt.pumblend = blend
 -- opt.winblend = blend
 
--- render real tabs as being 8 spaces wide ...
-opt.tabstop = 8
-
--- ... but indent with 2 sapces
+opt.tabstop = 2
 opt.expandtab = true
 opt.softtabstop = 2
 opt.shiftwidth = 2

@@ -1,6 +1,6 @@
 local utils = require 'skip.utils'
 
-local prettier = {}
+local prettier = { 'prettierd', 'prettier' }
 
 return {
   {
@@ -18,6 +18,8 @@ return {
         javascriptreact = prettier,
         fennel = { 'fnlfmt' },
         json = prettier,
+        jsonc = prettier,
+        html = prettier,
         css = prettier,
         markdown = { 'prettierd', 'prettier' },
         nix = { 'nixfmt' },

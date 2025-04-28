@@ -7,7 +7,7 @@ function M.shorten_path(path)
     return path
   end
 
-  return utils.shorten_path(path, { max = 4 })
+  return utils.shorten(path, { max = 4 })
 end
 
 function M.tab_display_name(tabid)

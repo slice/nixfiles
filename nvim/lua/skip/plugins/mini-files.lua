@@ -168,17 +168,21 @@ return {
               config.anchor = 'SW'
 
               -- insert padding & icon around title
-              config.title[1][1] = ' '
-                .. folder_icon
-                .. ' '
-                .. config.title[1][1]
-                .. ' '
+              if config.title then
+                config.title[1][1] = ' '
+                  .. folder_icon
+                  .. ' '
+                  .. config.title[1][1]
+                  .. ' '
+              end
 
               config.row = vim.opt.lines:get() - 2
               config.border = 'double'
-              config.footer = config.title
-              config.title = ''
-              config.title_pos = nil
+              if config.title then
+                config.footer = config.title
+                config.title = ''
+                config.title_pos = nil
+              end
               -- config.relative = 'win'
               vim.api.nvim_win_set_config(winid, config)
 
