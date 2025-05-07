@@ -60,13 +60,10 @@ let
       llvmPackages_12.llvm
       luajitPackages.fennel
       luajitPackages.moonscript
-      nodejs_23
       python3
       typescript
-      # (pkgs.haskellPackages.ghcWithHoogle (haskellPackages: with haskellPackages; [
-      #   cabal-install lens wreq aeson lens-aeson bytestring text tagsoup
-      #   http-client time haskell-language-server
-      # ]))
+      nodejs_latest
+      corepack_latest
     ];
 
     # tools to help with programming
@@ -76,7 +73,6 @@ let
       biome
       bun
       cocoapods
-      corepack_18
       coursier
       python3Packages.black
       pyright
@@ -193,7 +189,7 @@ in
   home.file.".hammerspoon".source = config.lib.skip.ergonomic ./hammerspoon;
   home.file.".prettierrc.json".source = ./prettierrc.json;
   home.file.".stylua.toml".source = ../.stylua.toml;
-  home.file."Library/Application Support/jj/config.toml".source = config.lib.skip.ergonomic ./jj.toml;
+  home.file.".config/jj/config.toml".source = config.lib.skip.ergonomic ./jj.toml;
   xdg.configFile."kitty".source = config.lib.skip.ergonomic ./kitty;
 
   # This value determines the Home Manager release that your

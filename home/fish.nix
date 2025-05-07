@@ -23,6 +23,8 @@ in
 
         e = "$EDITOR";
         se = "sudo $EDITOR";
+
+        yolo = "jj bookmark set -r @- main && jj git push";
       }
       // lib.optionalAttrs pkgs.stdenv.isDarwin {
         lsregister = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
