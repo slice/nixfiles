@@ -69,13 +69,12 @@ let
     # tools to help with programming
     tooling = [
       argocd
+      attic-client
       bash-language-server
       biome
       bun
       cocoapods
       coursier
-      python3Packages.black
-      pyright
       delta
       dhall
       dhall-json
@@ -95,6 +94,8 @@ let
       nodePackages.prettier
       nomad
       protobuf
+      pyright
+      python3Packages.black
       shellcheck
       stylua
       tree-sitter
