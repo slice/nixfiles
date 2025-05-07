@@ -11,7 +11,7 @@ return {
     opts = {
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- python = { "isort", "black" },
+        python = { 'black' },
         typescript = prettier,
         typescriptreact = prettier,
         javascript = prettier,

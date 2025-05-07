@@ -229,11 +229,6 @@ return {
             })
             :flatten()
             :totable(),
-          pickers = {
-            find_files = {
-              find_command = 'fd',
-            },
-          },
           mappings = {
             i = {
               -- immediately close the prompt when pressing <ESC> in insert mode
@@ -272,6 +267,23 @@ return {
                 return false
               end
               return true
+            end,
+          },
+        },
+        pickers = {
+          find_files = {
+            find_command = function(_opts)
+              return {
+                'fd',
+                '--no-require-git',
+                '--type',
+                'file',
+                '--type',
+                'symlink',
+                '-H',
+                '-E',
+                '{.git,.jj}',
+              }
             end,
           },
         },

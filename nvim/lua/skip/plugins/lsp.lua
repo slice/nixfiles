@@ -215,6 +215,7 @@ return {
       lsc.gh_actions_ls.setup {
         filetypes = { 'yaml.github' },
       }
+      lsc.clangd.setup {}
       lsc.nixd.setup {}
       lsc.pyright.setup {}
       lsc.lua_ls.setup {

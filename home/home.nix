@@ -78,6 +78,8 @@ let
       cocoapods
       corepack_18
       coursier
+      python3Packages.black
+      pyright
       delta
       dhall
       dhall-json
@@ -96,8 +98,7 @@ let
       nixd
       nodePackages.prettier
       nomad
-      pulumi
-      pulumiPackages.pulumi-language-nodejs
+      protobuf
       shellcheck
       stylua
       tree-sitter
@@ -181,6 +182,7 @@ in
         # the fly
         MANPAGER = "nvim +Man!";
         # MANWIDTH = 999;
+        NODE_COMPILE_CACHE = "${config.home.homeDirectory}/.cache/node";
       }
       // (lib.optionalAttrs pkgs.stdenv.isDarwin {
         # when using git, use the system ssh so we can get keychain integration

@@ -2,7 +2,6 @@
 -- <o_/ <o_/ *quack quack*
 
 _G.HEADLESS = vim.g.vscode ~= nil
--- _G.HEADLESS = true
 
 if vim.o.shell:find 'bash%-interactive' then
   -- if we're running inside of nix-shell, force $SHELL to fish.
