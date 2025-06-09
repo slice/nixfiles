@@ -9,6 +9,11 @@
 
   environment.systemPackages = [ inputs.home-manager.packages.aarch64-darwin.home-manager ];
 
+  security.pam.services.sudo_local = {
+    enable = true;
+    touchIdAuth = true;
+  };
+
   nix-homebrew = {
     enable = true;
     enableRosetta = true;
