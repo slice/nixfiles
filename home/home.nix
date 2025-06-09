@@ -55,7 +55,6 @@ let
 
     # language runtimes, compilers, etc.
     languages = [
-      capnproto
       deno
       llvmPackages_12.llvm
       luajitPackages.fennel
@@ -82,6 +81,7 @@ let
       dhall-yaml
       doctl
       fluxcd
+      flyctl
       fnlfmt
       gh
       git-lfs
@@ -90,9 +90,11 @@ let
       kubernetes-helm
       lua-language-server
       nix-diff
+      nix-output-monitor
       nixd
       nodePackages.prettier
       nomad
+      postgresql
       protobuf
       pyright
       python3Packages.black
