@@ -9,6 +9,17 @@
 
   environment.systemPackages = [ inputs.home-manager.packages.aarch64-darwin.home-manager ];
 
+  nix-homebrew = {
+    enable = true;
+    enableRosetta = true;
+    user = "skip";
+    taps = {
+      "homebrew/homebrew-core" = inputs.homebrew-core;
+      "homebrew/homebrew-cask" = inputs.homebrew-cask;
+    };
+    mutableTaps = false;
+  };
+
   # generate system-wide run commands for shells to setup the nix environment
   programs.fish.enable = true;
 

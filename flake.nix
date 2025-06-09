@@ -6,6 +6,17 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-3.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -38,6 +49,7 @@
       flake-utils,
       darwin,
       lix-module,
+      nix-homebrew,
       ...
     }@inputs:
     flake-utils.lib.eachDefaultSystem (
@@ -54,6 +66,7 @@
       darwinConfigurations.grape = darwin.lib.darwinSystem {
         modules = [
           ./hosts/grape.nix
+          nix-homebrew.darwinModules.nix-homebrew
           lix-module.nixosModules.default
         ];
         specialArgs = {
@@ -64,6 +77,7 @@
       darwinConfigurations.starfruit = darwin.lib.darwinSystem {
         modules = [
           ./hosts/grape.nix
+          nix-homebrew.darwinModules.nix-homebrew
           lix-module.nixosModules.default
           (
             { ... }:
