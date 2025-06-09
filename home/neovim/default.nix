@@ -26,7 +26,6 @@ in
     let
       mirrored = [
         "lua"
-        "fnl"
         "colors"
         "after"
         ".hotpot"

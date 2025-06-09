@@ -16,7 +16,6 @@ return {
         typescriptreact = prettier,
         javascript = prettier,
         javascriptreact = prettier,
-        fennel = { 'fnlfmt' },
         json = prettier,
         jsonc = prettier,
         html = prettier,

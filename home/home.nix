@@ -82,7 +82,6 @@ let
       doctl
       fluxcd
       flyctl
-      fnlfmt
       gh
       git-lfs
       jujutsu
