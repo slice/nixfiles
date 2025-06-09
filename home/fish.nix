@@ -24,7 +24,7 @@ in
         e = "$EDITOR";
         se = "sudo $EDITOR";
 
-        yolo = "jj bookmark set -r @- main && jj git push";
+        yolo = "jj bookmark set -r @- main && jj git push --allow-empty-description";
       }
       // lib.optionalAttrs pkgs.stdenv.isDarwin {
         lsregister = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
