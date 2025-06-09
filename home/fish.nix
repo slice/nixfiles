@@ -257,7 +257,7 @@ in
           set -l flake_src ${nixfiles}
 
           nix build $flake_src#darwinConfigurations.$hostname_sans_local.system --verbose $argv
-          and ./result/sw/bin/darwin-rebuild switch --flake $flake_src
+          and sudo ./result/sw/bin/darwin-rebuild switch --flake $flake_src
           and unlink result
         '';
 
