@@ -45,13 +45,7 @@
   };
 
   outputs =
-    {
-      flake-utils,
-      darwin,
-      lix-module,
-      nix-homebrew,
-      ...
-    }@inputs:
+    { flake-utils, darwin, ... }@inputs:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
@@ -66,30 +60,25 @@
       darwinConfigurations.grape = darwin.lib.darwinSystem {
         modules = [
           ./hosts/grape.nix
-          nix-homebrew.darwinModules.nix-homebrew
-          lix-module.nixosModules.default
         ];
-        specialArgs = {
-          inherit inputs;
-        };
+        specialArgs = { inherit inputs; };
       };
 
       darwinConfigurations.starfruit = darwin.lib.darwinSystem {
         modules = [
           ./hosts/grape.nix
-          nix-homebrew.darwinModules.nix-homebrew
-          lix-module.nixosModules.default
           (
             { ... }:
             {
-              # uhhhhhhhhh
+              # i don't remember how, but nixbld got a pretty high gid here:
+              #
+              # $ id _nixbld1
+              # uid=351(_nixbld1) gid=350(nixbld) groups=350(nixbld),…
               ids.gids.nixbld = 350;
             }
           )
         ];
-        specialArgs = {
-          inherit inputs;
-        };
+        specialArgs = { inherit inputs; };
       };
     };
 }

@@ -17,10 +17,13 @@ if test -n "$maintain_ssh_agent"
   end
 end
 
-set -l homebrew /opt/homebrew
-if test -d $homebrew; and not set -q DONT_SETUP_HOMEBREW
-  eval ($homebrew/bin/brew shellenv)
-end
+# NOTE(skip): use `nix-homebrew`'s wrapper instead, which exposes a wrapper in
+# ~/.nix-profile
+
+# set -l homebrew /opt/homebrew
+# if test -d $homebrew; and not set -q DONT_SETUP_HOMEBREW
+#   eval ($homebrew/bin/brew shellenv)
+# end
 
 # stolen from Fish 3.6.0 release notes: https://fishshell.com/docs/current/relnotes.html#id9
 # (hey, it seems useful)

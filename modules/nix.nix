@@ -6,6 +6,8 @@
 }:
 
 {
+  nixpkgs.hostPlatform = "aarch64-darwin";
+
   nix.settings = {
     experimental-features = "nix-command flakes";
     trusted-users = [
@@ -31,7 +33,8 @@
   # Ensure that the "nixpkgs" flake reference and nixpkgs in $NIX_PATH point to
   # the same instance of Nixpkgs. The end result is that "nix run" and "nix-shell"
   # give the same results (in theory).
-  # See: https://github.com/NixOS/nixpkgs/pull/254405
+  #
+  # https://github.com/NixOS/nixpkgs/pull/254405
   nix.registry.nixpkgs.to = {
     type = "path";
     path = inputs.nixpkgs.outPath;
