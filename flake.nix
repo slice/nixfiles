@@ -53,15 +53,13 @@
     )
     // {
       darwinConfigurations.grape = darwin.lib.darwinSystem {
-        modules = [
-          ./hosts/grape.nix
-        ];
+        modules = [ ./systems/macbook.nix ];
         specialArgs = { inherit inputs; };
       };
 
       darwinConfigurations.starfruit = darwin.lib.darwinSystem {
         modules = [
-          ./hosts/grape.nix
+          ./systems/macbook.nix
           (
             { ... }:
             {
