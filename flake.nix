@@ -44,13 +44,21 @@
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        bootstrap = opts: import ./home/bootstrap.nix ({ inherit system inputs; } // opts);
+        bootstrapHome = opts: import ./home/bootstrap.nix ({ inherit system inputs; } // opts);
       in
       {
-        packages.homeConfigurations.slice = bootstrap { username = "slice"; };
-        packages.homeConfigurations.skip = bootstrap { username = "skip"; };
+        # home-manager configurations are exported separately (i.e. not tied to
+        # nix-darwin) so that:
+        #
+        # 1) i can easily import it from linux, or otherwise externally consume
+        #    it elsewhere. (good modularity)
+        # 2) i don't have to `switch` nix-darwin even if i just want to `switch`
+        #    home-manager
+        packages.homeConfigurations.slice = bootstrapHome { username = "slice"; };
+        packages.homeConfigurations.skip = bootstrapHome { username = "skip"; };
       }
     )
+    # darwin configurations don't live under `.${system}` attrset matrix
     // {
       darwinConfigurations.grape = darwin.lib.darwinSystem {
         modules = [ ./systems/macbook.nix ];
@@ -63,7 +71,8 @@
           (
             { ... }:
             {
-              # i don't remember how, but nixbld got a pretty high gid here:
+              # i don't remember how, but nixbld has a pretty high gid on this
+              # machine:
               #
               # $ id _nixbld1
               # uid=351(_nixbld1) gid=350(nixbld) groups=350(nixbld),…

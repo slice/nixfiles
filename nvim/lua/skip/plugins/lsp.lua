@@ -1,3 +1,4 @@
+-- vim: set foldmethod=marker:
 local patched_lspconfig = false
 
 return {
@@ -216,7 +217,42 @@ return {
         filetypes = { 'yaml.github' },
       }
       lsc.clangd.setup {}
-      lsc.nixd.setup {}
+
+      -- this check should probably live somewhere else
+      local uname = vim.uv.os_uname()
+      local macos = uname.sysname == 'Darwin'
+      -- https://github.com/nix-community/nixd {{{
+      if macos then
+        local hostname = vim.split(vim.uv.os_gethostname(), '%.')[1]
+        local flake_path = vim.fs.abspath('~/Developer/prj/nixfiles')
+        local username = vim.env.USER
+
+        local extra_evals = {
+          nix_darwin = {
+            -- 1) ~/Developer is a symlink to ~/src on both of my machines
+            -- 2) if this goes through a symlink, it explodes
+            expr = ('(builtins.getFlake "%s").darwinConfigurations.%s.options'):format(
+              flake_path,
+              hostname
+            ),
+          },
+          home_manager = {
+            expr = ('(builtins.getFlake "%s").packages.aarch64-darwin.homeConfigurations.%s.options'):format(
+              flake_path,
+              username
+            ),
+          },
+        }
+        lsc.nixd.setup {
+          settings = {
+            nixd = {
+              options = extra_evals,
+            },
+          },
+        }
+      end
+      -- }}}
+
       lsc.pyright.setup {}
       lsc.lua_ls.setup {
         enabled = true,

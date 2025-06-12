@@ -1,6 +1,6 @@
 local utils = require 'skip.utils'
 
-local prettier = { 'prettierd', 'prettier' }
+local prettier = {}
 
 return {
   {

@@ -5,8 +5,8 @@
 {
   imports = [
     ../modules/nix.nix
-    ../modules/homebrew.nix
-    ../modules/pam.nix
+    ../modules/darwin/homebrew.nix
+    ../modules/darwin/pam.nix
 
     # https://lix.systems
     (inputs.lix-module.nixosModules.default)
