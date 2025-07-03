@@ -69,7 +69,6 @@ let
     tooling = [
       argocd
       attic-client
-      atuin
       bash-language-server
       biome
       bun

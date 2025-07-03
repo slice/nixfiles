@@ -134,11 +134,3 @@ set -gx FZF_DEFAULT_OPTS "--color=fg:-1,fg+:-1,bg:-1,bg+:#4e1012,gutter:-1 \
 if test "$TERM_PROGRAM" = "vscode"
   set -gx EDITOR "code --wait"
 end
-
-# atuin {{{
-
-if status is-interactive
-  atuin init fish | source
-end
-
-# }}}
