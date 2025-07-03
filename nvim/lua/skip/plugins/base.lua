@@ -21,6 +21,7 @@ return {
   'mhinz/vim-sayonara',
 
   'rktjmp/hotpot.nvim',
+  'grafana/vim-alloy',
   'alunny/pegjs-vim',
 
   {
