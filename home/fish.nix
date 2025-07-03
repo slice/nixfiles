@@ -62,7 +62,7 @@ in
         "jbsmp" = "jj bookmark set -r @- main && jj git push";
         "jbtr" = "jj bookmark track";
         "jc" = "jj commit";
-        "jcm" = "jj commit -m ";
+        "jcm" = "jj commit -m";
         "jd" = "jj describe";
         "jd-" = "jj describe -r @-";
         "jdf" = "jj diff";
