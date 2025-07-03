@@ -18,35 +18,6 @@ paginate = "auto"
 private-commits = "private"
 push-bookmark-prefix = "skip/jj-"
 
-[aliases]
-a = ["absorb"]
-aba = ["abandon"]
-bs = ["bookmark", "set"]
-bs- = ["bookmark", "set", "-r", "@-"]
-btr = ["bookmark", "track"]
-c = ["commit"]
-cm = ["commit", "-m"]
-d = ["describe"]
-d- = ["describe", "-r", "@-"]
-df = ["diff"]
-f = ["git", "fetch"]
-l = ["log"]
-la = ["log", "-r", "::"]
-n = ["new"]
-nm = ["new", "main"]
-nmo = ["new", "main@origin"]
-p = ["git", "push"]
-p- = ["git", "push", "-c", "@-"]
-pn = ["git", "push", "-N"]
-push = ["git", "push"]
-rb = ["rebase"]
-sh = ["show"]
-sh- = ["show", "@-"]
-sp = ["split"]
-sq = ["squash"]
-squ = ["squash", "-u"]
-u = ["bookmark", "move", "--from", "heads(::@- & bookmarks() ~ main)", "--to", "@-"]
-
 [revsets]
 # prioritize nearby commits
 short-prefixes = "descendants(ancestors(@, 20), 3)"

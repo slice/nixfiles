@@ -54,13 +54,40 @@ in
 
         agp = "autocommit; and git push -v";
 
-        j = "jj";
-        # TODO: move to config via `util exec`
-        jfnmo = "jj git fetch && jj new main@origin";
-        # u = ["bookmark", "move", "--from", "heads(::@- & bookmarks() ~ main)", "--to", "@-"]
-        jup = "jj u && jj git push";
-        # bs- = ["bookmark", "set", "-r", "@-"]
-        jbsmp = "jj bs- main && jj p";
+        "j" = "jj";
+        "ja" = "jj absorb";
+        "jaba" = "jj abandon";
+        "jbs" = "jj bookmark set";
+        "jbs-" = "jj bookmark set -r @-";
+        "jbsmp" = "jj bookmark set -r @- main && jj git push";
+        "jbtr" = "jj bookmark track";
+        "jc" = "jj commit";
+        "jcm" = "jj commit -m ";
+        "jd" = "jj describe";
+        "jd-" = "jj describe -r @-";
+        "jdf" = "jj diff";
+        "jf" = "jj git fetch";
+        "jfnmo" = "jj git fetch && jj new main@origin";
+        "jl" = "jj log";
+        "jla" = "jj log -r ::";
+        "jn" = "jj new";
+        "jnm" = "jj new main";
+        "jnmo" = "jj new main@origin";
+        "jp" = "jj git push";
+        "jp-" = "jj git push -c @-";
+        "jpn" = "jj git push -N";
+        "jpush" = "jj git push";
+        "jrb" = "jj rebase";
+        "jsh" = "jj show";
+        "jsh-" = "jj show @-";
+        "jsp" = "jj split";
+        "jspi" = "jj split -i";
+        "jsq" = "jj squash";
+        "jsqi" = "jj squash -i";
+        "jsqu" = "jj squash -u";
+        "ju" = "jj bookmark move --from heads(::@- & bookmarks() ~ main) --to @-";
+        # duplicated from above
+        "jup" = "jj bookmark move --from heads(::@- & bookmarks() ~ main) --to @- && jj git push";
 
         yyd = "yarn && yarn dev";
         yd = "yarn dev";
