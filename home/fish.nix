@@ -81,13 +81,14 @@ in
         "jsh" = "jj show";
         "jsh-" = "jj show @-";
         "jsp" = "jj split";
+        "jsp-" = "jj split -r @-";
         "jspi" = "jj split -i";
         "jsq" = "jj squash";
         "jsqi" = "jj squash -i";
         "jsqu" = "jj squash -u";
-        "ju" = "jj bookmark move --from heads(::@- & bookmarks() ~ main) --to @-";
+        "ju" = "jj bookmark move --from \"heads(::@- & bookmarks() ~ main)\" --to @-";
         # duplicated from above
-        "jup" = "jj bookmark move --from heads(::@- & bookmarks() ~ main) --to @- && jj git push";
+        "jup" = "jj bookmark move --from \"heads(::@- & bookmarks() ~ main)\" --to @- && jj git push";
 
         yyd = "yarn && yarn dev";
         yd = "yarn dev";
