@@ -28,8 +28,6 @@ in
         "lua"
         "colors"
         "after"
-        ".hotpot"
-        ".hotpot.lua"
       ];
     in
     builtins.listToAttrs (
