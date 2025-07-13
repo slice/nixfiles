@@ -1,0 +1,54 @@
+name: Build and Push
+
+on:
+  push:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:
+          # x86_64 linux
+          - ubuntu-latest
+          # arm64 linux
+          - ubuntu-24.04-arm
+          # arm64 darwin
+          - macos-15
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Quickly Install Lix
+        uses: canidae-solutions/lix-quick-install-action@v3
+        with:
+          lix_on_tmpfs: true
+
+      - name: Set Up Attic
+        uses: ryanccn/attic-action@v0
+        with:
+          endpoint: ${{ secrets.ATTIC_ENDPOINT }}
+          cache: ${{ secrets.ATTIC_CACHE }}
+          token: ${{ secrets.ATTIC_TOKEN }}
+
+      - name: Build nix-darwin Closure (grape)
+        run: nix build .#darwinConfigurations.grape.system
+
+      - name: Build nix-darwin Closure (starfruit)
+        run: nix build .#darwinConfigurations.grape.starfruit
+
+      - name: Build home-manager Closure
+        run: nix build .#homeConfigurations.skip.activationPackage
+
+      - name: Push Closures to Attic
+        run: |
+          set -euox pipefail
+
+          for attr in .#darwinConfigurations.{grape,starfruit}.system; do
+            for store_path in $(nix path-info --derivation "$attr") $(nix path-info "$attr"); do
+              attic push "$ATTIC_CACHE" "$store_path"
+            done
+          done
