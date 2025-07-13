@@ -51,7 +51,10 @@ jobs:
         run: |
           set -euox pipefail
 
-          attic push "$ATTIC_CACHE" .#homeConfigurations.skip.activationPackage
+          attr=".#homeConfigurations.skip.activationPackage"
+          for store_path in $(nix path-info --derivation "$attr") $(nix path-info "$attr"); do
+            attic push "$ATTIC_CACHE" "$store_path"
+          done
 
       - name: Push nix-darwin Closures
         if: runner.os == 'macOS'
