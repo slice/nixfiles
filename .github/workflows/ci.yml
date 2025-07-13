@@ -47,7 +47,14 @@ jobs:
       - name: Build home-manager Closure
         run: nix build .#homeConfigurations.skip.activationPackage
 
-      - name: Push Closures to Attic
+      - name: Push home-manager Closure
+        run: |
+          set -euox pipefail
+
+          attic push "$ATTIC_CACHE" .#homeConfigurations.skip.activationPackage
+
+      - name: Push nix-darwin Closures
+        if: runner.os == 'macOS'
         run: |
           set -euox pipefail
 
