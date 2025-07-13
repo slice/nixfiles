@@ -45,7 +45,6 @@ let
       rclone
       ripgrep
       rlwrap
-      rsync
       tmux
       tree
       unzip
