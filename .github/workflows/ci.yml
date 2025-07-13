@@ -49,7 +49,7 @@ jobs:
 
       - name: Push home-manager Closure
         env:
-          cache: ${{ secrets.ATTIC_CACHE }}
+          ATTIC_CACHE: ${{ secrets.ATTIC_CACHE }}
         run: |
           set -euox pipefail
 
@@ -61,7 +61,7 @@ jobs:
       - name: Push nix-darwin Closures
         if: runner.os == 'macOS'
         env:
-          cache: ${{ secrets.ATTIC_CACHE }}
+          ATTIC_CACHE: ${{ secrets.ATTIC_CACHE }}
         run: |
           set -euox pipefail
 
