@@ -21,6 +21,9 @@ in
         lt = "ll --time-style=iso"; # force absolute timestamps
         la = "ll -aa";
 
+        # maybe until https://github.com/erlang/otp/issues/9863 is fixed
+        iex = "rlwrap --always-readline iex";
+
         e = "$EDITOR";
         se = "sudo $EDITOR";
 
