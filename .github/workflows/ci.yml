@@ -42,7 +42,7 @@ jobs:
 
       - name: Build nix-darwin Closure (starfruit)
         if: runner.os == 'macOS'
-        run: nix build .#darwinConfigurations.grape.starfruit
+        run: nix build .#darwinConfigurations.starfruit.system
 
       - name: Build home-manager Closure
         run: nix build .#homeConfigurations.skip.activationPackage
