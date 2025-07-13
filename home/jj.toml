@@ -8,7 +8,7 @@ email = "tinyslices@gmail.com"
 default-command = ["log"]
 diff-editor = ":builtin"
 diff-instructions = false
-diff.format = "git"
+diff-formatter = ":git"
 graph.style = "curved"
 log-word-wrap = true
 pager = ["delta", "--hunk-header-style", "plain"]
@@ -16,13 +16,13 @@ paginate = "auto"
 
 [git]
 private-commits = "private"
-push-bookmark-prefix = "skip/jj-"
 
 [revsets]
 # prioritize nearby commits
 short-prefixes = "descendants(ancestors(@, 20), 3)"
 
 [templates]
+git_push_bookmark = '"skip/jj-" ++ change_id.short()'
 draft_commit_description = '''
 concat(
   description,
