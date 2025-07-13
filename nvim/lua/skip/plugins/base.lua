@@ -23,6 +23,7 @@ return {
   'rktjmp/hotpot.nvim',
   'grafana/vim-alloy',
   'alunny/pegjs-vim',
+  'isobit/vim-caddyfile',
 
   {
     'airblade/vim-rooter',
