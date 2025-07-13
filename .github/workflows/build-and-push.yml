@@ -35,9 +35,11 @@ jobs:
           token: ${{ secrets.ATTIC_TOKEN }}
 
       - name: Build nix-darwin Closure (grape)
+        if: runner.os == 'macOS'
         run: nix build .#darwinConfigurations.grape.system
 
       - name: Build nix-darwin Closure (starfruit)
+        if: runner.os == 'macOS'
         run: nix build .#darwinConfigurations.grape.starfruit
 
       - name: Build home-manager Closure
