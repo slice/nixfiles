@@ -61,7 +61,10 @@ let
       luajitPackages.moonscript
       python3
       typescript
-      nodejs_latest
+      # nodejs_24 doesn't build on aarch64-darwin: https://github.com/NixOS/nixpkgs/issues/423244
+      (nodejs_latest.overrideAttrs (_: {
+        doCheck = false;
+      }))
       corepack_latest
     ];
 
