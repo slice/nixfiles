@@ -24,8 +24,9 @@ jobs:
 
       - name: Quickly Install Lix
         uses: canidae-solutions/lix-quick-install-action@v3
-        with:
-          lix_on_tmpfs: true
+        # (building e.g. node OOMs)
+        # with:
+          # lix_on_tmpfs: true
 
       - name: Set Up Attic
         uses: ryanccn/attic-action@v0
