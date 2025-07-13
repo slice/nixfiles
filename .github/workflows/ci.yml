@@ -33,6 +33,8 @@ jobs:
           endpoint: ${{ secrets.ATTIC_ENDPOINT }}
           cache: ${{ secrets.ATTIC_CACHE }}
           token: ${{ secrets.ATTIC_TOKEN }}
+          # we run `attic push` ourselves
+          skip-push: true
 
       - name: Build nix-darwin Closure (grape)
         if: runner.os == 'macOS'
