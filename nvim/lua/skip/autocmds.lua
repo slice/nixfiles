@@ -285,7 +285,7 @@ autocmds('SkipFiletypes', {
   {
     'FileType',
     {
-      pattern = 'gitcommit',
+      pattern = { 'gitcommit', 'jjdescription' },
       command = 'setlocal spell formatexpr= formatoptions=tn | normal ] ',
     },
   },
