@@ -17,28 +17,29 @@ end
 
 ---@type LazySpec
 return {
+  {
+    'danielfalk/smart-open.nvim',
+    cond = not HEADLESS,
+    commit = 'f079c3201a0a62b1582563bd5ce4256c253634d4',
+    dependencies = {
+      'kkharji/sqlite.lua',
+    },
+    config = function()
+      require('telescope').load_extension('smart_open')
+    end,
+  },
+  {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    cond = not HEADLESS,
+    build = 'make',
+  },
 
   -- extensible multifuzzy finder over pretty much anything
   {
     'nvim-telescope/telescope.nvim',
     cond = not HEADLESS,
 
-    -- TODO: upstream or fork
-    -- branch = '0.1.x',
-    -- dev = true,
-
-    -- here because loading order woes
-    -- we need to call telescope setup _before_ load_extension. how to enforce
-    -- that?
-    dependencies = {
-      {
-        'danielfalk/smart-open.nvim',
-        dependencies = {
-          'kkharji/sqlite.lua',
-        },
-      },
-      'nvim-telescope/telescope-fzf-native.nvim',
-    },
+    dependencies = { 'nvim-lua/plenary.nvim' },
 
     cmd = 'Telescope',
     keys = {
@@ -65,8 +66,8 @@ return {
       { '<Leader>k', '<Cmd>Telescope lsp_references<CR>' },
       {
         '<Leader>o',
-        '<Cmd>Telescope find_files<CR>',
-        desc = 'Telescope find_files',
+        '<Cmd>Telescope smart_open<CR>',
+        desc = 'Telescope smart_open',
       },
       { '<Leader>p', '<Cmd>Telescope trampoline<CR>' },
       { '<Leader>/', '<Cmd>Telescope current_buffer_fuzzy_find<CR>' },
@@ -169,6 +170,10 @@ return {
         return layout
       end
 
+      for _, ext in ipairs({ 'fzf' }) do
+        telescope.load_extension(ext)
+      end
+
       telescope.setup({
         defaults = {
           -- breaks ghostty wide char expansion thingy
@@ -242,8 +247,8 @@ return {
           },
           preview = {
             -- max limits in MB
-            filesize_limit = 1,
-            highlight_limit = 1,
+            -- filesize_limit = 10,
+            -- highlight_limit = 10,
             -- swift is too slow :/
             treesitter = { enable = true, disable = { 'swift' } },
             filetype_hook = function(filepath, bufnr, opts)
@@ -305,7 +310,10 @@ return {
                 -- telescope buffers are prompt buffers, which treat CTRL-W as
                 -- if you were in normal mode. remap to actually delete the
                 -- last word (idk why this isn't needed with other pickers)
-                ['<C-w>'] = { '<C-S-w>', type = 'command' },
+                -- https://github.com/danielfalk/smart-open.nvim/issues/71
+                ['<C-w>'] = function()
+                  vim.api.nvim_input('<c-s-w>')
+                end,
               },
             },
           },
@@ -343,10 +351,6 @@ return {
       --     end
       --   end
       -- end
-
-      for _, ext in ipairs({ 'smart_open', 'fzf' }) do
-        telescope.load_extension(ext)
-      end
     end,
   },
 
