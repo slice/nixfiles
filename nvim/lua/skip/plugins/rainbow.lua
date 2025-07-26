@@ -18,7 +18,7 @@ return {
         'RainbowDelimiter3',
       },
       condition = function(bufnr)
-        return vim.b[bufnr].huge_bounced
+        return vim.b[bufnr].huge_bounced ~= true
       end,
     },
     config = function(_, opts)
