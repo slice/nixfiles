@@ -88,3 +88,7 @@ opt.shiftwidth = 2
 vim.g.loaded_netrwPlugin = true
 
 vim.g.markdown_fenced_languages = { 'ts=typescript' }
+
+if vim.env.TERM_PROGRAM == 'ghostty' then
+  opt.termsync = false
+end

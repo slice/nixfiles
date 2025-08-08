@@ -54,14 +54,15 @@ let
 
     # language runtimes, compilers, etc.
     languages = [
+      corepack_latest
+      dart-sass
       deno
       llvmPackages_12.llvm
       luajitPackages.fennel
       luajitPackages.moonscript
+      nodejs_24
       python3
       typescript
-      nodejs_24
-      corepack_latest
     ];
 
     # tools to help with programming
@@ -99,6 +100,7 @@ let
       shellcheck
       stylua
       tree-sitter
+      uv
       vscode-langservers-extracted
       yaml-language-server
     ];

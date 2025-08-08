@@ -8,6 +8,7 @@ local map = vim.keymap.set
 -- after 6? 7? years of typing <ESC>:w<CR>, it's time for somethin' different
 map('n', '<Leader>w', '<cmd>w<CR>')
 map('n', '<Leader>W', '<cmd>noautocmd w<CR>')
+map('n', '<Leader>QQ', '<Cmd>Qa!<CR>')
 
 map('n', '<Leader>x', '<Cmd>Sayonara!<CR>', { desc = ':Sayonara!' })
 map('n', '<Leader>X', '<Cmd>bdelete!<CR>', { desc = ':bdelete!' })
