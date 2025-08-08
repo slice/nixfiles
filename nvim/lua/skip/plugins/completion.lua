@@ -9,10 +9,6 @@ return {
     dependencies = {
       'rafamadriz/friendly-snippets',
       'folke/lazydev.nvim',
-      {
-        'mikavilpas/blink-ripgrep.nvim',
-        commit = '8a47d404a359c70c796cb0979ddde4c788fd44e5',
-      },
     },
     version = '*',
     ---@module 'blink.cmp'
@@ -39,66 +35,12 @@ return {
         },
       },
       sources = {
-        default = { 'lazydev', 'lsp', 'path', 'buffer', 'snippets', 'ripgrep' },
+        default = { 'lazydev', 'lsp', 'path', 'buffer', 'snippets' },
         providers = {
           lazydev = {
             name = 'LazyDev',
             module = 'lazydev.integrations.blink',
             score_offset = 100,
-          },
-          ripgrep = {
-            enabled = function()
-              -- resolve /Users/skip into ~
-              local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ':~')
-
-              local permitted_ripgrep_roots = {
-                '~/Developer/prj',
-                '~/Developer/lib',
-                '~/Developer/work',
-                '~/src/prj',
-                '~/src/lib',
-                '~/src/work',
-              }
-
-              for _, root in pairs(permitted_ripgrep_roots) do
-                -- TODO: not escaping
-                if cwd:find(root) == 1 then
-                  return true
-                end
-              end
-
-              vim.notify_once(
-                'not within permitted ripgrep root; ripgrep completion source will be unavailable',
-                vim.log.levels.INFO
-              )
-              return false
-            end,
-            module = 'blink-ripgrep',
-            name = 'rg',
-            transform_items = function(_, items)
-              for _, item in ipairs(items) do
-                item.kind =
-                  require('blink.cmp.types').CompletionItemKind.Reference
-              end
-              return items
-            end,
-            ---@module "blink-ripgrep"
-            ---@type blink-ripgrep.Options
-            opts = {
-              prefix_min_len = 4,
-              max_filesize = '128K',
-              project_root_marker = {
-                '.git',
-                '.jj',
-                -- '.vscode',
-                -- ~/.vscode is a thing that it stores stuff in
-                '.github',
-              },
-              additional_rg_options = {
-                '--no-require-git', -- !
-                '--glob=**.{ts,js,mjs,mts,tsx,jsx,json,sh,yaml,yml,md,m,mm,c,h,sass,scss,css,swift,html,kt,lua,cpp,hpp,hxx,cxx,cc,hh,go,hs,java,py,cjs,cjsx,cts}',
-              },
-            },
           },
         },
       },
