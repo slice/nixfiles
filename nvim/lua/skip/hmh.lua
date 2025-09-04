@@ -7,6 +7,7 @@ return lush(function(inj)
 
   return {
     Normal { bg = hsl '#080808', fg = hsl '#b7a795' },
+    NormalFloat { bg = hsl '#1f1f1f', fg = '#dddddd' },
     Cursor { bg = hsl '#3eed3d', fg = Normal.bg },
     ModeMsg { fg = Cursor.bg, bold = true },
     CursorLine { bg = hsl '#09096d' },
@@ -15,6 +16,12 @@ return lush(function(inj)
     PreProc { fg = Comment.fg.li(60), italic = true },
     LineNr { fg = Normal.bg.li(30) },
     ColorColumn { bg = Normal.bg.li(9) },
+
+    DiagnosticError { fg = '#f1979b', bg = '#711224', bold = true },
+    DiagnosticWarn { fg = '#d3af5e', bg = '#8d4f00' },
+    DiagnosticInfo { fg = '#9ab0fa', bg = '#212c7b', italic = true },
+    DiagnosticHint { DiagnosticInfo },
+    DiagnosticOk { fg = '#73c99b' },
 
     Constant { fg = hsl '#698929' },
     String { fg = Constant.fg.li(10) },
@@ -32,6 +39,10 @@ return lush(function(inj)
       italic = true,
     },
     MiniHipatternsNote { fg = '#045f03', bold = true, underline = true },
+
+    ErrorMsg { fg = '#d80a06', bold = true },
+    MoreMsg { fg = '#ffff00', bold = true },
+    Question { MoreMsg },
 
     sym '@lsp.type.macro' { Special },
 
@@ -61,5 +72,14 @@ return lush(function(inj)
     Operator { reset = true },
     Type { reset = true },
     sym '@constructor.lua' { reset = true },
+
+    sym '@property.yaml' { Normal },
+    sym '@boolean.yaml' { fg = '#d97cdd', bold = true },
+    sym '@number.yaml' { fg = Conditional.fg },
+
+    -- rainbow bracket delimiters; copy vsc defaults
+    RainbowDelimiter1 { fg = '#ffd700' },
+    RainbowDelimiter2 { fg = '#da70d6' },
+    RainbowDelimiter3 { fg = '#179fff' },
   }
 end)
