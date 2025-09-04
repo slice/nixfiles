@@ -66,8 +66,8 @@ return {
       { '<Leader>k', '<Cmd>Telescope lsp_references<CR>' },
       {
         '<Leader>o',
-        '<Cmd>Telescope smart_open<CR>',
-        desc = 'Telescope smart_open',
+        '<Cmd>Telescope find_files<CR>',
+        desc = 'Telescope find_files',
       },
       { '<Leader>p', '<Cmd>Telescope trampoline<CR>' },
       { '<Leader>/', '<Cmd>Telescope current_buffer_fuzzy_find<CR>' },
