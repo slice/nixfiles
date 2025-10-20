@@ -22,9 +22,8 @@ let
   editor = "${lib.getBin editorPkg}/bin/editor";
 
   packagesets = with pkgs; rec {
-    # packages that i need on every machine
+    # packages that are handy on _every_ machine
     base = [
-      # grab bag of useful programs
       aria
       cachix
       croc
@@ -40,10 +39,10 @@ let
       jo
       jq
       mosh
-      nixfmt-rfc-style
       p7zip
       rclone
       ripgrep
+      nixfmt-rfc-style
       rlwrap
       tmux
       tree
@@ -57,9 +56,6 @@ let
       corepack_latest
       dart-sass
       deno
-      llvmPackages_12.llvm
-      luajitPackages.fennel
-      luajitPackages.moonscript
       nodejs_24
       python3
       typescript
@@ -73,6 +69,7 @@ let
       bun
       cocoapods
       coursier
+      delta
       flyctl
       gh
       git-lfs
@@ -95,18 +92,18 @@ let
 
     # video/audio
     multimedia = [
-      ffmpeg_7
+      ffmpeg_8
       sox
       imagemagick
     ];
 
-    # miscellaneous utilities
+    # misc. utilities
     utilities = [
-      graphviz
-      smartmontools
-      colmena
-      packwiz
       _1password-cli
+      colmena
+      graphviz
+      packwiz
+      smartmontools
     ];
 
     everything = base ++ languages ++ tooling ++ multimedia ++ utilities;
