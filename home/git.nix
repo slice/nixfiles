@@ -26,6 +26,11 @@
         user.name = "Skip R";
         user.email = "tinyslices@gmail.com";
 
+        alias.tags = "tag -l --format='%(color:magenta)%(objectname:short=8)%(color:reset) %(color:bold white)%(align:width=38,position=left)%(refname:strip=2)%(end)%(color:reset) %(committerdate:human) %(color:italic black)(%(committerdate:relative))%(color:reset)'";
+
+        tag.sort = "-committerdate";
+        branch.sort = "-committerdate";
+
         # url."git@github.com:".insteadOf = "https://github.com/";
         commit.verbose = true;
         format.pretty = "tformat:%C(bold yellow)%h%Creset %<|(82,trunc)%s %Creset%C(bold white)%cr%C(nobold)/%ch%Creset %C(bold)(%an)%C(auto)%d";
@@ -37,7 +42,6 @@
         };
         pull.rebase = true;
         init.defaultBranch = "main";
-        branch.sort = "-committerdate";
         # diff.colorMoved = "default";
 
         "credential \"https://github.com\"" = ghCredentialHelper;
