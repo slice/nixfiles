@@ -11,7 +11,9 @@ return {
       vim.lsp.config('*', {
         root_dir = function(bufnr, on_dir)
           if lsp.attach_allowed(bufnr) then
-            on_dir(vim.fs.root(bufnr, { '.git', '.jj', '.github', 'package.json' }))
+            on_dir(
+              vim.fs.root(bufnr, { '.git', '.jj', '.github', 'package.json' })
+            )
           end
         end,
         capabilities = lsp.capabilities,
@@ -53,15 +55,12 @@ return {
               ['http://json.schemastore.org/prettierrc'] = '.prettierrc.{yml,yaml}',
               ['http://json.schemastore.org/kustomization'] = 'kustomization.{yml,yaml}',
               ['http://json.schemastore.org/chart'] = 'Chart.{yml,yaml}',
-              ['https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json'] =
-              '*.argo-application.{yml,yaml}',
-              ['https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/appproject_v1alpha1.json'] =
-              '*.argo-appproject.{yml,yaml}',
-              ['https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/applicationset_v1alpha1.json'] =
-              '*.argo-applicationset.{yml,yaml}',
+              ['https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json'] = '*.argo-application.{yml,yaml}',
+              ['https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/appproject_v1alpha1.json'] = '*.argo-appproject.{yml,yaml}',
+              ['https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/applicationset_v1alpha1.json'] = '*.argo-applicationset.{yml,yaml}',
             },
-          }
-        }
+          },
+        },
       })
       -- }}}
       -- vtsls {{{
@@ -106,11 +105,11 @@ return {
             experimental = {
               classRegex = {
                 { 'cva\\(([^)]*)\\)', '["\'`]([^"\'`]*).*?["\'`]' },
-                { 'cx\\(([^)]*)\\)',  "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+                { 'cx\\(([^)]*)\\)', "(?:'|\"|`)([^']*)(?:'|\"|`)" },
               },
             },
           },
-        }
+        },
       })
       -- }}}
       -- cssls,jsonls,html {{{
@@ -194,18 +193,19 @@ return {
       -- }}}
 
       vim.lsp.enable({
-        'pyright',
-        'lua_ls',
-        'vtsls',
-        'yamlls',
-        'gopls',
         'bashls',
-        'tailwindcss',
+        'cssls',
+        'gh_actions_ls',
+        'gopls',
+        'html',
+        'jsonls',
+        'lua_ls',
+        'pyright',
         'rust_analyzer',
         'sourcekit',
-        'html',
-        'cssls',
-        'jsonls',
+        'tailwindcss',
+        'vtsls',
+        'yamlls',
       })
     end,
   },
@@ -232,7 +232,7 @@ return {
     end,
     config = function(self, metals_config)
       local nvim_metals_group =
-          vim.api.nvim_create_augroup('nvim-metals', { clear = true })
+        vim.api.nvim_create_augroup('nvim-metals', { clear = true })
       vim.api.nvim_create_autocmd('FileType', {
         pattern = self.ft,
         callback = function()
