@@ -20,15 +20,14 @@ Mostly documented for my own sake. I am trapped in a prison of my own design.
 > [nix-darwin] configurations will only work if your hostname matches a
 > corresponding configuration in [`flake.nix`](./flake.nix).
 
-1. [Install Nix](https://nixos.org/download/):
+1. Install Nix. Let's use [Lix](https://lix.systems/):
 
    ```
-   sh <(curl -L https://nixos.org/nix/install)
+   curl -sSf -L https://install.lix.systems/lix | sh -s -- install
    ```
 
    The installer will describe what it intends to do before prompting you to
    continue. However, in general, it:
-
    - Creates a new APFS volume for the Nix store.
    - Creates and registers Launch Daemons that mount the volume and spawn the
      Nix daemon.
@@ -37,18 +36,26 @@ Mostly documented for my own sake. I am trapped in a prison of my own design.
    - Writes the necessary shell profiles to make Nix usable.
 
 1. Clone this repository to `~/src/prj/nixfiles`. (As you might guess, this path
-   is _also_ hardcoded. For now. Maybe.)
+   is also hardcoded. For now. Maybe.)
 
 1. Pop open a fresh shell so the computer knows where `nix` lives. Then,
-   bootstrap [Home Manager][home-manager] and [nix-darwin]:
+   bootstrap [Home Manager][home-manager]:
 
    ```
    nix run home-manager/master -- switch --flake ~/src/prj/nixfiles
-   nix run nix-darwin -- switch --flake ~/src/prj/nixfiles
+   ```
+
+   and [nix-darwin] (substitute `HOSTNAME` as appropriate):
+
+   ```sh
+   nix build ~/src/prj/nixfiles#darwinConfigurations.HOSTNAME.system --verbose
+   sudo ./result/sw/bin/darwin-rebuild switch --flake ~/src/prj/nixfiles
+   unlink result
    ```
 
    You will likely have to mess with some files in `/etc` to let nix-darwin
-   manage the environment.
+   manage the environment. Also note that this will explode if [Homebrew](https://brew.sh/)
+   has already been installed, because [nix-homebrew](https://github.com/zhaofengli/nix-homebrew) is being used.
 
 1. Change your shell:
 
@@ -58,7 +65,15 @@ Mostly documented for my own sake. I am trapped in a prison of my own design.
 
 1. If you set up nix-darwin, then you probably have
    [two Nix installations](https://github.com/LnL7/nix-darwin/issues/931) now,
-   which needs to be somehow fixed.
+   which needs to be fixed.
+
+   This can be accomplished by removing the Nix that was used to
+   bootstrap, which basically boils down to uninstalling a package from
+   `root`'s user environment:
+
+   ```sh
+   sudo nix-env --uninstall lix-2.93.0
+   ```
 
    (Nix is required to bootstrap nix-darwin, but nix-darwin essentially acts as
    a Nix installation in and of itself by managing a Nix daemon for you.
@@ -66,6 +81,7 @@ Mostly documented for my own sake. I am trapped in a prison of my own design.
    conflict with the Nix binary that was previously used to bootstrap this
    entire setup.)
 
+   Guidance:
    - Use `nix doctor` to verify that you don't have conflicting `nix` binaries
      in your `PATH`.
    - Use `launchctl` to ensure that you only have a single Nix daemon (e.g.
