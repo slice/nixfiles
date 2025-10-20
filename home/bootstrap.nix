@@ -28,7 +28,6 @@ in
 home-manager.lib.homeManagerConfiguration {
   modules = [
     ./home.nix
-    ../modules/hh3.nix
     (
       { ... }:
       {

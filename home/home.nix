@@ -130,7 +130,7 @@ in
     ./fish.nix
     ./git.nix
     ./linux
-  ] ++ (lib.optional (!server) ./hh3.nix);
+  ];
 
   # has to be here because of recursion :(
   nixpkgs.overlays = [
@@ -158,20 +158,19 @@ in
   home = {
     packages = if server then packagesets.base else packagesets.everything;
 
-    sessionVariables =
-      {
-        EDITOR = editor;
-        LESS = "--ignore-case";
-        # use Neovim for man page formatting instead of groff so we can wrap on
-        # the fly
-        MANPAGER = "nvim +Man!";
-        # MANWIDTH = 999;
-        NODE_COMPILE_CACHE = "${config.home.homeDirectory}/.cache/node";
-      }
-      // (lib.optionalAttrs pkgs.stdenv.isDarwin {
-        # when using git, use the system ssh so we can get keychain integration
-        GIT_SSH = "/usr/bin/ssh";
-      });
+    sessionVariables = {
+      EDITOR = editor;
+      LESS = "--ignore-case";
+      # use Neovim for man page formatting instead of groff so we can wrap on
+      # the fly
+      MANPAGER = "nvim +Man!";
+      # MANWIDTH = 999;
+      NODE_COMPILE_CACHE = "${config.home.homeDirectory}/.cache/node";
+    }
+    // (lib.optionalAttrs pkgs.stdenv.isDarwin {
+      # when using git, use the system ssh so we can get keychain integration
+      GIT_SSH = "/usr/bin/ssh";
+    });
   };
 
   home.file.".hammerspoon".source = config.lib.skip.ergonomic ./hammerspoon;
