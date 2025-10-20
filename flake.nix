@@ -17,8 +17,9 @@
       flake = false;
     };
 
+    # Lix 2.93 "Bici Bici" (released 2025-05-06)
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2-1.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-2.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
