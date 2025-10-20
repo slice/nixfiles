@@ -67,32 +67,20 @@ let
 
     # tools to help with programming
     tooling = [
-      argocd
       attic-client
       bash-language-server
       biome
       bun
       cocoapods
       coursier
-      delta
-      dhall
-      dhall-json
-      dhall-lsp-server
-      dhall-yaml
-      doctl
-      fluxcd
       flyctl
       gh
       git-lfs
       jujutsu
-      k9s
-      kubernetes-helm
       lua-language-server
-      nix-diff
       nix-output-monitor
       nixd
       nodePackages.prettier
-      nomad
       postgresql
       protobuf
       pyright
