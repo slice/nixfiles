@@ -34,11 +34,11 @@ end
 -- setup a buffer with an lsp server attached with the proper mappings and
 -- options
 function M.setup_lsp_buf(client, bufnr)
-  if client.server_capabilities.codeLensProvider then
-    vim.cmd(
-      [[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
-    )
-  end
+  -- if client.server_capabilities.codeLensProvider then
+  --   vim.cmd(
+  --     [[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
+  --   )
+  -- end
 
   vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.bo.formatexpr = '' -- reserve gq for comment formatting

@@ -1,3 +1,5 @@
+-- custom tabline
+
 local utils = require('skip.utils')
 
 local M = {}

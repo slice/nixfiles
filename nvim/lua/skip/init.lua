@@ -8,31 +8,12 @@ if vim.o.shell:find 'bash%-interactive' then
   vim.o.shell = '/run/current-system/sw/bin/fish'
 end
 
+-- be sure to set up elementary mappings (and `mapleader`) _before_ lazy is set
+-- up)
 require 'skip.options'
 
--- bootstrap lazy
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out = vim.fn.system({
-    'git',
-    'clone',
-    '--filter=blob:none',
-    '--branch=stable',
-    lazyrepo,
-    lazypath,
-  })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { 'Failed to clone lazy.nvim:\n', 'ErrorMsg' },
-      { out, 'WarningMsg' },
-      { '\nPress any key to exit...' },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
-end
-vim.opt.rtp:prepend(lazypath)
+-- bootstrap lazy.nvim
+require 'skip.lazy'
 
 -- care should be taken so these are loadable sans plugins (or if they error)
 require 'skip.mappings'
@@ -45,6 +26,7 @@ require('lazy').setup({
   change_detection = {
     notify = false,
   },
+  checker = { enabled = true },
   dev = { path = vim.fs.abspath('~/src/prj') },
 })
 
@@ -68,7 +50,6 @@ function _G.skippy()
 end
 
 if not HEADLESS then
-  -- require('lush')(require('skip.hmh'))
   vim.cmd.colorscheme('apparition')
   require('skip.tabs')
   require('skip.assimilate').create_autocmd()

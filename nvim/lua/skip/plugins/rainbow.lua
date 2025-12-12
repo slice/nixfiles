@@ -9,6 +9,7 @@ local vsCodeBracketHighlights = {
 ---@type LazySpec
 return {
   {
+    enabled = false,
     'HiPhish/rainbow-delimiters.nvim',
     ---@type rainbow_delimiters.config
     opts = {
