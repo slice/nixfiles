@@ -27,7 +27,10 @@ opt.diffopt = {
 }
 opt.listchars =
   { tab = '  ', trail = '·', nbsp = '+', precedes = '‹', extends = '›' }
+-- opt.foldenable = false
 opt.foldtext = ''
+-- opt.foldmethod = 'expr'
+-- opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 opt.fillchars:append { fold = '-' }
 opt.modeline = true
 opt.mouse = 'a'
@@ -40,6 +43,7 @@ opt.wrap = false
 opt.number = true
 opt.relativenumber = true
 opt.spelloptions = { 'camel' }
+opt.spellcapcheck = ''
 opt.splitright = true
 opt.sidescroll = 5
 opt.signcolumn = 'yes:2'

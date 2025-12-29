@@ -1,13 +1,14 @@
 -- vim: set fdm=marker:
 
+local lsp = require 'skip.lsp'
+local utils = require 'skip.utils'
+
 return {
   {
     'neovim/nvim-lspconfig',
     cond = not HEADLESS,
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
-      local lsp = require 'skip.lsp'
-
       vim.lsp.config('*', {
         root_dir = function(bufnr, on_dir)
           if lsp.attach_allowed(bufnr) then
@@ -219,11 +220,11 @@ return {
     cond = not HEADLESS,
     opts = function()
       local c = require 'metals'.bare_config()
-      c.init_options.statusBarProvider = 'off'
-      c.capabilities = require 'skip.lsp'.capabilities
+      -- c.init_options.statusBarProvider = 'off'
+      c.capabilities = lsp.capabilities
       c.settings = {
-        -- 2025-02-15 (hbd kuya)
-        serverVersion = '1.5.1+56-efcb8322-SNAPSHOT',
+        -- 2025-12-19
+        serverVersion = '1.6.4',
         scalafixRulesDependencies = {
           'org.typelevel::typelevel-scalafix:0.5.0',
           'com.github.xuwei-k::scalafix-rules:0.6.1',
@@ -236,7 +237,21 @@ return {
       vim.api.nvim_create_autocmd('FileType', {
         pattern = self.ft,
         callback = function()
-          require('metals').initialize_or_attach(metals_config)
+          local metals = require 'metals'
+          metals.initialize_or_attach(metals_config)
+
+          -- (this is too slow, and runs async anyhow)
+          --
+          -- vim.api.nvim_create_autocmd('BufWritePre', {
+          --   buffer = info.buf,
+          --   desc = 'Run Scalafix before writing buffer',
+          --   callback = function()
+          --     if utils.flag_set(lsp.noformat_key) then
+          --       return
+          --     end
+          --     metals.run_scalafix()
+          --   end,
+          -- })
         end,
         group = nvim_metals_group,
       })
@@ -263,7 +278,6 @@ return {
       'nvimtools/none-ls-extras.nvim',
     },
     config = function()
-      local lsp = require 'skip.lsp'
       local nls = require 'null-ls'
       local nls_helpers = require 'null-ls.helpers'
       local nls_utils = require 'null-ls.utils'

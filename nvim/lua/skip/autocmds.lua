@@ -61,6 +61,8 @@ local tweaks = {
   apparition = { -- luna is cool
     hi 'NormalNC guibg=#383838',
 
+    hi 'clear SpellCap',
+
     hi 'StatusLine guibg=#8b0e0d gui=bold guifg=#ffc8c3',
     hi 'StatusLineNC guifg=#909d9d gui=NONE',
     hi 'TabLine guifg=#909d9d guibg=#404c4c gui=NONE',
@@ -305,6 +307,11 @@ autocmds('SkipFiletypes', {
   {
     'FileType',
     { pattern = 'swift', command = 'setl cpo+=M' },
+  },
+  {
+    'FileType',
+    -- metals will spam press enter to continue prompts unless we do this -_-
+    { pattern = 'scala', command = 'set cmdheight=2' },
   },
   {
     'BufReadPost',

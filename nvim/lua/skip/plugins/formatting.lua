@@ -1,6 +1,6 @@
 local utils = require 'skip.utils'
 
-local prettier = {}
+local prettier = { 'prettier' }
 
 return {
   {
@@ -14,6 +14,7 @@ return {
         python = { 'black' },
         typescript = prettier,
         typescriptreact = prettier,
+        bzl = { 'buildifier' },
         javascript = prettier,
         javascriptreact = prettier,
         json = prettier,
