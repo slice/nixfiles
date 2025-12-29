@@ -10,7 +10,7 @@ return {
       'rafamadriz/friendly-snippets',
       'folke/lazydev.nvim',
     },
-    version = '*',
+    version = '1.*',
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -24,9 +24,7 @@ return {
         ['<C-f>'] = { 'scroll_documentation_down' },
         ['<C-k>'] = {}, -- i want digraphs
       },
-      signature = {
-        enabled = true,
-      },
+      signature = { enabled = true },
       cmdline = {
         enabled = true,
         keymap = {
@@ -35,35 +33,65 @@ return {
         },
       },
       sources = {
-        default = { 'lazydev', 'lsp', 'path', 'buffer', 'snippets' },
+        default = {
+          'lazydev',
+          'lsp',
+          -- 'path',
+          'buffer',
+          'snippets',
+        },
         providers = {
           lazydev = {
             name = 'LazyDev',
             module = 'lazydev.integrations.blink',
             score_offset = 100,
           },
+          lsp = {
+            name = 'LSP',
+            module = 'blink.cmp.sources.lsp',
+
+            -- exclude language keywords/constants (if, else, while, etc.) from
+            -- LSP completion results
+            transform_items = function(_, items)
+              return vim.tbl_filter(function(item)
+                return item.kind
+                  ~= require('blink.cmp.types').CompletionItemKind.Keyword
+              end, items)
+            end,
+          },
         },
       },
-      --- @diagnostic disable-next-line:missing-fields
+      fuzzy = {
+        sorts = { 'exact', 'score', 'sort_text' },
+      },
       completion = {
-        --- @diagnostic disable-next-line:missing-fields
         keyword = {
           range = 'full',
         },
-        --- @diagnostic disable-next-line:missing-fields
+        accept = {
+          -- can be problematic in scala, e.g. adding () to methods who don't
+          -- have an arg list
+          auto_brackets = { enabled = false },
+        },
         menu = {
           auto_show = true,
+          draw = {
+            columns = {
+              { 'kind_icon', 'label', gap = 1 },
+            },
+          },
         },
         documentation = {
           auto_show = true,
         },
+        ghost_text = { enabled = false },
       },
-      --- @diagnostic disable-next-line:missing-fields
       appearance = {
         use_nvim_cmp_as_default = true,
+        -- assume ghostty is being used, which can display nerd font icons
+        -- nicely when there's a space after
         nerd_font_variant = 'normal',
-        -- {{{
-        kind_icons = {
+        kind_icons = { -- {{{
           Text = ' ',
           Method = '\u{ea8c}',
           Function = '\u{ea8c}',
@@ -94,9 +122,10 @@ return {
           Event = '\u{ea86}',
           Operator = '\u{eb64}',
           TypeParameter = '\u{ea92}',
-        },
-        -- }}}
+        }, -- }}}
       },
+      -- nonstandard? blink.cmp says to use it
+      opts_extend = { 'sources.default' },
     },
   },
 

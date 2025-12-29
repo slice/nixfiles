@@ -138,6 +138,8 @@ return {
 
   {
     'echasnovski/mini.map',
+    -- NOTE freeing up <Leader>m for metals?
+    enabled = false,
     -- stylua: ignore
     cond = not HEADLESS,
     keys = {

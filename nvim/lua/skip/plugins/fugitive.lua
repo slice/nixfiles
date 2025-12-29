@@ -4,7 +4,7 @@ return {
     cmd = 'Git',
     lazy = false,
     keys = {
-      { '<Leader>a', '<Cmd>vert G<CR>', desc = 'Git' },
+      -- { '<Leader>a', '<Cmd>vert G<CR>', desc = 'Git' },
       { '<Leader>q', '<Cmd>.GBrowse!<CR>', desc = '.GBrowse!' },
       { '<Leader>jb', '<Cmd>Git blame<CR>', desc = 'Git blame' },
       { '<Leader>jc', ':G commit -m ""<Left>', desc = ':G commit -m' },

@@ -7,7 +7,6 @@ return {
   {
     'neovim/nvim-lspconfig',
     cond = not HEADLESS,
-    event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       vim.lsp.config('*', {
         root_dir = function(bufnr, on_dir)
@@ -103,6 +102,19 @@ return {
       vim.lsp.config('tailwindcss', {
         settings = {
           tailwindCSS = {
+            lint = {
+              cssConflict = 'warning',
+              invalidApply = 'error',
+              invalidConfigPath = 'error',
+              invalidScreen = 'error',
+              invalidTailwindDirective = 'error',
+              invalidVariant = 'error',
+              recommendedVariantOrder = 'warning',
+            },
+            classAttributes = {
+              'class',
+              '.*[cC]lassName.*',
+            },
             experimental = {
               classRegex = {
                 { 'cva\\(([^)]*)\\)', '["\'`]([^"\'`]*).*?["\'`]' },
@@ -194,6 +206,7 @@ return {
       -- }}}
 
       vim.lsp.enable({
+        'postgres_lsp',
         'bashls',
         'cssls',
         'gh_actions_ls',
@@ -216,28 +229,129 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
-    ft = { 'scala', 'sbt', 'java' },
+    lazy = false,
+    -- ft = { 'scala', 'sbt', 'java' },
     cond = not HEADLESS,
     opts = function()
-      local c = require 'metals'.bare_config()
-      -- c.init_options.statusBarProvider = 'off'
-      c.capabilities = lsp.capabilities
-      c.settings = {
-        -- 2025-12-19
-        serverVersion = '1.6.4',
+      local metals_config = require 'metals'.bare_config()
+
+      -- enable LSP progress notifications; need something like fidget.nvim
+      -- to handle them
+      metals_config.init_options.statusBarProvider = 'off'
+      metals_config.capabilities = lsp.capabilities
+      metals_config.settings = {
+        fallbackScalaVersion = '3.7.4',
+        inlayHints = {
+          byNameParameters = { enable = true },
+          hintsInPatternMatch = { enable = true },
+          -- implicitArguments = { enable = true },
+          -- implicitConversions = { enable = true },
+          inferredTypes = { enable = true },
+          typeParameters = { enable = true },
+        },
+        -- enableSemanticHighlighting = false,
+        autoImportBuild = 'all',
+        verboseCompilation = true,
+        -- latest as of 2026-01-04
+        bloopVersion = '2.0.17',
+        bloopJvmProperties = {
+          '-Xss4m',
+          '-XX:MaxInlineLevel=20',
+
+          -- https://docs.oracle.com/en/java/javase/21/gctuning/z-garbage-collector.html#GUID-FD855EE7-9ED3-46BF-8EA5-A73EB5096DDB:~:text=extremely%20low%20latency
+          '-Xms8g',
+          '-Xmx8g',
+          '-XX:+AlwaysPreTouch',
+
+          -- https://docs.oracle.com/en/java/javase/21/gctuning/z-garbage-collector.html
+          '-XX:+UseZGC',
+          '-XX:+ZGenerational',
+        },
+        -- published 2026-01-02
+        serverVersion = '1.6.4+72-c73e1d6b-SNAPSHOT',
+
+        -- NOTE don't use `::` because scalafix rules aren't published for
+        -- Scala 3. using 2.13 seems to work
         scalafixRulesDependencies = {
-          'org.typelevel::typelevel-scalafix:0.5.0',
-          'com.github.xuwei-k::scalafix-rules:0.6.1',
+          -- published 2025-01-22
+          'org.typelevel:typelevel-scalafix_2.13:0.5.0',
+
+          -- published 2025-12-29
+          'com.github.xuwei-k:scalafix-rules_2.13:0.6.22',
         },
       }
+      metals_config.on_attach = function(client, bufnr)
+        vim.notify(
+          (':O] metals called on_attach for %d'):format(bufnr),
+          vim.log.levels.INFO
+        )
+        require 'skip.lsp'.setup_lsp_buf(client, bufnr)
+        require 'metals'.setup_dap()
+      end
+
+      return metals_config
     end,
-    config = function(self, metals_config)
+    config = function(_, metals_config)
       local nvim_metals_group =
         vim.api.nvim_create_augroup('nvim-metals', { clear = true })
+
       vim.api.nvim_create_autocmd('FileType', {
-        pattern = self.ft,
-        callback = function()
+        pattern = { 'scala', 'sbt', 'java' },
+        callback = function(ctx)
           local metals = require 'metals'
+
+          local function set_up_early_metals_keymaps(bufnr)
+            vim.keymap.set('n', '<Leader>mc', function()
+              require 'telescope'.extensions.metals.commands()
+            end, {
+              desc = 'Telescope: Metals Commands',
+              buffer = bufnr,
+            })
+
+            vim.keymap.set('n', '<Leader>mi', function()
+              metals.organize_imports()
+            end, {
+              desc = 'Metals: Organize Imports',
+              buffer = bufnr,
+            })
+
+            vim.keymap.set('n', '<Leader>md', function()
+              metals.run_doctor()
+            end, {
+              desc = 'Metals: Doctor',
+              buffer = bufnr,
+            })
+
+            vim.keymap.set('n', '<Leader>mr', function()
+              metals.reset_workspace()
+            end, {
+              desc = 'Metals: Reset Workspace',
+              buffer = bufnr,
+            })
+
+            vim.keymap.set('n', '<Leader>mq', function()
+              metals.quick_worksheet()
+            end, {
+              desc = 'Metals: Quick Worksheet',
+              buffer = bufnr,
+            })
+
+            vim.keymap.set('n', '<Leader>mn', function()
+              metals.new_scala_file()
+            end, {
+              desc = 'Metals: New Scala File',
+              buffer = bufnr,
+            })
+          end
+
+          set_up_early_metals_keymaps(ctx.buf)
+
+          vim.notify(
+            (':O] telling metals to attach to %d'):format(ctx.buf),
+            vim.log.levels.INFO
+          )
+          -- or else we get a ton of press ENTER prompts from metals :[
+          vim.opt.cmdheight = 2
           metals.initialize_or_attach(metals_config)
 
           -- (this is too slow, and runs async anyhow)

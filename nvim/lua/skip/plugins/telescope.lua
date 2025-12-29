@@ -278,17 +278,17 @@ return {
         pickers = {
           find_files = {
             find_command = function(_opts)
-              return {
-                'fd',
-                '--no-require-git',
-                '--type',
-                'file',
-                '--type',
-                'symlink',
-                '-H',
-                '-E',
-                '{.git,.jj}',
-              }
+              return vim
+                .iter({
+                  'fd',
+                  '--no-require-git',
+                  { '--type', 'file' },
+                  { '--type', 'symlink' },
+                  '--hidden',
+                  { '--exclude', '{.git,.jj,*.xcodeproj,*.xcassets}' },
+                })
+                :flatten()
+                :totable()
             end,
           },
         },

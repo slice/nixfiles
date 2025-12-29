@@ -34,11 +34,18 @@ end
 -- setup a buffer with an lsp server attached with the proper mappings and
 -- options
 function M.setup_lsp_buf(client, bufnr)
-  -- if client.server_capabilities.codeLensProvider then
-  --   vim.cmd(
-  --     [[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
-  --   )
-  -- end
+  if client.server_capabilities.codeLensProvider then
+    -- (only refresh for current buffer)
+    vim.cmd [[
+      autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh({ bufnr = 0 })
+    ]]
+  end
+  if client.server_capabilities.documentHighlightProvider then
+    vim.cmd [[
+      autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
+      autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    ]]
+  end
 
   vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.bo.formatexpr = '' -- reserve gq for comment formatting
@@ -75,6 +82,7 @@ function M.setup_lsp_buf(client, bufnr)
       if M.has_open_focusable_float() then
         return
       end
+
       vim.diagnostic.open_float(
         nil,
         { scope = 'line', source = 'if_many', focusable = false, focus = false }
@@ -143,6 +151,12 @@ utils.autocmds('SkipLsp', {
         if not client then
           return
         end
+
+        if client.name == 'metals' then
+          -- handle via `metals_config.on_attach` instead
+          return
+        end
+
         local bufnr = args.buf
 
         M.setup_lsp_buf(client, bufnr)
@@ -150,7 +164,7 @@ utils.autocmds('SkipLsp', {
         vim.schedule(function()
           vim.notify(
             string.format(
-              '(^_^)/ %s (%d) attached to buf %d',
+              '(^_^)/ "%s"(%d) attached to buf %d',
               client.name,
               client.id,
               bufnr

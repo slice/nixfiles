@@ -56,6 +56,9 @@ return {
           if utils.flag_set(lsp.noformat_key) then
             return
           end
+          -- if vim.bo[args.buf].filetype == 'scala' then
+          --   return
+          -- end
           -- don't try to format fugitive buffers
           if vim.api.nvim_buf_get_name(args.buf):find 'fugitive://' == 1 then
             return

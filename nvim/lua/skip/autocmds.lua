@@ -1,3 +1,4 @@
+-- vim: set fdm=marker:
 local utils = require('skip.utils')
 local autocmds = require('skip.utils').autocmds
 
@@ -38,6 +39,13 @@ local tweaks = {
     link 'TelescopeNormal NormalFloat',
     link 'PopTermLabel TabLineSel',
 
+    -- when Metals emits semantic token highlighting information it emits a
+    -- token covering every string, and since semantic tokens have a higher
+    -- base prio (125, see `vim.hl.priorities`) it clobbers the injected SQL
+    -- tree-sitter highlighting for sql"""...""" literals. clear the foreground
+    -- so we get SQL highlighting where there's no semantic token highlighting
+    hi '@lsp.type.string.scala guifg=NONE',
+
     -- these are commented out because it breaks :Lushify somewhat. this is too
     -- crude of a hammer
     --
@@ -62,6 +70,14 @@ local tweaks = {
     hi 'NormalNC guibg=#383838',
 
     hi 'clear SpellCap',
+
+    hi 'LspReferenceText guibg=#2e2e2e',
+    hi 'LspReferenceRead guibg=#223e28',
+    hi 'LspReferenceWrite guibg=#223e28',
+
+    hi 'LspCodeLens gui=italic guibg=#263751',
+
+    link 'LspInlayHint Comment',
 
     hi 'StatusLine guibg=#8b0e0d gui=bold guifg=#ffc8c3',
     hi 'StatusLineNC guifg=#909d9d gui=NONE',
@@ -96,16 +112,27 @@ local tweaks = {
     hi 'TelescopePromptPrefix guifg=#fff127 gui=bold,italic',
     hi 'TelescopePromptCounter guibg=#4e1012 guifg=#842024, gui=italic',
 
-    link 'DiagnosticInfo Statement',
-    link 'DiagnosticHint Statement', -- make diff from info?
-    link 'DiagnosticError ErrorMsg',
-    link 'DiagnosticWarn WarningMsg',
-    hi 'DiagnosticSignError guifg=#ff6a6a gui=bold guibg=#000000',
+    -- diagnostics {{{
+    hi 'DiagnosticSign guifg=#ee9a00 gui=italic',
     hi 'DiagnosticSignWarn guifg=#ee9a00 guibg=#000000',
+    hi 'DiagnosticUnderlineError guifg=#ee9a00 guisp=#ee9a00 gui=undercurl',
+
+    hi 'DiagnosticInfo guifg=#90b0d1 gui=italic',
     hi 'DiagnosticSignInfo guifg=#90b0d1 gui=italic guibg=#000000',
+
+    hi 'DiagnosticHint guifg=#90b0d1 gui=italic',
     hi 'DiagnosticSignHint guifg=#90b0d1 gui=italic guibg=#000000',
 
+    hi 'DiagnosticError gui=italic guifg=#f44c52',
+    hi 'DiagnosticSignError guifg=#f44c52 gui=bold guibg=#000000',
+    hi 'DiagnosticUnderlineError guifg=#f44c52 guisp=#f44c52 gui=undercurl',
+    -- }}}
+
     link 'MiniIndentscopeSymbol NonText',
+
+    link 'MiniHipatternsTodo Todo',
+    hi 'MiniHipatternsFixme guibg=#3c0006 guifg=#f44c52 gui=bold,italic',
+    hi 'MiniHipatternsNote guifg=#be843d gui=bold,italic',
 
     hi 'SignColumn guifg=#686858 guibg=#000000',
     link 'SkipMiniFilesNormalNC Comment',
@@ -309,18 +336,22 @@ autocmds('SkipFiletypes', {
     { pattern = 'swift', command = 'setl cpo+=M' },
   },
   {
-    'FileType',
-    -- metals will spam press enter to continue prompts unless we do this -_-
-    { pattern = 'scala', command = 'set cmdheight=2' },
+    { 'BufRead', 'BufNewFile' },
+    {
+      pattern = '*.worksheet.sc',
+      callback = function()
+        vim.lsp.inlay_hint.enable(true)
+      end,
+    },
   },
   {
     'BufReadPost',
     { pattern = '*.md,*.mdx', command = 'setlocal spell | setf markdown' },
   },
-  {
-    { 'BufNewFile', 'BufReadPre' },
-    { pattern = '*.sc,*.sbt', command = 'setfiletype scala' },
-  },
+  -- {
+  --   { 'BufNewFile', 'BufReadPre' },
+  --   { pattern = '*.sc,*.sbt', command = 'setfiletype scala' },
+  -- },
 })
 
 autocmds('SkipYanking', {

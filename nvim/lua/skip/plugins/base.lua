@@ -25,7 +25,7 @@ return {
   'tpope/vim-repeat',      -- let `.` cooperate with plugins
   'tpope/vim-abolish',     -- variants of words
   'mhinz/vim-sayonara',    -- sane buffer/window deletion
-  'tommcdo/vim-exchange',  -- swap two bits of text with each other
+  'tommcdo/vim-exchange',  -- swap two bits of text with each other with cx
 
   -- language support
   'grafana/vim-alloy',

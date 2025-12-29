@@ -33,6 +33,9 @@ concat(
 )
 '''
 
+[remotes.origin]
+auto-track-bookmarks = "glob:*"
+
 [template-aliases]
 "format_short_id(id)" = "id.shortest()"
 "format_timestamp(timestamp)" = "timestamp.ago()"

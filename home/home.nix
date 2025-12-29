@@ -24,7 +24,7 @@ let
   packagesets = with pkgs; rec {
     # packages that are handy on _every_ machine
     base = [
-      aria
+      aria2
       cachix
       croc
       curl
@@ -52,20 +52,24 @@ let
     ];
 
     # language runtimes, compilers, etc.
-    languages = [
-      corepack_latest
-      dart-sass
-      deno
-      nodejs_24
-      python3
-      typescript
-    ];
+    languages =
+      let
+        node = nodejs_24;
+      in
+      [
+        dart-sass
+        deno
+        node
+        python3
+        typescript
+      ];
 
     # tools to help with programming
     tooling = [
       attic-client
       bash-language-server
       biome
+      postgres-language-server
       bun
       cocoapods
       coursier
