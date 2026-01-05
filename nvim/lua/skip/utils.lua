@@ -26,7 +26,12 @@ function M.form_path_from_segments(sg)
 end
 
 local home = vim.fs.abspath('~')
-M.symbolized_roots = { '~/Developer', '~/src' }
+M.symbolized_roots = {
+  '~/Developer',
+  '~/src',
+  '/Volumes/Shared/Developer',
+  '/Volumes/Shared/work',
+}
 --- @param path string
 --- @param opts { max_length?: number, return_separated_tail?: boolean }
 --- -- @return string|string[]
