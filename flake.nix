@@ -62,7 +62,17 @@
     # darwin configurations don't live under `.${system}` attrset matrix
     // {
       darwinConfigurations.grape = darwin.lib.darwinSystem {
-        modules = [ ./systems/macbook.nix ];
+        modules = [
+          ./systems/macbook.nix
+
+          # wiped 2026-02-13; downgraded from tahoe to sequoia
+          (
+            { ... }:
+            {
+              system.stateVersion = 6;
+            }
+          )
+        ];
         specialArgs = { inherit inputs; };
       };
 
@@ -72,11 +82,7 @@
           (
             { ... }:
             {
-              # i don't remember how, but nixbld has a pretty high gid on this
-              # machine:
-              #
-              # $ id _nixbld1
-              # uid=351(_nixbld1) gid=350(nixbld) groups=350(nixbld),…
+              system.stateVersion = 4;
               ids.gids.nixbld = 350;
             }
           )

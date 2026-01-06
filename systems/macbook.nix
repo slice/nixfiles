@@ -19,5 +19,6 @@
   # global rcs to setup the nix environment in all shells
   programs.fish.enable = true;
 
-  system.stateVersion = 4;
+  # system.stateVersion = 4;
+  # (state in flake.nix)
 }
