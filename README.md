@@ -72,7 +72,9 @@ Mostly documented for my own sake. I am trapped in a prison of my own design.
    `root`'s user environment:
 
    ```sh
-   sudo nix-env --uninstall lix-2.93.0
+   sudo -i nix-env -q
+   # ...
+   sudo -i nix-env --uninstall lix-2.93.0
    ```
 
    (Nix is required to bootstrap nix-darwin, but nix-darwin essentially acts as
