@@ -45,6 +45,13 @@ return {
       }
       -- }}}
 
+      vim.lsp.config['relay'] = {
+        cmd = { 'pnpx', 'relay-compiler', 'lsp' },
+        filetypes = { 'typescriptreact', 'graphql', 'typescript' },
+        root_markers = { 'relay.config.json' },
+      }
+      vim.lsp.enable('relay')
+
       -- yamlls {{{
       vim.lsp.config('yamlls', {
         settings = {
@@ -235,12 +242,43 @@ return {
     opts = function()
       local metals_config = require 'metals'.bare_config()
 
+      -- we assume JDK 25 (LTS) or later, for the most part
+      local beefy = {
+        '-XX:+UnlockExperimentalVMOptions',
+
+        -- stack, inlining
+        '-Xss4m',
+        '-XX:MaxInlineLevel=20',
+
+        -- (stable starting with JDK 25, experimental in JDK 24)
+        '-XX:+UseCompactObjectHeaders',
+
+        -- avoid latency when touching platform memory by allocating everything
+        -- up front. use an insanely large java heap size because i have a lot
+        -- of ram ^^
+        --
+        -- https://docs.oracle.com/en/java/javase/25/gctuning/z-garbage-collector.html#GUID-683A80ED-98CF-43A5-86BC-240E2900E53E:~:text=Allowing%20the%20GC%20to%20commit
+        '-Xms12g',
+        '-Xmx12g',
+        '-XX:+AlwaysPreTouch',
+
+        '-XX:+UseZGC',
+        -- (on JDK 24 and later, ZGC is always generational)
+        '-XX:+ZGenerational',
+      }
+
       -- enable LSP progress notifications; need something like fidget.nvim
       -- to handle them
       metals_config.init_options.statusBarProvider = 'off'
       metals_config.capabilities = lsp.capabilities
       metals_config.settings = {
         fallbackScalaVersion = '3.8.1',
+        -- latest as of 2026-02-08
+        bloopVersion = '2.0.18',
+        serverVersion = '1.6.5',
+        serverProperties = beefy,
+        bloopJvmProperties = beefy,
+
         inlayHints = {
           byNameParameters = { enable = true },
           hintsInPatternMatch = { enable = true },
@@ -249,25 +287,9 @@ return {
           inferredTypes = { enable = true },
           typeParameters = { enable = true },
         },
-        -- enableSemanticHighlighting = false,
+        enableSemanticHighlighting = false,
         autoImportBuild = 'all',
         verboseCompilation = true,
-        -- latest as of 2026-02-09
-        bloopVersion = '2.0.18',
-        bloopJvmProperties = {
-          '-Xss4m',
-          '-XX:MaxInlineLevel=20',
-
-          -- https://docs.oracle.com/en/java/javase/21/gctuning/z-garbage-collector.html#GUID-FD855EE7-9ED3-46BF-8EA5-A73EB5096DDB:~:text=extremely%20low%20latency
-          '-Xms8g',
-          '-Xmx8g',
-          '-XX:+AlwaysPreTouch',
-
-          -- https://docs.oracle.com/en/java/javase/21/gctuning/z-garbage-collector.html
-          '-XX:+UseZGC',
-          '-XX:+ZGenerational',
-        },
-        serverVersion = '1.6.5',
 
         -- NOTE don't use `::` because scalafix rules aren't published for
         -- Scala 3. using 2.13 seems to work

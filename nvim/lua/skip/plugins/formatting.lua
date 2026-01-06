@@ -13,6 +13,7 @@ return {
         lua = { 'stylua' },
         python = { 'black' },
         typescript = prettier,
+        terraform = { 'terraform_fmt' },
         typescriptreact = prettier,
         bzl = { 'buildifier' },
         javascript = prettier,
