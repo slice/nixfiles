@@ -18,7 +18,7 @@ local grammars = {
 return {
   {
     'nvim-treesitter/nvim-treesitter',
-    version = false,
+    branch = 'master',
     event = 'VeryLazy',
     lazy = vim.fn.argc(-1) == 0, -- load early when file was passed
     cmd = { 'TSUpdateSync', 'TSUpdate', 'TSInstall' },
