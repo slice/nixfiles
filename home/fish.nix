@@ -45,6 +45,13 @@ in
         ydle = "yt-dlp -f bestaudio --audio-format mp3 --extract-audio";
         k = "kubectl";
 
+        dk = "docker";
+        dkc = "docker compose";
+        dkcu = "docker compose up";
+        dkcd = "docker compose down";
+        dkr = "docker run";
+        dkb = "docker build";
+
         c = "pbcopy";
         p = "pbpaste";
 
