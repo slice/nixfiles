@@ -52,17 +52,14 @@ let
     ];
 
     # language runtimes, compilers, etc.
-    languages =
-      let
-        node = nodejs_24;
-      in
-      [
-        dart-sass
-        deno
-        node
-        python3
-        typescript
-      ];
+    languages = [
+      dart-sass
+      deno
+      nodejs_24
+      corepack_24
+      python3
+      typescript
+    ];
 
     # tools to help with programming
     tooling = [
