@@ -42,5 +42,5 @@ auto-track-bookmarks = "glob:*"
 "format_short_signature(signature)" = "signature.name()"
 
 [revset-aliases]
-"private" = 'description(regex:"^(priv|private|PRIV|PRIVATE|p!):")'
+"private" = 'description(regex:"^(priv|private|PRIV|PRIVATE|p)(:|!)")'
 "wip" = 'description(regex:"^\\[(wip|WIP|todo|TODO)\\]|(wip|WIP|todo|TODO):?") & mine() & mutable()'
