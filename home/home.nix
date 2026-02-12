@@ -42,7 +42,7 @@ let
       p7zip
       rclone
       ripgrep
-      nixfmt-rfc-style
+      nixfmt
       rlwrap
       tmux
       tree
