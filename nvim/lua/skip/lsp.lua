@@ -183,6 +183,31 @@ utils.autocmds('SkipLsp', {
       desc = 'Sets up autocmds and mappings for buffers that use LSP',
     },
   },
+  {
+    'LspProgress',
+    {
+      callback = function(ev)
+        local value = ev.data.params.value or {}
+
+        local msg = value.message or 'done'
+        local did_trunc
+        msg, did_trunc = utils.trunc_codepoints(msg, 40)
+        if did_trunc then
+          msg = msg .. '… '
+        end
+
+        if value.kind == 'end' then
+          utils.term_progress('remove')
+        else
+          if value.percentage then
+            utils.term_progress('running', value.percentage)
+          else
+            utils.term_progress('indeterminate')
+          end
+        end
+      end,
+    },
+  },
 })
 
 M.capabilities = {}

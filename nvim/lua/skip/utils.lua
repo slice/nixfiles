@@ -70,22 +70,25 @@ local _symbols = {
   nix = '󱄅 ',
 }
 
---- @param max_cps integer The maximum number of codepoints to return.
---- @return boolean, string
-local function _truncate_codepoints(text, max_cps)
+--- Enforces a maximum length (in codepoints) for a string. All codepoints
+--- exceeding the maximum are removed.
+---
+--- @param max_cps integer The maximum number of codepoints that can be returned.
+--- @return string, boolean
+function M.trunc_codepoints(text, max_cps)
   -- NOTE (should really be over grapheme clusters but yeah)
 
   if max_cps <= 0 then
-    return false, ''
+    return '', false
   end
 
   local cps = vim.str_utfindex(text, 'utf-32')
   if cps <= max_cps then
-    return false, text
+    return text, false
   end
 
   local byte_end = vim.str_byteindex(text, 'utf-32', max_cps)
-  return true, text:sub(1, byte_end)
+  return text:sub(1, byte_end), true
 end
 
 --- @class skip.utils.ShortenOpts
@@ -136,7 +139,7 @@ function M.shorten(path, opts)
   local short_segs = vim
     .iter(ipairs(segs))
     :map(function(i, segment)
-      local did_truncate, truncated = _truncate_codepoints(segment, seg_max)
+      local truncated, did_truncate = M.trunc_codepoints(segment, seg_max)
       local at_last_segment = i == #segs
       if did_truncate and not at_last_segment then
         return truncated .. ellipses
@@ -178,6 +181,27 @@ end
 ---@param mode? string
 function M.send(codes, mode)
   vim.api.nvim_feedkeys(M.termcodes(codes), mode or 'n', false)
+end
+
+--- Report a graphical progress bar to Ghostty. See:
+--- https://ghostty.org/docs/install/release-notes/1-2-0#graphical-progress-bars
+--- @param mode 'remove' | 'running' | 'running_error' | 'indeterminate'
+--- @param percent number? A number from 0-100 (when passing "running" or "running_error" as mode).
+function M.term_progress(mode, percent)
+  if vim.env.TERM_PROGRAM ~= 'ghostty' then
+    return
+  end
+
+  local status = 1
+  if mode == 'remove' then
+    status = 0
+  elseif mode == 'running_error' then
+    status = 2
+  elseif mode == 'indeterminate' then
+    status = 3
+  end
+
+  io.write(('\027]9;4;%s;%s\a'):format(status, percent))
 end
 
 ---@param variable_name string
