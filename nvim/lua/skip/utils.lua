@@ -33,8 +33,8 @@ M.symbolized_roots = {
   '/Volumes/Shared/work',
 }
 --- @param path string
---- @param opts { max_length?: number, return_separated_tail?: boolean }
---- -- @return string|string[]
+--- @param opts? { max_length?: number, return_separated_tail?: boolean }
+--- @return string|string[]
 function M.shorten(path, opts)
   opts = opts or {}
   local max = opts.max_length or 16
