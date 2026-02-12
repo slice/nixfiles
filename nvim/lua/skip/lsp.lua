@@ -131,7 +131,7 @@ function M.attach_allowed(bufnr)
   -- i'd add some cute messages here, but this function can be called more than
   -- once and i don't want to trigger the hit-enter-prompt
 
-  if utils.flag_set(M.noattach_key, bufnr) then
+  if utils.is_flag_set(M.noattach_key, bufnr) then
     -- buffer is explicitly flagged as not wanting LSPs
     vim.notify(
       ('not attaching: %s (flag)'):format(shortened_bufname),

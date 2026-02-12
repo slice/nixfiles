@@ -106,7 +106,7 @@ end
 ---@param bufnr number
 ---@return boolean | nil, string a reason string, and whether it should be bounced or not (`nil` if buf is invalid somehow)
 function M.should_bounce(bufnr)
-  if utils.flag_set(M.immunity_flag, bufnr) then
+  if utils.is_flag_set(M.immunity_flag, bufnr) then
     return false, 'buf is immune'
   end
 

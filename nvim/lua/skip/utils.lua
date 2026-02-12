@@ -115,7 +115,7 @@ end
 
 ---@param variable_name string
 ---@param bufnr number?
-function M.flag_set(variable_name, bufnr)
+function M.is_flag_set(variable_name, bufnr)
   -- global, tab, window
   local set_within_container_or_globally = vim.g[variable_name]
     or vim.t[variable_name]

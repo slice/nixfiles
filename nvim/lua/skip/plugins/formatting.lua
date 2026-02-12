@@ -57,7 +57,7 @@ return {
             return
           end
 
-          if utils.flag_set(lsp.noformat_key, args.buf) then
+          if utils.is_flag_set(lsp.noformat_key, args.buf) then
             return
           end
           -- don't try to format fugitive buffers
@@ -65,7 +65,7 @@ return {
             return
           end
 
-          if utils.flag_set('LSP_FORMATTING_ONLY', args.buf) then
+          if utils.is_flag_set('LSP_FORMATTING_ONLY', args.buf) then
             vim.lsp.buf.format { bufnr = args.buf }
             return
             -- return conform.format { bufnr = args.buf, lsp_fallback = "always", formatters = {} }
