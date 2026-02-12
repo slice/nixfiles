@@ -89,16 +89,18 @@ function M.update(bufnr)
   end
 end
 
-autocmds('SkipPeeking', {
-  {
-    { 'BufEnter' },
+function M.setup()
+  autocmds('SkipPeeking', {
     {
-      callback = function(args)
-        local bufnr = args.buf
-        M.update(bufnr)
-      end,
+      { 'BufEnter' },
+      {
+        callback = function(args)
+          local bufnr = args.buf
+          M.update(bufnr)
+        end,
+      },
     },
-  },
-})
+  })
+end
 
 return M
