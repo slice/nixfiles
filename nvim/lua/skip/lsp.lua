@@ -175,12 +175,7 @@ utils.autocmds('SkipLsp', {
 
         vim.schedule(function()
           vim.notify(
-            string.format(
-              '(^_^)/ "%s"(%d) attached to buf %d',
-              client.name,
-              client.id,
-              bufnr
-            ),
+            string.format('"%s"<%d> (o_o)/ #%d', client.name, client.id, bufnr),
             vim.log.levels.INFO
           )
         end)
