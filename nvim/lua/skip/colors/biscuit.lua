@@ -150,6 +150,7 @@ local spec = lush(function(injected_fns)
 
     -- strings
     sym '@string.delimiter' { fg = P.string_delim },
+    sym '@string.escape' { fg = P.string.li(30), gui = 'bold' },
     String { fg = P.string },
 
     -- wtf lua {{{
