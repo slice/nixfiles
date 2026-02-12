@@ -93,6 +93,10 @@ return {
             duration = 15,
           }),
         },
+        options = {
+          -- always sample deepest block on the cursor line
+          indent_at_cursor = false,
+        },
       }
     end,
     init = function()
