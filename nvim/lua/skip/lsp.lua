@@ -1,23 +1,12 @@
+-- vim: set fdm=marker:
 local utils = require('skip.utils')
 
 local M = {}
 
-local function map_buf(mode, key, result, opts)
-  vim.keymap.set(
-    mode,
-    key,
-    result,
-    vim.tbl_extend(
-      'force',
-      { buffer = true, remap = false, silent = true },
-      opts or {}
-    )
-  )
-end
-
 M.noattach_key = 'LSP_NOATTACH'
 M.noformat_key = 'LSP_NOFORMAT'
 
+M.lsp_augroup = vim.api.nvim_create_augroup('SkipBufferLsp', {})
 M.formatting_augroup =
   vim.api.nvim_create_augroup('SkipLspAutomaticFormatting', {})
 
@@ -34,47 +23,48 @@ end
 -- setup a buffer with an lsp server attached with the proper mappings and
 -- options
 function M.setup_lsp_buf(client, bufnr)
-  if client.server_capabilities.codeLensProvider then
-    -- (only refresh for current buffer)
-    vim.cmd [[
-      autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh({ bufnr = 0 })
-    ]]
+  -- buffer-local options {{{
+  vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+  vim.bo[bufnr].formatexpr = '' -- reserve gq for comment formatting
+  -- }}}
+  -- buffer-local maps {{{
+
+  ---@alias Keymap - mirrors params that you pass to `vim.keymap.set`
+  ---| { [1]: string|string[], [2]: string, [3]: string|fun(), [4]?: vim.keymap.set.Opts }
+  ---@type Keymap[]
+  local buf_maps = {
+    { 'n', '<C-]>', vim.lsp.buf.definition },
+    {
+      'n',
+      '<leader>la',
+      vim.lsp.buf.code_action,
+      { desc = 'LSP code actions' },
+    },
+    { 'n', '<leader>lr', vim.lsp.buf.rename, { desc = 'LSP rename symbol' } },
+    {
+      'n',
+      '<leader>li',
+      function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(nil))
+      end,
+      { desc = 'Toggle LSP inlay hints' },
+    },
+    {
+      'n',
+      '<leader>lz',
+      vim.lsp.codelens.run,
+      { desc = 'Run LSP codelens' },
+    },
+  }
+
+  for _, mapping in ipairs(buf_maps) do
+    mapping[4] = vim.tbl_extend('force', mapping[4] or {}, {
+      buffer = bufnr,
+    })
+    vim.keymap.set(unpack(mapping))
   end
-  if client.server_capabilities.documentHighlightProvider then
-    vim.cmd [[
-      autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()
-      autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    ]]
-  end
-
-  vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
-  vim.bo.formatexpr = '' -- reserve gq for comment formatting
-
-  -- will ship with Nvim 0.11:
-  -- map_buf("n", "grn", vim.lsp.buf.rename)
-  -- map_buf("n", "grr", vim.lsp.buf.references)
-  -- map_buf("n", "gri", vim.lsp.buf.implementation)
-  -- map_buf("n", "gra", vim.lsp.buf.code_action)
-  -- map_buf("i", "<C-S>", vim.lsp.buf.signature_help)
-
-  map_buf('n', '<C-]>', vim.lsp.buf.definition)
-  map_buf(
-    'n',
-    '<leader>la',
-    vim.lsp.buf.code_action,
-    { desc = 'LSP code actions' }
-  )
-  map_buf('n', '<leader>lr', vim.lsp.buf.rename, { desc = 'LSP rename symbol' })
-  map_buf('n', '<leader>li', function()
-    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(nil))
-  end, { desc = 'Toggle LSP inlay hints' })
-  map_buf(
-    'n',
-    '<leader>lz',
-    vim.lsp.codelens.run,
-    { desc = 'Run LSP codelens' }
-  )
-
+  -- }}}
+  -- buffer-local autocmds {{{
   vim.api.nvim_create_autocmd('CursorHold', {
     buffer = bufnr,
     desc = 'Open diagnostic float when holding cursor',
@@ -90,16 +80,39 @@ function M.setup_lsp_buf(client, bufnr)
     end,
   })
 
-  -- vim.api.nvim_create_autocmd('BufWritePre', {
-  --   buffer = bufnr,
-  --   desc = 'Automatically LSP format before writing buffer',
-  --   callback = function()
-  --     local is_fugitive_buf = vim.api.nvim_buf_get_name(bufnr):find "fugitive://" == 1
-  --     if utils.flag_set(M.noformat_key) or is_fugitive_buf then return end
-  --
-  --     vim.lsp.buf.format { timeout_ms = 500, bufnr = bufnr }
-  --   end
-  -- })
+  local function lsp_buf_autocmd(...)
+    local event, opts = ...
+    opts.buffer = bufnr
+    opts.group = M.lsp_augroup
+    vim.api.nvim_create_autocmd(event, opts)
+  end
+
+  if client.server_capabilities.codeLensProvider then
+    lsp_buf_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+      callback = function()
+        vim.lsp.codelens.refresh({ bufnr = bufnr })
+      end,
+      desc = '<setup_lsp_buf> Refresh code lens',
+    })
+  end
+  if client.server_capabilities.documentHighlightProvider then
+    lsp_buf_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+      callback = function()
+        vim.lsp.buf.document_highlight()
+      end,
+      desc = '<setup_lsp_buf> Document highlight when holding',
+    })
+    lsp_buf_autocmd('CursorMoved', {
+      callback = function()
+        vim.lsp.buf.clear_references()
+      end,
+      desc = '<setup_lsp_buf> Clear references when moving',
+    })
+  end
+
+  -- }}}
+
+  -- NOTE autoformatting is handled by conform
 end
 
 M.banned_patterns = {
