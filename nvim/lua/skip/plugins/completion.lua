@@ -124,8 +124,6 @@ return {
           TypeParameter = '\u{ea92}',
         }, -- }}}
       },
-      -- nonstandard? blink.cmp says to use it
-      opts_extend = { 'sources.default' },
     },
   },
 
