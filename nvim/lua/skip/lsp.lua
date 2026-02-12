@@ -6,7 +6,7 @@ local M = {}
 M.noattach_key = 'LSP_NOATTACH'
 M.noformat_key = 'LSP_NOFORMAT'
 
-M.lsp_augroup = vim.api.nvim_create_augroup('SkipBufferLsp', {})
+M.buf_lsp_augroup = vim.api.nvim_create_augroup('SkipBufferLsp', {})
 M.formatting_augroup =
   vim.api.nvim_create_augroup('SkipLspAutomaticFormatting', {})
 
@@ -84,7 +84,7 @@ function M.setup_lsp_buf(client, bufnr)
   local function lsp_buf_autocmd(...)
     local event, opts = ...
     opts.buffer = bufnr
-    opts.group = M.lsp_augroup
+    opts.group = M.buf_lsp_augroup
     vim.api.nvim_create_autocmd(event, opts)
   end
 
