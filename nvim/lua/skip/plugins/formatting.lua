@@ -1,6 +1,6 @@
 local utils = require 'skip.utils'
 
-local prettier = { 'prettier' }
+local prettier = { 'prettierd', 'prettier' }
 
 return {
   {
@@ -53,12 +53,13 @@ return {
         desc = 'Automatic formatting on buffer write',
         group = lsp.formatting_augroup,
         callback = function(args)
+          if not require 'skip.prefs'.format_on_save then
+            return
+          end
+
           if utils.flag_set(lsp.noformat_key, args.buf) then
             return
           end
-          -- if vim.bo[args.buf].filetype == 'scala' then
-          --   return
-          -- end
           -- don't try to format fugitive buffers
           if vim.api.nvim_buf_get_name(args.buf):find 'fugitive://' == 1 then
             return
