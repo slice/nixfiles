@@ -56,7 +56,7 @@ local function load_lush_theme(mod)
 end
 
 if not HEADLESS then
-  load_lush_theme('skip.colors.bisqw')
+  load_lush_theme('skip.colors.biscuit')
 
   require('skip.tabs')
   require('skip.assimilate').create_autocmd()

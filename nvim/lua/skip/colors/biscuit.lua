@@ -1,12 +1,9 @@
 -- vim: set fdm=marker:
 
--- something vaguely resembling bisqwit (https://bisqwit.iki.fi/)'s theme, but
--- heavily edited for my own weird needs
-
 local lush = require 'lush'
 local H = lush.hsl
 
--- TODO(skip): uhhhhh this looks really wrong?
+-- TODO(skip): remove
 local cube = { 0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff }
 local function joe(rgb)
   -- convert joe jsf "251" (in "fg_251") -> "#66ff33"
@@ -21,6 +18,7 @@ local function joe(rgb)
   return lush.hsl(color)
 end
 
+-- TODO(skip): remove
 local ega = {
   black = H('#000000'),
   blue = H('#0000aa'),
@@ -41,42 +39,53 @@ local ega = {
   brwhite = H('#ffffff'),
 }
 
+-- actually configured in terminal; referenced here as base
+local cur = H('#e60000')
+
+local C = {
+  void = H('#000000'),
+  forest = H('#00bf36'), -- green
+  glow = H('#333350'), -- bluish gray
+  taro = H('#9681ff'), -- a nice purple
+  pink = H('#ff81db'),
+  red = H('#ff6366'),
+  sea = H('#00c3c4'), -- cyan
+  silver = H('#cccccc'),
+  golden = H('#b76c2a'), -- brown/orange
+  electron = H('#b7b22a'), -- yellow
+}
+local P = {
+  kw_return = C.forest,
+  kw_conditional = C.sea.ro(31).li(50).de(30),
+  kw_repeat = C.golden.li(16),
+
+  -- e.g. https://youtu.be/eXU-6_jmw7Q?t=820
+  glow = C.glow,
+
+  assign = C.red,
+
+  operator = C.electron.ro(-5).li(30),
+
+  string_delim = C.pink.da(20).de(10),
+  string = C.pink,
+
+  -- for structs, types, interfaces, etc. we are defining
+  typedef = C.taro,
+}
+
 ---@diagnostic disable: undefined-global
 local spec = lush(function(injected_fns)
   local sym = injected_fns.sym
-
-  -- color references:
-  --
-  -- * https://github.com/bisqwit/compiler_series/blob/4c813f58b0f727c009e6a5a68a165246fbcd1fad/ep1/ccat/c.jsf
-  -- * "modern" bisqwit syntax: youtube.com/watch?v=Nwfm6cpskIM
-  --   * uses lavender for numbers
-
-  -- actually configured in terminal; referenced here as base
-  local cur = H('#e60000')
-  -- joe "fg_xxx" colors
-  local palette = {
-    assign = joe('251'),
-    string_delim = joe('024'),
-    string = joe('035'),
-  }
-  -- any other true colors
-  local other = {
-    -- e.g. https://youtu.be/eXU-6_jmw7Q?t=820
-    glow = H('#333350'),
-  }
-
   return {
-    Normal { bg = H('#000000'), fg = ega.white },
-    NormalFloat { bg = Normal.bg.li(14), fg = Normal.fg },
+    Normal { bg = C.void, fg = ega.white },
+    NormalFloat { bg = Normal.bg.li(7), fg = Normal.fg },
     -- NormalNC { bg = Normal.bg.li(10), fg = Normal.bg.li(70) },
 
     -- `skip.peeking` - oklch h283
     NormalPeek { bg = H('#0e0038').da(30), fg = '#a7a8bc' },
     CursorLinePeek { bg = NormalPeek.bg.li(10).de(30) },
 
-    -- Comment { fg = '#ff5555' },
-    -- DEVIATING: reserving red for cursor/current pos (done in term. config)
-    Comment { fg = H('#9a5e25'), gui = 'italic' },
+    Comment { fg = C.golden, gui = 'italic' },
     MiniHipatternsTodo { fg = Comment.fg.li(50), bg = 'NONE' },
     MiniHipatternsNote { fg = Comment.fg.li(50), bg = 'NONE' },
     MiniHipatternsHack { fg = ega.brred, bg = 'NONE' },
@@ -107,50 +116,51 @@ local spec = lush(function(injected_fns)
     sym '@variable' { fg = 'NONE' },
     -- }}}
 
-    -- keywords/types: brwhite
-    sym '@keyword' { fg = ega.brwhite, gui = 'bold' },
-    sym '@type.builtin' { fg = ega.brwhite },
-    Type { fg = ega.brwhite },
+    -- keywords/types: bright white
+    sym '@keyword' { fg = C.silver, gui = 'bold' },
+    sym '@type.builtin' { fg = C.silver },
+    Type { fg = C.silver },
     sym '@boolean' { Type },
     Special { fg = 'NONE' },
 
-    -- DEVIATING: `return` gets special hl
-    sym '@keyword.return' { fg = lush.hsl('#cc6600').li(40), gui = 'bold' },
+    -- return
+    sym '@keyword.return' { fg = P.kw_return, gui = 'bold' },
+    -- for while
+    sym '@keyword.repeat' { fg = P.kw_repeat, gui = 'bold' },
+    -- if else switch case
+    sym '@keyword.conditional' { fg = P.kw_conditional, gui = 'bold' },
+
+    -- types we are declaring
+    sym '@type.definition' { fg = P.typedef, gui = 'bold' },
+    sym '@lsp.typemod.class.declaration' { fg = P.typedef, gui = 'bold' },
 
     -- TODO(skip): maybe this should be something else
     NonText { fg = Normal.fg },
     SpecialKey { fg = Normal.fg },
 
-    -- green            [ ] { } , ;
-    sym '@punctuation.bracket.square' { fg = ega.green },
-    sym '@punctuation.bracket.brace' { fg = ega.green },
-    sym '@punctuation.comma' { fg = ega.green },
-    -- cyan             ( ) : . *  default for operators
-    sym '@punctuation.bracket.paren' { fg = joe('033') },
-    sym '@punctuation.period' { fg = joe('033') },
-    Operator { fg = joe('033') },
-    Delimiter { Operator },
-    -- brgreen variant  = := += -= /= *= &= |= etc.
-    sym '@operator.assign' { fg = palette.assign },
+    Delimiter { fg = Normal.fg.da(30) },
+    sym '@punctuation' { fg = Delimiter.fg },
+    Operator { fg = P.operator, gui = 'bold' },
+    -- = := += -= /= *= &= |= etc.
+    sym '@operator.assign' { fg = P.assign, gui = 'bold' },
 
-    -- magenta          numbers
     sym '@number' { fg = joe('315') },
+    -- (fallback highlighting)
     javaScriptNumber { sym '@number' },
 
-    -- strings: blue-y
-    sym '@string.delimiter' { fg = palette.string_delim },
-    String { fg = palette.string },
-    sym '@string' { fg = String.fg },
+    -- strings
+    sym '@string.delimiter' { fg = P.string_delim },
+    String { fg = P.string },
 
     -- wtf lua {{{
-    sym '@punctuation.bracket.lua' { sym '@punctuation.bracket.brace' },
-    sym '@constructor.lua' {},
+    -- sym '@punctuation.bracket.lua' { sym '@punctuation.bracket.brace' },
+    -- sym '@constructor.lua' {},
     -- }}}
 
     -- sql {{{
     -- e.g. table names
     sym '@type.sql' { fg = 'NONE' },
-    sym '@keyword.insert.sql' { fg = palette.assign },
+    sym '@keyword.insert.sql' { fg = P.assign },
     sym '@keyword.drop.sql' { fg = ega.red.li(90), bg = ega.red },
     sym '@keyword.update.sql' { fg = Operator.fg },
     -- }}}
@@ -170,7 +180,7 @@ local spec = lush(function(injected_fns)
     StatusLineNC { bg = Normal.bg.li(15) },
     WinSeparator { fg = Normal.fg, bg = StatusLineNC.bg },
 
-    Folded { fg = other.glow.li(80), bg = other.glow, gui = 'bold,italic' },
+    Folded { fg = P.glow.li(80), bg = P.glow, gui = 'bold,italic' },
 
     LspCodeLens { fg = Folded.bg.li(15).de(40), gui = 'italic' },
     LspReferenceRead { bg = Folded.bg },
@@ -178,10 +188,10 @@ local spec = lush(function(injected_fns)
     LspReferenceWrite { bg = Folded.bg },
     LspReferenceTarget { bg = Folded.bg },
 
-    Directory { fg = Operator.fg },
+    Directory { fg = C.sea },
 
     Visual { gui = 'reverse' },
-    Error { bg = ega.red, fg = ega.brwhite },
+    Error { bg = ega.red, fg = ega.brwhite, gui = 'bold' },
     ErrorMsg { Error },
 
     TabLine {},
@@ -189,7 +199,7 @@ local spec = lush(function(injected_fns)
     TabLineFill { bg = 'NONE' },
 
     Title { fg = Operator.fg },
-    sym '@markup.raw.vimdoc' { fg = ega.brwhite },
+    sym '@markup.raw.vimdoc' { fg = C.silver },
     sym '@markup.raw.block.vimdoc' {},
     sym '@variable.parameter.vimdoc' { fg = ega.green },
     sym '@markup.link.vimdoc' { fg = String.fg, gui = 'underline' },
