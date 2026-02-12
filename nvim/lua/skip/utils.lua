@@ -17,6 +17,30 @@ function M.autocmds(group_name, parameter_packs)
   end
 end
 
+--- @param haystack string
+--- @param needle string
+--- @return boolean
+local function _str_contains(haystack, needle)
+  return string.find(haystack, needle, 1, true) ~= nil
+end
+
+--- @param haystack string
+--- @param needles string|string[]
+--- @return boolean
+function M.str_contains(haystack, needles)
+  if type(needles) == 'table' then
+    for _, needle in ipairs(needles) do
+      if _str_contains(haystack, needle) then
+        return true
+      end
+    end
+
+    return false
+  end
+
+  return _str_contains(haystack, needles)
+end
+
 function M.form_path_from_segments(sg)
   local joined = table.concat(sg, '/')
   if joined:sub(1, 1) ~= '~' then
