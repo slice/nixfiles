@@ -53,7 +53,7 @@ return {
         desc = 'Automatic formatting on buffer write',
         group = lsp.formatting_augroup,
         callback = function(args)
-          if utils.flag_set(lsp.noformat_key) then
+          if utils.flag_set(lsp.noformat_key, args.buf) then
             return
           end
           -- if vim.bo[args.buf].filetype == 'scala' then
@@ -64,7 +64,7 @@ return {
             return
           end
 
-          if utils.flag_set 'LSP_FORMATTING_ONLY' then
+          if utils.flag_set('LSP_FORMATTING_ONLY', args.buf) then
             vim.lsp.buf.format { bufnr = args.buf }
             return
             -- return conform.format { bufnr = args.buf, lsp_fallback = "always", formatters = {} }
