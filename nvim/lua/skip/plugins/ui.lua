@@ -30,7 +30,8 @@ return {
           window = {
             border = 'double',
             normal_hl = 'Normal',
-            winblend = 10,
+            -- sometimes the blending looks off
+            winblend = 0,
           },
         },
       }
