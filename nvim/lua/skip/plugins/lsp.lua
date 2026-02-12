@@ -240,7 +240,7 @@ return {
       metals_config.init_options.statusBarProvider = 'off'
       metals_config.capabilities = lsp.capabilities
       metals_config.settings = {
-        fallbackScalaVersion = '3.7.4',
+        fallbackScalaVersion = '3.8.1',
         inlayHints = {
           byNameParameters = { enable = true },
           hintsInPatternMatch = { enable = true },
@@ -252,8 +252,8 @@ return {
         -- enableSemanticHighlighting = false,
         autoImportBuild = 'all',
         verboseCompilation = true,
-        -- latest as of 2026-01-04
-        bloopVersion = '2.0.17',
+        -- latest as of 2026-02-09
+        bloopVersion = '2.0.18',
         bloopJvmProperties = {
           '-Xss4m',
           '-XX:MaxInlineLevel=20',
@@ -267,8 +267,7 @@ return {
           '-XX:+UseZGC',
           '-XX:+ZGenerational',
         },
-        -- published 2026-01-02
-        serverVersion = '1.6.4+72-c73e1d6b-SNAPSHOT',
+        serverVersion = '1.6.5',
 
         -- NOTE don't use `::` because scalafix rules aren't published for
         -- Scala 3. using 2.13 seems to work
