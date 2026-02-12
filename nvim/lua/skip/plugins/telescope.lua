@@ -185,21 +185,26 @@ return {
           path_display = function(opts, path)
             local cwd = vim.fn.getcwd()
             local relpath = vim.fs.relpath(cwd, path)
+
+            -- paths that are relative to the cwd look like
+            -- "formatting.lua */plugins"
             if relpath ~= nil then
               -- the path is relative to the cwd
               local segs = vim.split(relpath, '/')
               local tail = segs[#segs]
               local base_segs = vim.list_slice(segs, nil, #segs - 1)
-              table.insert(base_segs, 1, '*')
               local base = table.concat(base_segs, '/')
               return ('%s %s'):format(tail, base),
                 {
                   { { 0, #tail }, '@markup.strong' },
-                  { { #tail + 1, #tail + 1 + #base }, 'Identifier' },
+                  { { #tail + 1, #tail + 1 + #base }, 'Directory' },
                 }
             else
-              local base, tail =
-                utils.shorten(path, { return_separated_tail = true })
+              -- path is outside of cwd
+              local base, tail = utils.shorten(path, {
+                max_segment_len = 12,
+                return_separated_tail = true,
+              })
               return ('%s/%s'):format(base, tail),
                 {
                   { { 0, #base + 1 }, 'Comment' },

@@ -41,55 +41,95 @@ function M.str_contains(haystack, needles)
   return _str_contains(haystack, needles)
 end
 
-function M.form_path_from_segments(sg)
-  local joined = table.concat(sg, '/')
-  if joined:sub(1, 1) ~= '~' then
+function M.path_from_segments(segs, prepending_root_slash)
+  if prepending_root_slash == nil then
+    prepending_root_slash = true
+  end
+
+  local joined = table.concat(segs, '/')
+  if prepending_root_slash and joined:sub(1, 1) ~= '~' then
     joined = '/' .. joined
   end
   return joined
 end
 
 local home = vim.fs.abspath('~')
-M.symbolized_roots = {
+
+-- M.shorten will replace these path prefixes with a hammer symbol when
+-- encountered
+M.symbolized_work_roots = {
   '~/Developer',
   '~/src',
   '/Volumes/Shared/Developer',
   '/Volumes/Shared/work',
 }
+
+local _symbols = {
+  hammer = ' ',
+  neovim = ' ',
+  nix = '󱄅 ',
+}
+
 --- @param path string
---- @param opts? { max_length?: number, return_separated_tail?: boolean }
+--- @param opts? { max_segment_len?: number, return_separated_tail?: boolean }
 --- @return string|string[]
 function M.shorten(path, opts)
   opts = opts or {}
-  local max = opts.max_length or 16
-  assert(max > 0)
+  local seg_max = opts.max_segment_len or 16
+  assert(seg_max > 0)
   local symbolized = path:gsub(vim.pesc(home), '~')
-  for _, root in ipairs(M.symbolized_roots) do
-    symbolized = symbolized:gsub(vim.pesc(root), '*')
+  for _, root in ipairs(M.symbolized_work_roots) do
+    symbolized = symbolized:gsub(vim.pesc(root), _symbols.hammer)
   end
 
+  -- initializing it to this is gross but avoids having to do "contains then gsub"
+  -- in the loop above
+  local did_abridge = M.str_contains(symbolized, _symbols.hammer)
+
   local segs = vim.split(symbolized, '/', { plain = true, trimempty = true })
+
+  -- detect nix store paths, replacing "/nix/store/zzzz-pkg-ver/..." => "󱄅  pkg-ver/"
+  -- (except for neovim, which gets " /" instead)
+  if segs[1] == 'nix' and segs[2] == 'store' then
+    local dir_name = segs[3] -- e.g. "zi06f4k47xw8wmycp9sav5g25bqrqzzw-neovim-unwrapped-0.11.6"
+    -- chop off /nix/store/hash-name-ver
+    segs = vim.list_slice(segs, 4, #segs)
+
+    local pkg_name = dir_name
+    pkg_name = pkg_name:sub(pkg_name:find('-', 1, true) + 1)
+
+    local replacement = _symbols.nix .. ' ' .. pkg_name
+    if vim.startswith(pkg_name, 'neovim-') then
+      replacement = _symbols.neovim
+    end
+    table.insert(segs, 1, replacement)
+    did_abridge = true
+  end
+
   local short_segs = vim
     .iter(segs)
     :enumerate()
     :map(function(i, segment)
       -- don't shorten last segment
-      if #segment > max and i < (#segs - 1) then
-        return segment:sub(1, max) .. '⋯ ' -- assumes pragmatapro non-mono on ghostty bc it expands the char
+      if #segment > seg_max and i < (#segs - 1) then
+        return segment:sub(1, seg_max) .. '⋯ ' -- assumes pragmatapro non-mono on ghostty bc it expands the char
       else
         return segment
       end
     end)
     :totable()
 
+  -- we don't want to see /(icon)/, just make it (icon)/
+  local prepend_root_slash = not did_abridge
+
   if opts.return_separated_tail then
     local tail = short_segs[#short_segs]
     -- all segments except for the tail
     local base_segs = vim.list_slice(short_segs, 0, #short_segs - 1)
-    return M.form_path_from_segments(base_segs), tail
+    return M.path_from_segments(base_segs, prepend_root_slash), tail
   end
 
-  return M.form_path_from_segments(short_segs)
+  return M.path_from_segments(short_segs, prepend_root_slash)
 end
 
 ---@param pattern string
