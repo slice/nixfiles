@@ -75,7 +75,20 @@ let
       gh
       git-lfs
       jujutsu
-      lua-language-server
+      # folke/lazydev.nvim does not cooperate with luals >= 3.17.0
+      # https://github.com/folke/lazydev.nvim/issues/136
+      (lua-language-server.overrideAttrs (prev: {
+        version = "3.16.4";
+        src = fetchFromGitHub {
+          owner = "luals";
+          repo = "lua-language-server";
+          tag = "3.16.4";
+          hash = "sha256-frsq5OA3giLOJ/KPcAqVhme+0CtJuZrS3F4zHN1PnFM=";
+          fetchSubmodules = true;
+        };
+        doCheck = false;
+        doInstallCheck = false;
+      }))
       nix-output-monitor
       nixd
       nodePackages.prettier
