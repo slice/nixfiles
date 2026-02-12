@@ -28,7 +28,7 @@ opt.diffopt = {
 opt.listchars =
   { tab = '  ', trail = '·', nbsp = '+', precedes = '‹', extends = '›' }
 -- opt.foldenable = false
-opt.foldtext = ''
+-- opt.foldtext = ''
 -- opt.foldmethod = 'expr'
 -- opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 opt.fillchars:append { fold = '-' }
