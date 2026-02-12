@@ -26,8 +26,7 @@ function M.resolve(path)
   return resolved
 end
 
----@return boolean
-function M.path_is_peek(path)
+function M.should_update(path)
   if vim.startswith(path, 'minifiles://') then
     -- mini.files needs to set `winhighlight` and is really prone to setting a
     -- corrupted value, so don't touch them at all
@@ -36,6 +35,11 @@ function M.path_is_peek(path)
     return false
   end
 
+  return true
+end
+
+---@return boolean
+function M.path_is_peek(path)
   local is_peeking = false
 
   for _, prefix in ipairs(M.peeking_roots) do
@@ -60,7 +64,11 @@ function M.update(bufnr)
   end
 
   local buf_path = vim.api.nvim_buf_get_name(bufnr)
-  -- vim.notify(buf_path, vim.log.levels.INFO)
+  vim.notify(buf_path, vim.log.levels.INFO)
+
+  if not M.should_update(buf_path) then
+    return
+  end
 
   if M.path_is_peek(buf_path) then
     -- TODO(skip): Don't smash values that might already be here.
