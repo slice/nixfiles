@@ -23,6 +23,7 @@ end
 -- setup a buffer with an lsp server attached with the proper mappings and
 -- options
 function M.setup_lsp_buf(client, bufnr)
+  -- NOTE "format on save" is handled by conform
   -- buffer-local options {{{
   vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.bo[bufnr].formatexpr = '' -- reserve gq for comment formatting
@@ -111,20 +112,18 @@ function M.setup_lsp_buf(client, bufnr)
   end
 
   -- }}}
-
-  -- NOTE autoformatting is handled by conform
 end
 
-M.banned_patterns = {
+M.lsp_banned_roots = {
   '^/nix/store/',
   -- '%.cargo/registry',
   -- 'node_modules/'
-  -- let this through for now, i wanna navigate between symbols in *.d.ts files
-  -- TODO: make something more elaborate, because LSP is probably OK in library
-  -- files but not null-ls (or equiv.)
+  --
+  -- let these^^ through for now, i wanna navigate between symbols in *.d.ts
+  -- files TODO(skip): make something more elaborate, because LSP is probably
+  -- OK in library files but not null-ls (or equiv.)
 }
 
--- we patch lspconfig.util.bufname_valid to call this
 function M.attach_allowed(bufnr)
   local bufname = vim.api.nvim_buf_get_name(bufnr)
   local shortened_bufname = vim.fn.pathshorten(bufname, 2)
@@ -132,8 +131,8 @@ function M.attach_allowed(bufnr)
   -- i'd add some cute messages here, but this function can be called more than
   -- once and i don't want to trigger the hit-enter-prompt
 
-  -- if utils.flag_set(M.noattach_key) then
   if utils.flag_set(M.noattach_key, bufnr) then
+    -- buffer is explicitly flagged as not wanting LSPs
     vim.notify(
       ('not attaching: %s (flag)'):format(shortened_bufname),
       vim.log.levels.WARN
@@ -141,7 +140,7 @@ function M.attach_allowed(bufnr)
     return false
   end
 
-  for _, banned_pattern in ipairs(M.banned_patterns) do
+  for _, banned_pattern in ipairs(M.lsp_banned_roots) do
     if bufname:find(banned_pattern) then
       vim.notify(
         ('not attaching: %s (%s)'):format(shortened_bufname, banned_pattern),
