@@ -16,6 +16,7 @@ require 'skip.options'
 require 'skip.lazy'
 
 require('skip.huge').setup()
+require('skip.prefs.file').setup()
 require('skip.prefs.commands').setup()
 -- care should be taken so these are loadable sans plugins (or if they error)
 require 'skip.mappings'

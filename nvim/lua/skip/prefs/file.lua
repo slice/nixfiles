@@ -97,6 +97,25 @@ function M._resolver(ctx, prev)
   return vim.tbl_deep_extend('force', prev, res)
 end
 
+-- Sets up an autocmd to inject boilerplate into new prefs files.
+function M.setup()
+  utils.autocmds('SkipPrefsFile', {
+    {
+      'BufNewFile',
+      {
+        pattern = M._filename,
+        callback = function(ev)
+          vim.api.nvim_buf_set_lines(ev.buf, 0, -1, false, {
+            '---@type skip.Prefs',
+            'return {',
+            '}',
+          })
+        end,
+      },
+    },
+  })
+end
+
 --- @type skip.PrefSource
 M.source = {
   name = '.prefs.lua loader',
