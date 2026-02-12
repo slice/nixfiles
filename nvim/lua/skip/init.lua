@@ -29,6 +29,7 @@ require('lazy').setup({
   dev = { path = vim.fs.abspath('~/src/prj') },
 })
 
+-- TODO(skip): this just gets nuked on launch and idk why
 vim.api.nvim_create_autocmd('User', {
   pattern = 'LazyVimStarted',
   desc = 'Present some lovely ducks (and startup statistics)',
@@ -43,13 +44,18 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
-function _G.skippy()
-  vim.g.colors_name = 'skippy'
-  require('lush')(require('skip.skippy'))
+local function load_lush_theme(mod)
+  -- skip.colors.skippy -> skippy
+  local segs = vim.split(mod, '.', { plain = true, trimempty = true })
+  local name = segs[#segs]
+
+  vim.g.colors_name = name
+  require('lush')(require(mod))
 end
 
 if not HEADLESS then
-  vim.cmd.colorscheme('apparition')
+  load_lush_theme('skip.colors.bisqw')
+
   require('skip.tabs')
   require('skip.assimilate').create_autocmd()
 end
