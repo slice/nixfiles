@@ -223,6 +223,7 @@ return {
           vimgrep_arguments = vim
             .iter({
               'rg',
+              '-L',
               '--color=never',
               '--no-heading',
               '--with-filename',
@@ -281,6 +282,7 @@ return {
               return vim
                 .iter({
                   'fd',
+                  '-L',
                   '--no-require-git',
                   { '--type', 'file' },
                   { '--type', 'symlink' },
