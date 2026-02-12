@@ -58,4 +58,5 @@ if not HEADLESS then
 
   require('skip.tabs')
   require('skip.assimilate').create_autocmd()
+  require('skip.peeking')
 end
