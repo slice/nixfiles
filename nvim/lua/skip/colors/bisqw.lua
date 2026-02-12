@@ -1,8 +1,10 @@
 -- vim: set fdm=marker:
+
 -- something vaguely resembling bisqwit (https://bisqwit.iki.fi/)'s theme, but
 -- heavily edited for my own weird needs
 
 local lush = require 'lush'
+local H = lush.hsl
 
 -- TODO(skip): uhhhhh this looks really wrong?
 local cube = { 0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff }
@@ -14,27 +16,29 @@ local function joe(rgb)
   end
 
   r, g, b = tonumber(r), tonumber(g), tonumber(b)
-  return string.format('#%02x%02x%02x', cube[r + 1], cube[g + 1], cube[b + 1])
+  local color =
+    string.format('#%02x%02x%02x', cube[r + 1], cube[g + 1], cube[b + 1])
+  return lush.hsl(color)
 end
 
 local ega = {
-  black = '#000000',
-  blue = '#0000aa',
-  green = '#00aa00',
-  cyan = '#00aaaa',
-  red = '#aa0000',
-  magenta = '#aa00aa',
-  yellow = '#aa5500',
-  white = '#aaaaaa',
+  black = H('#000000'),
+  blue = H('#0000aa'),
+  green = H('#00aa00'),
+  cyan = H('#00aaaa'),
+  red = H('#aa0000'),
+  magenta = H('#aa00aa'),
+  yellow = H('#aa5500'),
+  white = H('#aaaaaa'),
 
-  brblack = '#555555',
-  brblue = '#5555ff',
-  brgreen = '#55ff55',
-  brcyan = '#55ffff',
-  brred = '#ff5555',
-  brmagenta = '#ff55ff',
-  bryellow = '#ffff55',
-  brwhite = '#ffffff',
+  brblack = H('#555555'),
+  brblue = H('#5555ff'),
+  brgreen = H('#55ff55'),
+  brcyan = H('#55ffff'),
+  brred = H('#ff5555'),
+  brmagenta = H('#ff55ff'),
+  bryellow = H('#ffff55'),
+  brwhite = H('#ffffff'),
 }
 
 ---@diagnostic disable: undefined-global
@@ -48,7 +52,7 @@ local spec = lush(function(injected_fns)
   --   * uses lavender for numbers
 
   -- actually configured in terminal; referenced here as base
-  local cur = lush.hsl('#e60000')
+  local cur = H('#e60000')
   -- joe "fg_xxx" colors
   local palette = {
     assign = joe('251'),
@@ -58,23 +62,41 @@ local spec = lush(function(injected_fns)
   -- any other true colors
   local other = {
     -- e.g. https://youtu.be/eXU-6_jmw7Q?t=820
-    glow = '#333350',
+    glow = H('#333350'),
   }
 
   return {
-    Normal { bg = '#000000', fg = ega.white },
+    Normal { bg = H('#000000'), fg = ega.white },
+    NormalFloat { bg = Normal.bg.li(14), fg = Normal.fg },
+    -- NormalNC { bg = Normal.bg.li(10), fg = Normal.bg.li(70) },
 
     -- `skip.peeking` - oklch h283
-    NormalPeek { bg = lush.hsl('#0e0038').da(30), fg = '#a7a8bc' },
+    NormalPeek { bg = H('#0e0038').da(30), fg = '#a7a8bc' },
     CursorLinePeek { bg = NormalPeek.bg.li(10).de(30) },
 
     -- Comment { fg = '#ff5555' },
     -- DEVIATING: reserving red for cursor/current pos (done in term. config)
-    Comment { fg = lush.hsl('#9a5e25'), gui = 'italic' },
+    Comment { fg = H('#9a5e25'), gui = 'italic' },
     MiniHipatternsTodo { fg = Comment.fg.li(50), bg = 'NONE' },
     MiniHipatternsNote { fg = Comment.fg.li(50), bg = 'NONE' },
     MiniHipatternsHack { fg = ega.brred, bg = 'NONE' },
     MiniHipatternsFixme { fg = ega.brred, bg = 'NONE', gui = 'reverse' },
+
+    Search {
+      fg = ega.magenta.li(70).de(10),
+      bg = ega.magenta.da(10),
+      gui = 'underline',
+    },
+    CurSearch {
+      fg = ega.brwhite,
+      bg = ega.brmagenta.da(10),
+      gui = 'bold, underline',
+    },
+    MatchParen {
+      fg = ega.cyan.da(85),
+      bg = ega.cyan,
+      gui = 'italic',
+    },
 
     -- reset a bunch of noisy default highlights {{{
     Function { fg = 'NONE' },
@@ -86,11 +108,14 @@ local spec = lush(function(injected_fns)
     -- }}}
 
     -- keywords/types: brwhite
-    sym '@keyword' { fg = ega.brwhite },
+    sym '@keyword' { fg = ega.brwhite, gui = 'bold' },
     sym '@type.builtin' { fg = ega.brwhite },
     Type { fg = ega.brwhite },
     sym '@boolean' { Type },
     Special { fg = 'NONE' },
+
+    -- DEVIATING: `return` gets special hl
+    sym '@keyword.return' { fg = lush.hsl('#cc6600').li(40), gui = 'bold' },
 
     -- TODO(skip): maybe this should be something else
     NonText { fg = Normal.fg },
@@ -110,6 +135,7 @@ local spec = lush(function(injected_fns)
 
     -- magenta          numbers
     sym '@number' { fg = joe('315') },
+    javaScriptNumber { sym '@number' },
 
     -- strings: blue-y
     sym '@string.delimiter' { fg = palette.string_delim },
@@ -125,25 +151,32 @@ local spec = lush(function(injected_fns)
     -- e.g. table names
     sym '@type.sql' { fg = 'NONE' },
     sym '@keyword.insert.sql' { fg = palette.assign },
-    sym '@keyword.drop.sql' { fg = ega.red, gui = 'reverse' },
+    sym '@keyword.drop.sql' { fg = ega.red.li(90), bg = ega.red },
     sym '@keyword.update.sql' { fg = Operator.fg },
     -- }}}
 
-    CursorLine { bg = cur.da(75) },
+    CursorLine { bg = cur.da(65) },
     LineNr { fg = joe('222') },
     LineNrAbove { fg = joe('322') },
     LineNrBelow { fg = joe('232') },
-    CursorLineNr { fg = cur.da(75), bg = Normal.fg },
+    CursorLineNr { bg = CursorLine.bg, fg = '#ffecc3', gui = 'bold' },
     CursorLineSign { CursorLineNr },
     CursorLineFold { CursorLineNr },
 
     -- incidentally matches w/ *Peek above
     ColorColumn { bg = NormalPeek.bg.li(10).de(30) },
 
-    StatusLine { bg = cur.da(40), fg = '#ffecc3' },
-    StatusLineNC { bg = 'NONE' },
+    StatusLine { bg = cur.da(40), fg = '#ffecc3', gui = 'bold' },
+    StatusLineNC { bg = Normal.bg.li(15) },
+    WinSeparator { fg = Normal.fg, bg = StatusLineNC.bg },
 
-    Folded { fg = Normal.fg, bg = other.glow },
+    Folded { fg = other.glow.li(80), bg = other.glow, gui = 'bold,italic' },
+
+    LspCodeLens { fg = Folded.bg.li(15).de(40), gui = 'italic' },
+    LspReferenceRead { bg = Folded.bg },
+    LspReferenceText { bg = Folded.bg },
+    LspReferenceWrite { bg = Folded.bg },
+    LspReferenceTarget { bg = Folded.bg },
 
     Directory { fg = Operator.fg },
 
@@ -154,22 +187,49 @@ local spec = lush(function(injected_fns)
     TabLine {},
     TabLineSel { StatusLine },
     TabLineFill { bg = 'NONE' },
-    -- technically this is also used in :changes and other places, but just
-    -- treat this as the number in tab line tabs
-    Title { bg = 'NONE', fg = 'NONE' },
+
+    Title { fg = Operator.fg },
+    sym '@markup.raw.vimdoc' { fg = ega.brwhite },
+    sym '@markup.raw.block.vimdoc' {},
+    sym '@variable.parameter.vimdoc' { fg = ega.green },
+    sym '@markup.link.vimdoc' { fg = String.fg, gui = 'underline' },
 
     ModeMsg { fg = ega.brgreen },
     MoreMsg { fg = ega.brmagenta },
     Question { fg = ega.brmagenta },
     WarningMsg { fg = ega.bryellow },
 
+    DiffAdd { bg = joe('010').da(40) },
+    DiffRemove { bg = joe('100') },
+    DiffDelete { fg = joe('100').li(80), bg = joe('100') },
+    DiffChange {
+      bg = ega.magenta.da(40),
+      fg = ega.magenta.li(80),
+    },
+    DiffText { DiffChange },
+
+    -- are these standard or just a mini.diff thing?
+    Added { fg = ega.brgreen },
+    Changed { fg = ega.brmagenta },
+    Removed { fg = ega.brred },
+
     -- diagnostics {{{
-    DiagnosticError { fg = ega.red },
+    DiagnosticError { fg = ega.brred },
+    DiagnosticUnderlineError { sp = DiagnosticError.fg, gui = 'undercurl' },
     DiagnosticWarn { fg = ega.bryellow },
+    DiagnosticUnderlineWarn { sp = DiagnosticWarn.fg, gui = 'undercurl' },
     DiagnosticInfo { fg = ega.brblue },
+    DiagnosticUnderlineInfo { sp = DiagnosticInfo.fg, gui = 'undercurl' },
     DiagnosticHint { fg = ega.brgreen },
+    DiagnosticUnderlineHint { sp = DiagnosticHint.fg, gui = 'undercurl' },
     DiagnosticOk { fg = ega.brgreen },
+    DiagnosticUnderlineOk { sp = DiagnosticOk.fg, gui = 'undercurl' },
     -- }}}
+
+    SpellBad { sp = ega.brred, gui = 'undercurl' },
+    SpellCap { sp = ega.bryellow, gui = 'undercurl' },
+    SpellLocal { sp = ega.brgreen, gui = 'undercurl' },
+    SpellRare { sp = ega.brblue, gui = 'undercurl' },
 
     -- mini {{{
     MiniIndentscopeSymbol { fg = joe('111') },
