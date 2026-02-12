@@ -12,10 +12,6 @@ M.limits = {
   max_individual_line_length = 1500,
 }
 
-function M.shorten_path(path)
-  return vim.fn.pathshorten(path, 2)
-end
-
 ---@param bufnr number
 ---@param reason string?
 ---@param opts { silently: boolean }?
@@ -44,21 +40,17 @@ function M.bounce(bufnr, reason, opts)
   -- disable plugins
   vim.b[bufnr].miniindentscope_disable = true
 
-  -- disable plain (non-tree sitter) syntax highlighting
-  vim.b[bufnr].current_syntax = '' -- equivalent to :syntax clear (hopefully)
-  vim.schedule(function()
-    vim.b[bufnr].current_syntax = ''
-  end) -- and i'd do it again
-  vim.schedule(function()
-    vim.cmd [[syntax clear]]
-  end) -- and i'd do it again
+  -- disable plain (non-tree sitter) syntax
+  vim.bo[bufnr].syntax = 'OFF'
+  -- try to stop TS
+  pcall(vim.treesitter.stop, bufnr)
 
   local formatted_reason = reason or 'no reason'
   if not silent then
     local path = vim.api.nvim_buf_get_name(bufnr)
 
     vim.notify(
-      ('huge: BOUNCING %s (%s)'):format(M.shorten_path(path), formatted_reason),
+      ('huge: BOUNCING %s (%s)'):format(utils.shorten(path), formatted_reason),
       vim.log.levels.WARN
     )
   end
