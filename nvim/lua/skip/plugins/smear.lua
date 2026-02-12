@@ -3,6 +3,7 @@ return {
   {
     'sphamba/smear-cursor.nvim',
     cond = not HEADLESS,
+    enabled = false,
     opts = {
       smear_insert_mode = false,
       smear_terminal_mode = true,
@@ -15,6 +16,9 @@ return {
 
       cursor_color = '#ff0000',
       gradient_exponent = 0,
+      smear_between_neighbor_lines = false,
+      min_horizontal_distance_smear = 5,
+      min_vertical_distance_smear = 4,
 
       time_interval = 16, -- 60fps
       damping = 0.85,
