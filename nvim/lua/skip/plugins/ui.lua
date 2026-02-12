@@ -30,6 +30,7 @@ return {
           window = {
             border = 'double',
             normal_hl = 'Normal',
+            max_width = 90,
             -- sometimes the blending looks off
             winblend = 0,
           },
