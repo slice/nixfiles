@@ -27,6 +27,11 @@ function M.resolve(path)
 end
 
 function M.should_update(path)
+  if vim.trim(path) == '' then
+    -- probably a prompt buffer (telescope) or something
+    return false
+  end
+
   if vim.startswith(path, 'minifiles://') then
     -- mini.files needs to set `winhighlight` and is really prone to setting a
     -- corrupted value, so don't touch them at all
@@ -64,7 +69,7 @@ function M.update(bufnr)
   end
 
   local buf_path = vim.api.nvim_buf_get_name(bufnr)
-  vim.notify(buf_path, vim.log.levels.INFO)
+  -- vim.notify(buf_path, vim.log.levels.INFO)
 
   if not M.should_update(buf_path) then
     return
