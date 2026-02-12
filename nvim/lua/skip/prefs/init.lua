@@ -112,10 +112,10 @@ setmetatable(M, {
     -- infer from current context
     local prefs = M._resolve_prefs()
     if prefs[key] then
-      vim.notify(
-        ('<prefs> "%s" => %s'):format(key, prefs[key]),
-        vim.log.levels.INFO
-      )
+      -- vim.notify(
+      --   ('<prefs> "%s" => %s'):format(key, prefs[key]),
+      --   vim.log.levels.INFO
+      -- )
       return prefs[key]
     end
 
