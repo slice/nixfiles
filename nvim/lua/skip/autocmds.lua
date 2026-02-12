@@ -412,28 +412,28 @@ autocmds('SkipHelp', {
 
 -- for stopping LSPs - we can't do it inside of tree-sitter highlight.disable
 -- because that's after LSPs ._.
-autocmds('SkipHugeFiles', {
-  {
-    'BufReadPre',
-    {
-      pattern = '*',
-      callback = function(args)
-        local bufnr = args.buf
-        local file = args.file
-        if not bufnr or not file then
-          return
-        end
-
-        local huge = require('skip.huge')
-
-        local size = vim.fn.getfsize(file)
-        if size > huge.limits.max_file_size_bytes then
-          huge.bounce(bufnr, ('too many bytes (%d)'):format(size))
-        end
-      end,
-    },
-  },
-})
+-- autocmds('SkipHugeFiles', {
+--   {
+--     'BufReadPre',
+--     {
+--       pattern = '*',
+--       callback = function(args)
+--         local bufnr = args.buf
+--         local file = args.file
+--         if not bufnr or not file then
+--           return
+--         end
+--
+--         local huge = require('skip.huge')
+--
+--         local size = vim.fn.getfsize(file)
+--         if size > huge.limits.max_file_size_bytes then
+--           huge.bounce(bufnr, ('too many bytes (%d)'):format(size))
+--         end
+--       end,
+--     },
+--   },
+-- })
 
 autocmds('SkipTerminal', {
   {

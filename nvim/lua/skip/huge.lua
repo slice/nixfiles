@@ -1,97 +1,155 @@
+-- logic/design mostly cribbed from folke/snacks.nvim:
+-- https://github.com/folke/snacks.nvim/blob/9912042fc8bca2209105526ac7534e9a0c2071b2/lua/snacks/bigfile.lua
+
 local lsp = require('skip.lsp')
 local utils = require('skip.utils')
 
 local M = {}
 
-M.bypass_key = 'HUGE_BYPASS'
+-- filetype used for huge files
+--
+-- to detect if a file was bounced, use is_bounced
+M.filetype = 'huge'
+
+M.augroup = vim.api.nvim_create_augroup('SkipHuge', { clear = true })
+
+-- name of a buffer-scoped (`b:` or `vim.b`) variable that indicates that the
+-- buffer was bounced
+M.bufvar = 'huge_bounced'
+
+-- name of a variable that may be set (either globally or per-buffer) to grant
+-- immunity to bouncing
+M.immunity_flag = 'huge_immune'
 
 -- actual consumption of these constants is outside of this file... fixme pls
 M.limits = {
   max_lines = 20000,
-  max_file_size_bytes = 1000000,
-  max_individual_line_length = 1500,
+  max_file_size_bytes = 1.5 * 1024 * 1024,
+  max_average_line_length = 1000,
 }
 
 ---@param bufnr number
----@param reason string?
----@param opts { silently: boolean }?
-function M.bounce(bufnr, reason, opts)
-  local silent ---@type boolean
-  if opts ~= nil then
-    silent = opts.silently
-  else
-    silent = false
-  end
-
-  if utils.flag_set(M.bypass_key, bufnr) then
-    if not silent then
-      vim.notify(('huge: %d is immune'):format(bufnr), vim.log.levels.INFO)
-    end
-    return
-  end
-
-  -- general flag (also disables cmp)
-  vim.b[bufnr].huge_bounced = true
+---@param original_ft string?
+function M.bounce(bufnr, original_ft)
+  -- general flag that others may observe
+  vim.b[bufnr][M.bufvar] = true
 
   -- prevent LSPs from attaching or acting on the buffer
   vim.b[bufnr][lsp.noattach_key] = true
   vim.b[bufnr][lsp.noformat_key] = true
 
   -- disable plugins
-  vim.b[bufnr].miniindentscope_disable = true
+  vim.b[bufnr].completion = false -- blink-cmp
+  vim.b[bufnr].miniindentscope_disable = true -- mini.indentscope
+  vim.b[bufnr].minihipatterns_disable = true -- mini.hipatterns
 
-  -- disable plain (non-tree sitter) syntax
-  vim.bo[bufnr].syntax = 'OFF'
-  -- try to stop TS
-  pcall(vim.treesitter.stop, bufnr)
-
-  local formatted_reason = reason or 'no reason'
-  if not silent then
-    local path = vim.api.nvim_buf_get_name(bufnr)
-
-    vim.notify(
-      ('huge: BOUNCING %s (%s)'):format(utils.shorten(path), formatted_reason),
-      vim.log.levels.WARN
-    )
+  -- disable MatchParen which constantly seeks through buf text
+  --
+  -- NOTE it sucks that we can't specify the bufnr to act on here, but bouncing
+  -- is called from `vim.filetype` right now so eehhhh
+  if vim.fn.exists(':NoMatchParen') ~= 0 then
+    vim.cmd([[NoMatchParen]])
   end
 
-  -- :)
-  vim.o.eventignore = 'FileType'
-  vim.schedule(function()
-    vim.o.eventignore = ''
-  end)
+  -- set up syntax after a tick (because we overwrite the ft with `huge`)
+  if original_ft then
+    vim.schedule(function()
+      if vim.api.nvim_buf_is_valid(bufnr) then
+        vim.bo[bufnr].syntax = original_ft
+      end
+    end)
+  end
+end
+
+--- sets up the bouncer via `vim.filetype`, like snacks.nvim does
+function M.setup()
+  local function filetype(path, bufnr)
+    if not path or not bufnr then
+      return
+    end
+
+    local verdict, reason = M.should_bounce(bufnr)
+    if not verdict then
+      -- couldn't figure it out, or we shouldn't bounce -- let other
+      -- handlers take over
+      return
+    end
+
+    local short_path = utils.shorten(path)
+    vim.notify(
+      ('🏀 bouncing #%d %s because %s'):format(bufnr, short_path, reason),
+      vim.log.levels.WARN
+    )
+    return M.filetype
+  end
+
+  vim.filetype.add({ pattern = { ['.*'] = { filetype } } })
+
+  vim.api.nvim_create_autocmd({ 'FileType' }, {
+    group = M.augroup,
+    pattern = M.filetype,
+    desc = 'Disables plugins for buffers containing huge files',
+    callback = function(ctx)
+      vim.api.nvim_buf_call(ctx.buf, function()
+        M.bounce(ctx.buf, vim.filetype.match({ buf = ctx.buf }))
+      end)
+    end,
+  })
 end
 
 ---@param bufnr number
----@param opts { silently: boolean }?
-function M.bouncer(bufnr, opts)
+---@return boolean
+function M.was_bounced(bufnr)
+  return vim.bo[bufnr].filetype == M.filetype or vim.b[bufnr][M.bufvar]
+end
+
+---@param bufnr number
+---@return boolean | nil, string a reason string, and whether it should be bounced or not (`nil` if buf is invalid somehow)
+function M.should_bounce(bufnr)
+  if utils.flag_set(M.immunity_flag, bufnr) then
+    return false, 'buf is immune'
+  end
+
   if not vim.api.nvim_buf_is_loaded(bufnr) then
-    return false
+    return nil, 'buf not loaded'
+  end
+  if M.was_bounced(bufnr) then
+    return false, 'already bounced'
   end
 
-  if vim.api.nvim_buf_line_count(bufnr) > M.limits.max_lines then
-    M.bounce(bufnr, 'too many lines', opts)
-    return true
+  ------------------------------------------------------------------------------
+
+  local line_count = vim.api.nvim_buf_line_count(bufnr)
+  if line_count > M.limits.max_lines then
+    return true, ('too many lines (%d)'):format(line_count)
   end
 
-  local stats = vim.fn.wordcount()
-  if stats.bytes > M.limits.max_file_size_bytes then
-    M.bounce(bufnr, 'too many bytes', opts)
-    return true
+  local path = vim.fs.normalize(vim.api.nvim_buf_get_name(bufnr))
+  if not path then
+    -- seemingly true for telescope preview buffers, and probably other stuff
+    return nil, "buf doesn't have a path"
   end
 
-  for _, file_line in pairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
-    if #file_line > M.limits.max_individual_line_length then
-      M.bounce(
-        bufnr,
-        ('some line longer than %d'):format(M.limits.max_individual_line_length),
-        opts
+  local size = vim.fn.getfsize(path)
+  if size <= 0 then
+    return nil, "couldn't get fsize"
+  end
+  if size > M.limits.max_file_size_bytes then
+    return true, ('too many bytes (%d)'):format(size)
+  end
+
+  local n_lines = vim.api.nvim_buf_line_count(bufnr)
+  local avg_line_len = (size - n_lines) / n_lines
+
+  if avg_line_len > M.limits.max_average_line_length then
+    return true,
+      ('average line length too long (%f > %d)'):format(
+        avg_line_len,
+        M.limits.max_average_line_length
       )
-      return true
-    end
   end
 
-  return false
+  return false, 'OK'
 end
 
 return M

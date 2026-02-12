@@ -250,20 +250,15 @@ return {
             -- max limits in MB
             -- filesize_limit = 10,
             -- highlight_limit = 10,
-            -- swift is too slow :/
-            treesitter = { enable = true, disable = { 'swift' } },
-            filetype_hook = function(filepath, bufnr, opts)
-              -- always let help files through (this isn't baked into the
-              -- bouncing logic because attempting to grab the ft of the
-              -- preview buffer doesn't actually work (and it has no
-              -- path/name), so just check here)
-              if opts.ft == 'help' then
-                return true
-              end
+            treesitter = {
+              enable = true,
+              -- swift is too slow :/
+              disable = { 'swift' },
+            },
 
-              local bounced =
-                require('skip.huge').bouncer(bufnr, { silently = false })
-              if bounced then
+            filetype_hook = function(_, bufnr, opts)
+              local bouncing = require('skip.huge').should_bounce(bufnr)
+              if bouncing then
                 -- seemingly _need_ to set the preview message in order to suppress previewing
                 require('telescope.previewers.utils').set_preview_message(
                   bufnr,
@@ -272,13 +267,14 @@ return {
                 )
                 return false
               end
+
               return true
             end,
           },
         },
         pickers = {
           find_files = {
-            find_command = function(_opts)
+            find_command = function(_)
               return vim
                 .iter({
                   'fd',

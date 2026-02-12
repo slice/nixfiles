@@ -15,6 +15,7 @@ require 'skip.options'
 -- bootstrap lazy.nvim
 require 'skip.lazy'
 
+require('skip.huge').setup()
 -- care should be taken so these are loadable sans plugins (or if they error)
 require 'skip.mappings'
 require 'skip.autocmds'

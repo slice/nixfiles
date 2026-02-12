@@ -33,7 +33,9 @@ return {
 
         ---@diagnostic disable-next-line:unused-local
         disable = function(lang, bufnr)
-          return require('skip.huge').bouncer(bufnr)
+          if require('skip.huge').should_bounce(bufnr) then
+            return true
+          end
         end,
       },
 
@@ -61,9 +63,12 @@ return {
     event = 'VeryLazy',
     enabled = true,
     opts = {
-      on_attach = function(buf_id)
+      on_attach = function(bufnr)
+        if require 'skip.huge'.was_bounced(bufnr) then
+          return false
+        end
         -- slows down editing swift files a loooooooot
-        return vim.bo[buf_id].filetype ~= 'swift'
+        return vim.bo[bufnr].filetype ~= 'swift'
       end,
       multiline_threshold = 2,
     },
