@@ -102,3 +102,6 @@ end
 -- (can't use d because it means delete)
 map('v', 'fp', ":'<,'>diffput<CR>")
 map('v', 'fo', ":'<,'>diffget<CR>")
+
+-- particularly helpful in scratch buffers
+map('n', '<Leader>1', '<Cmd>%lua<CR>')
