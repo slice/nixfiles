@@ -4,12 +4,16 @@ local utils = require('skip.utils')
 
 local M = {}
 
-function M.shorten_path(path)
+function M.shorten(path, opts)
   if not path then
     return path
   end
 
-  return utils.shorten(path, { max = 4 })
+  return utils.shorten(
+    path,
+    -- not using ellipses because horizontal space is precious
+    vim.tbl_extend('keep', { ellipses = '' }, opts or {})
+  )
 end
 
 function M.tab_display_name(tabid)
@@ -33,17 +37,17 @@ function M.tab_display_name(tabid)
     )
     :totable()
 
-  -- tracks seen cwds
-  local seen = {}
+  -- discover all cwds at play inside of the tab
+  local seen_cwds = {}
   local seen_icons = {}
 
   for _, winid in ipairs(winids) do
     -- `getcwd` works for both winnrs and winids
     local cwd = vim.fn.getcwd(winid, tabnr)
 
-    if cwd and not seen[cwd] then
+    if cwd and not seen_cwds[cwd] then
       -- witness this cwd
-      seen[cwd] = true
+      seen_cwds[cwd] = true
     end
 
     -- attempt to resolve the icon for the window's buffer
@@ -57,11 +61,11 @@ function M.tab_display_name(tabid)
     end
   end
 
-  if vim.tbl_isempty(seen) then
+  if vim.tbl_isempty(seen_cwds) then
     return '?'
   end
 
-  local cwds = vim.tbl_keys(seen)
+  local cwds = vim.tbl_keys(seen_cwds)
 
   -- make sure seen cwd set ordering is stable
   table.sort(cwds, function(a, b)
@@ -70,7 +74,7 @@ function M.tab_display_name(tabid)
   -- format tabs like "[/things/cwd|/things/other/cwd]"
   local viz = ('[%s]'):format(
     -- shorten the cwd
-    table.concat(vim.iter(cwds):map(M.shorten_path):totable(), '|')
+    table.concat(vim.iter(cwds):map(M.shorten):totable(), '|')
   )
   -- if there was only ever one filetype icon in the entire tab, then replicate
   -- it here
@@ -78,8 +82,9 @@ function M.tab_display_name(tabid)
     viz = next(seen_icons) .. ' ' .. viz
   end
 
-  -- only one window in this tab, try displaying its only buffer's filename
-  -- relative to the cwd and shortened
+  -- only one window in this tab, display the filename of the buffer it's
+  -- showing
+  local display_full_rel_path = true
   if #winids == 1 then
     local winnr = winids[1]
     local only_bufnr = vim.fn.winbufnr(winnr)
@@ -87,9 +92,18 @@ function M.tab_display_name(tabid)
       local only_cwd = cwds[1]
 
       local only_path = vim.api.nvim_buf_get_name(only_bufnr)
-      local only_relpath = vim.fs.relpath(only_cwd, only_path)
-      local tab_only_file_viz = M.shorten_path(only_relpath)
-        or M.shorten_path(only_path)
+      local tab_only_file_viz
+
+      if display_full_rel_path then
+        local only_relpath = vim.fs.relpath(only_cwd, only_path)
+        ---@type skip.utils.ShortenOpts
+        local shorten_opts = { max_segment_len = 2 }
+
+        tab_only_file_viz = M.shorten(only_relpath, shorten_opts)
+          or M.shorten(only_path, shorten_opts)
+      else
+        tab_only_file_viz = vim.fs.basename(only_path)
+      end
 
       viz = viz .. ':' .. tab_only_file_viz
     end

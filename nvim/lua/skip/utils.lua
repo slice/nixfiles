@@ -70,20 +70,47 @@ local _symbols = {
   nix = '󱄅 ',
 }
 
+--- @param max_cps integer The maximum number of codepoints to return.
+--- @return boolean, string
+local function _truncate_codepoints(text, max_cps)
+  -- NOTE (should really be over grapheme clusters but yeah)
+
+  if max_cps <= 0 then
+    return false, ''
+  end
+
+  local cps = vim.str_utfindex(text, 'utf-32')
+  if cps <= max_cps then
+    return false, text
+  end
+
+  local byte_end = vim.str_byteindex(text, 'utf-32', max_cps)
+  return true, text:sub(1, byte_end)
+end
+
+--- @class skip.utils.ShortenOpts
+--- @field max_segment_len number?
+--- @field return_separated_tail boolean? Whether to return the last path segment separately from the rest.
+--- @field ellipses string? What to put at the end of each segment that gets shortened.
+
+--- Shortens an absolute path.
+---
 --- @param path string
---- @param opts? { max_segment_len?: number, return_separated_tail?: boolean }
+--- @param opts? skip.utils.ShortenOpts
 --- @return string|string[]
 function M.shorten(path, opts)
   opts = opts or {}
   local seg_max = opts.max_segment_len or 16
+  local ellipses = opts.ellipses or '⋯ '
   assert(seg_max > 0)
+
   local symbolized = path:gsub(vim.pesc(home), '~')
   for _, root in ipairs(M.symbolized_work_roots) do
     symbolized = symbolized:gsub(vim.pesc(root), _symbols.hammer)
   end
 
-  -- initializing it to this is gross but avoids having to do "contains then gsub"
-  -- in the loop above
+  -- initializing it to this is gross but avoids having to do "contains() then
+  -- gsub()" in the loop above to find out if we inserted an icon
   local did_abridge = M.str_contains(symbolized, _symbols.hammer)
 
   local segs = vim.split(symbolized, '/', { plain = true, trimempty = true })
@@ -107,15 +134,15 @@ function M.shorten(path, opts)
   end
 
   local short_segs = vim
-    .iter(segs)
-    :enumerate()
+    .iter(ipairs(segs))
     :map(function(i, segment)
-      -- don't shorten last segment
-      if #segment > seg_max and i < (#segs - 1) then
-        return segment:sub(1, seg_max) .. '⋯ ' -- assumes pragmatapro non-mono on ghostty bc it expands the char
-      else
-        return segment
+      local did_truncate, truncated = _truncate_codepoints(segment, seg_max)
+      local at_last_segment = i == #segs
+      if did_truncate and not at_last_segment then
+        return truncated .. ellipses
       end
+
+      return segment
     end)
     :totable()
 
