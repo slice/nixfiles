@@ -5,11 +5,9 @@
 {
   imports = [
     ../modules/nix.nix
+    ../modules/lix.nix
     ../modules/darwin/homebrew.nix
     ../modules/darwin/pam.nix
-
-    # https://lix.systems
-    (inputs.lix-module.nixosModules.default)
   ];
 
   environment.systemPackages = [
