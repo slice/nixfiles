@@ -55,15 +55,6 @@ end
 
 local home = vim.fs.abspath('~')
 
--- M.shorten will replace these path prefixes with a hammer symbol when
--- encountered
-M.symbolized_work_roots = {
-  '~/Developer',
-  '~/src',
-  '/Volumes/Shared/Developer',
-  '/Volumes/Shared/work',
-}
-
 local _symbols = {
   hammer = ' ',
   neovim = ' ',
@@ -97,6 +88,19 @@ end
 --- @field return_separated_tail boolean? Whether to return the last path segment separately from the rest.
 --- @field ellipses string? What to put at the end of each segment that gets shortened.
 
+-- shorten uses this - if the key appears as a prefix in the path, it gets
+-- replaced with its value verbatim
+M._shorten_replacements = {
+  ['~/go/pkg'] = _symbols.package,
+  ['/Volumes/Artifacts/go/pkg'] = _symbols.package,
+
+  -- work roots
+  ['~/Developer'] = _symbols.hammer,
+  ['~/src'] = _symbols.hammer,
+  ['/Volumes/Shared/Developer'] = _symbols.hammer,
+  ['/Volumes/Shared/work'] = _symbols.hammer,
+}
+
 --- Shortens an absolute path.
 ---
 --- @param path string
@@ -108,42 +112,24 @@ function M.shorten(path, opts)
   local ellipses = opts.ellipses or '⋯ '
   assert(seg_max > 0)
 
-  local symbolized = path:gsub(vim.pesc(home), '~')
-  for _, root in ipairs(M.symbolized_work_roots) do
-    symbolized = symbolized:gsub(vim.pesc(root), _symbols.hammer)
-  end
+  local tilded = path:gsub(vim.pesc(home), '~')
 
-  -- initializing it to this is gross but avoids having to do "contains() then
-  -- gsub()" in the loop above to find out if we inserted an icon
-  local did_abridge = M.str_contains(symbolized, _symbols.hammer)
-
-  local segs = vim.split(symbolized, '/', { plain = true, trimempty = true })
-
-  if segs[1] == '~' and segs[2] == 'go' and segs[3] == 'pkg' then
-    -- e.g.
-    --
-    --   ~/go/pkg/mod/maunium.net/go/mautrix@v0.26.2/bridgev2/networkid/bridgeid.go
-    --
-    local seg_idx_containing_ver
-    for i, seg in pairs(segs) do
-      if M.str_contains(seg, '@v') then
-        seg_idx_containing_ver = i
-      end
+  local did_abridge = false
+  for target, repl in pairs(M._shorten_replacements) do
+    local pat = vim.pesc(target)
+    if string.find(tilded, pat) ~= nil then
+      tilded = tilded:gsub(pat, repl)
+      did_abridge = true
+      break
     end
-    -- e.g. {'maunium.net', 'go', 'mautrix@v0.26.2'}
-    -- local pkg = vim.list_slice(4, seg_idx_containing_ver)
-
-    local new_segs = {
-      _symbols.package,
-      segs[seg_idx_containing_ver],
-      unpack(vim.list_slice(segs, seg_idx_containing_ver + 1)),
-    }
-    segs = new_segs
-    did_abridge = true
   end
+
+  local segs = vim.split(tilded, '/', { plain = true, trimempty = true })
 
   -- detect nix store paths, replacing "/nix/store/zzzz-pkg-ver/..." => "󱄅  pkg-ver/"
   -- (except for neovim, which gets " /" instead)
+  --
+  -- these are a bit more complex so not expressed with _shorten_replacements
   if segs[1] == 'nix' and segs[2] == 'store' then
     local dir_name = segs[3] -- e.g. "zi06f4k47xw8wmycp9sav5g25bqrqzzw-neovim-unwrapped-0.11.6"
     -- chop off /nix/store/hash-name-ver
@@ -160,6 +146,7 @@ function M.shorten(path, opts)
     did_abridge = true
   end
 
+  -- go over every segment and trim the ones that are too long
   local short_segs = vim
     .iter(ipairs(segs))
     :map(function(i, segment)
