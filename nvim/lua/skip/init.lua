@@ -32,18 +32,22 @@ require('lazy').setup({
   dev = { path = vim.fs.abspath('~/src/prj') },
 })
 
--- TODO(skip): this just gets nuked on launch and idk why
 vim.api.nvim_create_autocmd('User', {
   pattern = 'LazyVimStarted',
   desc = 'Present some lovely ducks (and startup statistics)',
   callback = function()
     local stats = require('lazy').stats()
-    local message = ([[\_o> ♥ ♥ ♥ <o_/ %d/%d plugins in %dms]]):format(
+    local message = ([[\_o> ♥ ♥ ♥  <o_/ loaded %d/%d plugins in %.2fms]]):format(
       stats.loaded,
       stats.count,
       stats.startuptime
     )
-    vim.api.nvim_echo({ { message, 'DiffAdd' } }, true, {})
+
+    -- HACK: needed for the message to appear in Ghostty. seems to work on
+    -- iTerm2 though?
+    vim.defer_fn(function()
+      vim.api.nvim_echo({ { message, 'DiffAdd' } }, true, {})
+    end, 100)
   end,
 })
 
