@@ -98,7 +98,7 @@ local spec = lush(function(injected_fns)
     },
     CurSearch {
       fg = ega.brwhite,
-      bg = ega.brmagenta.da(10),
+      bg = ega.brmagenta.da(30),
       gui = 'bold, underline',
     },
     MatchParen {
@@ -223,6 +223,13 @@ local spec = lush(function(injected_fns)
     Added { fg = ega.brgreen },
     Changed { fg = ega.brmagenta },
     Removed { fg = ega.brred },
+
+    -- telescope {{{
+    TelescopeNormal { NormalFloat },
+    TelescopePreviewNormal { fg = NormalFloat.fg, bg = NormalFloat.bg.li(5) },
+    TelescopeSelection { CurSearch, gui = 'bold' },
+    TelescopeMatching { gui = 'bold', bg = Search.bg },
+    -- }}}
 
     -- diagnostics {{{
     DiagnosticError { fg = ega.brred },
