@@ -68,6 +68,7 @@ local _symbols = {
   hammer = ' ',
   neovim = ' ',
   nix = '󱄅 ',
+  package = ' ',
 }
 
 --- Enforces a maximum length (in codepoints) for a string. All codepoints
@@ -117,6 +118,29 @@ function M.shorten(path, opts)
   local did_abridge = M.str_contains(symbolized, _symbols.hammer)
 
   local segs = vim.split(symbolized, '/', { plain = true, trimempty = true })
+
+  if segs[1] == '~' and segs[2] == 'go' and segs[3] == 'pkg' then
+    -- e.g.
+    --
+    --   ~/go/pkg/mod/maunium.net/go/mautrix@v0.26.2/bridgev2/networkid/bridgeid.go
+    --
+    local seg_idx_containing_ver
+    for i, seg in pairs(segs) do
+      if M.str_contains(seg, '@v') then
+        seg_idx_containing_ver = i
+      end
+    end
+    -- e.g. {'maunium.net', 'go', 'mautrix@v0.26.2'}
+    -- local pkg = vim.list_slice(4, seg_idx_containing_ver)
+
+    local new_segs = {
+      _symbols.package,
+      segs[seg_idx_containing_ver],
+      unpack(vim.list_slice(segs, seg_idx_containing_ver + 1)),
+    }
+    segs = new_segs
+    did_abridge = true
+  end
 
   -- detect nix store paths, replacing "/nix/store/zzzz-pkg-ver/..." => "󱄅  pkg-ver/"
   -- (except for neovim, which gets " /" instead)
