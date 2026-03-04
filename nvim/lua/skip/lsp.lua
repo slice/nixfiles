@@ -186,6 +186,7 @@ utils.autocmds('SkipLsp', {
   {
     'LspProgress',
     {
+      desc = 'Report LSP progress to terminal via OSC 9;4',
       callback = function(ev)
         local value = ev.data.params.value or {}
 
@@ -205,6 +206,15 @@ utils.autocmds('SkipLsp', {
             utils.term_progress('indeterminate')
           end
         end
+      end,
+    },
+  },
+  {
+    'VimLeavePre',
+    {
+      desc = 'Remove reported LSP progress from terminal via OSC 9;4',
+      callback = function()
+        utils.term_progress('remove')
       end,
     },
   },

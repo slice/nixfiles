@@ -183,7 +183,7 @@ function M.send(codes, mode)
   vim.api.nvim_feedkeys(M.termcodes(codes), mode or 'n', false)
 end
 
---- Report a graphical progress bar to Ghostty. See:
+--- Report a graphical progress bar to Ghostty via OSC 9;4. See:
 --- https://ghostty.org/docs/install/release-notes/1-2-0#graphical-progress-bars
 --- @param mode 'remove' | 'running' | 'running_error' | 'indeterminate'
 --- @param percent number? A number from 0-100 (when passing "running" or "running_error" as mode).
