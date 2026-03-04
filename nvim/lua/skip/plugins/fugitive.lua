@@ -1,8 +1,39 @@
+---@type LazySpec
 return {
   {
     'tpope/vim-fugitive',
-    cmd = 'Git',
-    lazy = false,
+    cmd = {
+      'G',
+      'GBrowse',
+      'GDelete',
+      'GMove',
+      'GRemove',
+      'GRename',
+      'GUnlink',
+      'Gcd',
+      'Gclog',
+      'Gdiffsplit',
+      'Gdiffsplit!',
+      'Gdrop',
+      'Gedit',
+      'Ggrep',
+      'Ghdiffsplit',
+      'Git',
+      'Glcd',
+      'Glgrep',
+      'Gllog',
+      'Gpedit',
+      'Gread',
+      'Gsplit',
+      'Gtabedit',
+      'Gvdiffsplit',
+      'Gvsplit',
+      'Gwq',
+      'Gwrite',
+    },
+    dependencies = {
+      'tpope/vim-rhubarb',
+    },
     keys = {
       -- { '<Leader>a', '<Cmd>vert G<CR>', desc = 'Git' },
       { '<Leader>q', '<Cmd>.GBrowse!<CR>', desc = '.GBrowse!' },
@@ -28,6 +59,7 @@ return {
 
   {
     'julienvincent/hunk.nvim',
+    event = 'VeryLazy',
     cmd = { 'DiffEditor' },
     dependencies = { 'MunifTanjim/nui.nvim' },
     config = function()

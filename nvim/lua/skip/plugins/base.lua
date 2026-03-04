@@ -2,11 +2,10 @@
 -- output and :intro gets cleared off)
 
 ---@type LazySpec
--- stylua: ignore start
 return {
   {
     'justinmk/vim-gtfo',
-    keys = { 'gof', 'got' }
+    keys = { 'gof', 'got' },
     -- TODO map to Ghostty
   },
   {
@@ -18,19 +17,50 @@ return {
     },
   },
 
-  'tpope/vim-rsi',         -- readline mappings where they make sense
-  'tpope/vim-eunuch',      -- unix helpers (:Remove, :Delete, etc.)
-  'tpope/vim-unimpaired',  -- pairs of handy bracket mappings
-  'tpope/vim-rhubarb',     -- github integration for fugitive
-  'tpope/vim-repeat',      -- let `.` cooperate with plugins
-  'tpope/vim-abolish',     -- variants of words
-  'mhinz/vim-sayonara',    -- sane buffer/window deletion
-  'tommcdo/vim-exchange',  -- swap two bits of text with each other with cx
+  'tpope/vim-rsi', -- readline mappings where they make sense
+  {
+    'tpope/vim-eunuch',
+    cmd = {
+      'Remove',
+      'Unlink',
+      'Delete',
+      'Copy',
+      'Duplicate',
+      'Move',
+      'Rename',
+      'Chmod',
+      'Mkdir',
+      'Cfind',
+      'Lfind',
+      'Clocate',
+      'Llocate',
+      'SudoEdit',
+      'SudoWrite',
+      'Wall',
+      'W',
+    },
+  },
+  {
+    'tpope/vim-unimpaired',
+    event = 'VeryLazy',
+  },
+  'tpope/vim-repeat', -- let `.` cooperate with plugins
+  {
+    'tpope/vim-abolish',
+    cmd = { 'Abolish', 'Subvert' },
+  },
+  'mhinz/vim-sayonara', -- sane buffer/window deletion
+  {
+    'tommcdo/vim-exchange',
+    event = 'VeryLazy',
+  },
 
   -- language support
-  'grafana/vim-alloy',
-  'alunny/pegjs-vim',
-  'isobit/vim-caddyfile',
+  {
+    'grafana/vim-alloy',
+    ft = 'alloy',
+  },
+  { 'isobit/vim-caddyfile', ft = { 'caddy', 'caddyfile' } },
 
   {
     'airblade/vim-rooter',
