@@ -200,7 +200,8 @@ in
   home.file.".prettierrc.json".source = ./prettierrc.json;
   home.file.".stylua.toml".source = ../.stylua.toml;
   home.file.".config/jj/config.toml".source = config.lib.skip.ergonomic ./jj.toml;
-  xdg.configFile."kitty".source = config.lib.skip.ergonomic ./kitty;
+  home.file."Library/Application Support/com.mitchellh.ghostty/config".source =
+    config.lib.skip.ergonomic ./ghostty_config;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

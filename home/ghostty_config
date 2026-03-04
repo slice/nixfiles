@@ -1,0 +1,65 @@
+# vim: ft=conf fdm=marker fdl=1
+
+clipboard-paste-protection = false
+
+# text rendering {{{1
+font-family = PragmataPro
+adjust-cell-width = 0
+adjust-cell-height = -5%
+#adjust-font-baseline = 0
+adjust-underline-position = -3
+adjust-underline-thickness = 1
+
+font-size = 16
+
+#font-family = MxPlus IBM BIOS
+#font-family = MxPlus IBM VGA 8x16
+#font-family = misc-fixed-bold-r-normal--15-140-75-75-c-90-i
+#font-family = MiscFixed
+#font-family = unscii
+#font-style = 16-full
+#font-family = MiscFixedSC613
+#font-family = Spleen
+#font-family = FixederSys 1x
+
+#font-style-bold = false
+#font-style-italic = false
+#font-style-bold-italic = false
+
+font-feature = -calt -liga -dlig
+font-thicken = true
+# keybinds, input handling {{{2
+#keybind = super+-=decrease_font_size:0.5
+#keybind = super+==increase_font_size:0.5
+macos-option-as-alt = true
+# quick terminal {{{2
+keybind = global:opt+\=toggle_quick_terminal
+quick-terminal-animation-duration = 0
+# shell integration {{{2
+shell-integration = fish
+shell-integration-features = no-cursor
+# appearance {{{1
+theme = iTerm2 Pastel Dark Background
+minimum-contrast = 1.1
+
+cursor-color = #e60000
+cursor-text = #ffecc3
+cursor-style = block
+adjust-cursor-thickness = 3
+
+selection-invert-fg-bg = true
+
+window-padding-color = extend
+split-divider-color = #888
+
+macos-titlebar-style = tabs
+# }}}1
+# scrollback, scrolling {{{2
+mouse-scroll-multiplier = precision:1,discrete:0.75
+scrollback-limit = 500000000
+# macos icon {{{2
+macos-icon = custom-style
+macos-icon-frame = chrome
+# updates {{{2
+auto-update = download
+auto-update-channel = tip
