@@ -124,7 +124,8 @@ return {
 
       layout_strategies.compact = function(picker, cols, lines, layout_config)
         local width = math.floor(cols * 0.95)
-        local width_perc_input = 0.3
+        -- how wide (%) is the results column
+        local width_perc_input = 0.4
         local width_input = math.floor(width * width_perc_input)
         local width_preview = width - width_input
         local left_col = math.floor((cols - width) / 2)
