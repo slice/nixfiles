@@ -3,7 +3,6 @@ return {
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
-    config = true,
     opts = {
       map_c_w = true,
       check_ts = true,
@@ -12,16 +11,17 @@ return {
         map = '<M-e>',
       },
     },
-    init = function()
+    config = function(_, opts)
       -- permit "typing over" commas and semicolons all the time
-      for _, punct in pairs { ',', ';' } do
-        local npairs = require 'nvim-autopairs'
-        local Rule = require('nvim-autopairs.rule')
+      local npairs = require 'nvim-autopairs'
+      npairs.setup(opts)
+      local Rule = require('nvim-autopairs.rule')
 
+      for _, punct in pairs { ',', ';' } do
         npairs.add_rules {
           Rule('', punct)
-            :with_move(function(opts)
-              return opts.char == punct
+            :with_move(function(options)
+              return options.char == punct
             end)
             :with_pair(function()
               return false

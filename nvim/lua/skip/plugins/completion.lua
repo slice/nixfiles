@@ -5,7 +5,9 @@ return {
   {
     'saghen/blink.cmp',
     cond = not HEADLESS,
-    lazy = false, -- plugin is already lazy
+    -- i think blink is already lazy but loading its code is a little costly,
+    -- so defer it anyways
+    event = 'InsertEnter',
     dependencies = {
       'rafamadriz/friendly-snippets',
       'folke/lazydev.nvim',

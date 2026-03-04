@@ -19,6 +19,7 @@ end
 return {
   {
     'danielfalk/smart-open.nvim',
+    enabled = false,
     cond = not HEADLESS,
     commit = 'f079c3201a0a62b1582563bd5ce4256c253634d4',
     dependencies = {
@@ -38,9 +39,7 @@ return {
   {
     'nvim-telescope/telescope.nvim',
     cond = not HEADLESS,
-
     dependencies = { 'nvim-lua/plenary.nvim' },
-
     cmd = 'Telescope',
     keys = {
       -- config editing (evolved from https://learnvimscriptthehardway.stevelosh.com/chapters/08.html)

@@ -4,8 +4,8 @@ local utils = require('skip.utils')
 return {
   {
     'https://codeberg.org/andyg/leap.nvim.git',
+    event = 'VeryLazy',
     dependencies = { 'tpope/vim-repeat' },
-    lazy = false,
     keys = {
       {
         '<CR>',

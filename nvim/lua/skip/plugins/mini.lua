@@ -2,19 +2,15 @@ local utils = require('skip.utils')
 
 return {
   {
-    'echasnovski/mini.base16',
-    priority = 10000,
-    cond = not HEADLESS,
-  },
-
-  {
     'echasnovski/mini.operators',
+    event = 'VeryLazy',
     enabled = false,
     config = true,
   },
 
   {
     'echasnovski/mini.diff',
+    event = 'VeryLazy',
     config = true,
     opts = {
       view = {
@@ -26,6 +22,7 @@ return {
 
   {
     'echasnovski/mini.jump',
+    event = 'VeryLazy',
     opts = {
       delay = {
         idle_stop = 1000 * 8,
@@ -81,6 +78,7 @@ return {
   {
     'echasnovski/mini.indentscope',
     cond = not HEADLESS,
+    event = 'VeryLazy',
     opts = function()
       local indentscope = require('mini.indentscope')
 
@@ -126,22 +124,26 @@ return {
 
   {
     'echasnovski/mini.trailspace',
+    event = 'VeryLazy',
     cond = not HEADLESS,
     config = true,
   },
 
   {
     'echasnovski/mini.splitjoin',
+    event = 'VeryLazy',
     config = true,
   },
 
   {
     'echasnovski/mini.move',
+    event = 'VeryLazy',
     config = true,
   },
 
   {
     'echasnovski/mini.map',
+    event = 'VeryLazy',
     -- NOTE freeing up <Leader>m for metals?
     enabled = false,
     -- stylua: ignore
@@ -198,6 +200,7 @@ return {
 
   {
     'echasnovski/mini.hipatterns',
+    event = 'VeryLazy',
     cond = not HEADLESS,
     config = function()
       local hipatterns = require('mini.hipatterns')

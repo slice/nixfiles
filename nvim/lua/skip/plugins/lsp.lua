@@ -7,6 +7,7 @@ return {
   {
     'neovim/nvim-lspconfig',
     cond = not HEADLESS,
+    event = 'VeryLazy',
     config = function()
       vim.lsp.config('*', {
         root_dir = function(bufnr, on_dir)
@@ -229,8 +230,7 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
-    lazy = false,
-    -- ft = { 'scala', 'sbt', 'java' },
+    ft = { 'scala', 'sbt', 'java' },
     cond = not HEADLESS,
     opts = function()
       local metals_config = require 'metals'.bare_config()
@@ -386,6 +386,7 @@ return {
 
   {
     'nvimtools/none-ls.nvim',
+    event = 'VeryLazy',
     cond = not HEADLESS,
     dependencies = {
       'nvimtools/none-ls-extras.nvim',

@@ -1,6 +1,7 @@
 return {
   {
     'j-hui/fidget.nvim',
+    event = 'VeryLazy',
     cond = not HEADLESS,
     config = function()
       local fidget = require('fidget')
@@ -60,6 +61,7 @@ return {
   -- overrides vim.ui
   {
     'stevearc/dressing.nvim',
+    event = 'VeryLazy',
     cond = not HEADLESS,
     opts = {
       input = { border = 'single' },
