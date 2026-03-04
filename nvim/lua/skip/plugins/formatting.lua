@@ -5,9 +5,9 @@ local prettier = { 'prettierd', 'prettier' }
 return {
   {
     'stevearc/conform.nvim',
+    event = 'VeryLazy',
     cond = not HEADLESS,
     enabled = true,
-    -- TODO: can this be lazy? can't just put VeryLazy i guess?
     opts = {
       formatters_by_ft = {
         lua = { 'stylua' },
@@ -47,7 +47,6 @@ return {
     },
     init = function()
       local lsp = require 'skip.lsp'
-      local conform = require 'conform'
 
       vim.api.nvim_create_autocmd('BufWritePre', {
         desc = 'Automatic formatting on buffer write',
@@ -65,10 +64,13 @@ return {
             return
           end
 
+          -- (don't lift this `require` or else it'll get eagerly loaded as
+          -- `init` is _always_ called)
+          local conform = require 'conform'
+
           if utils.is_flag_set('LSP_FORMATTING_ONLY', args.buf) then
             vim.lsp.buf.format { bufnr = args.buf }
-            return
-            -- return conform.format { bufnr = args.buf, lsp_fallback = "always", formatters = {} }
+            return -- conform.format { bufnr = args.buf, lsp_fallback = "always", formatters = {} }
           end
 
           conform.format {
