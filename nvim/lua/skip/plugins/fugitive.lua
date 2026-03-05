@@ -13,7 +13,6 @@ return {
       'Gcd',
       'Gclog',
       'Gdiffsplit',
-      'Gdiffsplit!',
       'Gdrop',
       'Gedit',
       'Ggrep',
