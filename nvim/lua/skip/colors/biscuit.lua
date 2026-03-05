@@ -161,9 +161,9 @@ local spec = lush(function(injected_fns)
     -- sql {{{
     -- e.g. table names
     sym '@type.sql' { fg = 'NONE' },
-    sym '@keyword.insert.sql' { fg = P.assign },
-    sym '@keyword.drop.sql' { fg = ega.red.li(90), bg = ega.red },
-    sym '@keyword.update.sql' { fg = Operator.fg },
+    sym '@keyword.insert.sql' { fg = ega.brgreen.li(20), gui = 'bold' },
+    sym '@keyword.drop.sql' { fg = ega.red.li(90), bg = ega.red, gui = 'bold' },
+    sym '@keyword.update.sql' { fg = Operator.fg, gui = 'bold' },
     -- }}}
 
     CursorLine { bg = cur.da(65) },
