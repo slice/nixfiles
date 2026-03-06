@@ -8,14 +8,6 @@ return {
     keys = { 'gof', 'got' },
     -- TODO map to Ghostty
   },
-  {
-    'junegunn/vim-easy-align',
-    enabled = true,
-    keys = {
-      { 'ga', '<Plug>(EasyAlign)', remap = true },
-      { 'ga', '<Plug>(EasyAlign)', mode = 'x', remap = true },
-    },
-  },
 
   'tpope/vim-rsi', -- readline mappings where they make sense
   {
