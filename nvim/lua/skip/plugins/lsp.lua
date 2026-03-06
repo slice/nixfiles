@@ -1,7 +1,6 @@
--- vim: set fdm=marker:
+-- vim: fdm=marker
 
 local lsp = require 'skip.lsp'
-local utils = require 'skip.utils'
 
 return {
   {
@@ -11,6 +10,8 @@ return {
     config = function()
       vim.lsp.config('*', {
         root_dir = function(bufnr, on_dir)
+          -- respect huge functionality, and ban certain paths from getting
+          -- LSPs attached to them
           if lsp.attach_allowed(bufnr) then
             on_dir(
               vim.fs.root(bufnr, { '.git', '.jj', '.github', 'package.json' })
@@ -45,13 +46,14 @@ return {
       }
       -- }}}
 
+      -- relay {{{
       vim.lsp.config['relay'] = {
         cmd = { 'pnpx', 'relay-compiler', 'lsp' },
         filetypes = { 'typescriptreact', 'graphql', 'typescript' },
         root_markers = { 'relay.config.json' },
       }
       vim.lsp.enable('relay')
-
+      -- }}}
       -- yamlls {{{
       vim.lsp.config('yamlls', {
         settings = {
@@ -70,6 +72,7 @@ return {
           },
         },
       })
+      vim.lsp.enable('yamlls')
       -- }}}
       -- vtsls {{{
       vim.lsp.config('vtsls', {
@@ -100,11 +103,13 @@ return {
           },
         },
       })
+      vim.lsp.enable('vtsls')
       -- }}}
       -- gh_actions_ls {{{
       vim.lsp.config('gh_actions_ls', {
         filetypes = { 'yaml.github' },
       })
+      vim.lsp.enable('gh_actions_ls')
       -- }}}
       -- tailwindcss {{{
       vim.lsp.config('tailwindcss', {
@@ -132,6 +137,7 @@ return {
           },
         },
       })
+      vim.lsp.enable('tailwindcss')
       -- }}}
       -- cssls,jsonls,html {{{
       for _, server in ipairs({
@@ -149,6 +155,7 @@ return {
             },
           },
         })
+        vim.lsp.enable(server)
       end
       -- }}}
       -- sourcekit {{{
@@ -178,6 +185,7 @@ return {
           end)
         end
       )
+      vim.lsp.enable('sourcekit')
       -- }}}
       -- rust_analyzer {{{
       vim.lsp.config('rust_analyzer', {
@@ -211,27 +219,32 @@ return {
           },
         },
       })
+      vim.lsp.enable('rust_analyzer')
+      -- }}}
+      -- postgres_lsp {{{
+      vim.lsp.config('postgres_lsp', {
+        -- only attach if there's actually a postgres-language-server.jsonc, so
+        -- we don't attach to e.g. SQLite files
+        root_dir = function(bufnr, on_dir)
+          local root = vim.fs.root(bufnr, 'postgres-language-server.jsonc')
+          if root then
+            on_dir(root)
+          end
+        end,
+      })
+      vim.lsp.enable('postgres_lsp')
       -- }}}
 
       vim.lsp.enable({
-        'postgres_lsp',
         'bashls',
-        'cssls',
-        'gh_actions_ls',
         'gopls',
-        'html',
-        'jsonls',
         'lua_ls',
         'pyright',
-        'rust_analyzer',
-        'sourcekit',
-        'tailwindcss',
-        'vtsls',
-        'yamlls',
       })
     end,
   },
 
+  -- metals {{{
   {
     'scalameta/nvim-metals',
     dependencies = {
@@ -392,6 +405,7 @@ return {
       })
     end,
   },
+  -- }}}
 
   {
     'folke/lazydev.nvim',
