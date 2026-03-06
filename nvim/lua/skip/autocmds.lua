@@ -336,6 +336,10 @@ autocmds('SkipFiletypes', {
     { pattern = 'swift', command = 'setl cpo+=M' },
   },
   {
+    'FileType',
+    { pattern = 'go', command = 'setl formatexpr= formatprg=' },
+  },
+  {
     { 'BufRead', 'BufNewFile' },
     {
       pattern = '*.worksheet.sc',
