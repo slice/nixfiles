@@ -35,6 +35,7 @@ macos-option-as-alt = true
 # quick terminal {{{2
 keybind = global:opt+\=toggle_quick_terminal
 quick-terminal-animation-duration = 0
+quick-terminal-position = bottom
 # shell integration {{{2
 shell-integration = fish
 shell-integration-features = no-cursor
