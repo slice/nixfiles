@@ -16,12 +16,25 @@ return {
     -- if super lazy loaded, then the interactive preview messages get swallowed
     -- up by "-- VISUAL --" etc.
     event = 'VeryLazy',
-    opts = {
-      mappings = {
-        start = 'gA',
-        start_with_preview = 'ga',
-      },
-    },
+    opts = function()
+      local align = require 'mini.align'
+
+      return {
+        mappings = {
+          start = 'gA',
+          start_with_preview = 'ga',
+        },
+        modifiers = {
+          ['1'] = function(steps, _)
+            table.insert(steps.pre_justify, align.gen_step.filter('n == 1'))
+          end,
+          -- helpful to align SQL table declarations
+          ['2'] = function(steps, _)
+            table.insert(steps.pre_justify, align.gen_step.filter('n == 2'))
+          end,
+        },
+      }
+    end,
     -- keys = {
     --   {
     --     'ga',
