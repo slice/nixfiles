@@ -37,10 +37,11 @@ let
       jo
       jq
       mosh
+      nix-output-monitor
+      nixfmt
       p7zip
       rclone
       ripgrep
-      nixfmt
       rlwrap
       tmux
       tree
