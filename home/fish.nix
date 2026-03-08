@@ -230,12 +230,11 @@ in
           # if we're in ssh, show username and hostname
           if set -q SSH_CONNECTION
             set_color yellow
+            printf '%s@%s%s ' $USER (set_color --bold) (hostname -s)
+            set_color normal
           end
 
-          printf '%s@%s%s ' $USER (set_color --bold) (hostname -s)
-          set_color normal
-
-          set -l prompt_character '$'
+          set -l prompt_character '%'
           set -l prompt_color 'magenta'
 
           if test "$USER" = "root"
