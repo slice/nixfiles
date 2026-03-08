@@ -91,6 +91,8 @@ local spec = lush(function(injected_fns)
     MiniHipatternsHack { fg = ega.brred, bg = 'NONE' },
     MiniHipatternsFixme { fg = ega.brred, bg = 'NONE', gui = 'reverse' },
 
+    sym '@property.yaml' { fg = Normal.fg },
+
     Search {
       fg = ega.magenta.li(70).de(10),
       bg = ega.magenta.da(10),
@@ -139,6 +141,7 @@ local spec = lush(function(injected_fns)
     SpecialKey { fg = Normal.fg },
 
     Delimiter { fg = Normal.fg.da(30) },
+    sym '@lsp.type.operator.rust' { Delimiter }, -- rust ::
     sym '@punctuation' { fg = Delimiter.fg },
     Operator { fg = P.operator, gui = 'bold' },
     -- = := += -= /= *= &= |= etc.
@@ -163,6 +166,7 @@ local spec = lush(function(injected_fns)
     sym '@type.sql' { fg = 'NONE' },
     sym '@keyword.insert.sql' { fg = ega.brgreen.li(20), gui = 'bold' },
     sym '@keyword.drop.sql' { fg = ega.red.li(90), bg = ega.red, gui = 'bold' },
+    sym '@keyword.delete.sql' { sym '@keyword.drop.sql' },
     sym '@keyword.update.sql' { fg = Operator.fg, gui = 'bold' },
     -- }}}
 
