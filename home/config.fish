@@ -123,3 +123,12 @@ set -gx FZF_DEFAULT_OPTS "--color=fg:-1,fg+:-1,bg:-1,bg+:#4e1012,gutter:-1 \
 if test "$TERM_PROGRAM" = "vscode"
   set -gx EDITOR "code --wait"
 end
+
+if test -d ~/.swiftly
+  set -x SWIFTLY_HOME_DIR "$HOME/.swiftly"
+  set -x SWIFTLY_BIN_DIR "$HOME/.swiftly/bin"
+  set -x SWIFTLY_TOOLCHAINS_DIR "$HOME/Library/Developer/Toolchains"
+  if not contains "$SWIFTLY_BIN_DIR" $PATH
+    set -x PATH "$SWIFTLY_BIN_DIR" $PATH
+  end
+end
