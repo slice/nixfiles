@@ -10,6 +10,7 @@ local autocmds = require('skip.utils').autocmds
 M.peeking_roots = {
   '~/go/pkg',
   '/nix/store',
+  '~/.cargo',
 }
 
 -- for buffers determined to be peeking, each group listed here is replaced
