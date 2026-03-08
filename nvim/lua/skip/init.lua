@@ -61,8 +61,8 @@ local function load_lush_theme(mod)
 end
 
 if not HEADLESS then
-  load_lush_theme('skip.colors.biscuit')
-
+  load_lush_theme('skip.colors.crow')
+  -- vim.cmd [[colorscheme apparition]]
   require('skip.tabs')
   require('skip.assimilate').create_autocmd()
   require('skip.peeking').setup()

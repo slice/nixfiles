@@ -40,13 +40,14 @@ opt.termguicolors = true
 -- updating swapfiles this often because they're turned off.
 opt.updatetime = 1000
 opt.wrap = false
-opt.number = true
-opt.relativenumber = true
+-- opt.number = true
+-- opt.relativenumber = true
 opt.spelloptions = { 'camel' }
 opt.spellcapcheck = ''
 opt.splitright = true
 opt.sidescroll = 5
-opt.signcolumn = 'yes:2'
+opt.signcolumn = 'yes:1'
+opt.statuscolumn = '%s '
 opt.showbreak = '>'
 opt.sidescrolloff = 10
 opt.smartcase = true

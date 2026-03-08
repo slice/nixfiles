@@ -24,6 +24,7 @@ return {
         css = prettier,
         markdown = { 'prettierd', 'prettier' },
         nix = { 'nixfmt' },
+        -- ['*'] = { 'keep-sorted' },
       },
       formatters = {
         prettierd = {

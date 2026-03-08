@@ -209,6 +209,7 @@ return {
               },
               prefix = 'crate',
             },
+            check = { command = 'clippy' },
             cargo = {
               features = 'all',
               buildScripts = {
@@ -258,6 +259,7 @@ return {
   -- metals {{{
   {
     'scalameta/nvim-metals',
+    enabled = false,
     dependencies = {
       'nvim-lua/plenary.nvim',
     },

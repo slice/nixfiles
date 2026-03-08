@@ -1,4 +1,8 @@
 # https://lix.systems/add-to-config/
+#
+# using the "advanced", overlay-based approach that is "more robust, as it uses
+# an overlay to rewire other tools that depend on Nix, ensuring consistency
+# across your setup"
 
 { pkgs, ... }:
 
