@@ -26,7 +26,10 @@ font-size = 16
 #font-style-italic = false
 #font-style-bold-italic = false
 
-font-feature = -calt -liga -dlig
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
 font-thicken = true
 # keybinds, input handling {{{2
 #keybind = super+-=decrease_font_size:0.5
