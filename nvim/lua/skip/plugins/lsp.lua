@@ -33,8 +33,19 @@ return {
         -- make warnings and errors appear over hints
         severity_sort = true,
         virtual_text = {
-          prefix = function(diagnostic, _index, _total)
-            return signs[diagnostic.severity] or '󰟶 '
+          format = function(diag)
+            if diag.source == 'rustc' then
+              local lines = vim.split(
+                diag.message,
+                '\n',
+                { plain = true, trimempty = true }
+              )
+              return lines[1]
+            end
+            return diag.message
+          end,
+          prefix = function(_diag, _index, _total)
+            return ''
           end,
         },
         signs = {
