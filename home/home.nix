@@ -33,8 +33,6 @@ let
       file
       fzf
       gallery-dl
-      gawk
-      gnused
       htop
       jo
       jq
@@ -55,8 +53,7 @@ let
     languages = [
       dart-sass
       deno
-      nodejs_24
-      corepack_24
+      nodejs_25
       python3
       typescript
     ];
