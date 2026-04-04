@@ -60,56 +60,37 @@ let
     ];
 
     # tools to help with programming
-    tooling =
-      let
-        patchedLuaLs = (
-          lua-language-server.overrideAttrs (prev: {
-            # folke/lazydev.nvim does not cooperate with luals >= 3.17.0
-            # https://github.com/folke/lazydev.nvim/issues/136
-            version = "3.16.4";
-            src = fetchFromGitHub {
-              owner = "luals";
-              repo = "lua-language-server";
-              tag = "3.16.4";
-              hash = "sha256-frsq5OA3giLOJ/KPcAqVhme+0CtJuZrS3F4zHN1PnFM=";
-              fetchSubmodules = true;
-            };
-            doCheck = false;
-            doInstallCheck = false;
-          })
-        );
-      in
-      [
-        attic-client
-        bash-language-server
-        biome
-        bun
-        cocoapods
-        coursier
-        delta
-        flyctl
-        gh
-        git-lfs
-        jujutsu
-        just
-        nix-output-monitor
-        nixd
-        nodePackages.prettier
-        patchedLuaLs
-        postgres-language-server
-        postgresql
-        protobuf
-        pyright
-        python3Packages.black
-        shellcheck
-        stylua
-        terraform
-        tree-sitter
-        uv
-        vscode-langservers-extracted
-        watchman
-        yaml-language-server
-      ];
+    tooling = [
+      attic-client
+      bash-language-server
+      biome
+      bun
+      cocoapods
+      coursier
+      delta
+      flyctl
+      gh
+      git-lfs
+      jujutsu
+      just
+      nix-output-monitor
+      nixd
+      prettier
+      lua-language-server
+      postgres-language-server
+      postgresql
+      protobuf
+      pyright
+      python3Packages.black
+      shellcheck
+      stylua
+      terraform
+      tree-sitter
+      uv
+      vscode-langservers-extracted
+      watchman
+      yaml-language-server
+    ];
 
     # video/audio
     multimedia = [
