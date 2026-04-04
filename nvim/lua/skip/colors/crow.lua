@@ -35,6 +35,7 @@ local spec = lush(function(injected_fns)
     Keyword { fg = '#ffffff' },
     sym '@keyword' { Keyword },
     Number { fg = H('#80F0E0') },
+    sym '@boolean' { Number },
     String { fg = H('#40B0A0') },
     Visual { bg = H('#0010FF') },
 

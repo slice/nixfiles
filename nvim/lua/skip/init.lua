@@ -1,4 +1,4 @@
--- skip's neovim 0.10 config
+-- skip's neovim 0.12 config
 -- <o_/ <o_/ *quack quack*
 
 _G.HEADLESS = vim.g.vscode ~= nil
@@ -51,18 +51,8 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
-local function load_lush_theme(mod)
-  -- skip.colors.skippy -> skippy
-  local segs = vim.split(mod, '.', { plain = true, trimempty = true })
-  local name = segs[#segs]
-
-  vim.g.colors_name = name
-  require('lush')(require(mod))
-end
-
 if not HEADLESS then
-  load_lush_theme('skip.colors.crow')
-  -- vim.cmd [[colorscheme apparition]]
+  vim.cmd.colorscheme 'crow'
   require('skip.tabs')
   require('skip.assimilate').create_autocmd()
   require('skip.peeking').setup()
