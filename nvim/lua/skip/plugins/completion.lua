@@ -10,7 +10,7 @@ return {
     event = 'InsertEnter',
     dependencies = {
       'rafamadriz/friendly-snippets',
-      'folke/lazydev.nvim',
+      -- 'folke/lazydev.nvim',
     },
     version = '1.*',
 
@@ -37,18 +37,18 @@ return {
       },
       sources = {
         default = {
-          'lazydev',
+          -- 'lazydev',
           'lsp',
-          -- 'path',
+          'path',
           'buffer',
           'snippets',
         },
         providers = {
-          lazydev = {
-            name = 'LazyDev',
-            module = 'lazydev.integrations.blink',
-            score_offset = 100,
-          },
+          -- lazydev = {
+          --   name = 'LazyDev',
+          --   module = 'lazydev.integrations.blink',
+          --   score_offset = 100,
+          -- },
           lsp = {
             name = 'LSP',
             module = 'blink.cmp.sources.lsp',

@@ -45,18 +45,11 @@ return {
   },
 
   {
-    'metiulekm/nvim-treesitter-endwise',
+    'RRethy/nvim-treesitter-endwise',
+    -- broken on NVIM 0.12
+    enabled = false,
     event = 'InsertEnter',
-    opts = {
-      endwise = { enable = true },
-    },
-    config = function(_, opts)
-      local npairs = require('nvim-autopairs')
-
-      npairs.add_rules(require('nvim-autopairs.rules.endwise-elixir'))
-      npairs.add_rules(require('nvim-autopairs.rules.endwise-lua'))
-      npairs.add_rules(require('nvim-autopairs.rules.endwise-ruby'))
-      require('nvim-treesitter.configs').setup(opts)
-    end,
+    commit = '8fe8a95630f4f2c72a87ba1927af649e0bfaa244',
+    opts = {},
   },
 }

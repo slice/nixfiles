@@ -18,42 +18,54 @@ local grammars = {
 return {
   {
     'nvim-treesitter/nvim-treesitter',
-    branch = 'master',
+
+    -- needs NVIM 0.12
+    branch = 'main',
+
     event = 'VeryLazy',
-    lazy = vim.fn.argc(-1) == 0, -- load early when file was passed
-    cmd = { 'TSUpdateSync', 'TSUpdate', 'TSInstall' },
+    lazy = vim.fn.argc(-1) == 0, -- load early when file was passed in argv
+    cmd = { 'TSUpdateSync', 'TSUpdate', 'TSInstall', 'TSUninstall' },
     build = ':TSUpdate',
-    ---@type TSConfig
-    ---@diagnostic disable-next-line:missing-fields
-    opts = {
-      ensure_installed = grammars,
+    config = function(_)
+      local ts = require('nvim-treesitter')
+      ts.setup()
+      ts.install(grammars)
 
-      highlight = {
-        enable = true,
+      local aug =
+        vim.api.nvim_create_augroup('nvim-treesitter', { clear = true })
 
-        ---@diagnostic disable-next-line:unused-local
-        disable = function(lang, bufnr)
-          if require('skip.huge').should_bounce(bufnr) then
-            return true
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(ev)
+          local buf = ev.buf
+          local ft = ev.match
+
+          if require('skip.huge').should_bounce(buf) then
+            return
+          end
+
+          if ft == 'swift' then
+            -- too slow
+            return
+          end
+
+          local lang = vim.treesitter.language.get_lang(ft)
+
+          if lang and vim.treesitter.language.add(lang) then
+            -- start neovim's built-in async TS highlighting; this also kills
+            -- regex highlighting
+            vim.treesitter.start(ev.buf)
+
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+            -- i basically always prefer markers; might be nice to enable on
+            -- an ad hoc basis though? maybe a pref?
+            --
+            -- vim.wo.foldmethod = 'expr'
+            -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
           end
         end,
-      },
-
-      -- https://github.com/alex-pinkus/tree-sitter-swift/issues/240
-      indent = { enable = true, disable = { 'swift', 'text' } },
-
-      incremental_selection = {
-        keymaps = {
-          init_selection = '\\',
-          node_incremental = '\\',
-          node_decremental = '<bs>',
-        },
-        enable = true,
-      },
-    },
-    config = function(_, opts)
-      require('nvim-treesitter.configs').setup(opts)
-      vim.treesitter.language.register('typescriptreact', 'tsx')
+        group = aug,
+      })
     end,
   },
 
@@ -61,7 +73,7 @@ return {
     'nvim-treesitter/nvim-treesitter-context',
     cond = not HEADLESS,
     event = 'VeryLazy',
-    enabled = true,
+    enabled = false,
     opts = {
       on_attach = function(bufnr)
         if require 'skip.huge'.was_bounced(bufnr) then
@@ -87,7 +99,7 @@ return {
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
     event = 'VeryLazy',
-    enabled = true,
+    enabled = false,
     opts = {
       select = {
         enable = true,

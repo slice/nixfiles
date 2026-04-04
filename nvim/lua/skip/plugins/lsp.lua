@@ -250,7 +250,7 @@ return {
       vim.lsp.enable({
         'bashls',
         'gopls',
-        'lua_ls',
+        -- 'lua_ls',
         'pyright',
       })
     end,
@@ -422,7 +422,8 @@ return {
 
   {
     'folke/lazydev.nvim',
-    cond = not HEADLESS,
+    -- cond = not HEADLESS,
+    enabled = false,
     dependencies = { 'Bilal2453/luvit-meta', lazy = true },
     ft = 'lua',
     opts = {
