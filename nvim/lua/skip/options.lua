@@ -35,7 +35,6 @@ opt.fillchars:append { fold = '-' }
 opt.modeline = true
 opt.mouse = 'a'
 opt.swapfile = false
-opt.termguicolors = true
 -- lower the duration to trigger CursorHold for faster hovers. we won't be
 -- updating swapfiles this often because they're turned off.
 opt.updatetime = 1000
