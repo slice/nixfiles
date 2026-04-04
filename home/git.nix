@@ -15,6 +15,8 @@
 
   programs.git = {
     enable = true;
+    # `stateVersion` 25.05 has a legacy default of "openpgp"
+    signing.format = null;
 
     settings =
       let
