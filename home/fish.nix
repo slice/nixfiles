@@ -57,6 +57,7 @@ in
 
         merge = "history --merge";
 
+        swi = "nd-switch && hm-switch";
         hms = "hm-switch";
         nds = "nd-switch";
         hmu = "hm-update";
