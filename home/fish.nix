@@ -270,8 +270,8 @@ in
           if test $_status -eq 0
             printf ' %s:O3%s' (set_color green) (set_color normal)
           else
-            # set -l face (random choice 'O_O' 'O_o' '>_>' 'v_v' ';_;')
-            printf ' %s%s %s:O[%s' (set_color -o red) $_status (set_color -ro red) (set_color normal)
+            set -l face (random choice 'O_O' 'O_o' '>_>' 'v_v' ';_;' ':O[')
+            printf " %s%s %s$face%s" (set_color -o red) $_status (set_color -r -o red) (set_color normal)
           end
         '';
       }
