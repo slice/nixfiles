@@ -91,7 +91,7 @@ function M.setup_lsp_buf(client, bufnr)
   if client.server_capabilities.codeLensProvider then
     vim.lsp.codelens.enable(true, { bufnr = bufnr })
   end
-  if client.server_capabilities.documentHighlightProvider then
+  if false and client.server_capabilities.documentHighlightProvider then
     lsp_buf_autocmd({ 'CursorHold', 'CursorHoldI' }, {
       callback = function()
         vim.lsp.buf.document_highlight()
@@ -238,5 +238,10 @@ end
 try_adding_capabilities(function()
   return require('lsp-file-operations').default_capabilities()
 end)
+
+-- don't advertise semantic tokens support, crow doesn't support em just yet.
+-- applied last so it can't be overwritten by capability sources above
+M.capabilities.textDocument = M.capabilities.textDocument or {}
+M.capabilities.textDocument.semanticTokens = vim.NIL
 
 return M
