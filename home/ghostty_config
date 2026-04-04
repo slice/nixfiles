@@ -31,6 +31,9 @@ font-feature = -liga
 font-feature = -dlig
 
 font-thicken = true
+# general {{{2
+undo-timeout = 10s
+confirm-close-surface = false
 # keybinds, input handling {{{2
 #keybind = super+-=decrease_font_size:0.5
 #keybind = super+==increase_font_size:0.5
