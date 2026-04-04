@@ -6,10 +6,13 @@
 
 { pkgs, ... }:
 
+let
+  lixVersion = "latest";
+in
 {
   nixpkgs.overlays = [
     (final: prev: {
-      inherit (prev.lixPackageSets.stable)
+      inherit (prev.lixPackageSets.${lixVersion})
         nixpkgs-review
         nix-eval-jobs
         nix-fast-build
@@ -18,5 +21,5 @@
     })
   ];
 
-  nix.package = pkgs.lixPackageSets.stable.lix;
+  nix.package = pkgs.lixPackageSets.${lixVersion}.lix;
 }
