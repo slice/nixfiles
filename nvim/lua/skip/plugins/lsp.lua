@@ -246,6 +246,31 @@ return {
       })
       vim.lsp.enable('postgres_lsp')
       -- }}}
+      -- haskell-language-server {{{
+      vim.lsp.config('hls', {
+        cmd = {
+          'haskell-language-server-wrapper',
+          '--lsp',
+        },
+        cmd_env = {
+          -- BTW: HLS is not --threaded
+          GHCRTS = vim
+            .iter({
+              -- LSP servers are latency sensitive. use concurrent mark-and-sweep
+              -- garbage collector
+              '--nonmoving-gc',
+              -- how big gen 0 allocs go (per os thread)
+              '-A64m',
+              -- suggested heap size
+              '-H4G',
+              -- never return memory to OS, keep pages around (i have RAM :3)
+              '-Fd0',
+            })
+            :join(' '),
+        },
+        filetypes = { 'haskell', 'lhaskell', 'cabal' },
+      })
+      vim.lsp.enable('hls') -- }}}
 
       vim.lsp.enable({
         'bashls',
