@@ -141,6 +141,14 @@ in
         patches = (prev.patches or [ ]) ++ [ ./linux/patches/swaylock-no_subpixel_antialiasing.patch ];
       });
     })
+
+    # deno machine broke. apparently all you need to do is skip checks tho
+    # see: https://github.com/NixOS/nixpkgs/issues/506707
+    (self: super: {
+      deno = super.deno.overrideAttrs (prev: rec {
+        doCheck = false;
+      });
+    })
   ];
 
   # Let Home Manager install and manage itself.
