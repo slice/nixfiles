@@ -361,7 +361,7 @@ autocmds('SkipFiletypes', {
 autocmds('SkipYanking', {
   {
     'TextYankPost',
-    { pattern = '*', command = 'silent! lua vim.highlight.on_yank()' },
+    { pattern = '*', command = 'silent! lua vim.hl.on_yank()' },
   },
 })
 
