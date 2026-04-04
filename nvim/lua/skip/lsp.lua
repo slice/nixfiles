@@ -89,12 +89,7 @@ function M.setup_lsp_buf(client, bufnr)
   end
 
   if client.server_capabilities.codeLensProvider then
-    lsp_buf_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
-      callback = function()
-        vim.lsp.codelens.refresh({ bufnr = bufnr })
-      end,
-      desc = '<setup_lsp_buf> Refresh code lens',
-    })
+    vim.lsp.codelens.enable(true, { bufnr = bufnr })
   end
   if client.server_capabilities.documentHighlightProvider then
     lsp_buf_autocmd({ 'CursorHold', 'CursorHoldI' }, {
