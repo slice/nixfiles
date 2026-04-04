@@ -1,4 +1,4 @@
--- vim: set fdm=marker:
+-- vim: set fdm=marker fdl=1:
 local utils = require('skip.utils')
 
 local M = {}
@@ -35,6 +35,17 @@ function M.setup_lsp_buf(client, bufnr)
   ---@type Keymap[]
   local buf_maps = {
     { 'n', '<C-]>', vim.lsp.buf.definition },
+    {
+      'n',
+      'K',
+      function()
+        vim.lsp.buf.hover({
+          border = 'single',
+          focusable = false,
+        })
+      end,
+      { desc = 'LSP hover' },
+    },
     {
       'n',
       '<leader>la',
