@@ -56,7 +56,8 @@ return {
             -- regex highlighting
             vim.treesitter.start(ev.buf)
 
-            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            -- (disabled for now because it makes writing haskell annoying)
+            -- vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 
             -- i basically always prefer markers; might be nice to enable on
             -- an ad hoc basis though? maybe a pref?
