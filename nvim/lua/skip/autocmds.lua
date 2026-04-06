@@ -55,8 +55,7 @@ local tweaks = {
     hi 'LspReferenceRead guibg=#223e28',
     hi 'LspReferenceWrite guibg=#223e28',
 
-    hi 'LspCodeLens gui=italic guibg=#263751',
-
+    hi 'LspCodeLens guifg=#5d5d75 gui=italic',
     link 'LspInlayHint Comment',
     -- }}}
 

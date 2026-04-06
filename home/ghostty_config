@@ -76,8 +76,6 @@ palette = 14=58b8b8
 
 palette = 15=c2c2b0
 
-minimum-contrast = 1.1
-
 # skip's hiviz
 #cursor-color = #e60000
 #cursor-text = #ffecc3
