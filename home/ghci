@@ -1,0 +1,71 @@
+-- vim: ft=haskell fdm=marker
+
+-- GHC2024 {{{
+:seti -XBangPatterns
+:seti -XBinaryLiterals
+:seti -XConstrainedClassMethods
+:seti -XConstraintKinds
+:seti -XDataKinds
+:seti -XDeriveDataTypeable
+:seti -XDeriveFoldable
+:seti -XDeriveFunctor
+:seti -XDeriveGeneric
+:seti -XDeriveLift
+:seti -XDeriveTraversable
+:seti -XDerivingStrategies
+:seti -XDisambiguateRecordFields
+:seti -XDoAndIfThenElse
+:seti -XEmptyCase
+:seti -XEmptyDataDecls
+:seti -XEmptyDataDeriving
+:seti -XExistentialQuantification
+:seti -XExplicitForAll
+:seti -XExplicitNamespaces
+:seti -XFieldSelectors
+:seti -XFlexibleContexts
+:seti -XFlexibleInstances
+:seti -XForeignFunctionInterface
+:seti -XGADTSyntax
+:seti -XGADTs
+:seti -XGeneralizedNewtypeDeriving
+:seti -XHexFloatLiterals
+:seti -XImportQualifiedPost
+:seti -XInstanceSigs
+:seti -XKindSignatures
+:seti -XLambdaCase
+:seti -XMonoLocalBinds
+:seti -XMonomorphismRestriction
+:seti -XMultiParamTypeClasses
+:seti -XNamedFieldPuns
+:seti -XNamedWildCards
+:seti -XNumericUnderscores
+:seti -XPatternGuards
+:seti -XPolyKinds
+:seti -XPostfixOperators
+:seti -XRankNTypes
+:seti -XRelaxedPolyRec
+:seti -XRoleAnnotations
+:seti -XScopedTypeVariables
+:seti -XStandaloneDeriving
+:seti -XStandaloneKindSignatures
+:seti -XStarIsType
+:seti -XTupleSections
+:seti -XTypeApplications
+:seti -XTypeOperators
+:seti -XTypeSynonymInstances
+-- }}}
+
+:seti -XBlockArguments
+:seti -XDefaultSignatures
+:seti -XDerivingVia
+:seti -XFunctionalDependencies
+:seti -XOverloadedStrings
+:seti -XRecordWildCards
+:seti -XStrictData
+:seti -XTemplateHaskell
+:seti -XTypeFamilies
+:seti -XViewPatterns
+
+:set -interactive-print=Text.Pretty.Simple.pPrint
+:set prompt "\ESC[1;35m\STX\x03BB>\ESC[0m\STX "
+:set prompt-cont " > "
