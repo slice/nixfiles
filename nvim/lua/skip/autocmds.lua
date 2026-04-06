@@ -38,39 +38,19 @@ local tweaks = {
   ['*'] = {
     link 'TelescopeNormal NormalFloat',
     link 'PopTermLabel TabLineSel',
-
     -- when Metals emits semantic token highlighting information it emits a
     -- token covering every string, and since semantic tokens have a higher
     -- base prio (125, see `vim.hl.priorities`) it clobbers the injected SQL
     -- tree-sitter highlighting for sql"""...""" literals. clear the foreground
     -- so we get SQL highlighting where there's no semantic token highlighting
     hi '@lsp.type.string.scala guifg=NONE',
-
-    -- these are commented out because it breaks :Lushify somewhat. this is too
-    -- crude of a hammer
-    --
-    -- link "@type.builtin Special",
-    -- -- fix underlines in telescope's preview having the wrong color
-    -- link "@markup.link.vimdoc Constant",
-    -- -- pls
-    -- link "@string String",
-    -- link "@boolean Boolean",
-    -- link "@operator Operator",
-    -- link "@markup.raw.vimdoc Comment",
-    -- link "@markup.link.vimdoc String",
-    -- link "@lsp.type.keyword Keyword",
-    -- -- link "@keyword.coroutine @keyword",
-
-    -- can race with colorscheme-specific tweaks to these groups i guess…
-    -- link "MiniDiffSignAdd Added",
-    -- link "MiniDiffSignChange Changed",
-    -- link "MiniDiffSignDelete Removed",
   },
   apparition = { -- luna is cool
     hi 'NormalNC guibg=#383838',
 
     hi 'clear SpellCap',
 
+    -- lsp stuff {{{
     hi 'LspReferenceText guibg=#2e2e2e',
     hi 'LspReferenceRead guibg=#223e28',
     hi 'LspReferenceWrite guibg=#223e28',
@@ -78,13 +58,13 @@ local tweaks = {
     hi 'LspCodeLens gui=italic guibg=#263751',
 
     link 'LspInlayHint Comment',
+    -- }}}
 
     hi 'StatusLine guibg=#8b0e0d gui=bold guifg=#ffc8c3',
     hi 'StatusLineNC guifg=#909d9d gui=NONE',
     hi 'TabLine guifg=#909d9d guibg=#404c4c gui=NONE',
     hi 'TabLineFill guifg=#909d9d guibg=#404c4c gui=NONE',
     hi 'TabLineSel guibg=#8b0e0d gui=bold guifg=#ffc8c3',
-    -- hi "WinSeparator guifg=#404c4c guibg=NONE",
 
     hi 'CursorLine guibg=#4e1012',
     hi 'CursorLineNr guibg=#842024 gui=bold guifg=#ffc8c3',
@@ -94,24 +74,25 @@ local tweaks = {
     hi 'LineNrAbove guifg=#79605e guibg=#000000',
 
     hi 'ColorColumn guibg=#191919',
+    hi 'SignColumn guifg=#686858 guibg=#000000',
 
     hi 'Comment guifg=#966629',
-    hi 'NonText guifg=#555555',
-    hi 'Operator guifg=fg',
+    -- hi 'NonText guifg=#555555',
+    -- hi 'Operator guifg=fg',
     link 'Directory PreProc',
 
-    hi '@variable guifg=fg',
-    hi '@punctuation guifg=NONE',
-    hi '@constructor.lua guifg=NONE',
-    hi '@markup.raw.block.vimdoc guifg=fg',
+    -- "i also have these experimental additions i was playing around with …"
+    link '@property Normal',
+    link '@lsp.type.macro Macro',
 
+    -- telescope {{{
     link 'TelescopeMatching Search',
     hi 'TelescopeSelection guibg=#481e48',
     hi 'TelescopeSelectionCaret guibg=#481e48 guifg=#8f6f8f gui=bold',
     hi 'TelescopePromptNormal guifg=#fff127 gui=bold',
     hi 'TelescopePromptPrefix guifg=#fff127 gui=bold,italic',
     hi 'TelescopePromptCounter guibg=#4e1012 guifg=#842024, gui=italic',
-
+    -- }}}
     -- diagnostics {{{
     hi 'DiagnosticSign guifg=#ee9a00 gui=italic',
     hi 'DiagnosticSignWarn guifg=#ee9a00 guibg=#000000',
@@ -127,15 +108,18 @@ local tweaks = {
     hi 'DiagnosticSignError guifg=#f44c52 gui=bold guibg=#000000',
     hi 'DiagnosticUnderlineError guifg=#f44c52 guisp=#f44c52 gui=undercurl',
     -- }}}
-
+    -- mini.indentscope {{{
     link 'MiniIndentscopeSymbol NonText',
-
+    --- }}}
+    -- mini.hipatterns {{{
     link 'MiniHipatternsTodo Todo',
     hi 'MiniHipatternsFixme guibg=#3c0006 guifg=#f44c52 gui=bold,italic',
     hi 'MiniHipatternsNote guifg=#be843d gui=bold,italic',
-
-    hi 'SignColumn guifg=#686858 guibg=#000000',
+    -- }}}
+    -- mini.files {{{
     link 'SkipMiniFilesNormalNC Comment',
+    -- }}}
+    -- mini.diff {{{
     -- make diff signs match color of signcolumn
     link 'MiniDiffSignAdd NONE',
     link 'MiniDiffSignChange NONE',
@@ -143,6 +127,7 @@ local tweaks = {
     hi 'MiniDiffSignAdd guifg=#3cb371 guibg=#000000',
     hi 'MiniDiffSignChange guifg=#4f94cd guibg=#000000',
     hi 'MiniDiffSignDelete guifg=#aa4450 guibg=#000000',
+    -- }}}
   },
   bubblegum2 = {
     link 'MatchParen LineNr',
