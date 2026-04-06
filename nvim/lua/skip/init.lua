@@ -51,6 +51,9 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
+-- built-in plugins
+pcall(vim.cmd.packadd, 'nvim.undotree') -- :Undotree
+
 if not HEADLESS then
   vim.cmd.colorscheme 'crow'
   require('skip.tabs')
