@@ -46,11 +46,42 @@ quick-terminal-position = bottom
 shell-integration = fish
 shell-integration-features = no-cursor
 # appearance {{{1
-theme = iTerm2 Pastel Dark Background
+# sorcerer
+foreground           = c2c2b0
+background           = 202020
+cursor-color         = c2c2b0
+cursor-text          = 000000
+selection-foreground = 000000
+selection-background = 6688aa
+bold-color           = bright
+
+palette = 0=000000
+
+palette = 1=996666
+palette = 2=719611
+palette = 3=808070
+palette = 4=6689ad
+palette = 5=5d6a85
+palette = 6=528b8b
+
+palette = 7=c2c2b0
+palette = 8=707670
+
+palette = 9=cc8800
+palette = 10=779b70
+palette = 11=faf4c6
+palette = 12=90b0d1
+palette = 13=7e8aa2
+palette = 14=58b8b8
+
+palette = 15=c2c2b0
+
 minimum-contrast = 1.1
 
-cursor-color = #e60000
-cursor-text = #ffecc3
+# skip's hiviz
+#cursor-color = #e60000
+#cursor-text = #ffecc3
+
 cursor-style = block
 adjust-cursor-thickness = 3
 
