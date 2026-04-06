@@ -44,11 +44,13 @@ local tweaks = {
     -- tree-sitter highlighting for sql"""...""" literals. clear the foreground
     -- so we get SQL highlighting where there's no semantic token highlighting
     hi '@lsp.type.string.scala guifg=NONE',
+    hi 'clear SpellCap',
   },
   apparition = { -- luna is cool
     hi 'NormalNC guibg=#383838',
 
-    hi 'clear SpellCap',
+    -- matches the default of `NvimDarkGrey1`, just making it more explicit here
+    hi 'NormalFloat guibg=#07080d guifg=NONE',
 
     -- lsp stuff {{{
     hi 'LspReferenceText guibg=#2e2e2e',
@@ -80,8 +82,8 @@ local tweaks = {
     -- hi 'Operator guifg=fg',
     link 'Directory PreProc',
 
-    -- "i also have these experimental additions i was playing around with …"
-    link '@property Normal',
+    -- luna's experimental additions
+    hi '@property guifg=NONE',
     link '@lsp.type.macro Macro',
 
     -- telescope {{{
