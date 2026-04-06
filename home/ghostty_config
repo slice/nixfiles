@@ -3,11 +3,11 @@
 clipboard-paste-protection = false
 
 # text rendering {{{1
-font-family = PragmataPro
+font-family = PragmataPro Liga
 adjust-cell-width = 0
-adjust-cell-height = -5%
-#adjust-font-baseline = 0
-adjust-underline-position = -3
+adjust-cell-height = -1
+adjust-font-baseline = 1
+adjust-underline-position = -2
 adjust-underline-thickness = 1
 
 font-size = 16
@@ -26,7 +26,7 @@ font-size = 16
 #font-style-italic = false
 #font-style-bold-italic = false
 
-font-feature = -calt
+#font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
 
@@ -83,11 +83,12 @@ minimum-contrast = 1.1
 #cursor-text = #ffecc3
 
 cursor-style = block
-adjust-cursor-thickness = 3
+adjust-cursor-thickness = 2
 
 selection-invert-fg-bg = true
 
 window-padding-color = extend
+window-padding-balance = false
 split-divider-color = #888
 
 macos-titlebar-style = tabs
