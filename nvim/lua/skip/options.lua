@@ -11,6 +11,7 @@ opt.cursorline = true
 opt.diffopt:append { 'linematch:60' }
 opt.hidden = true
 opt.ignorecase = true
+opt.termguicolors = true
 opt.inccommand = 'nosplit'
 opt.shortmess:remove('F')
 opt.pumheight = 20
