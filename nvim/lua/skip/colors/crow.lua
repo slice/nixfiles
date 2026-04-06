@@ -55,7 +55,6 @@ local spec = lush(function(injected_fns)
     sym '@property' { fg = 'NONE' },
     Identifier { fg = 'NONE' },
     sym '@variable' { fg = 'NONE' },
-    sym '@constructor.lua' { fg = 'NONE' },
     -- }}}
 
     MiniIndentscopeSymbol { fg = bg.li(10) },

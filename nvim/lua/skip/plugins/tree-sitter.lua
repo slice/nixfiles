@@ -17,7 +17,8 @@ local grammars = {
 ---@type LazySpec
 return {
   {
-    'nvim-treesitter/nvim-treesitter',
+    -- (my fork has some haskell highlight fixes)
+    'slice/nvim-treesitter',
 
     -- needs NVIM 0.12
     branch = 'main',

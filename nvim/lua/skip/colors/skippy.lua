@@ -117,7 +117,6 @@ local spec = lush(function(injected_functions)
     Constant {},
     Identifier {},
     Statement {},
-    sym '@constructor' {},
 
     -- `null`, `undefined`, `this`
     Special { fg = Normal.fg.mix(sym('@keyword').fg, 60) },

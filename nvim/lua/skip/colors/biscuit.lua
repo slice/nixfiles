@@ -156,11 +156,6 @@ local spec = lush(function(injected_fns)
     sym '@string.escape' { fg = P.string.li(30), gui = 'bold' },
     String { fg = P.string },
 
-    -- wtf lua {{{
-    -- sym '@punctuation.bracket.lua' { sym '@punctuation.bracket.brace' },
-    -- sym '@constructor.lua' {},
-    -- }}}
-
     -- sql {{{
     -- e.g. table names
     sym '@type.sql' { fg = 'NONE' },

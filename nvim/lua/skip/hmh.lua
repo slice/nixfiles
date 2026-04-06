@@ -71,7 +71,6 @@ return lush(function(inj)
     Function { reset = true },
     Operator { reset = true },
     Type { reset = true },
-    sym '@constructor.lua' { reset = true },
 
     sym '@property.yaml' { Normal },
     sym '@boolean.yaml' { fg = '#d97cdd', bold = true },
