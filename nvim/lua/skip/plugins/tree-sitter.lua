@@ -9,8 +9,8 @@ local grammars = {
   "gitcommit", "gitignore", "go", "gomod", "gosum", "haskell", "html", "java",
   "javascript", "jsdoc", "json", "json5", "kotlin", "luadoc", "make",
   "markdown", "markdown_inline", "nginx", "nix", "objc", "perl", "php",
-  "powershell", "prisma", "proto", "python", "robots", "ruby", "rust", "scss",
-  "sql", "swift", "toml", "tsx", "typescript", "typst", "vim", "xml", "yaml",
+  "powershell", "prisma", "proto", "python", "ruby", "rust", "scss", "sql",
+  "swift", "toml", "tsx", "typescript", "typst", "vim", "xml", "yaml",
   "fennel", "racket"
 }
 
