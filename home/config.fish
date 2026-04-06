@@ -34,29 +34,17 @@ end
 abbr --add dotdot --regex '^\.\.+$' --function multicd
 
 # colors {{{
-set fish_color_normal normal
-set fish_color_command green
-set fish_color_quote brblue
-set fish_color_redirection yellow
-set fish_color_end yellow
-set fish_color_error red --bold
-set fish_color_param blue
-set fish_color_comment brblack
-set fish_color_match --background=brblue
-set fish_color_selection white --background=brblack
-set fish_color_search_match bryellow --background=brblack
-set fish_color_operator magenta
-set fish_color_escape blue --bold
-# fish_color_cwd
-set fish_color_autosuggestion brblack
-# fish_color_user
-# fish_color_host
-set fish_color_cancel --reverse
-set fish_pager_color_prefix normal --bold
-set fish_pager_color_completion normal
-set fish_pager_color_description blue
-set fish_pager_color_progress normal --background=brblack
-# fish_pager_color_secondary
+set -g fish_color_command brblue
+set -g fish_color_keyword brblue
+set -g fish_color_operator brblue
+set -g fish_color_redirection white
+set -g fish_color_param white
+set -g fish_color_end brblue
+set -g fish_color_quote brgreen
+set -g fish_color_escape green
+set -g fish_color_comment brblack
+set -g fish_color_error --underline red
+set -g fish_color_autosuggestion brblack
 # }}}
 
 # ghostty terminal integration (automatic detection doesn't seem to work :/)
