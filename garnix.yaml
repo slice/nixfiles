@@ -1,0 +1,6 @@
+# yaml-language-server: schema=https://garnix.io/api/garnix-config-schema.json
+builds:
+  exclude: []
+  include:
+    - "darwinConfigurations.*"
+    - "packages.aarch64-darwin.homeConfigurations.*"
