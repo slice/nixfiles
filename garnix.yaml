@@ -3,4 +3,4 @@ builds:
   exclude: []
   include:
     - "darwinConfigurations.*"
-    - "packages.aarch64-darwin.homeConfigurations.*"
+    - "packages.aarch64-darwin.*"
