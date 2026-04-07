@@ -252,6 +252,11 @@ return {
           'haskell-language-server-wrapper',
           '--lsp',
         },
+        settings = {
+          haskell = {
+            formattingProvider = 'fourmolu',
+          },
+        },
         cmd_env = {
           -- BTW: HLS is not --threaded
           GHCRTS = vim

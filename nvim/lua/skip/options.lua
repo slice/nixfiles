@@ -52,12 +52,7 @@ opt.sidescrolloff = 10
 opt.smartcase = true
 if not HEADLESS then
   _G.RIGHT_STATUSLINE = function()
-    local ok, fugitive_output = pcall(vim.fn.FugitiveStatusline)
-    if not ok then
-      return ''
-    else
-      return fugitive_output
-    end
+    return ''
   end
 
   _G._ICON = function()
@@ -92,7 +87,3 @@ opt.shiftwidth = 2
 vim.g.loaded_netrwPlugin = true
 
 vim.g.markdown_fenced_languages = { 'ts=typescript' }
-
-if vim.env.TERM_PROGRAM == 'ghostty' then
-  opt.termsync = false
-end

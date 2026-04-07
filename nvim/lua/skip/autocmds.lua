@@ -47,8 +47,17 @@ local tweaks = {
     hi 'clear SpellCap',
   },
   apparition = { -- luna is cool
-    hi 'NormalNC guibg=#383838',
+    -- "actual customizations" {{{
+    hi 'Comment guifg=#966629',
 
+    hi '@tag.delimiter guifg=#526e12',
+
+    -- hi 'NonText guifg=#555555',
+    -- hi 'Operator guifg=fg',
+    link 'Directory PreProc',
+    -- }}}
+
+    hi 'NormalNC guibg=#383838',
     -- matches the default of `NvimDarkGrey1`, just making it more explicit here
     hi 'NormalFloat guibg=#07080d guifg=NONE',
 
@@ -73,14 +82,8 @@ local tweaks = {
     hi 'LineNr gui=italic',
     hi 'LineNrBelow guifg=#5e6c59 guibg=#000000',
     hi 'LineNrAbove guifg=#79605e guibg=#000000',
-
     hi 'ColorColumn guibg=#191919',
     hi 'SignColumn guifg=#686858 guibg=#000000',
-
-    hi 'Comment guifg=#966629',
-    -- hi 'NonText guifg=#555555',
-    -- hi 'Operator guifg=fg',
-    link 'Directory PreProc',
 
     -- luna's experimental additions
     hi '@property guifg=NONE',

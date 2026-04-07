@@ -5,7 +5,7 @@ local rg_flags = vim
     '--ignore',
     '--hidden',
     '--no-require-git', -- jj
-    '--iglob=!**/{.git,.svn,.hg,CVS,.DS_Store,.next,.cargo,.cache,.build,.yarn/releases,.jj}/**',
+    '--iglob=!**/{.git,.svn,.hg,CVS,.DS_Store,.next,.cargo,.cache,.build,.yarn/releases,.jj,buck-out,bazel-out}/**',
   })
   :flatten()
   :totable()
@@ -288,7 +288,10 @@ return {
                   { '--type', 'file' },
                   { '--type', 'symlink' },
                   '--hidden',
-                  { '--exclude', '{.git,.jj,*.xcodeproj,*.xcassets}' },
+                  {
+                    '--exclude',
+                    '{.git,.jj,*.xcodeproj,*.xcassets,bazel-out,buck-out}',
+                  },
                 })
                 :flatten()
                 :totable()
