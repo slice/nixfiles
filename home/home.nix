@@ -78,7 +78,6 @@ let
       prettier
       lua-language-server
       postgres-language-server
-      postgresql
       protobuf
       pyright
       python3Packages.black
@@ -102,6 +101,7 @@ let
     # misc. utilities
     utilities = [
       _1password-cli
+      backblaze-b2
       colmena
       graphviz
       packwiz
