@@ -10,6 +10,8 @@ adjust-font-baseline = 1
 adjust-underline-position = -2
 adjust-underline-thickness = 1
 
+font-codepoint-map = U+2013-U+2014,U+2026,U+2190,U+2192=PragmataPro Mono
+
 font-size = 16
 
 #font-family = MxPlus IBM BIOS
