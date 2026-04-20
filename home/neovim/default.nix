@@ -20,6 +20,9 @@ in
       vim.g.sqlite_clib_path = "${pkgs.sqlite.out}/lib/libsqlite3.dylib"
       require('skip')
     '';
+
+    withRuby = false;
+    withPython3 = false;
   };
 
   home.file =
