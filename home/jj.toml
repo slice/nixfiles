@@ -44,3 +44,8 @@ auto-track-bookmarks = "glob:*"
 [revset-aliases]
 "private" = 'description(regex:"^(priv|private|PRIV|PRIVATE|p)(:|!)")'
 "wip" = 'description(regex:"^\\[(wip|WIP|todo|TODO)\\]|(wip|WIP|todo|TODO):?") & mine() & mutable()'
+
+[fix.tools.swiftformat]
+command = ["/Users/skip/.local/bin/swiftformat", "$path"]
+patterns = ["glob:''"]
+enabled = true
