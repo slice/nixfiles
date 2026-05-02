@@ -88,7 +88,6 @@ let
       uv
       vscode-langservers-extracted
       watchman
-      xcodegen
       xcpretty
       yaml-language-server
     ];
