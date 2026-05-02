@@ -90,6 +90,7 @@ in
         "jpush" = "jj git push";
         "jrb" = "jj rebase";
         "jsh" = "jj show";
+        "jshn" = "jj show --name-only";
         "jsh-" = "jj show @-";
         "jsp" = "jj split";
         "jsp-" = "jj split -r @-";
