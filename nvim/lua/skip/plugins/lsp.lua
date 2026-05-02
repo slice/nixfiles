@@ -189,14 +189,28 @@ return {
             --   { textDocument = { completion = { dynamicRegistration = true } } }
             -- )
 
+            local flags = { '-enable-experimental-feature', 'Lifetimes' }
             vim.lsp.config('sourcekit', {
               cmd = { path },
+              init_options = {
+                swiftPM = {
+                  swiftCompilerFlags = flags,
+                },
+                fallbackBuildSystem = {
+                  swiftCompilerFlags = flags,
+                },
+              },
               -- capabilities = capabilities,
             })
+
+            -- enable AFTER config is set: enable() resolves+caches the config
+            -- and synchronously runs the FileType autocmd against existing
+            -- buffers, so any swift buffer already open would otherwise start
+            -- sourcekit sans init_options.
+            vim.lsp.enable('sourcekit')
           end)
         end
       )
-      vim.lsp.enable('sourcekit')
       -- }}}
       -- rust_analyzer {{{
       vim.lsp.config('rust_analyzer', {
