@@ -73,11 +73,11 @@ let
       git-lfs
       jujutsu
       just
+      lua-language-server
       nix-output-monitor
       nixd
-      prettier
-      lua-language-server
       postgres-language-server
+      prettier
       protobuf
       pyright
       python3Packages.black
@@ -88,6 +88,8 @@ let
       uv
       vscode-langservers-extracted
       watchman
+      xcodegen
+      xcpretty
       yaml-language-server
     ];
 
