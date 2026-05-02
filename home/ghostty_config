@@ -3,7 +3,7 @@
 clipboard-paste-protection = false
 
 # text rendering {{{1
-font-family = PragmataPro Liga
+font-family = PragmataPro
 adjust-cell-width = 0
 adjust-cell-height = -1
 adjust-font-baseline = 1
@@ -28,7 +28,7 @@ font-size = 16
 #font-style-italic = false
 #font-style-bold-italic = false
 
-#font-feature = -calt
+font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
 
