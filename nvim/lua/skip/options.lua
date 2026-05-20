@@ -18,6 +18,16 @@ opt.pumheight = 20
 opt.formatoptions = 'jcroql'
 opt.jumpoptions = 'view'
 opt.list = true
+do
+  opt.swapfile = false
+  -- when writing, always preserve the inode of the file we're writing to by
+  -- making a copy of the original file and overwriting the original.
+  -- (IMPORTANT for sourcekit-lsp, which will reload the entire package when
+  -- files are added/removed from sources dirs)
+  opt.backupcopy = 'yes'
+  -- do not back up to `.` (IMPORTANT ditto)
+  opt.backupdir = vim.fn.stdpath('state') .. '/backup//'
+end
 opt.diffopt = {
   'internal',
   'filler',
@@ -35,7 +45,6 @@ opt.listchars =
 opt.fillchars:append { fold = '-' }
 opt.modeline = true
 opt.mouse = 'a'
-opt.swapfile = false
 -- lower the duration to trigger CursorHold for faster hovers. we won't be
 -- updating swapfiles this often because they're turned off.
 opt.updatetime = 1000
