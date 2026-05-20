@@ -21,7 +21,11 @@ return {
         json = prettier,
         jsonc = prettier,
         html = prettier,
+        swift = { 'swiftformat' },
         css = prettier,
+        cpp = { 'clang-format' },
+        objcpp = { 'clang-format' },
+        c = { 'clang-format' },
         markdown = { 'prettierd', 'prettier' },
         nix = { 'nixfmt' },
         -- ['*'] = { 'keep-sorted' },
@@ -61,10 +65,14 @@ return {
           if utils.is_flag_set(lsp.noformat_key, args.buf) then
             return
           end
+          local name = vim.api.nvim_buf_get_name(args.buf)
           -- don't try to format fugitive buffers
-          if vim.api.nvim_buf_get_name(args.buf):find 'fugitive://' == 1 then
+          if name:find 'fugitive://' == 1 then
             return
           end
+          -- if name:find '.swift' then
+          --   return
+          -- end
 
           -- (don't lift this `require` or else it'll get eagerly loaded as
           -- `init` is _always_ called)
