@@ -118,6 +118,31 @@ function M.setup_lsp_buf(client, bufnr)
   end
 
   -- }}}
+  -- diagnostics fix {{{
+  -- neovim checks for diagnostic support outside of the `vim._with`, so it
+  -- ends up depending on which buffer is currently focused? race?
+  --
+  -- i think this is only really relevant if `textDocument/diagnostic` is
+  -- dynamically registered, which it is for sourcekit-lsp.
+  --
+  -- https://github.com/neovim/neovim/blob/edcaf1887ae60d78526abe73bd536af8ccfc2310/runtime/lua/vim/lsp.lua#L874
+  local function ensure_pull_diagnostics()
+    if
+      vim.api.nvim_buf_is_valid(bufnr)
+      and client:supports_method('textDocument/diagnostic', bufnr)
+    then
+      vim.lsp.diagnostic._enable(bufnr)
+    end
+  end
+
+  ensure_pull_diagnostics()
+  vim.api.nvim_create_autocmd('BufEnter', {
+    buffer = bufnr,
+    group = M.buf_lsp_augroup,
+    desc = 'workaround: re-enable LSP diagnostics',
+    callback = ensure_pull_diagnostics,
+  })
+  -- }}}
 end
 
 M.lsp_banned_roots = {
