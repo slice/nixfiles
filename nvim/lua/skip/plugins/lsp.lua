@@ -8,6 +8,9 @@ return {
     cond = not HEADLESS,
     event = 'VeryLazy',
     config = function()
+      -- TODO: gate
+      -- vim.lsp.log.set_level 'trace'
+
       local ok, err = pcall(lsp.swizzle_watchfiles_exclusions)
       if not ok then
         vim.notify(
@@ -200,6 +203,15 @@ return {
             local flags = { '-enable-experimental-feature', 'Lifetimes' }
             vim.lsp.config('sourcekit', {
               cmd = { path },
+              root_dir = function(bufnr, on_dir)
+                if not lsp.attach_allowed(bufnr) then
+                  return
+                end
+
+                on_dir(
+                  vim.fs.root(bufnr, { '.bsp', 'Package.swift', '.git', '.jj' })
+                )
+              end,
               init_options = {
                 swiftPM = {
                   swiftCompilerFlags = flags,
@@ -215,7 +227,7 @@ return {
             -- and synchronously runs the FileType autocmd against existing
             -- buffers, so any swift buffer already open would otherwise start
             -- sourcekit sans init_options.
-            vim.lsp.enable('sourcekit')
+            -- vim.lsp.enable('sourcekit')
           end)
         end
       )
@@ -302,8 +314,8 @@ return {
       vim.lsp.enable({
         'bashls',
         'gopls',
-        -- 'lua_ls',
         'pyright',
+        'clangd',
       })
     end,
   },
