@@ -45,6 +45,15 @@ local tweaks = {
     -- so we get SQL highlighting where there's no semantic token highlighting
     hi '@lsp.type.string.scala guifg=NONE',
     hi 'clear SpellCap',
+
+    hi 'swiftVarName guifg=NONE guibg=NONE',
+    link 'swiftVarDefinition Keyword',
+    link 'swiftTypeDefinition Keyword',
+    link 'swiftFuncDefinition Keyword',
+    run = function()
+      vim.api.nvim_set_hl(0, '@lsp.type.keyword.swift', {})
+      vim.api.nvim_set_hl(0, '@property.yaml', {fg='fg', nocombine=true})
+    end,
   },
   apparition = { -- luna is cool
     -- "actual customizations" {{{
@@ -271,6 +280,8 @@ do
     if type(mods) == 'function' then
       autocmd['callback'] = mods
     else
+      -- assume that `mods` is a table
+
       if mods['run'] ~= nil then
         autocmd['callback'] = function()
           mods['run']()
@@ -278,6 +289,7 @@ do
           vim.cmd(table.concat(mods, ' | '))
         end
       else
+        -- `mods` is an array-like table of vim commands to run
         autocmd['command'] = table.concat(mods, ' | ')
       end
     end
