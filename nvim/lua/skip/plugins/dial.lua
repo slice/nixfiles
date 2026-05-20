@@ -111,6 +111,9 @@ return {
         javascript = extend_default({
           const { 'let', 'const' },
         }),
+        swift = extend_default({
+          const { 'let', 'var' },
+        }),
       }
 
       return {
