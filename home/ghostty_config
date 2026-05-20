@@ -4,10 +4,17 @@ clipboard-paste-protection = false
 
 # text rendering {{{1
 font-family = PragmataPro
+#font-family = Codelia
+#font-family = Consolas
+#font-family = Operator Mono SSm
+#font-style = Book
+#font-style-bold = Bold
+#font-style-italic = Book Italic
+#font-style-bold-italic = Bold Italic
 adjust-cell-width = 0
-adjust-cell-height = -1
-adjust-font-baseline = 1
-adjust-underline-position = -2
+adjust-cell-height = 0
+adjust-font-baseline = 0
+#adjust-underline-position = -2
 adjust-underline-thickness = 1
 
 font-codepoint-map = U+2013-U+2014,U+2026,U+2190,U+2192=PragmataPro Mono
@@ -72,4 +79,7 @@ scrollback-limit = 500000000
 macos-icon = custom-style
 macos-icon-frame = chrome
 # updates {{{2
-auto-update = download
+
+# (FORKED)
+auto-update = off
+auto-update-channel = tip
