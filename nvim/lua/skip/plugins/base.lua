@@ -39,6 +39,7 @@ return {
   'tpope/vim-repeat', -- let `.` cooperate with plugins
   {
     'tpope/vim-abolish',
+    lazy = false,
     cmd = { 'Abolish', 'Subvert' },
   },
   'mhinz/vim-sayonara', -- sane buffer/window deletion
