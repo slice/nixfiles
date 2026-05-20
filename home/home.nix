@@ -71,9 +71,12 @@ let
       flyctl
       gh
       git-lfs
+      grpcurl
       jujutsu
       just
       lua-language-server
+      luau-lsp
+      ngrok
       nix-output-monitor
       nixd
       postgres-language-server
