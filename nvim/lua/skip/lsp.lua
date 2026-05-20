@@ -9,6 +9,26 @@ M.noformat_key = 'LSP_NOFORMAT'
 M.buf_lsp_augroup = vim.api.nvim_create_augroup('SkipBufferLsp', {})
 M.formatting_augroup =
   vim.api.nvim_create_augroup('SkipLspAutomaticFormatting', {})
+M.extra_watchfile_exclusions = {
+  '**/.build/**',
+  '**/.jj/**',
+  '**/.git/**',
+  '**/.gradle/**',
+  '**/.idea/**',
+  '**/.swiftpm/**',
+}
+
+function M.swizzle_watchfiles_exclusions()
+  -- patch `vim.lsp._watchfiles` so that when sourcekit-lsp tells Neovim
+  -- to watch for `**/*` it doesn't include `.build`, which basically
+  -- ignites the CPU
+  local glob = require('vim.glob')
+  local wf = require('vim.lsp._watchfiles')
+
+  for _, pat in ipairs(M.extra_watchfile_exclusions) do
+    wf._poll_exclude_pattern = wf._poll_exclude_pattern + glob.to_lpeg(pat)
+  end
+end
 
 function M.has_open_focusable_float()
   for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do

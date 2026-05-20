@@ -8,6 +8,14 @@ return {
     cond = not HEADLESS,
     event = 'VeryLazy',
     config = function()
+      local ok, err = pcall(lsp.swizzle_watchfiles_exclusions)
+      if not ok then
+        vim.notify(
+          '_patch_watchfiles_exclude: ' .. tostring(err),
+          vim.log.levels.ERROR
+        )
+      end
+
       vim.lsp.config('*', {
         root_dir = function(bufnr, on_dir)
           -- respect huge functionality, and ban certain paths from getting
