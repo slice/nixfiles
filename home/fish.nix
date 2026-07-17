@@ -6,6 +6,7 @@
 
 let
   nixfiles = "~/src/prj/nixfiles";
+  nom = "${lib.getBin pkgs.nix-output-monitor}/bin/nom";
 in
 {
   programs.fish = {
@@ -295,13 +296,15 @@ in
           set -l hostname_sans_local (string split -f1 '.' (hostname))
           set -l flake_src ${nixfiles}
 
-          nix build $flake_src#darwinConfigurations.$hostname_sans_local.system --verbose $argv
+          ${nom} build $flake_src#darwinConfigurations.$hostname_sans_local.system --verbose $argv
           and sudo ./result/sw/bin/darwin-rebuild switch --flake $flake_src
           and unlink result
         '';
 
         hm-switch = ''
-          home-manager switch --flake ${nixfiles}
+          # home-manager runs `nix build` internally, force `internal-json` logs
+          # out of it so nom can render them
+          home-manager switch --flake ${nixfiles} --log-format internal-json --verbose $argv &| ${nom} --json
         '';
       };
   };
