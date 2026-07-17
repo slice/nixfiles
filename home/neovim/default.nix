@@ -17,7 +17,7 @@ in
     enable = true;
     package = nvim;
     extraConfig = lua ''
-      vim.g.sqlite_clib_path = "${pkgs.sqlite.out}/lib/libsqlite3.dylib"
+      vim.g.sqlite_clib_path = "${pkgs.sqlite.out}/lib/libsqlite3${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}"
       require('skip')
     '';
 
