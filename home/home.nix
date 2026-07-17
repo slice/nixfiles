@@ -54,7 +54,7 @@ let
     languages = [
       dart-sass
       deno
-      nodejs_25
+      nodejs_26
       python3
       typescript
     ];
