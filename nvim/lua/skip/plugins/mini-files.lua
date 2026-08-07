@@ -7,11 +7,11 @@ local monochromatic_icons
 return {
   {
     -- inform LSPs of file operations
-    'igorlfs/nvim-lsp-file-operations', -- pls
+    'igorlfs/nvim-lsp-file-operations',
     event = 'VeryLazy',
     cond = not HEADLESS,
     dependencies = { 'echasnovski/mini.files', 'nvim-lua/plenary.nvim' },
-    branch = 'fix/31',
+    commit = '679cc6921a04d75748e22e2cf34e7c0c347f308c',
     config = function()
       require('lsp-file-operations').setup()
 
