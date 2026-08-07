@@ -73,11 +73,13 @@
       darwinConfigurations.starfruit = darwin.lib.darwinSystem {
         modules = [
           ./systems/macbook.nix
+
+          # wiped 2026-08-07
           (
             { ... }:
             {
-              system.stateVersion = 4;
-              ids.gids.nixbld = 350;
+              # https://github.com/nix-darwin/nix-darwin/blob/a4cf1d10853b0d2be19b9eca35d749e201d70b55/modules/system/version.nix#L54
+              system.stateVersion = 7;
             }
           )
         ];
