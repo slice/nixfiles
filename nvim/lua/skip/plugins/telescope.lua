@@ -391,5 +391,5 @@ return {
     build = 'make',
   },
 
-  { 'slice/telescope-trampoline.nvim', cond = not HEADLESS, dev = true },
+  { 'slice/telescope-trampoline.nvim', cond = not HEADLESS },
 }
