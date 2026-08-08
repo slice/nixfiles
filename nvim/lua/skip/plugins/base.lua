@@ -29,7 +29,8 @@ return {
       'SudoEdit',
       'SudoWrite',
       'Wall',
-      'W',
+      -- DON'T add 'W' here, we redefine that and it interacts badly with
+      -- lazy.nvim and causes our alias to get ignored...
     },
   },
   {

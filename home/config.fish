@@ -17,9 +17,8 @@ if test -n "$maintain_ssh_agent"
   end
 end
 
-# NOTE(skip): use `nix-homebrew`'s wrapper instead, which exposes a wrapper in
-# ~/.nix-profile
-
+# NOTE(skip): we use `nix-homebrew`'s wrapper instead, which exposes a wrapper
+# in ~/.nix-profile
 # set -l homebrew /opt/homebrew
 # if test -d $homebrew; and not set -q DONT_SETUP_HOMEBREW
 #   eval ($homebrew/bin/brew shellenv)
@@ -132,3 +131,5 @@ if test -d ~/.swiftly
     set -x PATH "$SWIFTLY_BIN_DIR" $PATH
   end
 end
+
+test -r ~/.opam/opam-init/init.fish && source ~/.opam/opam-init/init.fish >/dev/null 2>&1; or true

@@ -3,43 +3,50 @@
 clipboard-paste-protection = false
 
 # text rendering {{{1
-font-family = PragmataPro
+#font-family = PragmataPro
 #font-family = Codelia
-#font-family = Consolas
+font-family = Consolas
 #font-family = Operator Mono SSm
 #font-style = Book
 #font-style-bold = Bold
 #font-style-italic = Book Italic
 #font-style-bold-italic = Bold Italic
 adjust-cell-width = 0
-adjust-cell-height = 0
+adjust-cell-height = -2
 adjust-font-baseline = 0
 #adjust-underline-position = -2
 adjust-underline-thickness = 1
 
 font-codepoint-map = U+2013-U+2014,U+2026,U+2190,U+2192=PragmataPro Mono
 
-font-size = 16
+font-size = 15
 
 #font-family = MxPlus IBM BIOS
 #font-family = MxPlus IBM VGA 8x16
-#font-family = misc-fixed-bold-r-normal--15-140-75-75-c-90-i
-#font-family = MiscFixed
+font-family = Misc Fixed 9x15
+#font-family = MxPlus ToshibaSat 8x16
+#font-family = Greybeard 17px
 #font-family = unscii
 #font-style = 16-full
-#font-family = MiscFixedSC613
 #font-family = Spleen
 #font-family = FixederSys 1x
+#font-family = Misc Fixed 9x15
+#font-family = FixederSys 2x
+#font-family = TerminalVector
+#font-family = Spleen 8x16
 
+#font-style = Bold
 #font-style-bold = false
-#font-style-italic = false
-#font-style-bold-italic = false
+#font-style-italic = Bold Italic
+#font-style-bold-italic = Bold
+#font-style-bold-italic = Bold Italic
 
 font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
 
 font-thicken = true
+
 # general {{{2
 undo-timeout = 10s
 confirm-close-surface = false

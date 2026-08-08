@@ -83,7 +83,7 @@ do
   local command_aliases = {
     W = 'w',
     Wq = 'wq',
-    WQ = 'WQ',
+    WQ = 'wq',
     Wqa = 'wqa',
     Q = 'q',
     Qa = 'qa',
@@ -107,6 +107,11 @@ map('v', 'fo', ":'<,'>diffget<CR>")
 map('n', '<Leader>1', '<Cmd>%lua<CR>')
 
 -- treesitter incremental selection (replaces nvim-treesitter's old keybind)
-map('n', '\\', 'van', { desc = 'Incremental selection (treesitter)', remap = true })
+map(
+  'n',
+  '\\',
+  'van',
+  { desc = 'Incremental selection (treesitter)', remap = true }
+)
 map('x', '\\', 'an', { desc = 'Expand selection (treesitter)', remap = true })
 map('x', '<BS>', 'in', { desc = 'Shrink selection (treesitter)', remap = true })

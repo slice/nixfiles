@@ -312,6 +312,7 @@ return {
       vim.lsp.enable('hls') -- }}}
 
       vim.lsp.enable({
+        'ocamllsp',
         'bashls',
         'gopls',
         'pyright',

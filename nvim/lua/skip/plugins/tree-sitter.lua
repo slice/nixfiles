@@ -8,10 +8,10 @@ local grammars = {
   "editorconfig", "fish", "git_config", "git_rebase", "gitattributes",
   "gitcommit", "gitignore", "go", "gomod", "gosum", "haskell", "html", "java",
   "javascript", "jsdoc", "json", "json5", "kotlin", "luadoc", "make",
-  "markdown", "markdown_inline", "nginx", "nix", "objc", "perl", "php",
-  "powershell", "prisma", "proto", "python", "ruby", "rust", "scss", "sql",
-  "swift", "toml", "tsx", "typescript", "typst", "vim", "xml", "yaml",
-  "fennel", "racket"
+  "markdown", "markdown_inline", "nginx", "nix", "objc", "ocaml",
+  "ocaml_interface", "perl", "php", "powershell", "prisma", "proto", "python",
+  "ruby", "rust", "scss", "sql", "swift", "toml", "tsx", "typescript", "typst",
+  "vim", "xml", "yaml", "fennel", "racket"
 }
 
 ---@type LazySpec

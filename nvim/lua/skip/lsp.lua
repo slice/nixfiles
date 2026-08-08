@@ -119,9 +119,9 @@ function M.setup_lsp_buf(client, bufnr)
     vim.api.nvim_create_autocmd(event, opts)
   end
 
-  if client.server_capabilities.codeLensProvider then
-    vim.lsp.codelens.enable(true, { bufnr = bufnr })
-  end
+  -- if client.server_capabilities.codeLensProvider then
+  --   vim.lsp.codelens.enable(true, { bufnr = bufnr })
+  -- end
   if false and client.server_capabilities.documentHighlightProvider then
     lsp_buf_autocmd({ 'CursorHold', 'CursorHoldI' }, {
       callback = function()

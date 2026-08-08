@@ -76,6 +76,7 @@ in
         "jc" = "jj commit";
         "jcm" = "jj commit -m";
         "jd" = "jj describe";
+        "jde" = "jj diffedit";
         "jd-" = "jj describe -r @-";
         "jdf" = "jj diff";
         "jf" = "jj git fetch";
