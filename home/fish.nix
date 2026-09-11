@@ -30,7 +30,7 @@ in
 
         yolo = "jj bookmark set -r @- main && jj git push --allow-empty-description";
       }
-      // lib.optionalAttrs pkgs.stdenv.isDarwin {
+      // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         lsregister = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
         tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
       }
@@ -137,7 +137,7 @@ in
         gsw = "git switch";
         gt = "git tag";
       }
-      // pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
+      // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         sc = "sudo systemctl";
         scs = "sudo systemctl status";
         sce = "sudo systemctl enable";
@@ -278,7 +278,7 @@ in
           end
         '';
       }
-      // lib.optionalAttrs pkgs.stdenv.isDarwin {
+      // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         unquarantine = ''
           xattr -dr com.apple.quarantine $argv
         '';

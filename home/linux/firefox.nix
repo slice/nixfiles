@@ -7,7 +7,7 @@
 }:
 
 {
-  config = lib.mkIf (!server && pkgs.stdenv.isLinux) {
+  config = lib.mkIf (!server && pkgs.stdenv.hostPlatform.isLinux) {
     programs.firefox = {
       enable = true;
       profiles.default = {

@@ -173,7 +173,7 @@ in
       # MANWIDTH = 999;
       NODE_COMPILE_CACHE = "${config.home.homeDirectory}/.cache/node";
     }
-    // (lib.optionalAttrs pkgs.stdenv.isDarwin {
+    // (lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
       # when using git, use the system ssh so we can get keychain integration
       GIT_SSH = "/usr/bin/ssh";
     });

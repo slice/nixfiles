@@ -18,7 +18,7 @@ let
   };
 in
 {
-  config = lib.mkIf (!server && pkgs.stdenv.isLinux) {
+  config = lib.mkIf (!server && pkgs.stdenv.hostPlatform.isLinux) {
     # since we're applying an overlay, make sure we build the patch and make
     # the resulting, patched binary available
     home.packages = [ pkgs.swaylock ];

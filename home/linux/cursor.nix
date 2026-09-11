@@ -52,7 +52,7 @@ let
   );
 in
 {
-  config = lib.mkIf (!server && pkgs.stdenv.isLinux) {
+  config = lib.mkIf (!server && pkgs.stdenv.hostPlatform.isLinux) {
     home.pointerCursor = {
       package = pkgs.callPackage mocu-xcursor { };
       name = "Mocu-White-Right";

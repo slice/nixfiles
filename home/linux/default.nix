@@ -13,7 +13,7 @@
     ./firefox.nix
   ];
 
-  config = lib.mkIf (!server && pkgs.stdenv.isLinux) {
+  config = lib.mkIf (!server && pkgs.stdenv.hostPlatform.isLinux) {
     home.packages = with pkgs; [
       # desktop applications
       gimp
