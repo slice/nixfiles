@@ -7,13 +7,19 @@ local monochromatic_icons
 return {
   {
     -- inform LSPs of file operations
-    'igorlfs/nvim-lsp-file-operations',
+    'Crysthamus/nvim-file-operations',
     event = 'VeryLazy',
     cond = not HEADLESS,
     dependencies = { 'echasnovski/mini.files', 'nvim-lua/plenary.nvim' },
-    commit = '679cc6921a04d75748e22e2cf34e7c0c347f308c',
-    config = function()
-      require('lsp-file-operations').setup()
+    opts = {},
+
+    -- NOTE(skip): seemingly unneeded as the rename gets picked up anyways,
+    -- somehow
+
+    --[[
+    config = function(_, opts)
+      local nfo = require('nvim-file-operations')
+      nfo.setup(opts)
 
       utils.autocmds('LspFileOperations', {
         {
@@ -21,7 +27,7 @@ return {
           {
             pattern = { 'MiniFilesActionMove', 'MiniFilesActionRename' },
             callback = function(event)
-              require('lsp-file-operations.did-rename').callback({
+              require('lsp-operations').did_rename({
                 old_name = event.data.from,
                 new_name = event.data.to,
               })
@@ -33,7 +39,7 @@ return {
           {
             pattern = { 'MiniFilesActionDelete' },
             callback = function(event)
-              require('lsp-file-operations.did-delete').callback({
+              require('lsp-operations').did_delete({
                 fname = event.from,
               })
             end,
@@ -44,7 +50,7 @@ return {
           {
             pattern = { 'MiniFilesActionCopy', 'MiniFilesActionCreate' },
             callback = function(event)
-              require('lsp-file-operations.did-create').callback({
+              require('lsp-operations').did_create({
                 fname = event.to,
               })
             end,
@@ -52,6 +58,7 @@ return {
         },
       })
     end,
+    ]]
   },
 
   {

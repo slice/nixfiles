@@ -292,7 +292,7 @@ then
   end)
 end
 try_adding_capabilities(function()
-  return require('lsp-file-operations').default_capabilities()
+  return require('nvim-file-operations.config').default_capabilities()
 end)
 
 return M
