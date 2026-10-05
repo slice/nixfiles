@@ -97,9 +97,10 @@ let
 
     # video/audio
     multimedia = [
+      exiftool
       ffmpeg_8
-      sox
       imagemagick
+      sox
     ];
 
     # misc. utilities
