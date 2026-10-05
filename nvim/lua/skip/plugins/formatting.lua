@@ -1,6 +1,6 @@
 local utils = require 'skip.utils'
 
-local prettier = { 'prettierd', 'prettier' }
+local prettier = { 'oxfmt', 'prettierd', 'prettier' }
 
 return {
   {
@@ -26,7 +26,7 @@ return {
         cpp = { 'clang-format' },
         objcpp = { 'clang-format' },
         c = { 'clang-format' },
-        markdown = { 'prettierd', 'prettier' },
+        markdown = prettier,
         nix = { 'nixfmt' },
         -- ['*'] = { 'keep-sorted' },
       },
