@@ -212,7 +212,7 @@ function M.term_progress(mode, percent)
     status = 3
   end
 
-  io.write(('\027]9;4;%s;%s\a'):format(status, percent))
+  vim.api.nvim_ui_send(('\027]9;4;%s;%s\a'):format(status, percent or 0))
 end
 
 ---@param variable_name string
