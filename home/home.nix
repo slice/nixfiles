@@ -74,6 +74,7 @@ let
       grpcurl
       jujutsu
       just
+      keep-sorted
       lua-language-server
       luau-lsp
       ngrok
