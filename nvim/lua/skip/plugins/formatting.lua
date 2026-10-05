@@ -28,7 +28,7 @@ return {
         c = { 'clang-format' },
         markdown = prettier,
         nix = { 'nixfmt' },
-        -- ['*'] = { 'keep-sorted' },
+        ['*'] = { 'keep-sorted' },
       },
       formatters = {
         prettierd = {

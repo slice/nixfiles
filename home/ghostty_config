@@ -2,17 +2,22 @@
 
 clipboard-paste-protection = false
 
+background-image = "/Users/skip/Library/Mobile Documents/com~apple~CloudDocs/pictures/walls/bear pikmin/bearmin 18 pro max transparent crop bw 800w.png"
+background-image-opacity = 0.1
+background-image-position = bottom-right
+background-image-fit=none
+
 # text rendering {{{1
-#font-family = PragmataPro
+font-family = PragmataPro
 #font-family = Codelia
-font-family = Consolas
+#font-family = Consolas
 #font-family = Operator Mono SSm
 #font-style = Book
 #font-style-bold = Bold
 #font-style-italic = Book Italic
 #font-style-bold-italic = Bold Italic
 adjust-cell-width = 0
-adjust-cell-height = -2
+adjust-cell-height = -1
 adjust-font-baseline = 0
 #adjust-underline-position = -2
 adjust-underline-thickness = 1

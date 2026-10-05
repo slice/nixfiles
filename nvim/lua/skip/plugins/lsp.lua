@@ -74,7 +74,7 @@ return {
         filetypes = { 'typescriptreact', 'graphql', 'typescript' },
         root_markers = { 'relay.config.json' },
       }
-      vim.lsp.enable('relay')
+      -- vim.lsp.enable('relay')
       -- }}}
       -- yamlls {{{
       vim.lsp.config('yamlls', {
@@ -96,7 +96,10 @@ return {
       })
       vim.lsp.enable('yamlls')
       -- }}}
-      -- vtsls {{{
+      -- tsc(7)/vtsls {{{
+      vim.lsp.config('tsc', {})
+      -- vim.lsp.enable('tsc')
+
       vim.lsp.config('vtsls', {
         settings = {
           vtsls = {
@@ -126,6 +129,18 @@ return {
         },
       })
       vim.lsp.enable('vtsls')
+      -- }}}
+      -- oxlint {{{
+      local oxlint_root_dir = vim.lsp.config.oxlint.root_dir
+      vim.lsp.config('oxlint', {
+        root_dir = function(bufnr, on_dir)
+          oxlint_root_dir(bufnr, function(dir)
+            if dir then
+              on_dir(dir)
+            end
+          end)
+        end,
+      })
       -- }}}
       -- gh_actions_ls {{{
       vim.lsp.config('gh_actions_ls', {
@@ -159,7 +174,7 @@ return {
           },
         },
       })
-      vim.lsp.enable('tailwindcss')
+      -- vim.lsp.enable('tailwindcss')
       -- }}}
       -- cssls,jsonls,html {{{
       for _, server in ipairs({
@@ -312,11 +327,13 @@ return {
       vim.lsp.enable('hls') -- }}}
 
       vim.lsp.enable({
-        'ocamllsp',
         'bashls',
-        'gopls',
-        'pyright',
         'clangd',
+        'gopls',
+        'ocamllsp',
+        'oxlint',
+        'pyright',
+        'buf_ls',
       })
     end,
   },
@@ -531,7 +548,7 @@ return {
               -- eslintrc that only intends to contain local overrides, when a
               -- parent one might have more rules (and context-sensitive
               -- relative paths). just start at package.json
-              return nls_utils.root_pattern('package.json')(params.bufname)
+              return nls_utils.root_pattern('eslint.config.mjs')(params.bufname)
             end),
             filter = function(diag)
               return not (

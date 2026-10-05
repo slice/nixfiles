@@ -52,7 +52,7 @@ local tweaks = {
     link 'swiftFuncDefinition Keyword',
     run = function()
       vim.api.nvim_set_hl(0, '@lsp.type.keyword.swift', {})
-      vim.api.nvim_set_hl(0, '@property.yaml', {fg='fg', nocombine=true})
+      vim.api.nvim_set_hl(0, '@property.yaml', { fg = 'fg', nocombine = true })
     end,
   },
   apparition = { -- luna is cool
@@ -285,7 +285,6 @@ do
       if mods['run'] ~= nil then
         autocmd['callback'] = function()
           mods['run']()
-          mods['run'] = nil
           vim.cmd(table.concat(mods, ' | '))
         end
       else

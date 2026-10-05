@@ -23,10 +23,10 @@ function M.assimilate()
   local colorscheme_bg =
     vim.api.nvim_get_hl(0, { name = 'Normal', link = false }).bg
 
-  -- TODO: what terminals does this (OSC 11) work with? is it standard?
   if vim.env.TERM_PROGRAM == 'ghostty' then
     local hex = string.format('%06x', colorscheme_bg)
     -- set background color via OSC 11
+    -- https://ghostty.org/docs/vt/osc/1x
     vim.api.nvim_ui_send('\27]11;rgb:' .. hex:gsub('%x%x', '%1/', 2) .. '\a')
 
     vim.api.nvim_create_autocmd('VimLeavePre', {
@@ -36,6 +36,14 @@ function M.assimilate()
         vim.api.nvim_ui_send('\27]111\a')
       end,
     })
+
+    if vim.env.TERM_USING_BACKGROUND_IMAGE then
+      -- terminal keeps the bg color that i had just set so it remains there,
+      -- but tell vim to not paint the background at all so i can see the pic
+      vim.api.nvim_set_hl(0, 'Normal', { update = true, bg = 'NONE' })
+      -- vim.api.nvim_set_hl(0, 'NormalNC', { update = true, bg = 'NONE' })
+      -- vim.notify('nice', vim.log.levels.ERROR)
+    end
     return
   end
 
