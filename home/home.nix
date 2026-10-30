@@ -75,6 +75,7 @@ let
       jujutsu
       just
       keep-sorted
+      libimobiledevice
       lua-language-server
       luau-lsp
       ngrok
