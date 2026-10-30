@@ -6,6 +6,7 @@ email = "tinyslices@gmail.com"
 
 [ui]
 default-command = ["log"]
+editor = ["nvim", "+$line"]
 diff-editor = ":builtin"
 diff-instructions = false
 diff-formatter = ":git"
